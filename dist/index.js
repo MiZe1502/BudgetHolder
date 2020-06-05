@@ -328,9 +328,10 @@
     	}
     }
 
-    new App({
+    const svelte = new App({
         target: document.body
     });
+    svelte();
 
 }());
 //# sourceMappingURL=index.js.map
