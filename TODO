@@ -1,0 +1,4 @@
+1. setup eslint to ignore not imported test, describe etc. jest functions
+2. setup eslint and ts to ignore missed typings
+3. setup jest to get coverage from svelte files
+4. update readme, include tech part in it

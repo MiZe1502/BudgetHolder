@@ -275,7 +275,7 @@
     	const block = {
     		c: function create() {
     			div = element("div");
-    			add_location(div, file, 5, 0, 101);
+    			add_location(div, file, 5, 0, 102);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -328,10 +328,10 @@
     	}
     }
 
-    const svelte = new App({
+    // eslint-disable-next-line no-new
+    new App({
         target: document.body
     });
-    svelte();
 
 }());
 //# sourceMappingURL=index.js.map
