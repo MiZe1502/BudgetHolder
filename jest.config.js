@@ -22,5 +22,5 @@ module.exports = {
   bail: false,
   verbose: true,
   transformIgnorePatterns: ['node_modules'],
-  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect']
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect', 'jest-extended']
 }
