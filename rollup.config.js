@@ -41,7 +41,7 @@ if (isDevelopment) {
 }
 
 module.exports = {
-  input: 'src/index.ts',
+  input: 'src/index.js',
   output: {
     file: 'dist/index.js',
     sourcemap: true,
