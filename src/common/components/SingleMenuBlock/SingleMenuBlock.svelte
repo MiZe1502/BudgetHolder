@@ -3,6 +3,7 @@
 
     export let title = "";
     export let url = "";
+    export let isActive = false;
 </script>
 
 <style lang="scss">
@@ -18,6 +19,7 @@
         justify-content: center;
     }
 
+    .SingleMenuBlock:active,
     .SingleMenuBlock:hover {
         cursor: pointer;
         background-color: #5b9c35;

@@ -1,3 +1,5 @@
+import routes from "../../utils/routes"
+
 interface SingleMenuBlock {
     title: string;
     url: string;
@@ -7,18 +9,18 @@ interface SingleMenuBlock {
 export default [
     {
         title: "Home",
-        url: "/"
+        url: routes.home,
     },
     {
         title: "Budget",
-        url: "/budget",
+        url: routes.budget,
     },
     {
         title: "Shops",
-        url: "/shops",
+        url: routes.shops,
     },
     {
         title: "Statistics",
-        url: "/stats",
+        url: routes.stats,
     }
 ];

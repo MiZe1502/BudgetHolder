@@ -1,4 +1,8 @@
-1. setup eslint to ignore not imported test, describe etc. jest functions
-2. setup eslint and ts to ignore missed typings
-3. setup jest to get coverage from svelte files
-4. update readme, include tech part in it
+1. common
+    1.1. fix typescript
+    1.2. fix eslint
+2. main menu
+    2.1. implement selection of current tab
+3. css
+    3.1. implement common css file
+    3.2. add global link styles

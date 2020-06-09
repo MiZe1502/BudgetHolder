@@ -1,7 +1,9 @@
 <script lang="ts">
     import SingleMenuBlock from "../SingleMenuBlock/SingleMenuBlock.svelte";
-    //import colors from "../../utils/colors"
     import menuConfig from "./menuConfig";
+    import getCurrentPath from "../../utils/utils";
+    
+    export let location;
 </script>
 
 
@@ -15,6 +17,6 @@
 
 <header class="MainMenu FlexHor PrimaryBackground">
     {#each menuConfig as menu}
-        <SingleMenuBlock url={menu.url} title={menu.title} />
+        <SingleMenuBlock location={location} url={menu.url} title={menu.title} />
     {/each}
 </header>
