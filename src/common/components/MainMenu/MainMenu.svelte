@@ -1,5 +1,7 @@
 <script lang="ts">
-    import colors from '../../utils/colors'
+    import SingleMenuBlock from "../SingleMenuBlock/SingleMenuBlock.svelte";
+    //import colors from "../../utils/colors"
+    import menuConfig from "./menuConfig";
 </script>
 
 
@@ -7,10 +9,18 @@
     .MainMenu {
         position: fixed;
         width: 100%;
-        border:  1px solid ;
-        height: 300px
+        border:  1px solid black;
+    }
+
+    .HorFlex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 </style>
 
-<div class="MainMenu">
-</div>
+<header class="MainMenu HorFlex">
+    {#each menuConfig as menu}
+        <SingleMenuBlock url={menu.url} title={menu.title} />
+    {/each}
+</header>
