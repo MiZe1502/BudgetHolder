@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { Link } from "svelte-routing";
+
     export let title = "";
     export let url = "";
 </script>
@@ -17,5 +19,5 @@
 
 
 <div class="SingleMenuBlock">
-    <a href={url}>{title}</a>
+    <Link to={url}>{title}</Link>
 </div>
