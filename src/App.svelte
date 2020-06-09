@@ -9,15 +9,41 @@
 
 <style lang="scss">
 
-    :global(.Font312Black) {
+    :global(.Font412Black) {
         font-family: 'Alegreya Sans', sans-serif;
         color: black;
         font-weight: 400;
-        height: 12px;
+        font-size: 22px;
+    }
+
+    :global(.Font422Black) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: black;
+        font-weight: 400;
+        font-size: 22px;
     }
 
     :global(body) {
         margin: 0;
+    }
+
+    :global(.PrimaryBackground) {
+        background-color: #80cf47;
+    }
+
+    :global(.PrimaryBackgroundActive) {
+        background-color: #5b9c35;
+    }
+
+    :global(.FlexHor) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    :global(a) {
+        text-decoration: none;
+        color: black;
     }
 
     .MainWrapper {

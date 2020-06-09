@@ -14,10 +14,20 @@
         padding-top: 8px;
         padding-left: 12px;
         padding-right: 12px;
+        min-width: 100px;
+        justify-content: center;
+    }
+
+    .SingleMenuBlock:hover {
+        cursor: pointer;
+        background-color: #5b9c35;
     }
 </style>
 
 
-<div class="SingleMenuBlock Font312Black">
-    <Link to={url}>{title}</Link>
-</div>
+
+<Link class="" to={url}>
+    <div class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
+        {title}
+    </div>
+</Link>

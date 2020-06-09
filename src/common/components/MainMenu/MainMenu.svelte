@@ -9,17 +9,11 @@
     .MainMenu {
         position: fixed;
         width: 100%;
-        border:  1px solid black;
-    }
-
-    .HorFlex {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+        box-shadow: 0 4px 2px -2px gray;
     }
 </style>
 
-<header class="MainMenu HorFlex">
+<header class="MainMenu FlexHor PrimaryBackground">
     {#each menuConfig as menu}
         <SingleMenuBlock url={menu.url} title={menu.title} />
     {/each}
