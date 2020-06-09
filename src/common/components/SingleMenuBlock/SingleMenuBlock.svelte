@@ -18,6 +18,6 @@
 </style>
 
 
-<div class="SingleMenuBlock">
+<div class="SingleMenuBlock Font312Black">
     <Link to={url}>{title}</Link>
 </div>

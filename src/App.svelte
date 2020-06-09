@@ -9,6 +9,13 @@
 
 <style lang="scss">
 
+    :global(.Font312Black) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: black;
+        font-weight: 400;
+        height: 12px;
+    }
+
     :global(body) {
         margin: 0;
     }
@@ -20,6 +27,9 @@
 
 </style>
 
+<svelte:head>
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+</svelte:head>
 
 <Router>
     <div class="MainWrapper">
