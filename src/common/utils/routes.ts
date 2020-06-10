@@ -1,6 +1,6 @@
 export default {
-    home: "/",
-    budget: "/budget",
-    shops: "/shops",
-    stats: "/stats",
+  home: '/',
+  budget: '/budget',
+  shops: '/shops',
+  stats: '/stats'
 }

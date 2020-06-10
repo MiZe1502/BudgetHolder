@@ -1,7 +1,7 @@
 /node_modules/
 /public/build/
 /test_coverage/
-/dist/
 
+dist
 .DS_Store
 .vscode

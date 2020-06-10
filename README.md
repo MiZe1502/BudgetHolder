@@ -2,7 +2,7 @@
 SPA for home budget management. 
 
 # Stack
-Frontend: Svelte + Scss + Typescript + Jest
+Frontend: Svelte + Scss + Typescript + Svelte testing library
 Backend: Go
 DB: MySQL
 

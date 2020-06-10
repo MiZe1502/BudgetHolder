@@ -1,4 +1,4 @@
-<script lang="ts" >
+<script lang="typescript" >
     import MainMenu from './common/components/MainMenu/MainMenu.svelte'
 
     import Shops from "./pages/Shops.svelte";

@@ -1,50 +1,55 @@
-import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
-import resolve from '@rollup/plugin-node-resolve'
-import html2 from 'rollup-plugin-html2'
-import svelte from 'rollup-plugin-svelte'
-import serve from 'rollup-plugin-serve'
-import postcss from 'rollup-plugin-postcss'
-import { terser } from 'rollup-plugin-terser'
+import html from 'rollup-plugin-html2'
 import livereload from 'rollup-plugin-livereload'
-import sveltePreprocessor from 'svelte-preprocess'
+import resolve from '@rollup/plugin-node-resolve'
+import serve from 'rollup-plugin-serve'
+import svelte from 'rollup-plugin-svelte'
+import { terser } from 'rollup-plugin-terser'
+import typescript from '@rollup/plugin-typescript'
+import preprocess from 'svelte-preprocess'
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development'
+const port = 3000
 
+// define all our plugins
 const plugins = [
   svelte({
-    dev: isDevelopment,
+    dev: isDev,
     extensions: ['.svelte'],
-    preprocess: sveltePreprocessor(),
-    emitCss: true
-  }),
-  postcss({
-    extract: true
+    preprocess: preprocess()
   }),
   typescript(),
-  commonjs({ include: 'node_modules/**', extensions: ['.js', '.ts'] }),
-  resolve(),
-  html2({
-    template: 'src/index.html'
+  resolve({
+    browser: true,
+    dedupe: ['svelte']
+  }),
+  commonjs(),
+  html({
+    template: 'src/index.html',
+    fileName: 'index.html'
   })
 ]
-if (isDevelopment) {
+
+if (isDev) {
   plugins.push(
+    // like a webpack-dev-server
     serve({
       contentBase: './dist',
-      open: false
+      historyApiFallback: true, // for SPAs
+      port
     }),
     livereload({ watch: './dist' })
   )
 } else {
-  plugins.push(terser({ sourcemap: true }))
+  plugins.push(terser({ sourcemap: isDev }))
 }
 
 module.exports = {
   input: 'src/index.js',
   output: {
-    file: 'dist/index.js',
-    sourcemap: true,
+    name: 'bundle',
+    file: 'dist/bundle.js',
+    sourcemap: isDev,
     format: 'iife'
   },
   plugins

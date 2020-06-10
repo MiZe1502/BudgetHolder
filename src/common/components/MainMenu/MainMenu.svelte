@@ -1,9 +1,9 @@
-<script lang="ts">
-    import SingleMenuBlock from "../SingleMenuBlock/SingleMenuBlock.svelte";
-    import menuConfig from "./menuConfig";
-    import getCurrentPath from "../../utils/utils";
-    
-    export let location;
+<script lang="typescript">
+    import SingleMenuBlock from '../SingleMenuBlock/SingleMenuBlock.svelte'
+    import menuConfig from './menuConfig'
+    import { getCurrentPath } from '../../utils/utils'
+
+    export let location
 </script>
 
 

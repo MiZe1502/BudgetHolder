@@ -1,9 +1,9 @@
-<script lang="ts">
-    import { Link } from "svelte-routing";
+<script lang="typescript">
+    import { Link } from 'svelte-routing'
 
-    export let title = "";
-    export let url = "";
-    export let isActive = false;
+    export let title = ''
+    export let url = ''
+    export let isActive = false
 </script>
 
 <style lang="scss">
