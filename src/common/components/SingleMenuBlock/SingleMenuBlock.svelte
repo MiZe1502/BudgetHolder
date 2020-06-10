@@ -1,9 +1,13 @@
 <script lang="typescript">
     import { Link } from 'svelte-routing'
+    import { currentPage } from "../../../stores/common";
 
     export let title = ''
     export let url = ''
-    export let isActive = false
+
+    function handleClick (url) {
+        currentPage.set(url)
+    }
 </script>
 
 <style lang="scss">
@@ -24,12 +28,16 @@
         cursor: pointer;
         background-color: #5b9c35;
     }
+
+    .active {
+        background-color: #5b9c35;
+    }
 </style>
 
 
 
 <Link class="" to={url}>
-    <div class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
+    <div on:click={() => handleClick(url)} class:active={$currentPage === url} class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
         {title}
     </div>
 </Link>

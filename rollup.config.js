@@ -18,11 +18,11 @@ const plugins = [
     extensions: ['.svelte'],
     preprocess: preprocess()
   }),
-  typescript(),
   resolve({
     browser: true,
     dedupe: ['svelte']
   }),
+  typescript(),
   commonjs(),
   html({
     template: 'src/index.html',
