@@ -6,7 +6,7 @@
     export let url = ''
 
     function handleClick (url) {
-        currentPage.set(url)
+      currentPage.set(url)
     }
 </script>
 
@@ -29,15 +29,14 @@
         background-color: #5b9c35;
     }
 
-    .active {
+    .Active {
         background-color: #5b9c35;
     }
 </style>
 
 
-
 <Link class="" to={url}>
-    <div on:click={() => handleClick(url)} class:active={$currentPage === url} class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
+    <div on:click={() => handleClick(url)} class:Active={$currentPage === url} class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
         {title}
     </div>
 </Link>
