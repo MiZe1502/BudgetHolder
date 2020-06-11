@@ -8,6 +8,5 @@ export interface CommonTable {
 
 export interface ColumnConfig {
     header: string;
-    data: any;
     component: SvelteComponent;
 }

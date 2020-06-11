@@ -15,11 +15,11 @@
 
 <div class="Row">
 
-    {#each Object.entries(data) as [cat_name, cat_number], index}
-        {cat_name}: {cat_number}
+    {#each Object.entries(data) as [fieldName, fieldData], index}
+            <svelte:component this={config[index].component} data={fieldData}/>
     {/each}
 
-    {#each config as configItem, index}
+    <!-- {#each config as configItem, index}
         <svelte:component this={configItem.component} data={data}/>
-    {/each}
+    {/each} -->
 </div>
