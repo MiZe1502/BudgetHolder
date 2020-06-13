@@ -1,5 +1,5 @@
 <script lang="typescript">
-    import CommonTable from "../common/components/CommonTable/CommonTable.svelte"
+    import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import SimpleElement from '../common/components/SimpleElement/SimpleElement.svelte'
 
     const data = [
@@ -11,18 +11,21 @@
     ]
 
     const config = [
-        {
-            header: "id",
-            component: SimpleElement,
-        },
-        {
-            header: "name",
-            component: SimpleElement,
-        },
-        {
-            header: "number",
-            component: SimpleElement,
-        },
+      {
+        header: 'id',
+        component: SimpleElement,
+        style: 'flex: 1 0 30%'
+      },
+      {
+        header: 'name',
+        component: SimpleElement,
+        style: 'flex: 1 0 30%'
+      },
+      {
+        header: 'number',
+        component: SimpleElement,
+        style: 'flex: 1 0 30%'
+      }
     ]
 </script>
 

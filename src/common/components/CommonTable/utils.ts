@@ -9,4 +9,5 @@ export interface CommonTable {
 export interface ColumnConfig {
     header: string;
     component: SvelteComponent;
+    style?: string;
 }

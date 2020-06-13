@@ -18,7 +18,8 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    "svelte3"
+    "svelte3",
+    "html"
   ],
   overrides: [
     {

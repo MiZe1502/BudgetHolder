@@ -7,19 +7,20 @@
 
 <style>
     .Row {
+        width: 100%;
+        min-height: 40px;
         display: flex;
         flex-direction: row;
         align-items: center;
     }
+
+    .Row:nth-of-type(2n) {
+        background-color: #faf8f6;
+    }
 </style>
 
 <div class="Row">
-
     {#each Object.entries(data) as [fieldName, fieldData], index}
-            <svelte:component this={config[index].component} data={fieldData}/>
+            <svelte:component style={config[index].style} this={config[index].component} data={fieldData}/>
     {/each}
-
-    <!-- {#each config as configItem, index}
-        <svelte:component this={configItem.component} data={data}/>
-    {/each} -->
 </div>
