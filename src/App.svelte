@@ -46,6 +46,11 @@
         color: black;
     }
 
+    :global(.GlobalPadding) {
+        padding-right: 10%;
+        padding-left: 10%;
+    }
+
     .MainWrapper {
         display: flex;
         flex-direction: column;

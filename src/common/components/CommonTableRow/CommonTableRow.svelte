@@ -7,7 +7,6 @@
 
 <style>
     .Row {
-        width: 100%;
         min-height: 40px;
         display: flex;
         flex-direction: row;
@@ -19,7 +18,7 @@
     }
 </style>
 
-<div class="Row">
+<div class="GlobalPadding Row">
     {#each Object.entries(data) as [fieldName, fieldData], index}
             <svelte:component style={config[index].style} this={config[index].component} data={fieldData}/>
     {/each}

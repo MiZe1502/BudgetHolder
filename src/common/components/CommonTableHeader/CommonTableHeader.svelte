@@ -5,7 +5,6 @@
 </script>
 
 <style>
-
     .Header {
         position: relative;
         z-index: 1;
@@ -18,7 +17,7 @@
     }
 </style>
 
-<div class="Header">
+<div class="GlobalPadding Header">
     {#each config as configItem}
         <span style={configItem.style}>{configItem.header}</span>
     {/each}
