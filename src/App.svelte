@@ -9,6 +9,20 @@
 
 <style lang="scss">
 
+    :global(.Font316Black) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: black;
+        font-weight: 300;
+        font-size: 16px;
+    }
+
+    :global(.Font716Black) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: black;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
     :global(.Font412Black) {
         font-family: 'Alegreya Sans', sans-serif;
         color: black;

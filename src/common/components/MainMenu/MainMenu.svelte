@@ -9,6 +9,7 @@
         /* position: fixed; */
         width: 100%;
         box-shadow: 0 4px 2px -2px gray;
+        margin-bottom: 40px;
     }
 </style>
 

@@ -17,7 +17,7 @@
     }
 </style>
 
-<div class="GlobalPadding Header">
+<div class="Font716Black GlobalPadding Header">
     {#each config as configItem}
         <span style={configItem.style}>{configItem.header}</span>
     {/each}

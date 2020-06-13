@@ -3,4 +3,4 @@
     export let style = ""
 </script>
 
-<div style={style}>{data}</div>
+<div class="Font316Black" style={style}>{data}</div>
