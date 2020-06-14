@@ -8,7 +8,7 @@
 
     const tableData: CommonTableInterface = {
       title: "Shops",
-      total: 30,
+      total: 0,
       status: LoadingStatus.Loading,
       columnsConfig: [
         {
@@ -33,6 +33,9 @@
     onMount(async () => {
         setTimeout(() => {
           tableData.status = LoadingStatus.Finished;
+          // tableData.data = [];
+          // tableData.total = 0;
+          tableData.total = 30;
           tableData.data = [
             { id: 1, name: 'name1', number: 1 },
             { id: 2, name: 'name2', number: 2 },

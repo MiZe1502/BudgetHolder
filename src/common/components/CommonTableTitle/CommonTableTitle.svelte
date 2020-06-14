@@ -8,6 +8,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        margin-bottom: 8px;
     }
 
     .TitleText {
@@ -17,5 +18,7 @@
 
 <div class="GlobalPadding Title">
     <span class="TitleText Font732Black">{title}</span>
-    <span class="TitleText Font732Gray">({dataLength})</span>
+    {#if dataLength}
+        <span class="TitleText Font732DarkGray">({dataLength})</span>
+    {/if}
 </div>

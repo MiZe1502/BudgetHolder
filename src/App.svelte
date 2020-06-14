@@ -8,7 +8,6 @@
 </script>
 
 <style lang="scss">
-
     :global(.Font316Black) {
         font-family: 'Alegreya Sans', sans-serif;
         color: black;
@@ -30,7 +29,7 @@
         font-size: 32px;
     }
 
-    :global(.Font732Gray) {
+    :global(.Font732DarkGray) {
         font-family: 'Alegreya Sans', sans-serif;
         color: #d6d2ce;
         font-weight: 700;
@@ -41,7 +40,7 @@
         font-family: 'Alegreya Sans', sans-serif;
         color: black;
         font-weight: 400;
-        font-size: 22px;
+        font-size: 12px;
     }
 
     :global(.Font422Black) {
@@ -49,6 +48,20 @@
         color: black;
         font-weight: 400;
         font-size: 22px;
+    }
+
+    :global(.Font422DarkGray) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: #d6d2ce;
+        font-weight: 400;
+        font-size: 22px;
+    }
+
+    :global(.Font316DarkGray) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: #d6d2ce;
+        font-weight: 300;
+        font-size: 16px;
     }
 
     :global(body) {

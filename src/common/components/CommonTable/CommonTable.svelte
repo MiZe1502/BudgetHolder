@@ -6,6 +6,7 @@
     import CommonTableTitle from '../CommonTableTitle/CommonTableTitle.svelte'
     import CommonTableHeader from '../CommonTableHeader/CommonTableHeader.svelte'
     import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.svelte'
+    import NoDataFoundBlock from '../NoDataFoundBlock/NoDataFoundBlock.svelte'
     
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
@@ -19,13 +20,13 @@
 </style>
 
 <section>
+    <CommonTableTitle title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
     {:else if status === LoadingStatus.Finished}
         {#if !data || data.length === 0}
-            No Data Found
+            <NoDataFoundBlock />
         {:else}
-            <CommonTableTitle title={title} dataLength={total}/>
             <CommonTableHeader config={config}/>
             {#each data as dataItem}
                 <CommonTableRow data={dataItem} config={config} />
