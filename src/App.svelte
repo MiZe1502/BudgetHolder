@@ -30,6 +30,13 @@
         font-size: 32px;
     }
 
+    :global(.Font732Gray) {
+        font-family: 'Alegreya Sans', sans-serif;
+        color: #d6d2ce;
+        font-weight: 700;
+        font-size: 32px;
+    }
+
     :global(.Font412Black) {
         font-family: 'Alegreya Sans', sans-serif;
         color: black;

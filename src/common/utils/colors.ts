@@ -5,5 +5,6 @@ export default {
   orangePrimary: '#cc6c46',
   bluePrimary: '#46b8cc',
 
-  gray: '#faf8f6'
+  gray: '#faf8f6',
+  darkGray: "#d6d2ce"
 }

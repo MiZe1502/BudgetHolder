@@ -20,7 +20,7 @@
     {#if !data || data.length === 0}
         <LoadingSpinner />
     {:else}
-        <CommonTableTitle title={title} />
+        <CommonTableTitle title={title} dataLength={data.length}/>
         <CommonTableHeader config={config}/>
         {#each data as dataItem}
             <CommonTableRow data={dataItem} config={config} />

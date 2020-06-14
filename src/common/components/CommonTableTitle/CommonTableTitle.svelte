@@ -1,5 +1,6 @@
 <script lang="typescript">
     export let title = "";
+    export let dataLength = 0;
 </script>
 
 <style>
@@ -10,10 +11,11 @@
     }
 
     .TitleText {
-        margin-right: 16px;
+        margin-right: 8px;
     }
 </style>
 
 <div class="GlobalPadding Title">
     <span class="TitleText Font732Black">{title}</span>
+    <span class="TitleText Font732Gray">({dataLength})</span>
 </div>
