@@ -1,16 +1,17 @@
 <script lang="typescript">
     import { ColumnConfig } from "./utils";
+    import { LoadingStatus } from "../../../stores/utils";
 
     import CommonTableRow from '../CommonTableRow/CommonTableRow.svelte'
     import CommonTableTitle from '../CommonTableTitle/CommonTableTitle.svelte'
     import CommonTableHeader from '../CommonTableHeader/CommonTableHeader.svelte'
     import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.svelte'
-
-
+    
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
     export let title: string = "";
     export let total: number = 0;
+    export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
 <style>
@@ -18,13 +19,21 @@
 </style>
 
 <section>
-    {#if !data || data.length === 0}
+    {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
-    {:else}
-        <CommonTableTitle title={title} dataLength={total}/>
-        <CommonTableHeader config={config}/>
-        {#each data as dataItem}
-            <CommonTableRow data={dataItem} config={config} />
-        {/each}
+    {:else if status === LoadingStatus.Finished}
+        {#if !data || data.length === 0}
+            No Data Found
+        {:else}
+            <CommonTableTitle title={title} dataLength={total}/>
+            <CommonTableHeader config={config}/>
+            {#each data as dataItem}
+                <CommonTableRow data={dataItem} config={config} />
+            {/each}
+        {/if}
+    {:else if status === LoadingStatus.Error}
+        Error fetching data
     {/if}
+
+
 </section>
