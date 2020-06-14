@@ -1,13 +1,13 @@
-import { SvelteComponent } from 'svelte'
+import { SvelteComponentDev } from 'svelte/internal';
 
 export interface CommonTable {
     title: string;
-    columns: ColumnConfig[];
+    columnsConfig: ColumnConfig[];
     data: Record<any, any>[]
 }
 
 export interface ColumnConfig {
     header: string;
-    component: SvelteComponent;
+    component: SvelteComponentDev;
     style?: string;
 }
