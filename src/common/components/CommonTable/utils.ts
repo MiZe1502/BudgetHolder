@@ -4,6 +4,7 @@ export interface CommonTable {
     title: string;
     columnsConfig: ColumnConfig[];
     data: Record<any, any>[]
+    total: number;
 }
 
 export interface ColumnConfig {

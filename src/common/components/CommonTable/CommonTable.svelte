@@ -10,6 +10,7 @@
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
     export let title: string = "";
+    export let total: number = 0;
 </script>
 
 <style>
@@ -20,7 +21,7 @@
     {#if !data || data.length === 0}
         <LoadingSpinner />
     {:else}
-        <CommonTableTitle title={title} dataLength={data.length}/>
+        <CommonTableTitle title={title} dataLength={total}/>
         <CommonTableHeader config={config}/>
         {#each data as dataItem}
             <CommonTableRow data={dataItem} config={config} />

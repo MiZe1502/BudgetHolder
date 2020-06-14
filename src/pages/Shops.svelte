@@ -6,6 +6,7 @@
 
     const tableData: CommonTableInterface = {
       title: "Shops",
+      total: 30,
       columnsConfig: [
         {
           header: 'id',
@@ -43,5 +44,5 @@
 </style>
 
 <div>
-    <CommonTable data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
+    <CommonTable total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
 </div>
