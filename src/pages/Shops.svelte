@@ -9,6 +9,9 @@
     const tableData: CommonTableInterface = {
       title: "Shops",
       total: 0,
+      withButton: true,
+      buttonTitle: "Add new shop",
+      buttonClickHandler: () => {},
       status: LoadingStatus.Loading,
       columnsConfig: [
         {
@@ -51,5 +54,5 @@
 </style>
 
 <div>
-    <CommonTable status={tableData.status} total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
+    <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
 </div>

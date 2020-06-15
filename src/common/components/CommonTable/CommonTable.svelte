@@ -13,6 +13,9 @@
     export let title: string = "";
     export let total: number = 0;
     export let status: LoadingStatus = LoadingStatus.None;
+    export let withButton: boolean = false;
+    export let buttonTitle: string = "";
+    export let buttonClickHandler = () => {};
 </script>
 
 <style>
@@ -20,7 +23,7 @@
 </style>
 
 <section>
-    <CommonTableTitle title={title} dataLength={total}/>
+    <CommonTableTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
     {:else if status === LoadingStatus.Finished}

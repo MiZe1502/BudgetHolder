@@ -7,6 +7,9 @@ export interface CommonTable {
     data: Record<any, any>[]
     total: number;
     status: LoadingStatus;
+    withButton: boolean;
+    buttonTitle: string;
+    buttonClickHandler: () => void;
 }
 
 export interface ColumnConfig {
