@@ -14,7 +14,7 @@
         padding: 8px;
         border-radius: 4px;
         transition: background-color 300ms ease;
-          box-shadow: 0 3px 1px -1px rgba(0, 84, 72, 0.3);
+        box-shadow: 0 3px 1px -1px rgba(0, 84, 72, 0.3);
     }
 
     .Button:hover,

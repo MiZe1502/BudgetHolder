@@ -21,12 +21,17 @@
         padding-right: 12px;
         min-width: 100px;
         justify-content: center;
+        transition: background-color 300ms ease;
     }
 
     .SingleMenuBlock:active,
     .SingleMenuBlock:hover {
         cursor: pointer;
         background-color: #5b9c35;
+    }
+
+    .SingleMenuBlock:active {
+        background-color: #9ef06e;
     }
 
     .Active {
