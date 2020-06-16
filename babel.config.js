@@ -1,6 +1,9 @@
 module.exports = {
+  plugins: [
+    'emotion'
+  ],
   presets: [
-    [
+    [    
       '@babel/preset-env',
       {
         targets: {
@@ -8,6 +11,6 @@ module.exports = {
         }
       }
     ],
-    '@babel/preset-typescript'
+    '@babel/preset-typescript',
   ]
 }

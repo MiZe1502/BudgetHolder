@@ -1,4 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs'
+import babel from "rollup-plugin-babel";
+import replace from 'rollup-plugin-replace';
 import html from 'rollup-plugin-html2'
 import livereload from 'rollup-plugin-livereload'
 import resolve from '@rollup/plugin-node-resolve'
@@ -13,6 +15,9 @@ const port = 3000
 
 // define all our plugins
 const plugins = [
+  replace({
+    'process.env.NODE_ENV': JSON.stringify( 'development' )
+  }),
   svelte({
     dev: isDev,
     extensions: ['.svelte'],
@@ -23,6 +28,9 @@ const plugins = [
     dedupe: ['svelte']
   }),
   typescript(),
+  babel({
+    exclude: "node_modules/**"
+  }),
   commonjs(),
   html({
     template: 'src/index.html',
