@@ -1,0 +1,1 @@
+export { Font316Black } from "../../styles/fonts";

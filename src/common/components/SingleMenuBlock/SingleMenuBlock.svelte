@@ -1,4 +1,6 @@
 <script lang="typescript">
+    import { SingleMenuBlock, Font422Black, FlexHorCenter, ActiveBlock } from "./style";
+
     import { Link } from 'svelte-routing'
     import { currentPage } from "../../../stores/common";
 
@@ -10,38 +12,8 @@
     }
 </script>
 
-<style lang="scss">
-    .SingleMenuBlock {
-        height: 5vh;
-        width: auto;
-        background-color: #80cf47;
-        padding-bottom: 8px;
-        padding-top: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
-        min-width: 100px;
-        justify-content: center;
-        transition: background-color 300ms ease;
-    }
-
-    .SingleMenuBlock:active,
-    .SingleMenuBlock:hover {
-        cursor: pointer;
-        background-color: #5b9c35;
-    }
-
-    .SingleMenuBlock:active {
-        background-color: #9ef06e;
-    }
-
-    .Active {
-        background-color: #5b9c35;
-    }
-</style>
-
-
 <Link class="" to={url}>
-    <div on:click={() => handleClick(url)} class:Active={$currentPage === url} class="SingleMenuBlock Font422Black PrimaryBackground FlexHor">
+    <div on:click={() => handleClick(url)} class="{$currentPage === url && ActiveBlock} {SingleMenuBlock} {Font422Black} {FlexHorCenter}">
         {title}
     </div>
 </Link>

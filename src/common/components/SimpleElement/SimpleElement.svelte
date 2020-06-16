@@ -1,5 +1,5 @@
 <script>
-    import { Font316Black } from "../../styles/fonts";
+    import { Font316Black } from "./style";
 
     export let data = null
     export let style = ""

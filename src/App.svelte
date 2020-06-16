@@ -16,24 +16,9 @@
         background-color: #80cf47;
     }
 
-    :global(.PrimaryBackgroundActive) {
-        background-color: #5b9c35;
-    }
-
-    :global(.FlexHor) {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
     :global(a) {
         text-decoration: none;
         color: black;
-    }
-
-    :global(.GlobalPadding) {
-        padding-right: 10%;
-        padding-left: 10%;
     }
 
     .MainWrapper {

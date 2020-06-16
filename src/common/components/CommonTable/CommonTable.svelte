@@ -18,10 +18,6 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<style>
-
-</style>
-
 <section>
     <CommonTableTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}

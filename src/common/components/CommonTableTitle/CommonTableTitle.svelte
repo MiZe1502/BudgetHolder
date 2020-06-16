@@ -1,4 +1,6 @@
 <script lang="typescript">
+    import { Font732Black, Font732DarkGray, Title, TitleText, SideMainPadding, FlexHorCenter} from "./style";
+
     import Button from '../Button/Button.svelte'
 
     export let title = "";
@@ -9,23 +11,10 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<style>
-    .Title {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .TitleText {
-        margin-right: 8px;
-    }
-</style>
-
-<div class="GlobalPadding Title">
-    <span class="TitleText Font732Black">{title}</span>
+<div class="{SideMainPadding} {Title} {FlexHorCenter}">
+    <span class="{TitleText} {Font732Black}">{title}</span>
     {#if dataLength}
-        <span class="TitleText Font732DarkGray">({dataLength})</span>
+        <span class="{TitleText} {Font732DarkGray}">({dataLength})</span>
     {/if}
     {#if withButton}
         <Button title={buttonTitle} onClickHandler={buttonClickHandler}/>

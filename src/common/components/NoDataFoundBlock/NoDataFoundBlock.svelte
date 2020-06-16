@@ -1,6 +1,7 @@
-<style>
-</style>
+<script lang="typescript">
+    import { SideMainPadding, Font316DarkGray } from "./style";
+</script>
 
-<div class="GlobalPadding Font316DarkGray">
+<div class="{SideMainPadding} {Font316DarkGray}">
     No data found
 </div>
