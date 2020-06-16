@@ -1,6 +1,21 @@
 1. common
-    1.1. fix typescript
-    1.2. fix eslint
-3. css
-    3.1. implement common css file
-    3.2. add global link styles
+    1.2. fix eslint or prettier
+2. css
+    2.1. implement common css file
+    2.2. add global link styles
+    2.3. implement sass
+3. functionality
+    3.1. popup
+        3.1.1. multiple popups can exist
+        3.1.2. draggable
+        3.1.3. resizable
+    3.2. table pagination
+    3.3. yandex map container
+    3.4. icon button
+        3.4.1. pass icon to button as slot
+        3.4.2. pass click handler
+        3.4.3. implement css on hover, active etc.
+    3.5. shops page
+        3.5.1. implement stores
+        3.5.2. implement loading (pseudo yet)
+    3.6. websockets
