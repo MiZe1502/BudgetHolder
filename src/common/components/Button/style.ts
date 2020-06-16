@@ -1,6 +1,7 @@
-import { css } from 'emotion'
+import { css } from 'emotion';
+import colors from "../../styles/colors";
 
-import colors from "../../utils/colors";
+export { Font316Black } from "../../styles/fonts";
 
 export const Button = css`
 	width: auto;
