@@ -1,30 +1,19 @@
 <script lang="typescript">
     import { UrlElementData } from "./utils";
+    import { Font316Black, FlexHorCenter, Overflowed, UrlWrapper, Url } from "./style";
 
     export let data: UrlElementData = {};
     export let style = "";
 </script>
 
-
 <style>
-    .Wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        max-width: 100%;
-    }
 
-    .Overflowed {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
 </style>
 
-<div style={style} class="Wrapper Overflowed">
+<div style={style} class="{UrlWrapper} {Overflowed} {FlexHorCenter} {Font316Black}">
     {#if data.url}
-        <a href={data.url}>{data.name}</a>
+        <a title={data.name} class="{Url} {Overflowed}" href={data.url}>{data.name}</a>
     {:else}
-        <span>{data.name}</span>
+        <span title={data.name} class="{Overflowed}">{data.name}</span>
     {/if}
 </div>

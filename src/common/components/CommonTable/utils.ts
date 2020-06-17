@@ -9,6 +9,7 @@ export interface CommonTable {
     status: LoadingStatus;
     withButton: boolean;
     buttonTitle: string;
+    overflowed?: boolean;
     buttonClickHandler: () => void;
 }
 

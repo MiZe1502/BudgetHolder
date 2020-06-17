@@ -2,7 +2,7 @@ import { css } from 'emotion';
 import colors from "../../styles/colors";
 
 export { Font716Black } from "../../styles/fonts";
-export { SideMainPadding, FlexHorCenter } from "../../styles/positioning";
+export { SideMainPadding, FlexHorCenter, Overflowed } from "../../styles/positioning";
 
 export const Row = css`
     min-height: 40px;
@@ -12,4 +12,8 @@ export const Row = css`
     &:nth-of-type(2n) {
         background-color: ${colors.gray};
     }
+`;
+
+export const Cell = css`
+    margin-right: 16px;
 `;

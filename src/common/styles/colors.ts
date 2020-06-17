@@ -4,6 +4,8 @@ export default {
   greenLight: "#9ef06e",
   redPrimary: '#cc467e',
   orangePrimary: '#cc6c46',
+  orangeActive: '#844830',
+  orangeLight: '#e39c80',
   bluePrimary: '#46b8cc',
 
   gray: '#faf8f6',

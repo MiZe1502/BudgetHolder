@@ -21,6 +21,7 @@
         {
           header: 'Name',
           component: UrlElement,
+          overflowed: true,
           style: 'flex: 1 0 20%',
           mapping: (data: Shop) => {
             return {
