@@ -1,6 +1,9 @@
 <script lang="typescript">
     import { LoadingStatus } from '../stores/utils';
 
+    import { mockData } from "./data";
+    import { Shop } from "./types";
+
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleElement from '../common/components/SimpleElement/SimpleElement.svelte'
@@ -15,19 +18,22 @@
       status: LoadingStatus.Loading,
       columnsConfig: [
         {
-          header: 'id',
+          header: 'Name',
           component: SimpleElement,
-          style: 'flex: 1 0 30%'
+          style: 'flex: 1 0 20%',
+          mapping: (data: Shop) => data.name,
         },
         {
-          header: 'name',
+          header: 'Address',
           component: SimpleElement,
-          style: 'flex: 1 0 30%'
+          style: 'flex: 1 0 20%',
+          mapping: (data: Shop) => data.address,
         },
         {
-          header: 'number',
+          header: 'Comment',
           component: SimpleElement,
-          style: 'flex: 1 0 30%'
+          style: 'flex: 1 0 50%',
+          mapping: (data: Shop) => data.comment,
         }
       ],
       data: []
@@ -39,13 +45,7 @@
           // tableData.data = [];
           // tableData.total = 0;
           tableData.total = 30;
-          tableData.data = [
-            { id: 1, name: 'name1', number: 1 },
-            { id: 2, name: 'name2', number: 2 },
-            { id: 3, name: 'name3', number: 3 },
-            { id: 4, name: 'name4', number: 4 },
-            { id: 5, name: 'name5', number: 5 },
-          ]
+          tableData.data = mockData;
         }, 5000)
     });
 </script>

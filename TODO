@@ -2,7 +2,6 @@
     1.1. pass env variable to rollup config
     1.2. fix eslint or prettier
 2. css
-    2.1. implement common css file
     2.2. add global link styles
 3. functionality
     3.1. popup
@@ -19,3 +18,5 @@
         3.5.1. implement stores
         3.5.2. implement loading (pseudo yet)
     3.6. websockets
+    3.7. common element for text with overflow hidden
+    3.8. common element for urls (with overflow)

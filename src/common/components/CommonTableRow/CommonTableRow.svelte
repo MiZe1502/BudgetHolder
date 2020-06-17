@@ -8,7 +8,7 @@
 </script>
 
 <div class="{SideMainPadding} {Row} {FlexHorCenter}">
-    {#each Object.entries(data) as [fieldName, fieldData], index}
-            <svelte:component style={config[index].style} this={config[index].component} data={fieldData}/>
+    {#each Object.entries(config) as [columnHeader, columnConfig], index}
+        <svelte:component style={columnConfig.style} this={columnConfig.component} data={columnConfig.mapping(data)}/>
     {/each}
 </div>

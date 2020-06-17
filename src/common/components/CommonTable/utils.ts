@@ -16,4 +16,5 @@ export interface ColumnConfig {
     header: string;
     component: SvelteComponentDev;
     style?: string;
+    mapping: (data: Record<any, any>) => any;
 }
