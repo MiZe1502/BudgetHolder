@@ -6,7 +6,7 @@
 
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
-    import SimpleElement from '../common/components/SimpleElement/SimpleElement.svelte'
+    import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
 
@@ -32,13 +32,13 @@
         },
         {
           header: 'Address',
-          component: SimpleElement,
+          component: SimpleTextElement,
           style: 'flex: 1 0 20%',
           mapping: (data: Shop) => data.address,
         },
         {
           header: 'Comment',
-          component: SimpleElement,
+          component: SimpleTextElement,
           style: 'flex: 1 0 50%',
           mapping: (data: Shop) => data.comment,
         }
