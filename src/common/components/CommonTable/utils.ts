@@ -13,6 +13,7 @@ export interface CommonTable {
 }
 
 export interface ColumnConfig {
+[x: string]: any;
     header: string;
     component: SvelteComponentDev;
     style?: string;

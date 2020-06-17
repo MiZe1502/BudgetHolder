@@ -7,6 +7,7 @@
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleElement from '../common/components/SimpleElement/SimpleElement.svelte'
+    import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
 
     const tableData: CommonTableInterface = {
@@ -19,9 +20,14 @@
       columnsConfig: [
         {
           header: 'Name',
-          component: SimpleElement,
+          component: UrlElement,
           style: 'flex: 1 0 20%',
-          mapping: (data: Shop) => data.name,
+          mapping: (data: Shop) => {
+            return {
+              name: data.name,
+              url: data.url,
+            }
+          }
         },
         {
           header: 'Address',
