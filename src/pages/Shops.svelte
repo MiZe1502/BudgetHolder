@@ -7,7 +7,7 @@
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
-    import ButtonIconMap from '../common/components/ButtonIconMap/ButtonIconMap.svelte'
+    import ButtonIconMap from '../common/components/Buttons/ButtonIconMap/ButtonIconMap.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
 

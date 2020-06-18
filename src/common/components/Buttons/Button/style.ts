@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 
-export { Font316Black } from "../../styles/fonts";
-export { ButtonReset, ButtonDefault } from "../../styles/buttons";
+export { Font316Black } from "../../../styles/fonts";
+export { ButtonReset, ButtonDefault } from "../../../styles/buttons";
 
 export const Button = css`
 	width: auto;

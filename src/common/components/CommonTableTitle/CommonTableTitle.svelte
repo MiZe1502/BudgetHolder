@@ -1,7 +1,7 @@
 <script lang="typescript">
     import { Font732Black, Font732DarkGray, Title, TitleText, SideMainPadding, FlexHorCenter} from "./style";
 
-    import Button from '../Button/Button.svelte'
+    import Button from '../Buttons/Button/Button.svelte'
 
     export let title = "";
     export let dataLength = 0;
