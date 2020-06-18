@@ -18,5 +18,3 @@
         3.5.1. implement stores
         3.5.2. implement loading (pseudo yet)
     3.6. websockets
-    3.7. common element for text with overflow hidden
-    3.8. common element for urls (with overflow)

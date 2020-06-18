@@ -11,7 +11,8 @@ export const UrlWrapper = css`
 export const Url = css`
     color: ${colors.orangePrimary};
     font-weight: 500;
-    
+    text-decoration: underline;
+
     &:hover {
         color: ${colors.orangeActive};
     }
