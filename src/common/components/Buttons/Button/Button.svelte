@@ -5,6 +5,6 @@
     export let title: string = "";
 </script>
 
-<button class="{ButtonReset} {Button} {ButtonDefault} {Font316Black}" onClick={onClickHandler}>
+<button class="{ButtonReset} {Button} {ButtonDefault} {Font316Black}" on:click={onClickHandler}>
     {title}
 </button>

@@ -7,7 +7,7 @@
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
-    import ButtonIconMap from '../common/components/Buttons/ButtonIconMap/ButtonIconMap.svelte'
+    import MapActionElement from '../common/components/MapActionElement/MapActionElement.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
 
@@ -45,7 +45,7 @@
         },
         {
           header: "Actions",
-          component: ButtonIconMap,
+          component: MapActionElement,
           style: 'flex: 1 0 10%',
           mapping: (data: Shop) => data.address,
         }

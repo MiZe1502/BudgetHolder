@@ -6,6 +6,6 @@
     export let height: number = 24;
 </script>
 
-<button class="{Button} {ButtonReset} {ButtonDefault}" onClick={onClickHandler}>
+<button class="{Button} {ButtonReset} {ButtonDefault}" on:click={onClickHandler}>
     <slot width={24} height={24} />
 </button>
