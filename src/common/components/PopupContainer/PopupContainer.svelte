@@ -1,30 +1,49 @@
 <script lang="typescript">
 
+    const countPositionDiff = (curPosition: Position): Position => {
+        return {
+            x: curPosition.x - startMousePosition.x,
+            y: curPosition.y - startMousePosition.y 
+        }
+    }
+
     const onMouseDownHandler = (event: MouseEvent) => {
-        console.log("MouseDown", event)
         isMouseDown = true;
-        startMousePosition.x = event.clientX;
-        startMousePosition.y = event.clientY;
+        if (!isPopupAlreadyMoved) {
+            startMousePosition.x = event.clientX;
+            startMousePosition.y = event.clientY;
+        }
     }
 
     const onMouseMoveHandler = (event: MouseEvent) => {
         if (!isMouseDown) {
             return;
         }
-        console.log("MouseMove", event)
+
+        if (!isPopupAlreadyMoved) {
+            isPopupAlreadyMoved = true;
+        }
+
         if (!isMouseMoving) {
             isMouseMoving = true;
         }
+
+        diffPosition = countPositionDiff({x: event.clientX, y: event.clientY})
     }
 
     const onMouseUpHandler = (event: MouseEvent) => {
-        console.log("MouseUp", event)
+        isMouseMoving = false;
+        isMouseDown = false;
+    }
+
+    const onMouseOutHandler = (event: MouseEvent) => {
         isMouseMoving = false;
         isMouseDown = false;
     }
 
     let isMouseDown = false;
     let isMouseMoving = false;
+    let isPopupAlreadyMoved = false;
 
     interface Position {
         x: number;
@@ -32,15 +51,14 @@
     }
 
     let startMousePosition: Position = {x: 0, y: 0};
-
-
+    let diffPosition: Position = {x: 0, y: 0};
 
 </script>
 
 <style>
     .Popup {
-        left: calc(50% - 450px);
-        top: 100px;
+        /* left: calc(50% - 450px); */
+        /* top: 100px; */
         position: fixed;
         z-index: 10;
         margin: auto;
@@ -53,6 +71,6 @@
 
 </style>
 
-<div class="Popup" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler}>
+<div style="top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
     Test Popup
 </div>
