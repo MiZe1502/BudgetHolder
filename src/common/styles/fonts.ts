@@ -16,6 +16,13 @@ export const Font716Black = css`
         font-size: 16px;
 `;
 
+export const Font724Black = css`
+        font-family: 'Alegreya Sans', sans-serif;
+        color: ${colors.black};
+        font-weight: 700;
+        font-size: 24px;
+`;
+
 export const Font732Black = css`
         font-family: 'Alegreya Sans', sans-serif;
         color: ${colors.black};
