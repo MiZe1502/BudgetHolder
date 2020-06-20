@@ -7,11 +7,15 @@
     const onClickHandler = () => {
         isPopupOpened = true;
     }
+
+    const onCloseHandler = () => {
+        isPopupOpened = false;
+    }
 </script>
 
 <div>
     <ButtonIconMap onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
-        <PopupContainer />
+        <PopupContainer isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}/>
     {/if}
 </div>

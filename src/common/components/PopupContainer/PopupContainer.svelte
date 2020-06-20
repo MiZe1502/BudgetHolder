@@ -77,6 +77,8 @@
     let endMousePosition: Position = {x: 0, y: 0};
     let diffPosition: Position = {x: 0, y: 0};
 
+
+    export let onCloseHandler = () => {};
 </script>
 
 <style>
@@ -110,7 +112,7 @@
 <div style="top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
         <span class="{Font724Black}">Test Popup</span>
-        <ButtonIconClose />
+        <ButtonIconClose onClickHandler={onCloseHandler}/>
     </div>
     Test Popup Text
 </div>
