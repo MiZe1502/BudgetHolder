@@ -1,4 +1,6 @@
 <script lang="typescript">
+    import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
+
     import { Font724Black, FlexHorCenter } from "./style";
 
     const countPositionDiff = (curPosition: Position, prevPosition: Position): Position => {
@@ -9,21 +11,15 @@
     }
 
     const onMouseDownHandler = (event: MouseEvent) => {
-        //console.log("mouseDown", {x: event.clientX, y: event.clientY}, startMousePosition, endMousePosition)
         isMouseDown = true;
         currentStartMousePosition.x = event.clientX;
         currentStartMousePosition.y = event.clientY;
+
+        console.log("mouseDown", {x: event.clientX, y: event.clientY}, initialStartMousePosition, currentStartMousePosition, endMousePosition)
+
         if (!isPopupAlreadyMoved) {
             initialStartMousePosition.x = event.clientX;
             initialStartMousePosition.y = event.clientY;
-        } else {
-            if (isEndedDragging()) {
-                nextStartMousePosition.x = event.clientX;
-                nextStartMousePosition.y = event.clientY;
-            }
-            //endMousePosition = {x: 0, y: 0};
-            // startMousePosition.x = startMousePosition.x + (startMousePosition.x - event.clientX);
-            // startMousePosition.y = endMousePosition.y + (startMousePosition.y - event.clientY);
         }
     }
 
@@ -40,14 +36,10 @@
             isMouseMoving = true;
         }
 
-        //console.log("mouseMove", {x: event.clientX, y: event.clientY}, startMousePosition, endMousePosition)
+        console.log("mouseMove", {x: event.clientX, y: event.clientY}, initialStartMousePosition, currentStartMousePosition, endMousePosition)
 
 
         const curPosition = isEndedDragging() ? {x: endMousePosition.x + (event.clientX - currentStartMousePosition.x), y: endMousePosition.y + (event.clientY - currentStartMousePosition.y) }: {x: event.clientX, y: event.clientY}
-        // if (isEndedDragging()) {
-        //     endMousePosition = {x: 0, y: 0};
-        // }
-
 
         diffPosition = countPositionDiff(curPosition, initialStartMousePosition)
     }
@@ -110,6 +102,7 @@
         border-top-left-radius: 4px;
         padding: 16px;
         box-sizing: border-box;
+        justify-content: space-between;
     }
 
 </style>
@@ -117,6 +110,7 @@
 <div style="top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
         <span class="{Font724Black}">Test Popup</span>
+        <ButtonIconClose />
     </div>
     Test Popup Text
 </div>

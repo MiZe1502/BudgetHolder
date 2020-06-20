@@ -6,7 +6,6 @@ export const Button = css`
     width: 24px;
     height: 24px;
     background-color: transparent;
-    padding-top: 4px;
 
 	&:hover,
 	&:active,
