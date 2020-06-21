@@ -17,19 +17,25 @@
 
     const onPopupMouseDownHandler = (event: MouseEvent) => {
         curPopupState = movePopupToTheTop(curPopupState.uuid);
-        console.log(curPopupState)
     }
 
     const onMouseDownHandler = (event: MouseEvent) => {
+        //TODO: Too dirty. Think how to fix bug when this handler executes on click by svg in close button
+        // Svg exactly, not button, not path. Just svg.
+        if (event.target.localName !== "div") {
+            return;
+        }
+
         isMouseDown = true;
-        currentStartMousePosition.x = event.clientX;
-        currentStartMousePosition.y = event.clientY;
 
-        console.log("mouseDown", {x: event.clientX, y: event.clientY}, initialStartMousePosition, currentStartMousePosition, endMousePosition)
+        currentPopupPosition = {
+            left: event.target.parentNode.offsetLeft, 
+            top: event.target.parentNode.offsetTop
+        };
 
-        if (!isPopupAlreadyMoved) {
-            initialStartMousePosition.x = event.clientX;
-            initialStartMousePosition.y = event.clientY;
+        previousMousePosition = {
+            x: event.clientX,
+            y: event.clientY,
         }
     }
 
@@ -38,53 +44,45 @@
             return;
         }
 
-        if (!isPopupAlreadyMoved) {
-            isPopupAlreadyMoved = true;
-        }
-
         if (!isMouseMoving) {
             isMouseMoving = true;
         }
 
-        console.log("mouseMove", {x: event.clientX, y: event.clientY}, initialStartMousePosition, currentStartMousePosition, endMousePosition)
+        currentMousePosition = {
+            x: event.clientX, 
+            y: event.clientY
+        };
 
+        diffPosition = countPositionDiff(currentMousePosition, previousMousePosition);
+        previousMousePosition = currentMousePosition;
 
-        const curPosition = isEndedDragging() ? {x: endMousePosition.x + (event.clientX - currentStartMousePosition.x), y: endMousePosition.y + (event.clientY - currentStartMousePosition.y) }: {x: event.clientX, y: event.clientY}
-
-        diffPosition = countPositionDiff(curPosition, initialStartMousePosition)
+        currentPopupPosition.left = currentPopupPosition.left + diffPosition.x;
+        currentPopupPosition.top = currentPopupPosition.top + diffPosition.y;
     }
 
     const onMouseUpHandler = (event: MouseEvent) => {
         isMouseMoving = false;
         isMouseDown = false;
-        endMousePosition = {x: event.clientX, y: event.clientY};
     }
 
     const onMouseOutHandler = (event: MouseEvent) => {
-        if (isMouseDown) {
-            endMousePosition = {x: event.clientX, y: event.clientY};
-        }
         isMouseMoving = false;
         isMouseDown = false;
     }
 
-    const isEndedDragging = () => {
-        return endMousePosition.x !== 0 && endMousePosition.y !== 0;
-    }
-
     let isMouseDown = false;
     let isMouseMoving = false;
-    let isPopupAlreadyMoved = false;
 
     interface Position {
         x: number;
         y: number;
     }
 
-    let initialStartMousePosition: Position = {x: 0, y: 0};
-    let currentStartMousePosition: Position = {x: 0, y: 0};
-    let nextStartMousePosition: Position = {x: 0, y: 0};
-    let endMousePosition: Position = {x: 0, y: 0};
+
+    let currentPopupPosition = {top: 100, left: window.innerWidth / 2 - 450};
+    let currentMousePosition: Position = {x: 0, y: 0};
+    let previousMousePosition: Position = {x: 0, y: 0};
+
     let diffPosition: Position = {x: 0, y: 0};
 
     let curPopupState: PopupState = {
@@ -98,7 +96,7 @@
 
     export let onCloseHandler = () => {};
 
-    const onPopupCloseHandler = () => {
+    const onPopupCloseHandler = (event: MouseEvent) => {
         onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }
@@ -132,7 +130,7 @@
 
 </style>
 
-<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
+<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="Popup">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
         <span class="{Font724Black}">Test Popup</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
