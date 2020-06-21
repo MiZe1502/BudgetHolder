@@ -54,6 +54,7 @@
     "rollup-plugin-babel": "^4.4.0",
     "svelte": "^3.20.1",
     "svelte-moveable": "^0.8.11",
-    "svelte-routing": "^1.4.2"
+    "svelte-routing": "^1.4.2",
+    "uuid": "^8.1.0"
   }
 }

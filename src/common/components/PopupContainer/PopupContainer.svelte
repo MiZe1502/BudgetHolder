@@ -1,13 +1,23 @@
 <script lang="typescript">
+    import { onMount } from 'svelte';
+    import { get } from 'svelte/store';
+
     import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
 
     import { Font724Black, FlexHorCenter } from "./style";
+
+    import { addPopupToState, movePopupToTheTop, openedPopups, PopupState } from "../../../stores/popup";
 
     const countPositionDiff = (curPosition: Position, prevPosition: Position): Position => {
         return {
             x: curPosition.x - prevPosition.x,
             y: curPosition.y - prevPosition.y 
         }
+    }
+
+    const onMouseClickHandler = (event: MouseEvent) => {
+        curPopupState = movePopupToTheTop(curPopupState.uuid);
+        console.log(curPopupState)
     }
 
     const onMouseDownHandler = (event: MouseEvent) => {
@@ -77,6 +87,15 @@
     let endMousePosition: Position = {x: 0, y: 0};
     let diffPosition: Position = {x: 0, y: 0};
 
+    let curPopupState: PopupState = {
+        zIndex: 10,
+        uuid: "",
+    }
+
+    onMount(() => {
+        curPopupState = addPopupToState();
+        console.log(curPopupState)
+    });
 
     export let onCloseHandler = () => {};
 </script>
@@ -86,7 +105,7 @@
         /* left: calc(50% - 450px); */
         /* top: 100px; */
         position: fixed;
-        z-index: 10;
+        /* z-index: 10; */
         margin: auto;
         width: 900px;
         height: 600px;
@@ -109,7 +128,7 @@
 
 </style>
 
-<div style="top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
+<div on:click={onMouseClickHandler} style="z-index: {curPopupState.zIndex};top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
         <span class="{Font724Black}">Test Popup</span>
         <ButtonIconClose onClickHandler={onCloseHandler}/>
