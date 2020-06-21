@@ -6,7 +6,7 @@
 
     import { Font724Black, FlexHorCenter } from "./style";
 
-    import { addPopupToState, movePopupToTheTop, openedPopups, PopupState } from "../../../stores/popup";
+    import { addPopupToState, movePopupToTheTop, openedPopups, PopupState, removePopupFromStore } from "../../../stores/popup";
 
     const countPositionDiff = (curPosition: Position, prevPosition: Position): Position => {
         return {
@@ -15,7 +15,7 @@
         }
     }
 
-    const onMouseClickHandler = (event: MouseEvent) => {
+    const onPopupMouseDownHandler = (event: MouseEvent) => {
         curPopupState = movePopupToTheTop(curPopupState.uuid);
         console.log(curPopupState)
     }
@@ -94,10 +94,14 @@
 
     onMount(() => {
         curPopupState = addPopupToState();
-        console.log(curPopupState)
     });
 
     export let onCloseHandler = () => {};
+
+    const onPopupCloseHandler = () => {
+        onCloseHandler();
+        removePopupFromStore(curPopupState.uuid);
+    }
 </script>
 
 <style>
@@ -128,10 +132,10 @@
 
 </style>
 
-<div on:click={onMouseClickHandler} style="z-index: {curPopupState.zIndex};top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
+<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: calc(100px + {diffPosition.y}px); left: calc(50% - 450px + {diffPosition.x}px" class="Popup">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
         <span class="{Font724Black}">Test Popup</span>
-        <ButtonIconClose onClickHandler={onCloseHandler}/>
+        <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
     </div>
     Test Popup Text
 </div>

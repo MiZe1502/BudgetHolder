@@ -12,18 +12,17 @@ export interface PopupState {
 }
 type PopupRecord = Record<string, PopupState>;
 
-export const openedPopups = writable({});
+export const openedPopups = writable([]);
 
 export const findCurrentTopPopup = (): PopupState => {
-    const popups = get(openedPopups) as PopupRecord;
+    const popups = get(openedPopups) as PopupRecord[];
 
-    let topPopup: PopupState = {zIndex: defaultPopupZIndex};
-    let topZIndex = defaultPopupZIndex;
-    for (let popupGuid in popups) {
-        if (popups[popupGuid].zIndex > topZIndex) {
-            topZIndex = popups[popupGuid].zIndex;
-            topPopup = popups[popupGuid];
-        } 
+    let topPopup: PopupState = popups[0];
+
+    for (let i = 0; i < popups.length; i++) {
+        if (popups[i].zIndex > topPopup.zIndex) {
+            topPopup = popups[i];
+        }
     }
 
     return topPopup;
@@ -33,34 +32,36 @@ export const addPopupToState = (): PopupState => {
     const uuid = uuidv4();
 
     const topPopup = findCurrentTopPopup();
-    const curPopup = {zIndex: topPopup.zIndex + 1, uuid: uuid}
-    openedPopups.set({...get(openedPopups), [uuid]: curPopup})
+
+    let curPopup: PopupState = {
+        zIndex: defaultPopupZIndex, 
+        uuid: uuid
+    };
+
+    if (topPopup) {
+        curPopup.zIndex = topPopup.zIndex + 1;
+    }
+
+    openedPopups.update((popups) => [...popups, curPopup])
 
     return curPopup;
 }
 
 export const movePopupToTheTop = (uuid: string): PopupState => {
-    let newTopPopup = {};
-    openedPopups.update((store: PopupRecord) => {
+    let newTopPopup: PopupState = {};
+
+    openedPopups.update((popups) => {
         const topPopup = findCurrentTopPopup();
-        newTopPopup = {
-            zIndex: topPopup.zIndex + 1, 
-            uuid: uuid
-        }
-        return {
-            ...store,
-            [uuid]: newTopPopup,
-        }
+
+        newTopPopup = popups.find((popup) => popup.uuid === uuid);
+        newTopPopup.zIndex = topPopup.zIndex + 1;
+        
+        return popups;
     })
+
     return newTopPopup;
 }
 
-// export const removePopupFromStore = (uuid: string) => {
-//     openedPopups.update((store: PopupRecord) => {
-//         const {[uuid], ...rest} = store;
-//         return {
-//             ...store,
-//             [uuid]: newTopPopup,
-//         }
-//     })
-// }
+export const removePopupFromStore = (uuid: string) => {
+    openedPopups.update((popups) => popups.filter((popup) => popup.uuid !== uuid));
+}
