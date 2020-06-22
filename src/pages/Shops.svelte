@@ -47,7 +47,11 @@
           header: "Actions",
           component: MapActionElement,
           style: 'flex: 1 0 10%',
-          mapping: (data: Shop) => data.address,
+          mapping: (data: Shop) => (
+            {
+              name: data.name, 
+              address:data.address
+            }),
         }
       ],
       data: []

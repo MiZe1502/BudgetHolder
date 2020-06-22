@@ -4,33 +4,27 @@
 
     import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
 
-    import { Font724Black, FlexHorCenter } from "./style";
+    import { defaultZIndex, popupWidth, defaultPopupTopPosition, isNotHeader, countPositionDiff, Position } from "./utils";
+    import { Font724Black, FlexHorCenter, Popup, Header, Overflowed, HeaderText } from "./style";
 
     import { addPopupToState, movePopupToTheTop, openedPopups, PopupState, removePopupFromStore } from "../../../stores/popup";
-
-    const countPositionDiff = (curPosition: Position, prevPosition: Position): Position => {
-        return {
-            x: curPosition.x - prevPosition.x,
-            y: curPosition.y - prevPosition.y 
-        }
-    }
 
     const onPopupMouseDownHandler = (event: MouseEvent) => {
         curPopupState = movePopupToTheTop(curPopupState.uuid);
     }
 
-    const onMouseDownHandler = (event: MouseEvent) => {
+    const onHeaderMouseDownHandler = (event: MouseEvent) => {
         //TODO: Too dirty. Think how to fix bug when this handler executes on click by svg in close button
         // Svg exactly, not button, not path. Just svg.
-        if (event.target.localName !== "div") {
+        if (isNotHeader(event)) {
             return;
         }
 
         isMouseDown = true;
 
         currentPopupPosition = {
-            left: event.target.parentNode.offsetLeft, 
-            top: event.target.parentNode.offsetTop
+            left: (<HTMLDivElement>event.target).parentNode.offsetLeft, 
+            top: (<HTMLDivElement>event.target).parentNode.offsetTop
         };
 
         previousMousePosition = {
@@ -39,7 +33,7 @@
         }
     }
 
-    const onMouseMoveHandler = (event: MouseEvent) => {
+    const onHeaderMouseMoveHandler = (event: MouseEvent) => {
         if (!isMouseDown) {
             return;
         }
@@ -54,18 +48,21 @@
         };
 
         diffPosition = countPositionDiff(currentMousePosition, previousMousePosition);
-        previousMousePosition = currentMousePosition;
 
-        currentPopupPosition.left = currentPopupPosition.left + diffPosition.x;
-        currentPopupPosition.top = currentPopupPosition.top + diffPosition.y;
+        currentPopupPosition = {
+            left: currentPopupPosition.left + diffPosition.x,
+            top: currentPopupPosition.top + diffPosition.y
+        }
+
+        previousMousePosition = currentMousePosition;
     }
 
-    const onMouseUpHandler = (event: MouseEvent) => {
+    const onHeaderMouseUpHandler = (event: MouseEvent) => {
         isMouseMoving = false;
         isMouseDown = false;
     }
 
-    const onMouseOutHandler = (event: MouseEvent) => {
+    const onHeaderMouseOutHandler = (event: MouseEvent) => {
         isMouseMoving = false;
         isMouseDown = false;
     }
@@ -73,20 +70,14 @@
     let isMouseDown = false;
     let isMouseMoving = false;
 
-    interface Position {
-        x: number;
-        y: number;
-    }
-
-
-    let currentPopupPosition = {top: 100, left: window.innerWidth / 2 - 450};
+    let currentPopupPosition = {top: defaultPopupTopPosition, left: window.innerWidth / 2 - popupWidth / 2};
     let currentMousePosition: Position = {x: 0, y: 0};
     let previousMousePosition: Position = {x: 0, y: 0};
 
     let diffPosition: Position = {x: 0, y: 0};
 
     let curPopupState: PopupState = {
-        zIndex: 10,
+        zIndex: defaultZIndex,
         uuid: "",
     }
 
@@ -94,46 +85,20 @@
         curPopupState = addPopupToState();
     });
 
-    export let onCloseHandler = () => {};
-
     const onPopupCloseHandler = (event: MouseEvent) => {
         onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }
+
+    
+    export let onCloseHandler = () => {};
+    export let title: string = "";
 </script>
 
-<style>
-    .Popup {
-        /* left: calc(50% - 450px); */
-        /* top: 100px; */
-        position: fixed;
-        /* z-index: 10; */
-        margin: auto;
-        width: 900px;
-        height: 600px;
-        border-radius: 4px;
-        background: white;
-        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.17);
-    }
-
-    .Header {
-        width: 100%;
-        height: 50px;
-        background-color: #faf8f6;
-        cursor: grab;
-        border-top-right-radius: 4px;
-        border-top-left-radius: 4px;
-        padding: 16px;
-        box-sizing: border-box;
-        justify-content: space-between;
-    }
-
-</style>
-
-<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="Popup">
-    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} Header" on:mousedown={onMouseDownHandler} on:mousemove={onMouseMoveHandler} on:mouseup={onMouseUpHandler} on:mouseout={onMouseOutHandler}>
-        <span class="{Font724Black}">Test Popup</span>
+<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup}">
+    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
+        <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
     </div>
-    Test Popup Text
+    <slot />
 </div>

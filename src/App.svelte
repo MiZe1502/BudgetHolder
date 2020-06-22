@@ -21,6 +21,10 @@
         color: black;
     }
 
+    :global(button::-moz-focus-inner) {
+        border: 0;
+    }
+
     .MainWrapper {
         display: flex;
         flex-direction: column;

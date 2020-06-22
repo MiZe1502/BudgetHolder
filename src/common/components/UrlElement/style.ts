@@ -19,6 +19,10 @@ export const Url = css`
 
     &:active {
         color: ${colors.orangeLight};
+        text-decoration: none;
+    }
 
+    &:focus {
+        outline: none;
     }
 `;
