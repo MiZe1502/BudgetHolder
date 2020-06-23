@@ -1,6 +1,8 @@
 <script lang="typescript" >
     import MainMenu from './common/components/MainMenu/MainMenu.svelte'
 
+    import { yandexMapsReady, googleMapsReady } from "./stores/maps";
+
     import Shops from "./pages/Shops.svelte";
 
     import { Router, Link, Route } from "svelte-routing";
@@ -33,7 +35,12 @@
 </style>
 
 <svelte:head>
-  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+    <script src='https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=cf1b8beb-bb0c-4563-9d28-c603002dd2ad'
+            type="text/javascript" on:load={() => yandexMapsReady.set(true)}>
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh9VSJdpY9bDn3OuTaL8i2jvKKKDdPLxc" on:load={() => googleMapsReady.set(true)}>
+	</script>
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
 </svelte:head>
 
 <Router>
