@@ -1,6 +1,6 @@
 <script lang="typescript">
     import { LoadingStatus } from '../stores/utils';
-
+    
     import { mockData } from "./data";
     import { Shop } from "./types";
 
