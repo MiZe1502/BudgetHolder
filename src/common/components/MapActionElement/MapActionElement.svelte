@@ -31,7 +31,7 @@
     {#if isPopupOpened}
         <PopupContainer title={data.name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
             {#if isDomReady}
-                <MapContainer />
+                <MapContainer address={data.address} name={data.name}/>
             {/if}
         </PopupContainer>
     {/if}
