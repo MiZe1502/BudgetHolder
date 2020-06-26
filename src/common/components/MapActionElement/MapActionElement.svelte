@@ -5,7 +5,7 @@
 
     import { onMount } from 'svelte';
 
-    import { MapActionElementData } from "./utils";
+    import { MapActionElementData, MapItemData } from "./utils";
  
     let isPopupOpened = false;
 
@@ -23,15 +23,15 @@
         isPopupOpened = false;
     }
 
-    export let data: MapActionElementData = {};
+    export let data: MapItemData = [];
 </script>
 
 <div>
     <ButtonIconMap onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
-        <PopupContainer title={data.name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
+        <PopupContainer title={data[0].name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
             {#if isDomReady}
-                <MapContainer address={data.address} name={data.name}/>
+                <MapContainer data={[{address: "Moscow, 2-ya Vladimirskaya, 20", name: "test1"}, {address: "Moscow, tverskaya 2", name: "test2"}, {address: "Moscow, Molostovikh, 13", name: "text3"}]} name={data.name}/>
             {/if}
         </PopupContainer>
     {/if}

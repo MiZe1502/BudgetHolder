@@ -1,5 +1,7 @@
 <script lang="typescript">
 
+    import { MapItemData } from '../MapActionElement/utils';
+
     import { yandexMapsReady, googleMapsReady } from '../../../stores/maps';
 
     import { YandexMapsBuilder } from "./YandexMapsBuilder";
@@ -10,19 +12,21 @@
     import { onMount } from 'svelte';
 
     onMount(async () => {
-        const config = {
-            name,
-            address,
-        }
-        const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder(config);
+        // const config = {
+        //     name,
+        //     addresses,
+        // }
+        const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
         const mapBuilder: MapsBuilder = new YandexMapsBuilder(container, placemarkBuilder);
 
-        mapBuilder.findSingleAddressAndCreateMap(config.address);
+        mapBuilder.findMultipleAddressesAndCreateMap(data);
     })
 
     let container;
 
-    export let address: string = "";
+    export let data: MapItemData[] = [];
+
+    export let addresses: string[] = [];
     export let name: string = "";
 </script>
 

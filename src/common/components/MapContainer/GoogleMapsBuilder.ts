@@ -1,5 +1,6 @@
 import { PlacemarkBuilder } from "./PlacemarkBuilder";
 import { MapsBuilder } from "./MapsBuilder";
+import { MapItemData } from "../MapActionElement/utils";
 
 
 declare var google;
@@ -23,7 +24,11 @@ export class GoogleMapsBuilder implements MapsBuilder {
 		});
     }
 
-    findSingleAddressAndCreateMap(address: string): void {
+    findMultipleAddressesAndCreateMap(data: MapItemData[]): void {
+
+    };
+
+    findSingleAddressAndCreateMap(data: MapItemData): void {
 
 		// const map = new google.maps.Map(container, {
         //     zoomGmaps,
