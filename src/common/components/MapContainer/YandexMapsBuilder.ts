@@ -44,6 +44,7 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     findSingleAddressAndCreateMap(data: MapItemData): void {
+        console.log(data)
         this.processSingleAddressSearch(data.address).then(res => {
             const geoObject = this.getFoundedGeoObject(res, 0);
             const coords = this.getFoundCoordinates(geoObject);
@@ -60,37 +61,47 @@ export class YandexMapsBuilder implements MapsBuilder {
         .catch(err => console.log(err))
     }
 
-    findMultipleAddressesAndCreateMap(data: MapItemData[]): void {
+    getCenter(points: Coordinates[]): Coordinates {
+        let sumX = 0;
+        let sumY = 0;
+        points.forEach((point: Coordinates) => {
+            sumX += point[0];
+            sumY += point[1];
+        })
 
+        sumX = sumX / points.length;
+        sumY = sumY / points.length;
+
+        return [sumX, sumY];
+    }
+
+
+    findMultipleAddressesAndCreateMap(data: MapItemData[]): void {
         const promises: Promise<any>[] = [];
         data.forEach((data: MapItemData) => {
             promises.push(this.processSingleAddressSearch(data.address))
         });
 
         Promise.allSettled(promises).then((results) => {
-            console.log(results);
-
-            this.map = new ymaps.Map(this.container, {
-                center: [55.7, 37.5],
-                zoom: 9,
-                controls: ['zoomControl']
-            });
-
             const pointsCollection = new ymaps.GeoObjectCollection();
-            const coordsArr: Coordinates[] = [];
+            const points: Coordinates[] = [];
 
             results.forEach((res : PromiseFulfilledResult<any>, index: number) => {
                 const currentRes = res.value;
 
                 const geoObject = this.getFoundedGeoObject(currentRes, 0);
                 const coords = this.getFoundCoordinates(geoObject);
-                coordsArr.push(coords);
+                points.push(coords);
 
                 const placement = this.placementBuilder.createPlacemark(coords, data[index]);
                 pointsCollection.add(placement);
-
-                // min and max coord to form bound ?
             })
+
+            this.map = new ymaps.Map(this.container, {
+                center: this.getCenter(points),
+                zoom: this.defaultZoom,
+                controls: ['zoomControl']
+            });
 
             this.map.geoObjects.add(pointsCollection);
         })
@@ -110,6 +121,4 @@ export class YandexMapsBuilder implements MapsBuilder {
             checkZoomRange: true,
         })
     }
-
-    
 }
