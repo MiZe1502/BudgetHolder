@@ -1,4 +1,6 @@
 <script lang="typescript">
+    import { fade } from 'svelte/transition';
+
     import { ColumnConfig } from "./utils";
     import { LoadingStatus } from "../../../stores/utils";
 
@@ -20,7 +22,7 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<section class="{SectionBottomMargin}">
+<section in:fade="{{duration: 100}}" class="{SectionBottomMargin}">
     <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />

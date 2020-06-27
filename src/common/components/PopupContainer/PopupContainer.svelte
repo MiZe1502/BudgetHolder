@@ -1,5 +1,6 @@
 <script lang="typescript">
     import { onMount } from 'svelte';
+    import { fade } from 'svelte/transition';
     import { get } from 'svelte/store';
 
     import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
@@ -95,7 +96,7 @@
     export let title: string = "";
 </script>
 
-<div on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup}">
+<div in:fade="{{duration: 100}}" out:fade="{{duration: 100}}" on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup}">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
         <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
