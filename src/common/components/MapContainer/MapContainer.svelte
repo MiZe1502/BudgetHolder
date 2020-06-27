@@ -2,6 +2,8 @@
 
     import { MapItemData } from '../MapActionElement/utils';
 
+    import { ContainerWrapper, Container } from "./style";
+
     import { yandexMapsReady, googleMapsReady } from '../../../stores/maps';
 
     import { YandexMapsBuilder } from "./YandexMapsBuilder";
@@ -9,27 +11,27 @@
     import { PlacemarkBuilder } from "./PlacemarkBuilder";
     import { YandexMapsPlacemarkBuilder } from "./YandexMapsPlacemarkBuilder";
 
-    import { onMount } from 'svelte';
-
-    onMount(async () => {
-        const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
-        const mapBuilder: MapsBuilder = new YandexMapsBuilder(container, placemarkBuilder);
-
+    const processMapData = (data, container) => {
         if (data.length > 1) {
-            mapBuilder.findMultipleAddressesAndCreateMap(data);
+            mapBuilder.findMultipleAddressesAndCreateMap(data, container);
         } else {
-            mapBuilder.findSingleAddressAndCreateMap(data[0]);
+            mapBuilder.findSingleAddressAndCreateMap(data[0], container);
         }
-    })
+    }
 
     let container;
+
+    const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
+    const mapBuilder: MapsBuilder = new YandexMapsBuilder(placemarkBuilder);
+
+    $: processMapData(data, container);
 
     export let data: MapItemData[] = [];
 </script>
 
-<div class="containerWrapper" style="width: 100%; height: 550px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;">
+<div class="{ContainerWrapper}">
     {#if yandexMapsReady && googleMapsReady}
-        <div style="width:100%; height: 100%;" bind:this={container}>
+        <div class="{Container}" bind:this={container}>
         </div>
     {/if}
 </div>

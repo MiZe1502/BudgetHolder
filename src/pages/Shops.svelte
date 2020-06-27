@@ -1,6 +1,8 @@
 <script lang="typescript">
     import { LoadingStatus } from '../stores/utils';
     
+    import { SideMainPadding } from "./style";
+
     import { mockData } from "./data";
     import { Shop } from "./types";
 
@@ -8,6 +10,7 @@
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
     import MapActionElement from '../common/components/MapActionElement/MapActionElement.svelte'
+    import MapContainer from '../common/components/MapContainer/MapContainer.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
 
@@ -72,4 +75,7 @@
 
 <div>
     <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
+    <div class="{SideMainPadding}">
+        <MapContainer data={tableData.data.map(elem => ({name: elem.name, address: elem.address}))}/>
+    </div>
 </div>

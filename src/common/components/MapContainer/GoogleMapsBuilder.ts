@@ -6,29 +6,27 @@ import { MapItemData } from "../MapActionElement/utils";
 declare var google;
 
 export class GoogleMapsBuilder implements MapsBuilder {
-    container: HTMLDivElement = null;
     map: any = null;
     placementBuilder?: PlacemarkBuilder;
 
     defaultZoom: number = 8;
 
-    constructor(container: any, placementBuilder?: PlacemarkBuilder) {
-        this.container = container;
+    constructor(placementBuilder?: PlacemarkBuilder) {
         this.placementBuilder = placementBuilder;
     }
 
-    private createMap(coords: Coordinates) {
-		this.map = new google.maps.Map(this.container, {
+    private createMap(coords: Coordinates, container: HTMLDivElement) {
+		this.map = new google.maps.Map(container, {
             zoomGmaps: this.defaultZoom,
 			centerGmaps: coords,
 		});
     }
 
-    findMultipleAddressesAndCreateMap(data: MapItemData[]): void {
+    findMultipleAddressesAndCreateMap(data: MapItemData[], container: HTMLDivElement): void {
 
     };
 
-    findSingleAddressAndCreateMap(data: MapItemData): void {
+    findSingleAddressAndCreateMap(data: MapItemData, container: HTMLDivElement): void {
 
 		// const map = new google.maps.Map(container, {
         //     zoomGmaps,

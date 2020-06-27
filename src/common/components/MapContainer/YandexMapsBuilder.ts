@@ -5,7 +5,6 @@ import { MapItemData } from "../MapActionElement/utils";
 declare var ymaps;
 
 export class YandexMapsBuilder implements MapsBuilder {
-    container: HTMLDivElement = null;
     map: any = null;
     placementBuilder?: PlacemarkBuilder;
 
@@ -13,8 +12,7 @@ export class YandexMapsBuilder implements MapsBuilder {
     defaultCenter: Coordinates = [55.7, 37.5];
     defaultBaloonPreset: string = "islands#darkBlueDotIconWithCaption";
 
-    constructor(container: any, placementBuilder?: PlacemarkBuilder) {
-        this.container = container;
+    constructor(placementBuilder?: PlacemarkBuilder) {
         this.placementBuilder = placementBuilder;
     }
 
@@ -31,7 +29,7 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     private getVisibleArea(geoObject: any): Coordinates[] {
-        return geoObject.geometry.getCoordinates()
+        return geoObject.properties.get('boundedBy');
     }
 
     private setGeoObjectProperties(geoObject): void {
@@ -43,14 +41,17 @@ export class YandexMapsBuilder implements MapsBuilder {
         this.map.geoObjects.add(placement);
     }
 
-    findSingleAddressAndCreateMap(data: MapItemData): void {
-        console.log(data)
+    findSingleAddressAndCreateMap(data: MapItemData, container: HTMLDivElement): void {
+        if (!data || !container) {
+            return;
+        }
+
         this.processSingleAddressSearch(data.address).then(res => {
             const geoObject = this.getFoundedGeoObject(res, 0);
             const coords = this.getFoundCoordinates(geoObject);
             const bounds = this.getVisibleArea(geoObject);
 
-            this.createMap(coords);
+            this.createMap(coords, container);
 
             this.addGeoObjectAtMap(geoObject, bounds);
             this.setGeoObjectProperties(geoObject);
@@ -76,7 +77,11 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
 
-    findMultipleAddressesAndCreateMap(data: MapItemData[]): void {
+    findMultipleAddressesAndCreateMap(data: MapItemData[], container: HTMLDivElement): void {
+        if (!data || !container) {
+            return;
+        }
+
         const promises: Promise<any>[] = [];
         data.forEach((data: MapItemData) => {
             promises.push(this.processSingleAddressSearch(data.address))
@@ -97,27 +102,24 @@ export class YandexMapsBuilder implements MapsBuilder {
                 pointsCollection.add(placement);
             })
 
-            this.map = new ymaps.Map(this.container, {
-                center: this.getCenter(points),
-                zoom: this.defaultZoom,
-                controls: ['zoomControl']
-            });
+            this.createMap(this.getCenter(points), container);
 
             this.map.geoObjects.add(pointsCollection);
         })
         .catch(err => console.log(err))
     }
 
-    private createMap(coords: Coordinates) {
-        this.map = new ymaps.Map(this.container, {
+    private createMap(coords: Coordinates, container: HTMLDivElement) {
+        this.map = new ymaps.Map(container, {
             center: coords,
-            zoom: this.defaultZoom
+            zoom: this.defaultZoom,
+            controls: ['zoomControl']
         });
     }
 
     private addGeoObjectAtMap(geoObject: any, bounds: any): void {
         this.map.geoObjects.add(geoObject);
-        this.map.setBounds([bounds], {
+        this.map.setBounds(bounds, {
             checkZoomRange: true,
         })
     }

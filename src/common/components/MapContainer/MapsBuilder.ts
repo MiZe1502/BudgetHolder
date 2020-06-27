@@ -1,11 +1,10 @@
 import { MapItemData } from "../MapActionElement/utils";
 
 export interface MapsBuilder {
-    container: HTMLDivElement;
     map: any;
     defaultZoom: number;
-    findSingleAddressAndCreateMap: (data: MapItemData) => void;
-    findMultipleAddressesAndCreateMap: (data: MapItemData[]) => void;
+    findSingleAddressAndCreateMap: (data: MapItemData, container: HTMLDivElement) => void;
+    findMultipleAddressesAndCreateMap: (data: MapItemData[], container: HTMLDivElement) => void;
 }
 
 export type Coordinates = [number, number];

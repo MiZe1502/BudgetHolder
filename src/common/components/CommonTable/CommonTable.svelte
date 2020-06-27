@@ -2,8 +2,10 @@
     import { ColumnConfig } from "./utils";
     import { LoadingStatus } from "../../../stores/utils";
 
+    import { CommonTable } from "./style";
+
     import CommonTableRow from '../CommonTableRow/CommonTableRow.svelte'
-    import CommonTableTitle from '../CommonTableTitle/CommonTableTitle.svelte'
+    import CommonTitle from '../CommonTitle/CommonTitle.svelte'
     import CommonTableHeader from '../CommonTableHeader/CommonTableHeader.svelte'
     import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.svelte'
     import NoDataFoundBlock from '../NoDataFoundBlock/NoDataFoundBlock.svelte'
@@ -18,8 +20,8 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<section>
-    <CommonTableTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
+<section class="{CommonTable}">
+    <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
     {:else if status === LoadingStatus.Finished}
@@ -34,6 +36,4 @@
     {:else if status === LoadingStatus.Error}
         Error fetching data
     {/if}
-
-
 </section>
