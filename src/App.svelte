@@ -32,6 +32,10 @@
         flex-direction: column;
     }
 
+    .RouteWrapper {
+        padding-top: 100px;
+    }
+
 </style>
 
 <svelte:head>
@@ -46,8 +50,10 @@
 <Router>
     <div class="MainWrapper">
         <MainMenu />
-        <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
-        <Route path="shops" component="{Shops}" />
-        <!-- <Route path="/"><Home /></Route> -->
+        <div class="RouteWrapper">
+            <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
+            <Route path="shops" component="{Shops}" />
+            <!-- <Route path="/"><Home /></Route> -->
+        </div>
     </div>
 </Router>

@@ -91,12 +91,11 @@
         removePopupFromStore(curPopupState.uuid);
     }
 
-    
     export let onCloseHandler = () => {};
     export let title: string = "";
 </script>
 
-<div in:fade="{{duration: 100}}" out:fade="{{duration: 100}}" on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup}">
+<div in:fade="{{duration: 200}}" out:fade="{{duration: 200}}" on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup}">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
         <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>

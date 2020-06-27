@@ -22,7 +22,7 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<section in:fade="{{duration: 100}}" class="{SectionBottomMargin}">
+<section class="{SectionBottomMargin}">
     <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
