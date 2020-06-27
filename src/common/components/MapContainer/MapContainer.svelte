@@ -27,9 +27,10 @@
     $: processMapData(data, container);
 
     export let data: MapItemData[] = [];
+    export let wrapperClass: string = "";
 </script>
 
-<div class="{ContainerWrapper}">
+<div class="{ContainerWrapper} {wrapperClass}">
     {#if yandexMapsReady && googleMapsReady}
         <div class="{Container}" bind:this={container}>
         </div>

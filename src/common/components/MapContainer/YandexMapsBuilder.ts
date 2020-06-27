@@ -76,7 +76,6 @@ export class YandexMapsBuilder implements MapsBuilder {
         return [sumX, sumY];
     }
 
-
     findMultipleAddressesAndCreateMap(data: MapItemData[], container: HTMLDivElement): void {
         if (!data || !container) {
             return;
@@ -103,10 +102,14 @@ export class YandexMapsBuilder implements MapsBuilder {
             })
 
             this.createMap(this.getCenter(points), container);
-
-            this.map.geoObjects.add(pointsCollection);
+            this.addPlacementToMap(pointsCollection);
+            this.setVisibleAreaBasedOnMultiplePoints(pointsCollection);
         })
         .catch(err => console.log(err))
+    }
+
+    private setVisibleAreaBasedOnMultiplePoints(points: any) {
+        this.map.setBounds(points.getBounds());
     }
 
     private createMap(coords: Coordinates, container: HTMLDivElement) {

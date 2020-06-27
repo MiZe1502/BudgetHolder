@@ -7,6 +7,7 @@
     import { Shop } from "./types";
 
     import CommonTable from '../common/components/CommonTable/CommonTable.svelte'
+    import CommonMap from '../common/components/CommonMap/CommonMap.svelte'
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
     import MapActionElement from '../common/components/MapActionElement/MapActionElement.svelte'
@@ -75,7 +76,5 @@
 
 <div>
     <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
-    <div class="{SideMainPadding}">
-        <MapContainer data={tableData.data.map(elem => ({name: elem.name, address: elem.address}))}/>
-    </div>
+    <CommonMap status={tableData.status} data={tableData.data.map(elem => ({name: elem.name, address: elem.address}))}/>
 </div>

@@ -1,4 +1,6 @@
 <script lang="typescript">
+    import { MapContainerWrapper } from "./style";
+
     import ButtonIconMap from "../Buttons/ButtonIconMap/ButtonIconMap.svelte"
     import PopupContainer from "../PopupContainer/PopupContainer.svelte"
     import MapContainer from "../MapContainer/MapContainer.svelte";
@@ -31,7 +33,7 @@
     {#if isPopupOpened}
         <PopupContainer title={data[0].name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
             {#if isDomReady}
-                <MapContainer data={data} />
+                <MapContainer data={data} wrapperClass={MapContainerWrapper}/>
             {/if}
         </PopupContainer>
     {/if}

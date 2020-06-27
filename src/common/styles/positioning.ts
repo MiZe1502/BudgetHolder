@@ -5,6 +5,11 @@ export const FlexHor = css`
     flex-direction: row;
 `;
 
+export const FlexVert = css`
+    display: flex;
+    flex-direction: column;
+`;
+
 export const FlexHorCenter = css`
     display: flex;
     flex-direction: row;
@@ -20,4 +25,8 @@ export const Overflowed = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+`;
+
+export const SectionBottomMargin = css`
+    margin-bottom: 40px;
 `;

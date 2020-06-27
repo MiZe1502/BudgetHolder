@@ -2,7 +2,7 @@
     import { ColumnConfig } from "./utils";
     import { LoadingStatus } from "../../../stores/utils";
 
-    import { CommonTable } from "./style";
+    import { SectionBottomMargin } from "./style";
 
     import CommonTableRow from '../CommonTableRow/CommonTableRow.svelte'
     import CommonTitle from '../CommonTitle/CommonTitle.svelte'
@@ -20,7 +20,7 @@
     export let buttonClickHandler = () => {};
 </script>
 
-<section class="{CommonTable}">
+<section class="{SectionBottomMargin}">
     <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}/>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
