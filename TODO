@@ -14,12 +14,12 @@
         3.5.2. implement loading (pseudo yet)
         3.5.3. add new shop form
         3.5.4. edit shop form + icon button
+        3.5.5. remove shop + icon button
     3.6. websockets
     3.7. auth
         3.7.1. login + pass + session
         3.7.2. client cert
     3.8. buttons
-        3.8.1. edit icon button
         3.8.2. new icon button
     3.9. categories or tags?
     3.10. main

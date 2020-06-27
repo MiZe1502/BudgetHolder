@@ -11,6 +11,8 @@
     import { CommonTable as CommonTableInterface } from '../common/components/CommonTable/utils'
     import SimpleTextElement from '../common/components/SimpleTextElement/SimpleTextElement.svelte'
     import MapActionElement from '../common/components/MapActionElement/MapActionElement.svelte'
+    import ButtonIconEdit from '../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte'
+    import ButtonIconRemove from '../common/components/Buttons/ButtonIconRemove/ButtonIconRemove.svelte'
     import MapContainer from '../common/components/MapContainer/MapContainer.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
@@ -48,14 +50,32 @@
           mapping: (data: Shop) => data.comment,
         },
         {
-          header: "Actions",
+          header: "",
           component: MapActionElement,
           style: 'flex: 1 0 10%',
           mapping: (data: Shop) => [{
               name: data.name, 
               address: data.address
             }],
-        }
+        },
+        // {
+        //   header: "",
+        //   component: ButtonIconEdit,
+        //   style: 'flex: 1 0 10%',
+        //   mapping: (data: Shop) => [{
+        //       name: data.name, 
+        //       address: data.address
+        //     }],
+        // },
+        // {
+        //   header: "",
+        //   component: ButtonIconRemove,
+        //   style: 'flex: 1 0 10%',
+        //   mapping: (data: Shop) => [{
+        //       name: data.name, 
+        //       address: data.address
+        //     }],
+        // }
       ],
       data: []
     }
