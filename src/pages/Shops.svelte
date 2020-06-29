@@ -92,6 +92,6 @@
 </style>
 
 <div>
-    <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={tableData.data} config={tableData.columnsConfig} title={tableData.title} />
-    <CommonMap status={tableData.status} data={tableData.data.map(elem => ({name: elem.name, address: elem.address}))}/>
+    <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={$shops} config={tableData.columnsConfig} title={tableData.title} />
+    <CommonMap status={tableData.status} data={$shops.map(elem => ({name: elem.name, address: elem.address}))}/>
 </div>

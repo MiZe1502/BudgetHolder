@@ -24,7 +24,7 @@
     const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
     const mapBuilder: MapsBuilder = new YandexMapsBuilder(placemarkBuilder);
 
-    $: processMapData(data, container);
+    $: if (yandexMapsReady) {processMapData(data, container)};
 
     export let data: MapItemData[] = [];
     export let wrapperClass: string = "";

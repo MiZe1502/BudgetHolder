@@ -4,9 +4,10 @@
     import { get } from 'svelte/store';
 
     import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
+    import Button from "../Buttons/Button/Button.svelte";
 
     import { defaultZIndex, popupWidth, defaultPopupTopPosition, isNotHeader, countPositionDiff, Position } from "./utils";
-    import { Font724Black, FlexHorCenter, Popup, Header, Overflowed, HeaderText } from "./style";
+    import { PopupButton, UtilBlock, Footer, Font724Black, FlexHorCenter, Popup, Header, Overflowed, HeaderText } from "./style";
 
     import { addPopupToState, movePopupToTheTop, openedPopups, PopupState, removePopupFromStore } from "../../../stores/popup";
 
@@ -86,20 +87,45 @@
         curPopupState = addPopupToState();
     });
 
+    const onPopupAcceptHandler = (event: MouseEvent) => {
+        onAcceptHandler();
+        onCloseHandler();
+        removePopupFromStore(curPopupState.uuid);
+    }
+
     const onPopupCloseHandler = (event: MouseEvent) => {
         onCloseHandler();
+        removePopupFromStore(curPopupState.uuid);
+    }
+
+    const onPopupCancelHandler = (event: MouseEvent) => {
+        onCancelHandler();
         removePopupFromStore(curPopupState.uuid);
     }
 
     export let onCloseHandler = () => {};
     export let title: string = "";
     export let popupClass: string = "";
+    export let withAcceptButton: boolean = false;
+    export let withCancelButton: boolean = false;
+
+    export let onCancelHandler = () => {};
+    export let onAcceptHandler = () => {};
 </script>
 
 <div in:fade="{{duration: 200}}" out:fade="{{duration: 200}}" on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup} {popupClass}">
-    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
+    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{UtilBlock} {FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
         <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
     </div>
     <slot />
+    <div class="{UtilBlock} {FlexHorCenter} {Footer}">
+        {#if withAcceptButton}
+            <Button buttonClass={PopupButton} title={"OK"} onClickHandler={onPopupAcceptHandler}/>
+        {/if}
+        {#if withCancelButton}
+            <Button buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
+        {/if}
+    </div>
+
 </div>
