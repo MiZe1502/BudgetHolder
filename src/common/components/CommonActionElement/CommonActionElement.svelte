@@ -1,7 +1,7 @@
 <script lang="typescript">
-    import { FlexHorCenter } from "./style";
+    import { FlexHorCenter, ActionElement } from "./style";
 </script>
 
-<div class="{FlexHorCenter}">
+<div class="{FlexHorCenter} {ActionElement}">
     <slot />
 </div>
