@@ -21,7 +21,7 @@
     <ButtonIconRemove onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer title={`Remove ${data.name}` || "Remove"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
-            Edit Shop Form
+            Do You really want to remove {data.name}?
         </PopupContainer>
     {/if}
 </div>

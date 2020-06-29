@@ -1,5 +1,8 @@
 <script lang="typescript">
+    import { get } from 'svelte/store';
+
     import { LoadingStatus } from '../stores/utils';
+    import { shops, shopsTotal, shopsStatus } from '../stores/shops';
     
     import { SideMainPadding } from "./style";
 
@@ -50,16 +53,7 @@
           component: SimpleTextElement,
           style: 'flex: 1 0 40%',
           mapping: (data: Shop) => data.comment,
-        },
-        // {
-        //   header: "",
-        //   component: MapActionElement,
-        //   style: 'flex: 1 0 10%',
-        //   mapping: (data: Shop) => [{
-        //       name: data.name, 
-        //       address: data.address
-        //     }],
-        // },        
+        },     
         {
           header: "",
           component: ShopActionsElement,
@@ -74,35 +68,22 @@
             }
           },
         },
-        // {
-        //   header: "",
-        //   component: ButtonIconEdit,
-        //   style: 'flex: 1 0 10%',
-        //   mapping: (data: Shop) => [{
-        //       name: data.name, 
-        //       address: data.address
-        //     }],
-        // },
-        // {
-        //   header: "",
-        //   component: ButtonIconRemove,
-        //   style: 'flex: 1 0 10%',
-        //   mapping: (data: Shop) => [{
-        //       name: data.name, 
-        //       address: data.address
-        //     }],
-        // }
       ],
       data: []
     }
 
     onMount(async () => {
         setTimeout(() => {
-          tableData.status = LoadingStatus.Finished;
+          shopsStatus.set(LoadingStatus.Finished);
+          shops.set(mockData);
+          shopsTotal.set(30);
+
+
+          tableData.status = get(shopsStatus);
           // tableData.data = [];
           // tableData.total = 0;
-          tableData.total = 30;
-          tableData.data = mockData;
+          tableData.total = get(shopsTotal);
+          tableData.data = get(shops);
         }, 5000)
     });
 </script>
