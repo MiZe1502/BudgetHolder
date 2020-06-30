@@ -10,6 +10,7 @@
     import { PopupButton, UtilBlock, Footer, Font724Black, FlexHorCenter, Popup, Header, Overflowed, HeaderText } from "./style";
 
     import { addPopupToState, movePopupToTheTop, openedPopups, PopupState, removePopupFromStore } from "../../../stores/popup";
+    import { buildUniqueIdBasedOnEntityAndAction, buildUuid, EntityType, ActionType } from "../../../stores/utils";
 
     const onPopupMouseDownHandler = (event: MouseEvent) => {
         curPopupState = movePopupToTheTop(curPopupState.uuid);
@@ -84,7 +85,8 @@
     }
 
     onMount(() => {
-        curPopupState = addPopupToState();
+        const uuid = buildUuid(buildUniqueIdBasedOnEntityAndAction(entityType, actionType, entityId));
+        curPopupState = addPopupToState(uuid);
     });
 
     const onPopupAcceptHandler = (event: MouseEvent) => {
@@ -108,6 +110,10 @@
     export let popupClass: string = "";
     export let withAcceptButton: boolean = false;
     export let withCancelButton: boolean = false;
+    export let uniqueId: string = "";
+    export let entityType: EntityType = "";
+    export let actionType: ActionType = "";
+    export let entityId: number;
 
     export let onCancelHandler = () => {};
     export let onAcceptHandler = () => {};
@@ -119,13 +125,14 @@
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
     </div>
     <slot />
-    <div class="{UtilBlock} {FlexHorCenter} {Footer}">
-        {#if withAcceptButton}
-            <Button buttonClass={PopupButton} title={"OK"} onClickHandler={onPopupAcceptHandler}/>
-        {/if}
-        {#if withCancelButton}
-            <Button buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
-        {/if}
-    </div>
-
+    {#if withAcceptButton || withCancelButton}
+        <div class="{UtilBlock} {FlexHorCenter} {Footer}">
+            {#if withAcceptButton}
+                <Button buttonClass={PopupButton} title={"OK"} onClickHandler={onPopupAcceptHandler}/>
+            {/if}
+            {#if withCancelButton}
+                <Button buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
+            {/if}
+        </div>
+    {/if}
 </div>

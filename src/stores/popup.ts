@@ -28,9 +28,7 @@ export const findCurrentTopPopup = (): PopupState => {
     return topPopup;
 }
 
-export const addPopupToState = (): PopupState => {
-    const uuid = uuidv4();
-
+export const addPopupToState = (uuid: string): PopupState => {
     const topPopup = findCurrentTopPopup();
 
     let curPopup: PopupState = {

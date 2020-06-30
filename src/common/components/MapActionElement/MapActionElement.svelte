@@ -31,7 +31,7 @@
 <div>
     <ButtonIconMap onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
-        <PopupContainer title={data[0].name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
+        <PopupContainer entityType={data.entityType} actionType={data.actionType} entityId={data.id} title={data[0].name || "Map"} isPopupOpened={isPopupOpened} onCloseHandler={onCloseHandler}>
             {#if isDomReady}
                 <MapContainer data={data} wrapperClass={MapContainerWrapper}/>
             {/if}

@@ -3,6 +3,7 @@
 
     import { LoadingStatus } from '../stores/utils';
     import { shops, shopsTotal, shopsStatus } from '../stores/shops';
+    import { EntityType, ActionType } from '../stores/utils';
     
     import { SideMainPadding } from "./style";
 
@@ -63,7 +64,10 @@
               shopData: data,
               mapData: [{
                 name: data.name, 
-                address: data.address
+                address: data.address,
+                id: data.id,
+                actionType: ActionType.Map,
+                entityType: EntityType.Shop,
               }],
             }
           },
