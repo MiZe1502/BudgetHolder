@@ -2,4 +2,3 @@
 2. on map error show error message
 3. remove shop baloon from map on shop remove
 4. when map popup is opened and we remove shop, the map duplicates
-5. close popup with map when its shop removed

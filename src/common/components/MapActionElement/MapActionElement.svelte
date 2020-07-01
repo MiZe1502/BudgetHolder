@@ -8,7 +8,7 @@
     import { onMount } from 'svelte';
 
     import { MapActionElementData, MapItemData } from "./utils";
- 
+
     let isPopupOpened = false;
 
     let isDomReady = false;

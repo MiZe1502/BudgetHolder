@@ -31,7 +31,7 @@
             <NoDataFoundBlock />
         {:else}
             <CommonTableHeader config={config}/>
-            {#each data as dataItem}
+            {#each data as dataItem (dataItem.id)}
                 <CommonTableRow data={dataItem} config={config} />
             {/each}
         {/if}
