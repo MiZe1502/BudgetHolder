@@ -2,6 +2,8 @@ import { css } from 'emotion'
 
 import colors from "./colors";
 
+export const defaultButtonIconSize = 24;
+
 export const ButtonReset = css`
     border: none;
     background: transparent;

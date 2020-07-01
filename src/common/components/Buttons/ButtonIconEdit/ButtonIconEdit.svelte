@@ -1,10 +1,11 @@
 <script lang="typescript">
     import ButtonIcon from "../ButtonIcon/ButtonIcon.svelte";
+	import { defaultButtonIconSize } from './style';
 
     import { Button } from "./style";
 
-    export let width: number = 24;
-    export let height: number = 24;
+    export let width: number = defaultButtonIconSize;
+    export let height: number = defaultButtonIconSize;
     export let onClickHandler = () => {};
 </script>
 

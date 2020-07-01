@@ -1,13 +1,21 @@
 import { css } from 'emotion';
 
-export { ButtonReset, ButtonDefault } from "../../../styles/buttons";
+import { defaultButtonIconSize } from "../../../styles/buttons";
+export { ButtonReset, ButtonDefault, defaultButtonIconSize } from "../../../styles/buttons";
 
 export const Button = css`
-    width: 24px;
-    height: 24px;
     background-color: transparent;
 
-	&:hover,
+    /* & > svg {
+        transition: height 100ms, width 100ms;
+    }
+
+    &:hover > svg {
+        width: ${defaultButtonIconSize + 2}px;
+        height: ${defaultButtonIconSize + 2}px;
+    } */
+
+    &:hover,
 	&:active,
     &:disabled {
 		background-color: transparent;
