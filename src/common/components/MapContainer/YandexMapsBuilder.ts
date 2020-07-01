@@ -51,7 +51,11 @@ export class YandexMapsBuilder implements MapsBuilder {
             const coords = this.getFoundCoordinates(geoObject);
             const bounds = this.getVisibleArea(geoObject);
 
-            this.createMap(coords, container);
+            if (this.isMapExists()) {
+                this.removeAllDataFromMap();
+            } else {
+                this.createMap(coords, container);
+            }
 
             this.addGeoObjectAtMap(geoObject, bounds);
             this.setGeoObjectProperties(geoObject);
@@ -74,6 +78,14 @@ export class YandexMapsBuilder implements MapsBuilder {
         sumY = sumY / points.length;
 
         return [sumX, sumY];
+    }
+
+    private isMapExists(): boolean {
+        return Boolean(this.map);
+    }
+
+    private removeAllDataFromMap(): void {
+        this.map.geoObjects.removeAll();
     }
 
     findMultipleAddressesAndCreateMap(data: MapItemData[], container: HTMLDivElement): void {
@@ -101,7 +113,12 @@ export class YandexMapsBuilder implements MapsBuilder {
                 pointsCollection.add(placement);
             })
 
-            this.createMap(this.getCenter(points), container);
+            if (this.isMapExists()) {
+                this.removeAllDataFromMap();
+            } else {
+                this.createMap(this.getCenter(points), container);
+            }
+
             this.addPlacementToMap(pointsCollection);
             this.setVisibleAreaBasedOnMultiplePoints(pointsCollection);
         })

@@ -12,9 +12,6 @@
     import { YandexMapsPlacemarkBuilder } from "./YandexMapsPlacemarkBuilder";
 
     const processMapData = (data, container) => {
-        if (mapBuilder.map) {
-            return;
-        }
         if (data.length > 1) {
             mapBuilder.findMultipleAddressesAndCreateMap(data, container);
         } else {
