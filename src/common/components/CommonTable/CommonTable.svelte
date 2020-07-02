@@ -11,6 +11,7 @@
     import CommonTableHeader from '../CommonTableHeader/CommonTableHeader.svelte'
     import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.svelte'
     import NoDataFoundBlock from '../NoDataFoundBlock/NoDataFoundBlock.svelte'
+    import Pagination from '../Pagination/Pagination.svelte'
     
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
@@ -34,6 +35,7 @@
             {#each data as dataItem (dataItem.id)}
                 <CommonTableRow data={dataItem} config={config} />
             {/each}
+            <Pagination totalCount={total}/>
         {/if}
     {:else if status === LoadingStatus.Error}
         Error fetching data
