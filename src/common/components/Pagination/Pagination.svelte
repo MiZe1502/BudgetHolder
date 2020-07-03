@@ -13,6 +13,14 @@
         pagesInMiddle = formPagesArray(totalPages, currentPage);
     }
 
+    const nextPageHandler = () => {
+        changePage(currentPage + 1);
+    }
+
+    const previousPageHandler = () => {
+        changePage(currentPage - 1);
+    }
+
     let pagesInMiddle = [];
 
     $: totalPages = Math.ceil(totalCount / maxRecordsPerPage);
@@ -41,7 +49,7 @@
 
 <div class="Wrapper {SideMainPadding}">
     <div class="Pagination">
-        <ButtonIconLeftArrow />
+        <ButtonIconLeftArrow onClickHandler={previousPageHandler}/>
         <PaginationSingleElement className={FirstPaginationElement} isActive={1 === currentPage} pageNumber={1} onClick={changePage}/>
         {#each pagesInMiddle as page}
             {#if page === Delimeters.Left || page === Delimeters.Right}
@@ -51,6 +59,6 @@
             {/if}
         {/each}
         <PaginationSingleElement isActive={totalPages === currentPage} pageNumber={totalPages} onClick={changePage}/>
-        <ButtonIconRightArrow />
+        <ButtonIconRightArrow onClickHandler={nextPageHandler}/>
     </div>
 </div>
