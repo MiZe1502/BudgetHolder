@@ -1,10 +1,12 @@
 <script lang="typescript">
     import { middleRange, maxRecordsPerPage, Delimeters, formPagesArray } from "./utils";
-    import { SideMainPadding } from "./style"; 
+    import { SideMainPadding, FirstPaginationElement } from "./style"; 
     import { onMount } from 'svelte';
 
     import PaginationSingleElement from "../PaginationSingleElement/PaginationSingleElement.svelte";
     import PaginationDelimeter from "../PaginationDelimeter/PaginationDelimeter.svelte";
+    import ButtonIconRightArrow from "../Buttons/ButtonIconRightArrow/ButtonIconRightArrow.svelte";
+    import ButtonIconLeftArrow from "../Buttons/ButtonIconLeftArrow/ButtonIconLeftArrow.svelte";
 
     const changePage = (page: number) => {
         currentPage = page
@@ -39,7 +41,8 @@
 
 <div class="Wrapper {SideMainPadding}">
     <div class="Pagination">
-        <PaginationSingleElement isActive={1 === currentPage} pageNumber={1} onClick={changePage}/>
+        <ButtonIconLeftArrow />
+        <PaginationSingleElement className={FirstPaginationElement} isActive={1 === currentPage} pageNumber={1} onClick={changePage}/>
         {#each pagesInMiddle as page}
             {#if page === Delimeters.Left || page === Delimeters.Right}
                 <PaginationDelimeter />
@@ -48,5 +51,6 @@
             {/if}
         {/each}
         <PaginationSingleElement isActive={totalPages === currentPage} pageNumber={totalPages} onClick={changePage}/>
+        <ButtonIconRightArrow />
     </div>
 </div>
