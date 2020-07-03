@@ -35,7 +35,7 @@
             {#each data as dataItem (dataItem.id)}
                 <CommonTableRow data={dataItem} config={config} />
             {/each}
-            <Pagination totalCount={total}/>
+            <Pagination totalCount={100}/>
         {/if}
     {:else if status === LoadingStatus.Error}
         Error fetching data
