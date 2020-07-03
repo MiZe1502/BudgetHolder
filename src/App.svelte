@@ -44,7 +44,7 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh9VSJdpY9bDn3OuTaL8i2jvKKKDdPLxc" on:load={() => googleMapsReady.set(true)}>
 	</script>
-    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP" rel="stylesheet">
 </svelte:head>
 
 <Router>

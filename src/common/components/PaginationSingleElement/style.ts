@@ -11,6 +11,7 @@
         justify-content: center;
         border-radius: 4px;
         margin-right: 4px;
+        padding-bottom: 2px;
 
         &:hover {
             cursor: pointer;
