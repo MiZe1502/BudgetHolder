@@ -2,7 +2,7 @@
     import { get } from 'svelte/store';
 
     import { LoadingStatus } from '../stores/utils';
-    import { shops, shopsTotal, shopsStatus } from '../stores/shops';
+    import { shops, shopsTotal, shopsStatus, allShops, updateCurrentShopsSlice } from '../stores/shops';
     import { EntityType, ActionType } from '../stores/utils';
     
     import { SideMainPadding } from "./style";
@@ -17,11 +17,16 @@
     import MapActionElement from '../common/components/MapActionElement/MapActionElement.svelte'
     import ShopActionsElement from '../common/components/ShopActionsElement/ShopActionsElement.svelte'
     import { ShopActionsData } from '../common/components/ShopActionsElement/utils';
+    import { maxRecordsPerPage } from '../common/components/Pagination/utils';
     import ButtonIconEdit from '../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte'
     import ButtonIconRemove from '../common/components/Buttons/ButtonIconRemove/ButtonIconRemove.svelte'
     import MapContainer from '../common/components/MapContainer/MapContainer.svelte'
     import UrlElement from '../common/components/UrlElement/UrlElement.svelte'
     import { onMount } from 'svelte';
+
+    const onPageChange = (currentPage: number) => {
+        updateCurrentShopsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
+    }
 
     const tableData: CommonTableInterface = {
       title: "Shops",
@@ -79,8 +84,12 @@
     onMount(async () => {
         setTimeout(() => {
           shopsStatus.set(LoadingStatus.Finished);
-          shops.set(mockData);
-          shopsTotal.set(30);
+          allShops.set(mockData);
+
+          onPageChange(1);
+
+         // shops.set(mockData);
+          shopsTotal.set(mockData.length);
 
 
           tableData.status = get(shopsStatus);
@@ -96,6 +105,6 @@
 </style>
 
 <div>
-    <CommonTable withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={$shops} config={tableData.columnsConfig} title={tableData.title} />
+    <CommonTable onPageChange={onPageChange} withButton={tableData.withButton} buttonTitle={tableData.buttonTitle} status={tableData.status} total={tableData.total} data={$shops} config={tableData.columnsConfig} title={tableData.title} />
     <CommonMap status={tableData.status} data={$shops.map(elem => ({name: elem.name, address: elem.address}))}/>
 </div>

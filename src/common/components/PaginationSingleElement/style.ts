@@ -7,7 +7,7 @@
     
     export const SingleButton = css`
         height: 25px;
-        width: 25px;
+        width: 35px;
         justify-content: center;
         border-radius: 4px;
         margin-right: 4px;

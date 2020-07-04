@@ -12,6 +12,8 @@
     import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.svelte'
     import NoDataFoundBlock from '../NoDataFoundBlock/NoDataFoundBlock.svelte'
     import Pagination from '../Pagination/Pagination.svelte'
+
+    import { maxRecordsPerPage } from "../Pagination/utils";
     
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
@@ -21,6 +23,7 @@
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
     export let buttonClickHandler = () => {};
+    export let onPageChange = () => {};
 </script>
 
 <section class="{SectionBottomMargin}">
@@ -35,7 +38,9 @@
             {#each data as dataItem (dataItem.id)}
                 <CommonTableRow data={dataItem} config={config} />
             {/each}
-            <Pagination totalCount={100}/>
+            {#if total > maxRecordsPerPage}
+                <Pagination onPageChange={onPageChange} totalCount={total}/>
+            {/if}
         {/if}
     {:else if status === LoadingStatus.Error}
         Error fetching data

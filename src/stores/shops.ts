@@ -1,8 +1,9 @@
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import { Shop } from '../pages/types'
 import { LoadingStatus } from './utils'
 
 export const shops = writable([])
+export const allShops = writable([]);
 export const shopsTotal = writable(0)
 export const shopsStatus = writable(LoadingStatus.None);
 
@@ -14,4 +15,8 @@ export const removeShopFromStore = (id: number) => {
 export const addShopToStore = (newShop: Shop) => {
     shops.update((shops) => [...shops, newShop]);
     shopsTotal.update((total) => total + 1);
+}
+
+export const updateCurrentShopsSlice = (from: number, to: number) => {
+    shops.set([...get(allShops).slice(from, to)]);
 }

@@ -1,16 +1,18 @@
 <script lang="typescript">
     import { middleRange, maxRecordsPerPage, Delimeters, formPagesArray } from "./utils";
-    import { SideMainPadding, FirstPaginationElement } from "./style"; 
+    import { SideMainPadding, FirstPaginationElement, FlexHorCenter } from "./style"; 
+    import { Direction } from "../PaginationArrowElement/utils";
+
     import { onMount } from 'svelte';
 
     import PaginationSingleElement from "../PaginationSingleElement/PaginationSingleElement.svelte";
     import PaginationDelimeter from "../PaginationDelimeter/PaginationDelimeter.svelte";
-    import ButtonIconRightArrow from "../Buttons/ButtonIconRightArrow/ButtonIconRightArrow.svelte";
-    import ButtonIconLeftArrow from "../Buttons/ButtonIconLeftArrow/ButtonIconLeftArrow.svelte";
+    import PaginationArrowElement from "../PaginationArrowElement/PaginationArrowElement.svelte";
 
     const changePage = (page: number) => {
         currentPage = page
         pagesInMiddle = formPagesArray(totalPages, currentPage);
+        onPageChange(currentPage);
     }
 
     const nextPageHandler = () => {
@@ -32,24 +34,12 @@
     });
 
     export let totalCount: number = 0;
+    export let onPageChange: () => {};
 </script>
 
-<style>
-    .Pagination {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .Wrapper {
-        width: 100%;
-    }
-
-</style>
-
-<div class="Wrapper {SideMainPadding}">
-    <div class="Pagination">
-        <ButtonIconLeftArrow onClickHandler={previousPageHandler}/>
+<div class="{SideMainPadding}">
+    <div class="{FlexHorCenter}">
+        <PaginationArrowElement disabled={currentPage === 1} direction={Direction.Left} onClickHandler={previousPageHandler}/>
         <PaginationSingleElement className={FirstPaginationElement} isActive={1 === currentPage} pageNumber={1} onClick={changePage}/>
         {#each pagesInMiddle as page}
             {#if page === Delimeters.Left || page === Delimeters.Right}
@@ -59,6 +49,6 @@
             {/if}
         {/each}
         <PaginationSingleElement isActive={totalPages === currentPage} pageNumber={totalPages} onClick={changePage}/>
-        <ButtonIconRightArrow onClickHandler={nextPageHandler}/>
+        <PaginationArrowElement disabled={currentPage === totalPages} direction={Direction.Right} onClickHandler={nextPageHandler}/>
     </div>
 </div>
