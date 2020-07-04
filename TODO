@@ -2,7 +2,6 @@
     1.1. pass env variable to rollup config
 3. functionality
     3.1. localization
-    3.2. table pagination
     3.3. maps
         3.3.1. pass gmaps and ymaps keys from config to env
         3.3.2. research how to get address by click on map
@@ -11,7 +10,7 @@
     3.5. shops page
         3.5.2. implement loading (pseudo yet)
         3.5.3. add new shop form
-        3.5.4. edit shop form + icon button
+        3.5.4. edit shop form
     3.6. websockets
     3.7. auth
         3.7.1. login + pass + session
@@ -20,4 +19,5 @@
         3.8.2. new icon button
     3.9. categories or tags?
     3.10. main
+        3.10.1. side navigation and scrollto section
         3.10.2. custom scroll
