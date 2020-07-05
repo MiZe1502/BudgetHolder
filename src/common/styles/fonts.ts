@@ -9,6 +9,13 @@ export const Font316Black = css`
         font-size: 16px;
 `;
 
+export const Font312DarkGray = css`
+        font-family: 'Noto Sans JP', sans-serif;
+        color: ${colors.darkGray};
+        font-weight: 300;
+        font-size: 12px;
+`;
+
 export const Font716Black = css`
         font-family: 'Noto Sans JP', sans-serif;
         color: ${colors.black};

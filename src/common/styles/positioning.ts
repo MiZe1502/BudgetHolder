@@ -21,6 +21,11 @@ export const SideMainPadding = css`
     padding-left: 10%;
 `;
 
+export const SideMinorPadding = css`
+  padding-right: 16px;
+  padding-left: 16px;
+`
+
 export const Overflowed = css`
     overflow: hidden;
     white-space: nowrap;
