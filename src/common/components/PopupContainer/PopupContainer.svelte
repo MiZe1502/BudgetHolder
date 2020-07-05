@@ -26,7 +26,7 @@
         isMouseDown = true;
 
         currentPopupPosition = {
-            left: (<HTMLDivElement>event.target).parentNode.offsetLeft, 
+            left: (<HTMLDivElement>event.target).parentNode.offsetLeft,
             top: (<HTMLDivElement>event.target).parentNode.offsetTop
         };
 
@@ -46,7 +46,7 @@
         }
 
         currentMousePosition = {
-            x: event.clientX, 
+            x: event.clientX,
             y: event.clientY
         };
 
@@ -109,6 +109,7 @@
     export let title: string = "";
     export let popupClass: string = "";
     export let withAcceptButton: boolean = false;
+    export let acceptButtonTitle: string = "OK";
     export let withCancelButton: boolean = false;
     export let uniqueId: string = "";
     export let entityType: EntityType = "";
@@ -128,7 +129,7 @@
     {#if withAcceptButton || withCancelButton}
         <div class="{UtilBlock} {FlexHorCenter} {Footer}">
             {#if withAcceptButton}
-                <Button buttonClass={PopupButton} title={"OK"} onClickHandler={onPopupAcceptHandler}/>
+                <Button buttonClass={PopupButton} title={acceptButtonTitle} onClickHandler={onPopupAcceptHandler}/>
             {/if}
             {#if withCancelButton}
                 <Button buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>

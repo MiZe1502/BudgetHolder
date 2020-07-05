@@ -17,6 +17,14 @@ export const addShopToStore = (newShop: Shop) => {
     shopsTotal.update((total) => total + 1);
 }
 
+export const updateShopInStore = (updatedShop: Shop) => {
+    shops.update((shops) => {
+        let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
+        shopFromStore = updatedShop;
+        return shops;
+    });
+}
+
 export const updateCurrentShopsSlice = (from: number, to: number) => {
     shops.set([...get(allShops).slice(from, to)]);
 }

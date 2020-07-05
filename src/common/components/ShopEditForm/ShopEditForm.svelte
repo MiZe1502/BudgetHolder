@@ -4,18 +4,7 @@
     import {Font312DarkGray, Font316Black, SideMinorPadding} from "./style";
     import InputWithLabel from "../Inputs/InputWithLabel/InputWithLabel.svelte";
 
-    const shop: Partial<Shop> = {
-        name: "",
-        url: "",
-        address: "",
-        comment: "",
-    }
-
-    const onSubmit = (e: MouseEvent) => {
-        e.preventDefault();
-        console.log(shop)
-    }
-
+    export let shop: Partial<Shop> = {};
 </script>
 
 <style>
@@ -38,6 +27,4 @@
     <InputWithLabel label="Address" type="text" name="address" bind:value={shop.address}/>
 
     <textarea class="Text" name="comment" bind:value={shop.comment} />
-
-    <Button title="OK" onClickHandler={onSubmit} />
 </form>
