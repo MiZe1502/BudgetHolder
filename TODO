@@ -2,6 +2,9 @@
     1.1. pass env variable to rollup config
 3. functionality
     3.1. localization
+    3.2. inputs
+        3.2.1. input with map
+        3.2.2. add discard button to input
     3.3. maps
         3.3.1. pass gmaps and ymaps keys from config to env
         3.3.2. research how to get address by click on map
@@ -17,6 +20,7 @@
         3.7.2. client cert
     3.8. buttons
         3.8.2. new icon button
+        3.8.3. add cancel button
     3.9. categories or tags?
     3.10. main
         3.10.1. side navigation and scrollto section
