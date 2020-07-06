@@ -16,7 +16,8 @@
     export let disabled: boolean = false;
 </script>
 
-<button {disabled} class="{ButtonReset} {Button} {ButtonDefault} {secondary ? ButtonSecondary : ButtonPrimary} {Font316Black} {buttonClass}"
+<button {disabled}
+        class="{ButtonReset} {Button} {ButtonDefault} {secondary ? ButtonSecondary : ButtonPrimary} {Font316Black} {buttonClass}"
         on:click={onClickHandler}>
     {title}
 </button>

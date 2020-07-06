@@ -12,6 +12,8 @@
     import InputWithLabel from "../Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel
         from "../Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
+    import InputWithClearButton
+        from "../Inputs/InputWithClearButton/InputWithClearButton.svelte";
 
     const validateForm = () => {
         let isValid = true;
@@ -26,7 +28,8 @@
     }
 
     export let shop: Partial<Shop> = {};
-    export let validateHandler = () => {};
+    export let validateHandler = () => {
+    };
 </script>
 
 <style>
@@ -34,13 +37,11 @@
 </style>
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
-    <InputWithLabel onChange={validateForm} label="Name" autofocus={true} type="text" name="name"
+    <InputWithClearButton onChange={validateForm} label="Name" autofocus={true} type="text" name="name"
                     bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithLabel label="Address" type="text" name="address"
                     bind:value={shop.address}/>
     <TextAreaWithLabel textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
-
-    <Button title="Save"></Button>
 </form>

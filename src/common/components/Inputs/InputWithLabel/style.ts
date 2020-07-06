@@ -1,7 +1,12 @@
 import { css } from 'emotion'
 
 export { Font312DarkGray, Font316Black } from "../../../styles/fonts";
+export { FlexVert } from "../../../styles/positioning";
 import colors from "../../../styles/colors";
+
+export const Wrapper = css`
+  width: 100%;
+`;
 
 export const Input = css`
     height: 30px;

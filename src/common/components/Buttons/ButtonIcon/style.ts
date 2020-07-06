@@ -3,7 +3,11 @@ import {css} from 'emotion';
 import {defaultButtonIconSize} from "../../../styles/buttons";
 
 export {
-    ButtonReset, ButtonDefault, ButtonPrimary, defaultButtonIconSize
+    ButtonReset,
+    ButtonDefault,
+    ButtonPrimary,
+    ButtonSecondary,
+    defaultButtonIconSize
 } from "../../../styles/buttons";
 
 export const Button = css`
