@@ -13,7 +13,20 @@
     import TextAreaWithLabel
         from "../Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
 
+    const validateForm = () => {
+        let isValid = true;
+
+        if (!shop.name) {
+            isValid = false;
+        }
+
+        console.log(isValid)
+
+        validateHandler(isValid);
+    }
+
     export let shop: Partial<Shop> = {};
+    export let validateHandler = () => {};
 </script>
 
 <style>
@@ -21,11 +34,13 @@
 </style>
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
-    <InputWithLabel label="Name" autofocus={true} type="text" name="name"
-                    bind:value={shop.name}/>
+    <InputWithLabel onChange={validateForm} label="Name" autofocus={true} type="text" name="name"
+                    bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithLabel label="Address" type="text" name="address"
                     bind:value={shop.address}/>
     <TextAreaWithLabel textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
+
+    <Button title="Save"></Button>
 </form>

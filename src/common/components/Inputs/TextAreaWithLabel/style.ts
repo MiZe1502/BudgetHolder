@@ -1,6 +1,6 @@
-import { css } from 'emotion'
+import {css} from 'emotion'
 
-export { Font312DarkGray, Font316Black } from "../../../styles/fonts";
+export {Font312DarkGray, Font316Black} from "../../../styles/fonts";
 import colors from "../../../styles/colors";
 
 export const TextArea = css`
@@ -12,6 +12,7 @@ export const TextArea = css`
     outline: none;
     text-decoration: none;
     resize: none;
+    box-shadow: inset 0 3px 0 0 rgba(29, 29, 27, 0.05), inset 0 2px 0 0 rgba(29, 29, 27, 0.05);
     
     &:focus {
         box-shadow: 0 3px 1px -1px rgba(0, 84, 72, 0.15);

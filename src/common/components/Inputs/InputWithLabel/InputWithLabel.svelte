@@ -7,6 +7,9 @@
     export let type = "text";
     export let label = "";
     export let disabled = false;
+    export let required = false;
+    export let onChange = () => {
+    };
 
     let inputElement: HTMLInputElement = null;
 
@@ -19,5 +22,6 @@
 {#if label}
     <label class="{Font312DarkGray}" for={name}>{label}</label>
 {/if}
-<input bind:this={inputElement} on:focus={onFocus}
-       class="{Input} {Font316Black}" {disabled} {name} bind:value={value} {autofocus}/>
+<input on:change={onChange} bind:this={inputElement} on:focus={onFocus}
+       class="{Input} {Font316Black}" {required} {disabled} {name}
+       bind:value={value} {autofocus}/>

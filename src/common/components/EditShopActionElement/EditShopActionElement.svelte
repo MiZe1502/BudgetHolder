@@ -1,6 +1,6 @@
 <script lang="typescript">
-    import { Shop } from "../../../pages/types";
-    import { updateShopInStore } from "../../../stores/shops";
+    import {Shop} from "../../../pages/types";
+    import {updateShopInStore} from "../../../stores/shops";
 
     import {Popup} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";
@@ -23,13 +23,21 @@
         updateShopInStore(data);
     }
 
+    let isInnerComponentDataValid = false;
+
+    const validateInnerComponent = (isValid: boolean) => {
+        console.log(isValid)
+        isInnerComponentDataValid = isValid;
+    }
+
     export let data: Shop = {};
 </script>
 
 <div>
     <ButtonIconEdit onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
-        <PopupContainer popupClass={Popup} onAcceptHandler={onSaveHandler}
+        <PopupContainer let:validateHandler={validateInnerComponent}
+                        popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton="Save"
                         withCancelButton="Cancel" entityType={EntityType.Shop}
                         actionType={ActionType.Remove} entityId={data.id}

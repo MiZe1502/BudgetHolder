@@ -26,8 +26,8 @@
         isMouseDown = true;
 
         currentPopupPosition = {
-            left: (<HTMLDivElement>event.target).parentNode.offsetLeft,
-            top: (<HTMLDivElement>event.target).parentNode.offsetTop
+            left: (event.target as HTMLDivElement).parentNode.offsetLeft,
+            top: (event.target as HTMLDivElement).parentNode.offsetTop
         };
 
         previousMousePosition = {
@@ -105,6 +105,13 @@
         removePopupFromStore(curPopupState.uuid);
     }
 
+    let isInnerComponentDataValid = false;
+
+    const validateInnerComponent = (isValid: boolean) => {
+        console.log(isValid)
+        isInnerComponentDataValid = isValid;
+    }
+
     export let onCloseHandler = () => {};
     export let title: string = "";
     export let popupClass: string = "";
@@ -116,6 +123,8 @@
     export let actionType: ActionType = "";
     export let entityId: number;
 
+    export let isValid: boolean = true;
+
     export let onCancelHandler = () => {};
     export let onAcceptHandler = () => {};
 </script>
@@ -125,14 +134,14 @@
         <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
         <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
     </div>
-    <slot />
+    <slot validateHandler={validateInnerComponent}/>
     {#if withAcceptButton || withCancelButton}
         <div class="{UtilBlock} {FlexHorCenter} {Footer}">
             {#if withAcceptButton}
-                <Button buttonClass={PopupButton} title={acceptButtonTitle} onClickHandler={onPopupAcceptHandler}/>
+                <Button disabled={!isValid} buttonClass={PopupButton} title={acceptButtonTitle} onClickHandler={onPopupAcceptHandler}/>
             {/if}
             {#if withCancelButton}
-                <Button buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
+                <Button secondary={true} buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
             {/if}
         </div>
     {/if}

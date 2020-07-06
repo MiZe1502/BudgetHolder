@@ -12,6 +12,7 @@ export const Input = css`
     caret-color: ${colors.darkGray};
     outline: none;
     text-decoration: none;
+    box-shadow: inset 0 3px 0 0 rgba(29, 29, 27, 0.05), inset 0 2px 0 0 rgba(29, 29, 27, 0.05);
     
     &:focus {
         box-shadow: 0 3px 1px -1px rgba(0, 84, 72, 0.15);

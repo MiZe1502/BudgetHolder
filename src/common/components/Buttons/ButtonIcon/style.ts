@@ -1,7 +1,10 @@
-import { css } from 'emotion';
+import {css} from 'emotion';
 
-import { defaultButtonIconSize } from "../../../styles/buttons";
-export { ButtonReset, ButtonDefault, defaultButtonIconSize } from "../../../styles/buttons";
+import {defaultButtonIconSize} from "../../../styles/buttons";
+
+export {
+    ButtonReset, ButtonDefault, ButtonPrimary, defaultButtonIconSize
+} from "../../../styles/buttons";
 
 export const Button = css`
     background-color: transparent;
