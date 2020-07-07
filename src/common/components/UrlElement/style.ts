@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 import colors from "../../styles/colors";
 
-export { Font316Black } from "../../styles/fonts";
+export { Font312Black } from "../../styles/fonts";
 export { FlexHorCenter, Overflowed } from "../../styles/positioning";
 
 export const UrlWrapper = css`

@@ -1,8 +1,8 @@
 <script>
-    import { Font316Black } from "./style";
+    import { Font312Black } from "./style";
 
     export let data = null
     export let style = ""
 </script>
 
-<div class="{Font316Black}" style={style}>{data || "\u2014"}</div>
+<div class="{Font312Black}" style={style}>{data || "\u2014"}</div>

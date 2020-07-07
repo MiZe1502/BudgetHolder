@@ -1,1 +1,1 @@
-export { Font316Black } from "../../styles/fonts";
+export { Font312Black } from "../../styles/fonts";

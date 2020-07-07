@@ -3,7 +3,7 @@
     import Button from "../Buttons/Button/Button.svelte";
     import {
         Font312DarkGray,
-        Font316Black,
+        Font312Black,
         SideMinorPadding,
         TextArea,
         FlexVert,

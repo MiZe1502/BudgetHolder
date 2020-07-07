@@ -5,7 +5,7 @@
         ButtonDefault,
         ButtonPrimary,
         ButtonSecondary,
-        Font316Black
+        Font312Black
     } from './style';
 
     export let onClickHandler = () => {
@@ -17,7 +17,7 @@
 </script>
 
 <button {disabled}
-        class="{ButtonReset} {Button} {ButtonDefault} {secondary ? ButtonSecondary : ButtonPrimary} {Font316Black} {buttonClass}"
+        class="{ButtonReset} {Button} {ButtonDefault} {secondary ? ButtonSecondary : ButtonPrimary} {Font312Black} {buttonClass}"
         on:click={onClickHandler}>
     {title}
 </button>

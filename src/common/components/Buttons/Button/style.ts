@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export { Font316Black } from "../../../styles/fonts";
+export { Font312Black } from "../../../styles/fonts";
 export { ButtonReset, ButtonDefault, ButtonSecondary, ButtonPrimary } from "../../../styles/buttons";
 
 export const Button = css`

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {Font312DarkGray, Font316Black, TextArea} from "./style";
+    import {Font312DarkGray, Font312Black, TextArea} from "./style";
 
     export let value = "";
     export let autofocus = false;
@@ -12,5 +12,5 @@
 {#if label}
     <label class="{Font312DarkGray}" for={name}>{label}</label>
 {/if}
-<textarea class="{TextArea} {Font316Black} {textAreaClass}" {disabled} {name}
+<textarea class="{TextArea} {Font312Black} {textAreaClass}" {disabled} {name}
           bind:value={value}></textarea>

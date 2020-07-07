@@ -3,7 +3,7 @@
     import colors from '../../styles/colors';
     
     export { FlexHorCenter } from "../../styles/positioning";
-    export { Font316Black } from "../../styles/fonts";
+    export { Font312Black } from "../../styles/fonts";
     
     export const SingleButton = css`
         height: 25px;

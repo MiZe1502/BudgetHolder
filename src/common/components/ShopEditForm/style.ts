@@ -1,6 +1,6 @@
 import { css } from 'emotion'
 
-export { Font312DarkGray, Font316Black } from "../../styles/fonts";
+export { Font312DarkGray, Font312Black } from "../../styles/fonts";
 export { SideMinorPadding, FlexVert } from "../../styles/positioning";
 
 export const TextArea = css`
