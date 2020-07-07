@@ -13,7 +13,9 @@
 
     let isDomReady = false;
 
-    const onClickHandler = () => {
+    const onClickHandler = (event: MouseEvent) => {
+        event.preventDefault();
+
         isPopupOpened = true;
         setTimeout(() => {
             isDomReady = true;

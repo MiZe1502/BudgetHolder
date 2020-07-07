@@ -1,9 +1,6 @@
 <script lang="ts">
     import {Shop} from "../../../pages/types";
-    import Button from "../Buttons/Button/Button.svelte";
     import {
-        Font312DarkGray,
-        Font312Black,
         SideMinorPadding,
         TextArea,
         FlexVert,
@@ -14,6 +11,7 @@
         from "../Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
     import InputWithClearButton
         from "../Inputs/InputWithClearButton/InputWithClearButton.svelte";
+    import InputWithMap from "../Inputs/InputWithMap/InputWithMap.svelte";
 
     const validateForm = () => {
         let isValid = true;
@@ -40,8 +38,8 @@
     <InputWithClearButton onChange={validateForm} label="Name" autofocus={true} type="text" name="name"
                     bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
-    <InputWithLabel label="Address" type="text" name="address"
-                    bind:value={shop.address}/>
+    <InputWithMap label="Address" type="text" name="address"
+                    bind:value={shop.address} data={shop}/>
     <TextAreaWithLabel textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
 </form>
