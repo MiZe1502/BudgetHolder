@@ -1,6 +1,7 @@
-import { PlacemarkBuilder } from "./PlacemarkBuilder";
-import { MapsBuilder, Coordinates } from "./MapsBuilder";
-import { MapItemData } from "../MapActionElement/utils";
+import {PlacemarkBuilder} from "./PlacemarkBuilder";
+import {MapsBuilder, Coordinates} from "./MapsBuilder";
+import {MapItemData} from "../MapActionElement/utils";
+import {Placemark} from "yandex-maps";
 
 declare var ymaps;
 
@@ -12,12 +13,20 @@ export class YandexMapsBuilder implements MapsBuilder {
     defaultCenter: Coordinates = [55.7, 37.5];
     defaultBaloonPreset: string = "islands#darkBlueDotIconWithCaption";
 
-    constructor(placementBuilder?: PlacemarkBuilder) {
+    singlePlacement: Placemark = null;
+    isEditable: boolean = false;
+
+    constructor(placementBuilder?: PlacemarkBuilder, isEditable?: boolean) {
         this.placementBuilder = placementBuilder;
+        this.isEditable = isEditable;
     }
 
     private processSingleAddressSearch(address: string): Promise<any> {
         return ymaps.geocode(address, {});
+    }
+
+    private processSingleCoordsSearch(coords: Coordinates): Promise<any> {
+        return ymaps.geocode(coords);
     }
 
     private getFoundedGeoObject(res: any, index: number) {
@@ -28,17 +37,54 @@ export class YandexMapsBuilder implements MapsBuilder {
         return geoObject.geometry.getCoordinates()
     }
 
+    private getFoundAddress(geoObject: any): string {
+        return geoObject.getAddressLine();
+    }
+
     private getVisibleArea(geoObject: any): Coordinates[] {
         return geoObject.properties.get('boundedBy');
     }
 
     private setGeoObjectProperties(geoObject): void {
         geoObject.options.set('preset', this.defaultBaloonPreset);
-        geoObject.properties.set('iconCaption', geoObject.getAddressLine()); 
+        geoObject.properties.set('iconCaption', geoObject.getAddressLine());
     }
 
     private addPlacementToMap(placement: any): void {
         this.map.geoObjects.add(placement);
+    }
+
+    private findAddressByCoords(coords: Coordinates): void {
+        this.processSingleCoordsSearch(coords).then(res => {
+            const geoObject = this.getFoundedGeoObject(res, 0);
+            const address = this.getFoundAddress(geoObject);
+
+            console.log(address);
+        });
+    }
+
+    makeMapEditable(data: MapItemData): void {
+        const self = this;
+        this.map.events.add('click', function (event: any) {
+            const coords = event.get("coords");
+
+            //move placement if exists
+            if (self.singlePlacement) {
+                // @ts-ignore
+                self.singlePlacement.geometry.setCoordinates(coords);
+            }
+            // create it
+            else {
+                self.singlePlacement = self.placementBuilder.createPlacemark(coords, data);
+                self.addPlacementToMap(self.singlePlacement)
+
+                self.singlePlacement.events.add('dragend', function () {
+                    // @ts-ignore
+                    self.findAddressByCoords(self.singlePlacement.geometry.getCoordinates());
+                });
+            }
+            self.findAddressByCoords(coords);
+        });
     }
 
     findSingleAddressAndCreateMap(data: MapItemData, container: HTMLDivElement): void {
@@ -60,10 +106,14 @@ export class YandexMapsBuilder implements MapsBuilder {
             this.addGeoObjectAtMap(geoObject, bounds);
             this.setGeoObjectProperties(geoObject);
 
-            const placement = this.placementBuilder.createPlacemark(coords, data);
-            this.addPlacementToMap(placement)
+            this.singlePlacement = this.placementBuilder.createPlacemark(coords, data);
+            this.addPlacementToMap(this.singlePlacement)
+
+            if (this.isEditable) {
+                this.makeMapEditable(data);
+            }
         })
-        .catch(err => console.log(err))
+            .catch(err => console.log(err))
     }
 
     getCenter(points: Coordinates[]): Coordinates {
@@ -102,7 +152,7 @@ export class YandexMapsBuilder implements MapsBuilder {
             const pointsCollection = new ymaps.GeoObjectCollection();
             const points: Coordinates[] = [];
 
-            results.forEach((res : PromiseFulfilledResult<any>, index: number) => {
+            results.forEach((res: PromiseFulfilledResult<any>, index: number) => {
                 const currentRes = res.value;
 
                 const geoObject = this.getFoundedGeoObject(currentRes, 0);
@@ -122,7 +172,7 @@ export class YandexMapsBuilder implements MapsBuilder {
             this.addPlacementToMap(pointsCollection);
             this.setVisibleAreaBasedOnMultiplePoints(pointsCollection);
         })
-        .catch(err => console.log(err))
+            .catch(err => console.log(err))
     }
 
     private setVisibleAreaBasedOnMultiplePoints(points: any) {

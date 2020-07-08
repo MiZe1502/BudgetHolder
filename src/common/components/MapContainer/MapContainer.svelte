@@ -22,12 +22,13 @@
     let container;
 
     const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
-    const mapBuilder: MapsBuilder = new YandexMapsBuilder(placemarkBuilder);
+    const mapBuilder: MapsBuilder = new YandexMapsBuilder(placemarkBuilder, true);
 
     $: processMapData(data, container);
 
     export let data: MapItemData[] = [];
     export let wrapperClass: string = "";
+    export let isEditable: boolean = false;
 </script>
 
 <div class="{ContainerWrapper} {wrapperClass}">

@@ -20,5 +20,5 @@
 
 <InputWithIcon onChange={onChange} bind:value={value} {autofocus} {name} {type}
                {label} {disabled} {required}>
-    <MapActionElement data={[data]}/>
+    <MapActionElement data={[data]} isEditable={true}/>
 </InputWithIcon>

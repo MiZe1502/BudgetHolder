@@ -90,17 +90,23 @@
     });
 
     const onPopupAcceptHandler = (event: MouseEvent) => {
+        event.preventDefault();
+
         onAcceptHandler();
         onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }
 
     const onPopupCloseHandler = (event: MouseEvent) => {
+        event.preventDefault();
+
         onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }
 
     const onPopupCancelHandler = (event: MouseEvent) => {
+        event.preventDefault();
+
         onCancelHandler();
         removePopupFromStore(curPopupState.uuid);
     }
