@@ -140,6 +140,7 @@
         event.preventDefault();
 
         onCancelHandler();
+        onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }
 

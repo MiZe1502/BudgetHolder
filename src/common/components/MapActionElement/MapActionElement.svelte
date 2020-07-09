@@ -30,6 +30,7 @@
     export let data: MapItemData[] = [];
     export let isEditable: boolean = false;
     export let updateAddress = () => {};
+    export let onCancel = () => {};
 </script>
 
 <div>
@@ -43,6 +44,7 @@
                         onCloseHandler={onCloseHandler}
                         withAcceptButton={isEditable}
                         withCancelButton={isEditable}
+                        onCancelHandler={onCancel}
                         popupClass={Popup}>
             {#if isDomReady}
                 <MapContainer {isEditable} {data}
