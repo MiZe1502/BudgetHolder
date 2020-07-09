@@ -15,10 +15,12 @@ export class YandexMapsBuilder implements MapsBuilder {
 
     singlePlacement: Placemark = null;
     isEditable: boolean = false;
+    updateAddress: (newAddress: string) => void;
 
-    constructor(placementBuilder?: PlacemarkBuilder, isEditable?: boolean) {
+    constructor(placementBuilder?: PlacemarkBuilder, isEditable?: boolean, updateAddress?: (newAddress: string) => void) {
         this.placementBuilder = placementBuilder;
         this.isEditable = isEditable;
+        this.updateAddress = updateAddress;
     }
 
     private processSingleAddressSearch(address: string): Promise<any> {
@@ -56,16 +58,23 @@ export class YandexMapsBuilder implements MapsBuilder {
 
     private findAddressByCoords(coords: Coordinates): void {
         this.processSingleCoordsSearch(coords).then(res => {
+            this.removeAllDataFromMap();
+
             const geoObject = this.getFoundedGeoObject(res, 0);
             const address = this.getFoundAddress(geoObject);
 
-            console.log(address);
+            const bounds = this.getVisibleArea(geoObject);
+
+            this.addGeoObjectAtMap(geoObject, bounds);
+            this.setGeoObjectProperties(geoObject);
+
+            this.updateAddress(address);
         });
     }
 
     makeMapEditable(data: MapItemData): void {
         const self = this;
-        this.map.events.add('click', function (event: any) {
+        this.map.events.add("click", function (event: any) {
             const coords = event.get("coords");
 
             //move placement if exists

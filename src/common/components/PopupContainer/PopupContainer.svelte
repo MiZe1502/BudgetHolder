@@ -1,16 +1,45 @@
 <script lang="typescript">
-    import { onMount } from 'svelte';
-    import { fade } from 'svelte/transition';
-    import { get } from 'svelte/store';
+    import {onMount} from 'svelte';
+    import {fade} from 'svelte/transition';
+    import {get} from 'svelte/store';
 
-    import ButtonIconClose from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
+    import ButtonIconClose
+        from "../Buttons/ButtonIconClose/ButtonIconClose.svelte";
     import Button from "../Buttons/Button/Button.svelte";
 
-    import { defaultZIndex, popupWidth, defaultPopupTopPosition, isNotHeader, countPositionDiff, Position } from "./utils";
-    import { PopupButton, UtilBlock, Footer, Font724Black, FlexHorCenter, Popup, Header, Overflowed, HeaderText } from "./style";
+    import {
+        defaultZIndex,
+        popupWidth,
+        defaultPopupTopPosition,
+        isNotHeader,
+        countPositionDiff,
+        Position
+    } from "./utils";
+    import {
+        PopupButton,
+        UtilBlock,
+        Footer,
+        Font724Black,
+        FlexHorCenter,
+        Popup,
+        Header,
+        Overflowed,
+        HeaderText
+    } from "./style";
 
-    import { addPopupToState, movePopupToTheTop, openedPopups, PopupState, removePopupFromStore } from "../../../stores/popup";
-    import { buildUniqueIdBasedOnEntityAndAction, buildUuid, EntityType, ActionType } from "../../../stores/utils";
+    import {
+        addPopupToState,
+        movePopupToTheTop,
+        openedPopups,
+        PopupState,
+        removePopupFromStore
+    } from "../../../stores/popup";
+    import {
+        buildUniqueIdBasedOnEntityAndAction,
+        buildUuid,
+        EntityType,
+        ActionType
+    } from "../../../stores/utils";
 
     const onPopupMouseDownHandler = (event: MouseEvent) => {
         curPopupState = movePopupToTheTop(curPopupState.uuid);
@@ -73,7 +102,10 @@
     let isMouseDown = false;
     let isMouseMoving = false;
 
-    let currentPopupPosition = {top: defaultPopupTopPosition, left: window.innerWidth / 2 - popupWidth / 2};
+    let currentPopupPosition = {
+        top: defaultPopupTopPosition,
+        left: window.innerWidth / 2 - popupWidth / 2
+    };
     let currentMousePosition: Position = {x: 0, y: 0};
     let previousMousePosition: Position = {x: 0, y: 0};
 
@@ -118,7 +150,8 @@
         isInnerComponentDataValid = isValid;
     }
 
-    export let onCloseHandler = () => {};
+    export let onCloseHandler = () => {
+    };
     export let title: string = "";
     export let popupClass: string = "";
     export let withAcceptButton: boolean = false;
@@ -131,24 +164,33 @@
 
     export let isValid: boolean = true;
 
-    export let onCancelHandler = () => {};
-    export let onAcceptHandler = () => {};
+    export let onCancelHandler = () => {
+    };
+    export let onAcceptHandler = () => {
+    };
 </script>
 
-<div in:fade="{{duration: 200}}" out:fade="{{duration: 200}}" on:mousedown={onPopupMouseDownHandler} style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px" class="{Popup} {popupClass}">
+<div in:fade="{{duration: 200}}" out:fade="{{duration: 200}}"
+     on:mousedown={onPopupMouseDownHandler}
+     style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px"
+     class="{Popup} {popupClass}">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{UtilBlock} {FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
-        <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
-        <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
-    </div>
-    <slot validateHandler={validateInnerComponent}/>
-    {#if withAcceptButton || withCancelButton}
-        <div class="{UtilBlock} {FlexHorCenter} {Footer}">
-            {#if withAcceptButton}
-                <Button disabled={!isValid} buttonClass={PopupButton} title={acceptButtonTitle} onClickHandler={onPopupAcceptHandler}/>
-            {/if}
-            {#if withCancelButton}
-                <Button secondary={true} buttonClass={PopupButton} title={"Cancel"} onClickHandler={onPopupCancelHandler}/>
-            {/if}
-        </div>
-    {/if}
+
+    <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
+    <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
 </div>
+<slot validateHandler={validateInnerComponent}/>
+{#if withAcceptButton || withCancelButton}
+    <div class="{UtilBlock} {FlexHorCenter} {Footer}">
+        {#if withAcceptButton}
+            <Button disabled={!isValid} buttonClass={PopupButton}
+                    title={acceptButtonTitle}
+                    onClickHandler={onPopupAcceptHandler}/>
+        {/if}
+        {#if withCancelButton}
+            <Button secondary={true} buttonClass={PopupButton} title={"Cancel"}
+                    onClickHandler={onPopupCancelHandler}/>
+        {/if}
+    </div>
+{/if}
+        </div>

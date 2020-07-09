@@ -1,5 +1,5 @@
 <script lang="typescript">
-    import {MapContainerWrapper} from "./style";
+    import {MapContainerWrapper, Popup} from "./style";
 
     import ButtonIconMap from "../Buttons/ButtonIconMap/ButtonIconMap.svelte"
     import PopupContainer from "../PopupContainer/PopupContainer.svelte"
@@ -29,6 +29,7 @@
 
     export let data: MapItemData[] = [];
     export let isEditable: boolean = false;
+    export let updateAddress = () => {};
 </script>
 
 <div>
@@ -39,9 +40,13 @@
                         entityId={data && data[0].id}
                         title={data[0].name || "Map"}
                         isPopupOpened={isPopupOpened}
-                        onCloseHandler={onCloseHandler}>
+                        onCloseHandler={onCloseHandler}
+                        withAcceptButton={isEditable}
+                        withCancelButton={isEditable}
+                        popupClass={Popup}>
             {#if isDomReady}
                 <MapContainer {isEditable} {data}
+                              updateAddress={updateAddress}
                               wrapperClass={MapContainerWrapper}/>
             {/if}
         </PopupContainer>

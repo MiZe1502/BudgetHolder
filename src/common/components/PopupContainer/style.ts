@@ -8,7 +8,7 @@ export const Popup = css`
     position: fixed;
     margin: auto;
     width: 900px;
-    height: 600px;
+    height: auto;
     border-radius: 4px;
     background: ${colors.white};
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.17);

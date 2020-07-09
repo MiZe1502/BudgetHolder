@@ -39,7 +39,7 @@
                     bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithMap label="Address" type="text" name="address"
-                    bind:value={shop.address} data={shop}/>
+                    bind:value={shop.address} bind:data={shop}/>
     <TextAreaWithLabel textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
 </form>

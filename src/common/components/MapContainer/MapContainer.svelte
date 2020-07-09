@@ -6,6 +6,8 @@
 
     import { yandexMapsReady, googleMapsReady } from '../../../stores/maps';
 
+    import {onMount} from 'svelte';
+
     import { YandexMapsBuilder } from "./YandexMapsBuilder";
     import { MapsBuilder } from "./MapsBuilder";
     import { PlacemarkBuilder } from "./PlacemarkBuilder";
@@ -13,22 +15,28 @@
 
     const processMapData = (data, container) => {
         if (data.length > 1) {
-            mapBuilder.findMultipleAddressesAndCreateMap(data, container);
+            mapBuilder && mapBuilder.findMultipleAddressesAndCreateMap(data, container);
         } else {
-            mapBuilder.findSingleAddressAndCreateMap(data[0], container);
+            mapBuilder && mapBuilder.findSingleAddressAndCreateMap(data[0], container);
         }
     }
 
     let container;
 
-    const placemarkBuilder: PlacemarkBuilder = new YandexMapsPlacemarkBuilder();
-    const mapBuilder: MapsBuilder = new YandexMapsBuilder(placemarkBuilder, true);
+    onMount(() => {
+        placemarkBuilder = new YandexMapsPlacemarkBuilder();
+        mapBuilder = new YandexMapsBuilder(placemarkBuilder, isEditable, updateAddress);
+    })
+
+    let placemarkBuilder: PlacemarkBuilder = null;
+    let mapBuilder: MapsBuilder = null;
 
     $: processMapData(data, container);
 
     export let data: MapItemData[] = [];
     export let wrapperClass: string = "";
     export let isEditable: boolean = false;
+    export let updateAddress = () => {};
 </script>
 
 <div class="{ContainerWrapper} {wrapperClass}">
