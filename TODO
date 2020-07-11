@@ -9,7 +9,6 @@
         3.4.2. implement message block
     3.5. shops page
         3.5.2. implement loading (pseudo yet)
-        3.5.3. add new shop form
         3.5.4. edit shop form
             3.5.4.1. validation
     3.6. websockets
