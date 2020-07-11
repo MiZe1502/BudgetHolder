@@ -17,6 +17,6 @@
         <span class="{TitleText} {Font732DarkGray}">({dataLength})</span>
     {/if}
     {#if withButton}
-        <Button title={buttonTitle} onClickHandler={buttonClickHandler}/>
+        <slot />
     {/if}
 </div>

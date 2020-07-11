@@ -9,9 +9,10 @@ export class YandexMapsBuilder implements MapsBuilder {
     map: any = null;
     placementBuilder?: PlacemarkBuilder;
 
-    defaultZoom: number = 17;
-    defaultCenter: Coordinates = [55.7, 37.5];
-    defaultBaloonPreset: string = "islands#darkBlueDotIconWithCaption";
+    defaultZoom: number = 10;
+    zoomedZoom: number = 17;
+    defaultCenter: Coordinates = [55.76, 37.64];
+    defaultBaloonPreset: string = "sislands#darkBlueDotIconWithCaption";
 
     singlePlacement: Placemark = null;
     isEditable: boolean = false;
@@ -24,6 +25,8 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     private processSingleAddressSearch(address: string): Promise<any> {
+        console.log(address)
+
         return ymaps.geocode(address, {});
     }
 
@@ -101,28 +104,37 @@ export class YandexMapsBuilder implements MapsBuilder {
             return;
         }
 
-        this.processSingleAddressSearch(data.address).then(res => {
-            const geoObject = this.getFoundedGeoObject(res, 0);
-            const coords = this.getFoundCoordinates(geoObject);
-            const bounds = this.getVisibleArea(geoObject);
-
-            if (this.isMapExists()) {
-                this.removeAllDataFromMap();
-            } else {
-                this.createMap(coords, container);
-            }
-
-            this.addGeoObjectAtMap(geoObject, bounds);
-            this.setGeoObjectProperties(geoObject);
-
-            this.singlePlacement = this.placementBuilder.createPlacemark(coords, data);
-            this.addPlacementToMap(this.singlePlacement)
-
+        if (!data.address) {
+            this.createMap(this.defaultCenter, container, this.defaultZoom);
             if (this.isEditable) {
                 this.makeMapEditable(data);
             }
-        })
-            .catch(err => console.log(err))
+        } else {
+            this.processSingleAddressSearch(data.address).then(res => {
+                console.log(res)
+
+                const geoObject = this.getFoundedGeoObject(res, 0);
+                const coords = this.getFoundCoordinates(geoObject);
+                const bounds = this.getVisibleArea(geoObject);
+
+                if (this.isMapExists()) {
+                    this.removeAllDataFromMap();
+                } else {
+                    this.createMap(coords, container, this.zoomedZoom);
+                }
+
+                this.addGeoObjectAtMap(geoObject, bounds);
+                this.setGeoObjectProperties(geoObject);
+
+                this.singlePlacement = this.placementBuilder.createPlacemark(coords, data);
+                this.addPlacementToMap(this.singlePlacement)
+
+                if (this.isEditable) {
+                    this.makeMapEditable(data);
+                }
+            })
+                .catch(err => console.log(err))
+        }
     }
 
     getCenter(points: Coordinates[]): Coordinates {
@@ -175,7 +187,7 @@ export class YandexMapsBuilder implements MapsBuilder {
             if (this.isMapExists()) {
                 this.removeAllDataFromMap();
             } else {
-                this.createMap(this.getCenter(points), container);
+                this.createMap(this.getCenter(points), container, this.zoomedZoom);
             }
 
             this.addPlacementToMap(pointsCollection);
@@ -188,10 +200,10 @@ export class YandexMapsBuilder implements MapsBuilder {
         this.map.setBounds(points.getBounds());
     }
 
-    private createMap(coords: Coordinates, container: HTMLDivElement) {
+    private createMap(coords: Coordinates, container: HTMLDivElement, zoom: number) {
         this.map = new ymaps.Map(container, {
             center: coords,
-            zoom: this.defaultZoom,
+            zoom: zoom,
             controls: ['zoomControl']
         });
     }

@@ -9,16 +9,22 @@ export const shopsStatus = writable(LoadingStatus.None);
 
 export const removeShopFromStore = (id: number) => {
     shops.update((shops) => shops.filter((shop: Shop) => shop.id !== id));
+    allShops.update((shops) => shops.filter((shop: Shop) => shop.id !== id));
     shopsTotal.update((total) => total - 1);
 }
 
 export const addShopToStore = (newShop: Shop) => {
-    shops.update((shops) => [...shops, newShop]);
+    allShops.update((shops) => [...shops, newShop]);
     shopsTotal.update((total) => total + 1);
 }
 
 export const updateShopInStore = (updatedShop: Shop) => {
     shops.update((shops) => {
+        let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
+        shopFromStore = updatedShop;
+        return shops;
+    });
+    allShops.update((shops) => {
         let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
         shopFromStore = updatedShop;
         return shops;
