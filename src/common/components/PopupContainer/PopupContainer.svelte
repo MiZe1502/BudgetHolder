@@ -117,7 +117,7 @@
     }
 
     onMount(() => {
-        const uuid = buildUuid(buildUniqueIdBasedOnEntityAndAction(entityType, actionType, entityId));
+        //   const uuid = buildUuid(buildUniqueIdBasedOnEntityAndAction(entityType, actionType, entityId));
         curPopupState = addPopupToState(uuid);
     });
 
@@ -144,13 +144,6 @@
         removePopupFromStore(curPopupState.uuid);
     }
 
-    let isInnerComponentDataValid = false;
-
-    const validateInnerComponent = (isValid: boolean) => {
-        console.log(isValid)
-        isInnerComponentDataValid = isValid;
-    }
-
     export let onCloseHandler = () => {
     };
     export let title: string = "";
@@ -163,7 +156,8 @@
     export let actionType: ActionType = "";
     export let entityId: number;
 
-    export let isValid: boolean = true;
+    $: uuid = buildUuid(buildUniqueIdBasedOnEntityAndAction(entityType, actionType, entityId));
+    $: innerComponentErrors = JSON.stringify($openedPopups.filter((popup) => popup.uuid === uuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === uuid)[0].innerValidationErrors);
 
     export let onCancelHandler = () => {
     };
@@ -177,14 +171,17 @@
      class="{Popup} {popupClass}">
     <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{UtilBlock} {FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
 
+
+
     <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
     <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
 </div>
-<slot validateHandler={validateInnerComponent}/>
+<slot outerPopupUuid={uuid}/>
 {#if withAcceptButton || withCancelButton}
     <div class="{UtilBlock} {FlexHorCenter} {Footer}">
+        {innerComponentErrors}
         {#if withAcceptButton}
-            <Button disabled={!isValid} buttonClass={PopupButton}
+            <Button buttonClass={PopupButton}
                     title={acceptButtonTitle}
                     onClickHandler={onPopupAcceptHandler}/>
         {/if}

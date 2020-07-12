@@ -9,6 +9,7 @@ export const defaultPopupZIndex = 10;
 export interface PopupState {
     zIndex?: number;
     uuid?: string;
+    innerValidationErrors?: string[];
 }
 type PopupRecord = Record<string, PopupState>;
 
@@ -62,4 +63,17 @@ export const movePopupToTheTop = (uuid: string): PopupState => {
 
 export const removePopupFromStore = (uuid: string) => {
     openedPopups.update((popups) => popups.filter((popup) => popup.uuid !== uuid));
+}
+
+export const updatePopupInnerValidation = (uuid: string, errorMsg: string) => {
+    openedPopups.update((popups) => {
+        const popup = popups.find((popup) => popup.uuid === uuid);
+        if (!popup.innerValidationErrors) {
+            popup.innerValidationErrors = [errorMsg];
+        } else {
+            popup.innerValidationErrors = [...popup.innerValidationErrors, errorMsg];
+        }
+
+        return popups;
+    })
 }

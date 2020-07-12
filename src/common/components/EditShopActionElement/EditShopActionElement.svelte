@@ -28,13 +28,6 @@
         }
     }
 
-    let isInnerComponentDataValid = false;
-
-    const validateInnerComponent = (isValid: boolean) => {
-        console.log(isValid)
-        isInnerComponentDataValid = isValid;
-    }
-
     export let data: Shop = {}
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
@@ -47,7 +40,7 @@
         <ButtonIconEdit onClickHandler={onClickHandler}/>
     {/if}
     {#if isPopupOpened}
-        <PopupContainer let:validateHandler={validateInnerComponent}
+        <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton="Save"
                         withCancelButton="Cancel" entityType={EntityType.Shop}
@@ -56,7 +49,7 @@
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle="Save">
-            <ShopEditForm shop={data}/>
+            <ShopEditForm outerPopupUuid={uuid} shop={data}/>
         </PopupContainer>
     {/if}
 </div>
