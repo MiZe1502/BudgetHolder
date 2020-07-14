@@ -20,20 +20,17 @@
     const validateForm = () => {
         console.log(outerPopupUuid)
 
-        if (!shop.name) {
-            updatePopupInnerValidation(outerPopupUuid, "Name field should not be empty")
+        if (shop.name.length > 50) {
+            updatePopupInnerValidation(outerPopupUuid, "Name field should not be empty", "name")
         }
 
+        if (shop.name.length > 100) {
+            updatePopupInnerValidation(outerPopupUuid, "Name field is too long", "name")
+        }
 
-        // let isValid = true;
-        //
-        // if (!shop.name) {
-        //     isValid = false;
-        // }
-        //
-        // console.log(isValid)
-        //
-        // validateHandler(isValid);
+        if (shop.comment.length > 1000) {
+            updatePopupInnerValidation(outerPopupUuid, "Comment field is too long", "comment")
+        }
     }
 
     export let shop: Partial<Shop> = {};
@@ -51,6 +48,6 @@
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithMap label="Address" type="text" name="address"
                   bind:value={shop.address} bind:data={shop}/>
-    <TextAreaWithLabel textAreaClass={TextArea} label="Comment" name="comment"
+    <TextAreaWithLabel onChange={validateForm} textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
 </form>

@@ -186,8 +186,10 @@
     <div class="{UtilBlock} {FlexHorCenter} {Footer} {innerComponentErrors && FooterWithErrors}">
         {#if innerComponentErrors}
             <ul class="{FlexVert} {Font312Red} {ErrorsBlock}">
-                {#each innerComponentErrors as error}
-                    <li>{error}</li>
+                {#each innerComponentErrors as errorField}
+                    {#each errorField.errors as error}
+                        <li>{error}</li>
+                    {/each}
                 {/each}
             </ul>
         {/if}
