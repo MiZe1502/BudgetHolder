@@ -8,6 +8,8 @@ export default {
   orangeLight: '#e39c80',
   bluePrimary: '#46b8cc',
 
+  redAttention: "#c21807",
+
   gray: '#faf8f6',
   darkGray: "#d6d2ce",
 

@@ -24,7 +24,11 @@
         Popup,
         Header,
         Overflowed,
-        HeaderText
+        HeaderText,
+        FlexVert,
+        Font312Red,
+        FooterWithErrors,
+        ErrorsBlock
     } from "./style";
 
     import {
@@ -157,7 +161,7 @@
     export let entityId: number;
 
     $: uuid = buildUuid(buildUniqueIdBasedOnEntityAndAction(entityType, actionType, entityId));
-    $: innerComponentErrors = JSON.stringify($openedPopups.filter((popup) => popup.uuid === uuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === uuid)[0].innerValidationErrors);
+    $: innerComponentErrors = $openedPopups.filter((popup) => popup.uuid === uuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === uuid)[0].innerValidationErrors;
 
     export let onCancelHandler = () => {
     };
@@ -173,22 +177,31 @@
 
 
 
+
     <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
     <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
 </div>
 <slot outerPopupUuid={uuid}/>
 {#if withAcceptButton || withCancelButton}
-    <div class="{UtilBlock} {FlexHorCenter} {Footer}">
-        {innerComponentErrors}
-        {#if withAcceptButton}
-            <Button buttonClass={PopupButton}
-                    title={acceptButtonTitle}
-                    onClickHandler={onPopupAcceptHandler}/>
+    <div class="{UtilBlock} {FlexHorCenter} {Footer} {innerComponentErrors && FooterWithErrors}">
+        {#if innerComponentErrors}
+            <ul class="{FlexVert} {Font312Red} {ErrorsBlock}">
+                {#each innerComponentErrors as error}
+                    <li>{error}</li>
+                {/each}
+            </ul>
         {/if}
-        {#if withCancelButton}
-            <Button secondary={true} buttonClass={PopupButton} title={"Cancel"}
-                    onClickHandler={onPopupCancelHandler}/>
-        {/if}
+        <div class="{FlexHorCenter}">
+            {#if withAcceptButton}
+                <Button buttonClass={PopupButton}
+                        title={acceptButtonTitle}
+                        onClickHandler={onPopupAcceptHandler}/>
+            {/if}
+            {#if withCancelButton}
+                <Button secondary={true} buttonClass={PopupButton} title={"Cancel"}
+                        onClickHandler={onPopupCancelHandler}/>
+            {/if}
+        </div>
     </div>
 {/if}
         </div>

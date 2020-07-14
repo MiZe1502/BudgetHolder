@@ -1,8 +1,8 @@
 import { css } from 'emotion';
 import colors from "../../styles/colors";
 
-export { Font724Black } from "../../styles/fonts";
-export { FlexHorCenter, Overflowed } from "../../styles/positioning";
+export { Font724Black, Font312Red } from "../../styles/fonts";
+export { FlexHorCenter, Overflowed, FlexVert } from "../../styles/positioning";
 
 export const Popup = css`
     position: fixed;
@@ -36,6 +36,10 @@ export const Footer = css`
     justify-content: flex-end;
 `;
 
+export const FooterWithErrors = css`
+    justify-content: space-between;
+`;
+
 export const HeaderText = css`
     max-width: 50%;
     padding-right: 16px;
@@ -44,4 +48,10 @@ export const HeaderText = css`
 export const PopupButton = css`
     width: 100px;
     margin-left: 8px;
+`;
+
+export const ErrorsBlock = css`
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 12px;
 `;
