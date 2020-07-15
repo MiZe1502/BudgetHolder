@@ -10,6 +10,8 @@
     export let required = false;
     export let onChange = () => {
     };
+    export let onInput = () => {
+    };
 
     let inputElement: HTMLInputElement = null;
 
@@ -23,7 +25,7 @@
     {#if label}
         <label class="{Font312DarkGray}" for={name}>{label}</label>
     {/if}
-    <input on:change={onChange} bind:this={inputElement} on:focus={onFocus}
+    <input on:input on:change bind:this={inputElement} on:focus={onFocus}
            class="{Input} {Font312Black}" {required} {disabled} {name}
            bind:value={value} {autofocus}/>
 </div>

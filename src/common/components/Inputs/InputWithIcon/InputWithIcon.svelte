@@ -12,10 +12,12 @@
     export let required = false;
     export let onChange = () => {
     };
+    export let onInput = () => {
+    };
 </script>
 
 <div class="{Wrapper} {FlexHorCenter}">
-    <InputWithLabel onChange={onChange} bind:value={value} {autofocus} {name} {type}
+    <InputWithLabel on:input on:change bind:value={value} {autofocus} {name} {type}
                     {label} {disabled} {required}/>
     <div class="{ButtonWrapper}">
         <slot />

@@ -116,6 +116,11 @@ export const updatePopupInnerValidation = (uuid: string, errorMsg: string, field
             }
 
             const fieldErrors = popup.innerValidationErrors.find((error) => error.fieldName === fieldName);
+
+            if (!fieldErrors) {
+                return popups;
+            }
+
             const isErrorMsgExists = fieldErrors.errors.findIndex((error) => error === errorMsg) !== -1;
 
             if (isErrorMsgExists) {

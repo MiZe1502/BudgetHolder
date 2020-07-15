@@ -17,8 +17,11 @@
         updatePopupInnerValidation
     } from "../../../stores/popup";
 
-    const validateForm = () => {
-        console.log(outerPopupUuid)
+    const validateForm = (event: Event<HTMLInputElement>) => {
+        console.log(outerPopupUuid, shop, event.target)
+
+        //Dirty hack to change data befor on:input
+        shop[event.target.name] = event.target.value;
 
         let isInvalid = shop.name.length === 0
 
@@ -42,12 +45,12 @@
 </style>
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
-    <InputWithClearButton onChange={validateForm} label="Name" autofocus={true}
+    <InputWithClearButton onInput={validateForm} onChange={validateForm} label="Name" autofocus={true}
                           type="text" name="name"
                           bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithMap label="Address" type="text" name="address"
                   bind:value={shop.address} bind:data={shop}/>
-    <TextAreaWithLabel onChange={validateForm} textAreaClass={TextArea} label="Comment" name="comment"
+    <TextAreaWithLabel onInput={validateForm} onChange={validateForm} textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
 </form>
