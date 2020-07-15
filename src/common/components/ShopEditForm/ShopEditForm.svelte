@@ -20,17 +20,17 @@
     const validateForm = () => {
         console.log(outerPopupUuid)
 
-        if (shop.name.length > 50) {
-            updatePopupInnerValidation(outerPopupUuid, "Name field should not be empty", "name")
-        }
+        let isInvalid = shop.name.length === 0
 
-        if (shop.name.length > 100) {
-            updatePopupInnerValidation(outerPopupUuid, "Name field is too long", "name")
-        }
+        updatePopupInnerValidation(outerPopupUuid, "Name field should not be empty", "name", isInvalid)
 
-        if (shop.comment.length > 1000) {
-            updatePopupInnerValidation(outerPopupUuid, "Comment field is too long", "comment")
-        }
+        isInvalid = shop.name.length > 100
+
+        updatePopupInnerValidation(outerPopupUuid, "Name field is too long", "name", isInvalid)
+
+        isInvalid = shop.comment.length > 1000
+
+        updatePopupInnerValidation(outerPopupUuid, "Comment field is too long", "comment", isInvalid)
     }
 
     export let shop: Partial<Shop> = {};
