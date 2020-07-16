@@ -42,7 +42,8 @@ export const addPopupToState = (uuid: string): PopupState => {
 
     let curPopup: PopupState = {
         zIndex: defaultPopupZIndex,
-        uuid: uuid
+        uuid: uuid,
+        innerValidationErrors: [],
     };
 
     if (topPopup) {

@@ -195,7 +195,7 @@
         {/if}
         <div class="{FlexHorCenter}">
             {#if withAcceptButton}
-                <Button buttonClass={PopupButton}
+                <Button disabled={innerComponentErrors.length > 0} buttonClass={PopupButton}
                         title={acceptButtonTitle}
                         onClickHandler={onPopupAcceptHandler}/>
             {/if}
