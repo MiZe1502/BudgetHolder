@@ -16,6 +16,13 @@ export const Font312DarkGray = css`
         font-size: 12px;
 `;
 
+export const Font312RedAttention = css`
+        font-family: 'Noto Sans JP', sans-serif;
+        color: ${colors.redAttention};
+        font-weight: 300;
+        font-size: 12px;
+`;
+
 export const Font312Red = css`
         font-family: 'Noto Sans JP', sans-serif;
         color: ${colors.redAttention};

@@ -10,11 +10,12 @@
     export let label = "";
     export let disabled = false;
     export let required = false;
+    export let invalid = false;
 </script>
 
 <div class="{Wrapper} {FlexHorCenter}">
     <InputWithLabel on:input on:change bind:value={value} {autofocus} {name} {type}
-                    {label} {disabled} {required}/>
+                    {label} {disabled} {required} {invalid}/>
     <div class="{ButtonWrapper}">
         <slot />
     </div>

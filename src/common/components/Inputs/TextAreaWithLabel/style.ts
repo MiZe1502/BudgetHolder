@@ -1,6 +1,9 @@
 import {css} from 'emotion'
 
-export {Font312DarkGray, Font312Black} from "../../../styles/fonts";
+export {
+    Font312DarkGray, Font312Black, Font312RedAttention
+} from "../../../styles/fonts";
+export {InvalidInput} from "../../../styles/inputs";
 import colors from "../../../styles/colors";
 
 export const TextArea = css`

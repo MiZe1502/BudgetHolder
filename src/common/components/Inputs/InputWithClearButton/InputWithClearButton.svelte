@@ -14,10 +14,11 @@
     export let label = "";
     export let disabled = false;
     export let required = false;
+    export let invalid = false;
 </script>
 
 <InputWithIcon on:input on:change bind:value={value}
-               {autofocus} {name} {type}
+               {autofocus} {name} {type} {invalid}
                {label} {disabled} {required}>
     <ButtonIconClear onClickHandler={clearValue}/>
 </InputWithIcon>

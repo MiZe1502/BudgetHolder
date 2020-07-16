@@ -1,3 +1,5 @@
+import {FormFieldErrors} from "../../stores/popup";
+
 export interface ValidationRule {
     fieldName: string;
     checkLength?: boolean;
@@ -18,4 +20,10 @@ export const validURL = (str: string): boolean => {
         '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
         '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return !!pattern.test(str);
+}
+
+export const isFieldInvalid = (fieldName: string, formErrors: FormFieldErrors[]): boolean => {
+    console.log("isFieldInvalid", formErrors, Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName)))
+
+    return Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName));
 }

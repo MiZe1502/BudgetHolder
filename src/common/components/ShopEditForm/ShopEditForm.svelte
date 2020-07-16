@@ -1,5 +1,6 @@
 <script lang="ts">
     import {Shop} from "../../../pages/types";
+    import {isFieldInvalid} from "../../utils/validation";
     import {
         SideMinorPadding,
         TextArea,
@@ -14,6 +15,7 @@
     import InputWithMap from "../Inputs/InputWithMap/InputWithMap.svelte";
 
     import {
+        openedPopups,
         updatePopupInnerValidation
     } from "../../../stores/popup";
     import {validationRules} from "./validationRules";
@@ -23,10 +25,12 @@
         shop[event.target.name] = event.target.value;
 
         for (let rule of validationRules) {
-           const isInvalid = rule.validator(shop);
-           updatePopupInnerValidation(outerPopupUuid, rule.message, rule.fieldName, isInvalid)
+            const isInvalid = rule.validator(shop);
+            updatePopupInnerValidation(outerPopupUuid, rule.message, rule.fieldName, isInvalid)
         }
     }
+
+    $: formErrors = $openedPopups.filter((popup) => popup.uuid === outerPopupUuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === outerPopupUuid)[0].innerValidationErrors;
 
     export let shop: Partial<Shop> = {};
     export let outerPopupUuid: string = "";
@@ -37,14 +41,16 @@
 </style>
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
-    <InputWithClearButton on:input={validateForm} on:change={validateForm}
+    <InputWithClearButton invalid={isFieldInvalid("name", formErrors)}
+                          on:input={validateForm} on:change={validateForm}
                           label="Name" autofocus={true}
                           type="text" name="name"
                           bind:value={shop.name} required={true}/>
     <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
     <InputWithMap label="Address" type="text" name="address"
                   bind:value={shop.address} bind:data={shop}/>
-    <TextAreaWithLabel on:input={validateForm} on:change={validateForm}
+    <TextAreaWithLabel invalid={isFieldInvalid("comment", formErrors)}
+                       on:input={validateForm} on:change={validateForm}
                        textAreaClass={TextArea} label="Comment" name="comment"
                        bind:value={shop.comment}/>
 </form>
