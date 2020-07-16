@@ -14,13 +14,9 @@
     export let label = "";
     export let disabled = false;
     export let required = false;
-    export let onChange = () => {
-    };
-    export let onInput = () => {
-    };
 </script>
 
-<InputWithIcon on:input={onInput} on:change={onChange} bind:value={value}
+<InputWithIcon on:input on:change bind:value={value}
                {autofocus} {name} {type}
                {label} {disabled} {required}>
     <ButtonIconClear onClickHandler={clearValue}/>

@@ -8,10 +8,6 @@
     export let label = "";
     export let disabled = false;
     export let required = false;
-    export let onChange = () => {
-    };
-    export let onInput = () => {
-    };
 
     let inputElement: HTMLInputElement = null;
 

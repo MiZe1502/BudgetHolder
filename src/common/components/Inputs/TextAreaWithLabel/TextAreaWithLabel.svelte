@@ -7,12 +7,10 @@
     export let label = "";
     export let disabled = false;
     export let textAreaClass = "";
-    export let onChange = () => {};
-    export let onInput = () => {};
 </script>
 
 {#if label}
     <label class="{Font312DarkGray}" for={name}>{label}</label>
 {/if}
-<textarea on:input={onInput} on:change={onChange} class="{TextArea} {Font312Black} {textAreaClass}" {disabled} {name}
+<textarea on:input on:change class="{TextArea} {Font312Black} {textAreaClass}" {disabled} {name}
           bind:value={value}></textarea>
