@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store'
-import { Shop } from '../pages/types'
+import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 
 export const shops = writable([])
@@ -32,5 +32,5 @@ export const updateShopInStore = (updatedShop: Shop) => {
 }
 
 export const updateCurrentShopsSlice = (from: number, to: number) => {
-    shops.set([...get(allShops).slice(from, to)]);
+    shops.set([...get(allShops).slice(from, to + 1)]);
 }

@@ -1,9 +1,9 @@
 <script lang="typescript" >
-    import MainMenu from './common/components/MainMenu/MainMenu.svelte'
+    import MainMenu from './common/components/Menu/MainMenu/MainMenu.svelte'
 
     import { yandexMapsReady, googleMapsReady } from "./stores/maps";
 
-    import Shops from "./pages/Shops.svelte";
+    import Shops from "./pages/Shops/Shops.svelte";
 
     import { Router, Link, Route } from "svelte-routing";
 

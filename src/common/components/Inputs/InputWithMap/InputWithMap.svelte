@@ -1,8 +1,8 @@
 <script lang="ts">
     import InputWithIcon from "../InputWithIcon/InputWithIcon.svelte";
     import MapActionElement
-        from "../../MapActionElement/MapActionElement.svelte";
-    import {MapItemData} from "../../MapActionElement/utils";
+        from "../../ActionElements/MapActionElement/MapActionElement.svelte";
+    import {MapItemData} from "../../ActionElements/MapActionElement/utils";
 
     export let value = "";
     export let autofocus = false;

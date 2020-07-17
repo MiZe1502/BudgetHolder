@@ -1,1 +1,0 @@
-export { SideMainPadding } from "../common/styles/positioning";
