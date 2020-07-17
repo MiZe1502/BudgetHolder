@@ -78,6 +78,9 @@ export const removePopupFromStore = (uuid: string) => {
 export const updatePopupInnerValidation = (uuid: string, errorMsg: string, fieldName: string, isInvalid?: boolean) => {
     openedPopups.update((popups) => {
         const popup = popups.find((popup) => popup.uuid === uuid);
+        if (!popup) {
+            return popups;
+        }
 
         if (isInvalid) {
             if (!popup.innerValidationErrors) {

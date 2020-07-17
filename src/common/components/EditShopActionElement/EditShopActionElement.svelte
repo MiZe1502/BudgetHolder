@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import {onMount} from "svelte";
     import {Shop} from "../../../pages/types";
     import {updateShopInStore, addShopToStore} from "../../../stores/shops";
 
@@ -18,6 +19,7 @@
 
     const onCloseHandler = () => {
         isPopupOpened = false;
+        data = {...initialData}
     }
 
     const onSaveHandler = () => {
@@ -27,6 +29,12 @@
             addShopToStore(data);
         }
     }
+
+    onMount(() => {
+        initialData = {...data};
+    })
+
+    let initialData: Shop = {};
 
     export let data: Shop = {}
     export let withButton: boolean = false;
@@ -42,7 +50,7 @@
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
-                        onCancelHandler={onCloseHandler} withAcceptButton="Save"
+                        onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton="Cancel" entityType={EntityType.Shop}
                         actionType={ActionType.Remove} entityId={data.id}
                         title={data.id ? `Edit ${data.name}` || "Edit" : "New shop"}

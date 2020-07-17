@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {onMount} from "svelte";
     import {Shop} from "../../../pages/types";
     import {isFieldInvalid} from "../../utils/validation";
     import {
@@ -22,13 +23,20 @@
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         //Dirty hack to change data before on:input
-        shop[event.target.name] = event.target.value;
+        if (event) {
+            shop[event.target.name] = event.target.value;
+        }
 
         for (let rule of validationRules) {
             const isInvalid = rule.validator(shop);
             updatePopupInnerValidation(outerPopupUuid, rule.message, rule.fieldName, isInvalid)
         }
     }
+
+    onMount(() => {
+        validateForm(null);
+        console.log("shop", shop)
+    })
 
     $: formErrors = $openedPopups.filter((popup) => popup.uuid === outerPopupUuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === outerPopupUuid)[0].innerValidationErrors;
 
@@ -41,7 +49,7 @@
 </style>
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
-    <InputWithClearButton invalid={isFieldInvalid("name", formErrors)}
+    <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                           on:input={validateForm} on:change={validateForm}
                           label="Name" autofocus={true}
                           type="text" name="name"

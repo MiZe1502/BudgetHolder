@@ -5,6 +5,9 @@
 
     const clearValue = () => {
         value = "";
+        if (required) {
+            invalid = true;
+        }
     }
 
     export let value = "";
