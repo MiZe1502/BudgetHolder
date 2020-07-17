@@ -7,20 +7,24 @@ interface SingleMenuBlock {
 }
 
 export default [
-  {
-    title: 'Home',
-    url: routes.home
-  },
-  {
-    title: 'Budget',
-    url: routes.budget
-  },
-  {
-    title: 'Shops',
-    url: routes.shops
-  },
-  {
-    title: 'Statistics',
-    url: routes.stats
-  }
+    {
+        title: 'Home',
+        url: routes.home
+    },
+    {
+        title: 'Budget',
+        url: routes.budget
+    },
+    {
+        title: 'Shops',
+        url: routes.shops
+    },
+    {
+        title: 'Statistics',
+        url: routes.stats
+    },
+    {
+        title: 'Categorization',
+        url: routes.categorization
+    }
 ]

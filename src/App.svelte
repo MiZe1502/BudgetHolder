@@ -1,9 +1,11 @@
 <script lang="typescript" >
     import MainMenu from './common/components/Menu/MainMenu/MainMenu.svelte'
+    import routes from "./common/utils/routes";
 
     import { yandexMapsReady, googleMapsReady } from "./stores/maps";
 
     import Shops from "./pages/Shops/Shops.svelte";
+    import Categorization from "./pages/Categorization/Categorization.svelte";
 
     import { Router, Link, Route } from "svelte-routing";
 
@@ -52,7 +54,8 @@
         <MainMenu />
         <div class="RouteWrapper">
             <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
-            <Route path="shops" component="{Shops}" />
+            <Route path={routes.shops} component="{Shops}" />
+            <Route path={routes.categorization} component="{Categorization}" />
             <!-- <Route path="/"><Home /></Route> -->
         </div>
     </div>
