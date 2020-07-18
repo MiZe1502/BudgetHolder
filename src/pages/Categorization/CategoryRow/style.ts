@@ -32,3 +32,7 @@ export const CategoryLine = css`
         border-bottom: 0px;
     }
 `;
+
+export const CategoryLineExpanded = css`
+  background-color: ${colors.gray};
+`;

@@ -9,6 +9,7 @@ import svelte from 'rollup-plugin-svelte'
 import { terser } from 'rollup-plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 import preprocess from 'svelte-preprocess'
+import postcss from 'rollup-plugin-postcss';
 
 const isDev = process.env.NODE_ENV === 'development'
 const port = 3000
@@ -30,6 +31,9 @@ const plugins = [
   typescript(),
   babel({
     exclude: "node_modules/**"
+  }),
+  postcss({
+    plugins: []
   }),
   commonjs(),
   html({

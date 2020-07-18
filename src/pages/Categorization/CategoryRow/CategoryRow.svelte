@@ -6,6 +6,7 @@
         ArrowButton,
         MarginedName,
         ArrowButtonExpanded,
+        CategoryLineExpanded,
         CategoryLine
     } from "./style";
     import {Category} from "../types";
@@ -24,7 +25,7 @@
     export let treeLevel: number = 0;
 </script>
 
-<div class="{FlexHorCenter} {CategoryLine}"
+<div class="{FlexHorCenter} {CategoryLine} {isOpened && CategoryLineExpanded}"
      style="padding-left: {8 + treeLevel * categoryTreeLeftShift}px">
     {#if category.categories}
         <ButtonIconExpandArrow

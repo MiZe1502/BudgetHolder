@@ -1,4 +1,5 @@
 <script lang="typescript" >
+    import SimpleBar from '@woden/svelte-simplebar'
     import MainMenu from './common/components/Menu/MainMenu/MainMenu.svelte'
     import routes from "./common/utils/routes";
 
@@ -16,6 +17,10 @@
         margin: 0;
     }
 
+    :global(*) {
+        scrollbar-width: none;
+    }
+
     :global(.PrimaryBackground) {
         background-color: #80cf47;
     }
@@ -29,9 +34,14 @@
         border: 0;
     }
 
+    :global(.simplebar-scrollbar::before) {
+        background: #5b9c35;
+    }
+
     .MainWrapper {
         display: flex;
         flex-direction: column;
+        height: 100vh;
     }
 
     .RouteWrapper {
@@ -52,11 +62,13 @@
 <Router>
     <div class="MainWrapper">
         <MainMenu />
+        <SimpleBar style="max-height: 100vh; width: 100%">
         <div class="RouteWrapper">
-            <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
-            <Route path={routes.shops} component="{Shops}" />
-            <Route path={routes.categorization} component="{Categorization}" />
-            <!-- <Route path="/"><Home /></Route> -->
+                <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
+                <Route path={routes.shops} component="{Shops}" />
+                <Route path={routes.categorization} component="{Categorization}" />
+                <!-- <Route path="/"><Home /></Route> -->
         </div>
+        </SimpleBar>
     </div>
 </Router>

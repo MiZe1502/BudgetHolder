@@ -12,6 +12,14 @@ export const mockData: Category[] = [
             {
                 id: 5,
                 name: "Fish"
+            },
+            {
+                id: 7,
+                name: "Snack"
+            },
+            {
+                id: 8,
+                name: "Groceries"
             }
         ]
     },
@@ -26,6 +34,42 @@ export const mockData: Category[] = [
             {
                 id: 6,
                 name: "Movies"
+            },
+            {
+                id: 9,
+                name: "Games",
+            }
+        ]
+    },
+    {
+        id: 10,
+        name: "Electronics",
+        categories: [
+            {
+                id: 11,
+                name: "TV"
+            }
+        ]
+    },
+    {
+        id: 12,
+        name: "Furniture"
+    },
+    {
+        id: 13,
+        name: "Clothes",
+        categories: [
+            {
+                id: 14,
+                name: "Children"
+            },
+            {
+                id: 15,
+                name: "Women"
+            },
+            {
+                id: 16,
+                name: "Men"
             }
         ]
     }
