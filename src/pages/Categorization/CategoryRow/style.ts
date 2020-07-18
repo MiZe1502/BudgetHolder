@@ -1,0 +1,30 @@
+import {css} from 'emotion'
+
+import colors from "../../../common/styles/colors";
+
+export {Font312Black} from "../../../common/styles/fonts";
+export {
+    SideMinorPadding, FlexHorCenter
+} from "../../../common/styles/positioning";
+
+export const ArrowButton = css`
+    margin-right: 8px;
+`;
+
+export const ArrowButtonExpanded = css`
+    margin-right: 8px;
+
+    & > svg {
+        transform: rotate(90deg);
+    }
+`;
+
+export const MarginedName = css`
+    margin-left: 32px;
+`;
+
+export const CategoryLine = css`
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid ${colors.darkGray};
+`;
