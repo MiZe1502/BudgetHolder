@@ -25,7 +25,7 @@
 </script>
 
 <div class="{FlexHorCenter} {CategoryLine}"
-     style="padding-left: {treeLevel * categoryTreeLeftShift}px">
+     style="padding-left: {8 + treeLevel * categoryTreeLeftShift}px">
     {#if category.categories}
         <ButtonIconExpandArrow
                 height={16}

@@ -1,7 +1,10 @@
 <script lang="typescript">
     import {onMount} from "svelte";
+    import {SideMainPadding} from "./style";
     import {mockData} from "./data";
     import CategoryRow from "./CategoryRow/CategoryRow.svelte";
+    import CategoriesContainer
+        from "./CategoriesContainer/CategoriesContainer.svelte";
 
     onMount(() => {
 
@@ -9,8 +12,6 @@
 
 </script>
 
-<div>
-    {#each mockData as category}
-        <CategoryRow category={category}/>
-    {/each}
-</div>
+<section class="{SideMainPadding}">
+    <CategoriesContainer categories={mockData}/>
+</section>

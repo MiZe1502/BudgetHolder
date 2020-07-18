@@ -25,6 +25,10 @@ export const MarginedName = css`
 
 export const CategoryLine = css`
     height: 40px;
-    width: 100%;
+    padding-right: 8px;
     border-bottom: 1px solid ${colors.darkGray};
+
+    &:last-of-type {
+        border-bottom: 0px;
+    }
 `;
