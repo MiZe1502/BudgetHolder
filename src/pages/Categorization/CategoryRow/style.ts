@@ -20,7 +20,7 @@ export const ArrowButtonExpanded = css`
 `;
 
 export const MarginedName = css`
-    margin-left: 32px;
+    margin-left: 24px;
 `;
 
 export const CategoryLine = css`

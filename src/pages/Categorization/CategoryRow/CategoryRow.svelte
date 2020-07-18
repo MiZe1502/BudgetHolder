@@ -39,7 +39,7 @@
     </div>
 </div>
 {#if isOpened}
-    {#each category.categories as innerCategory}
+    {#each category.categories as innerCategory (`${innerCategory.id}-${innerCategory.name}`)}
         <SingleCategory category={innerCategory} treeLevel={treeLevel + 1}/>
     {/each}
 {/if}

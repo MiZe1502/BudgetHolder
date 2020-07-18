@@ -38,6 +38,16 @@ export const mockData: Category[] = [
             {
                 id: 9,
                 name: "Games",
+                categories: [
+                    {
+                        id: 17,
+                        name: "PS4",
+                    },
+                    {
+                        id: 18,
+                        name: "PC"
+                    }
+                ]
             }
         ]
     },
