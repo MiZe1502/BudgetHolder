@@ -27,6 +27,8 @@ export const CategoryLine = css`
     height: 40px;
     padding-right: 8px;
     border-bottom: 1px solid ${colors.darkGray};
+    display: flex;
+    justify-content: space-between;
 
     &:last-of-type {
         border-bottom: 0px;

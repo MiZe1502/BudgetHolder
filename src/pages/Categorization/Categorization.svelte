@@ -24,6 +24,6 @@
 
 </script>
 
-<section class="{SideMainPadding}">
+<section>
     <CategoriesContainer categories={$categories} status={$categoriesStatus}/>
 </section>

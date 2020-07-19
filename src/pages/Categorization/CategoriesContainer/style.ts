@@ -1,5 +1,6 @@
 import {css} from 'emotion'
 
+export {SideMainPadding} from "../../../common/styles/positioning";
 import colors from "../../../common/styles/colors";
 
 export const maxHeight = 500;
