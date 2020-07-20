@@ -1,12 +1,18 @@
 <script lang="ts">
     import {onMount} from "svelte";
     import {Category} from "../types";
+    import Button from "../../../common/components/Buttons/Button/Button.svelte";
     import ButtonIconEdit
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {Popup} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";
+    import CategoryEditForm from "../CategoryEditForm/CategoryEditForm.svelte";
+    import {
+        addCategoryToStore,
+        updateCategoryInStore
+    } from "../../../stores/categories";
 
     let isPopupOpened = false;
 
@@ -21,9 +27,9 @@
 
     const onSaveHandler = () => {
         if (data.id) {
-            console.log("update")
+            updateCategoryInStore(data)
         } else {
-            console.log("add")
+            addCategoryToStore(data)
         }
     }
 
@@ -49,14 +55,14 @@
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
-                        withCancelButton="Cancel" entityType={EntityType.Category}
+                        withCancelButton="Cancel"
+                        entityType={EntityType.Category}
                         actionType={ActionType.Remove} entityId={data.id}
                         title={data.id ? `Edit ${data.name}` || "Edit" : "New category"}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle="Save">
-            Category form
-            <!--            <ShopEditForm outerPopupUuid={uuid} shop={data}/>-->
+            <CategoryEditForm outerPopupUuid={uuid} data={data}/>
         </PopupContainer>
     {/if}
 

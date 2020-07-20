@@ -17,19 +17,16 @@
         from "../../../common/components/ElementsAndBlocks/NoDataFoundBlock/NoDataFoundBlock.svelte";
     import CommonTitle
         from "../../../common/components/Tables/CommonTitle/CommonTitle.svelte";
-    import Button
-        from "../../../common/components/Buttons/Button/Button.svelte";
-
-    const addNewCategoryHandler = () => {
-        alert("add")
-    }
+    import EditCategoryActionElement
+        from "../EditCategoryActionElement/EditCategoryActionElement.svelte";
 
     export let categories: Category[] = [];
     export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
 <CommonTitle title="Categories" withButton={true}>
-    <Button title="Add new category" onClickHandler={addNewCategoryHandler}/>
+    <EditCategoryActionElement withButton={true}
+                               buttonTitle="Add new category"/>
 </CommonTitle>
 <div class="{SideMainPadding}">
     <div class="{Container} {(!categories || categories.length === 0) && ContainerWithoutData}">

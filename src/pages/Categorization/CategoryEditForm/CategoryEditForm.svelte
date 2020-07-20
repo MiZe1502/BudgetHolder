@@ -1,0 +1,45 @@
+<script lang="ts">
+    import InputWithLabel
+        from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
+    import {Category} from "../types";
+    import {isFieldInvalid} from "../../../common/utils/validation";
+    import {
+        SideMinorPadding,
+        FlexVert,
+        Form
+    } from "./style";
+    import {
+        openedPopups,
+        updatePopupInnerValidation
+    } from "../../../stores/popup";
+    import {onMount} from "svelte";
+    import {validationRules} from "./validationRules";
+
+    const validateForm = (event: Event<HTMLInputElement>) => {
+        //Dirty hack to change data before on:input
+        if (event) {
+            data[event.target.name] = event.target.value;
+        }
+
+        for (let rule of validationRules) {
+            const isInvalid = rule.validator(data);
+            updatePopupInnerValidation(outerPopupUuid, rule.message, rule.fieldName, isInvalid)
+        }
+    }
+
+    onMount(() => {
+        validateForm(null);
+    })
+
+    $: formErrors = $openedPopups.filter((popup) => popup.uuid === outerPopupUuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === outerPopupUuid)[0].innerValidationErrors;
+
+    export let data: Partial<Category> = {};
+    export let outerPopupUuid: string = "";
+</script>
+<form class="{SideMinorPadding} {FlexVert} {Form}">
+    <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
+                    on:input={validateForm} on:change={validateForm}
+                    label="Name" autofocus={true}
+                    type="text" name="name"
+                    bind:value={data.name} required={true}/>
+</form>

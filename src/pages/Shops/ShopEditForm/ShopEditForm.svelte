@@ -35,7 +35,6 @@
 
     onMount(() => {
         validateForm(null);
-        console.log("shop", shop)
     })
 
     $: formErrors = $openedPopups.filter((popup) => popup.uuid === outerPopupUuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === outerPopupUuid)[0].innerValidationErrors;
