@@ -13,6 +13,9 @@ export const Container = css`
   min-height: 250px;
   overflow: scroll;
   display: flex;
+`;
+
+export const ContainerWithoutData = css`
   justify-content: center;
   align-items: center;
 `;

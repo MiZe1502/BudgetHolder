@@ -1,6 +1,11 @@
 <script lang="ts">
     import SimpleBar from '@woden/svelte-simplebar'
-    import {Container, maxHeight, SideMainPadding} from "./style";
+    import {
+        Container,
+        maxHeight,
+        SideMainPadding,
+        ContainerWithoutData
+    } from "./style";
     import {Category} from "../types";
     import CategoryRow from "../CategoryRow/CategoryRow.svelte";
     import ButtonIconNew
@@ -27,7 +32,7 @@
     <Button title="Add new category" onClickHandler={addNewCategoryHandler}/>
 </CommonTitle>
 <div class="{SideMainPadding}">
-    <div class="{Container}">
+    <div class="{Container} {(!categories || categories.length === 0) && ContainerWithoutData}">
         {#if status === LoadingStatus.Loading}
             <LoadingSpinner/>
         {:else if status === LoadingStatus.Finished}
