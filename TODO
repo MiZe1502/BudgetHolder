@@ -1,28 +1,23 @@
 1. common
     1.1. pass env variable to rollup config
 3. functionality
-    3.1. localization
     3.3. maps
         3.3.1. pass gmaps and ymaps keys from config to env
     3.4. common popup
         3.4.1. refactor z-index logic on linked list
         3.4.2. implement message block
+    3.5. inputs
+        3.5.1. dropdown menu
     3.6. websockets
     3.7. auth
         3.7.1. login + pass + session
         3.7.2. client cert
-    3.8. buttons
-        3.8.2. new icon button
     3.9. categorization page
         3.9.1. categories tree data structure
         3.9.2. categories component
-            3.9.2.1. single line
-            3.9.2.2. expandability
             3.9.2.3. edit category form
             3.9.2.4. new category form
         3.9.3. tags component
             3.9.3.1. tags input
-    3.9. categories or tags?
     3.10. main
         3.10.1. side navigation and scrollto section
-        3.10.2. custom scroll

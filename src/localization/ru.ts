@@ -13,7 +13,7 @@ export default {
                 title: "Карта"
             },
             menu: {
-                home: "Домашняя",
+                home: "Главная",
                 budget: "Бюджет",
                 shops: "Магазины",
                 statistics: "Статистика",
