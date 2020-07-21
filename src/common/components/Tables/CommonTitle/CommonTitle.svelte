@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import { _ } from 'svelte-i18n'
     import { Font732Black, Font732DarkGray, Title, TitleText, SideMainPadding, FlexHorCenter} from "./style";
 
     import Button from '../../Buttons/Button/Button.svelte'
@@ -12,7 +13,7 @@
 </script>
 
 <div class="{SideMainPadding} {Title} {FlexHorCenter}">
-    <span class="{TitleText} {Font732Black}">{title}</span>
+    <span class="{TitleText} {Font732Black}">{$_(title)}</span>
     {#if dataLength}
         <span class="{TitleText} {Font732DarkGray}">({dataLength})</span>
     {/if}

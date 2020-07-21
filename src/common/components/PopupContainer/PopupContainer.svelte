@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import { _ } from 'svelte-i18n'
     import {onMount} from 'svelte';
     import {fade} from 'svelte/transition';
     import {get} from 'svelte/store';
@@ -153,7 +154,7 @@
     export let title: string = "";
     export let popupClass: string = "";
     export let withAcceptButton: boolean = false;
-    export let acceptButtonTitle: string = "OK";
+    export let acceptButtonTitle: string = $_("common.components.buttons.ok");
     export let withCancelButton: boolean = false;
     export let uniqueId: string = "";
     export let entityType: EntityType = "";
@@ -200,7 +201,7 @@
                         onClickHandler={onPopupAcceptHandler}/>
             {/if}
             {#if withCancelButton}
-                <Button secondary={true} buttonClass={PopupButton} title={"Cancel"}
+                <Button secondary={true} buttonClass={PopupButton} title={$_("common.components.buttons.cancel")}
                         onClickHandler={onPopupCancelHandler}/>
             {/if}
         </div>

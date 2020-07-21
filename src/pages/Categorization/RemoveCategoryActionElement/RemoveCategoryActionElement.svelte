@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n';
     import ButtonIconRemove
         from "../../../common/components/Buttons/ButtonIconRemove/ButtonIconRemove.svelte";
     import PopupContainer
@@ -41,12 +42,11 @@
                         onAcceptHandler={onAcceptHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={true}
-                        title={`Remove ${data.name}` || "Remove"}
+                        title={`${$_("commmon.titles.remove")} ${data.name}` || $_("commmon.titles.remove")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler} popupClass={Popup}>
             <div class="{SideMainPadding} {FlexHorCenter} {Message} {Font732Black}">
-                Do You really want to remove {data.name}? All children
-                categories will be erased too.
+                {`${$_("categories.messages.remove_part1")}${data.name}${$_("categories.messages.remove_part2")}`}
             </div>
         </PopupContainer>
     {/if}

@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import {_} from 'svelte-i18n'
     import {MapContainerWrapper, Popup} from "./style";
 
     import ButtonIconMap from "../../Buttons/ButtonIconMap/ButtonIconMap.svelte"
@@ -29,8 +30,10 @@
 
     export let data: MapItemData[] = [];
     export let isEditable: boolean = false;
-    export let updateAddress = () => {};
-    export let onCancel = () => {};
+    export let updateAddress = () => {
+    };
+    export let onCancel = () => {
+    };
 </script>
 
 <div>
@@ -39,7 +42,7 @@
         <PopupContainer entityType={data && data[0].entityType}
                         actionType={data && data[0].actionType}
                         entityId={data && data[0].id}
-                        title={data[0].name || "Map"}
+                        title={data[0].name || $_("common.components.map.title")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         withAcceptButton={isEditable}

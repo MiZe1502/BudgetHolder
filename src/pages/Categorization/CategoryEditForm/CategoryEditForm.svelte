@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { _ } from 'svelte-i18n'
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import {Category} from "../types";
@@ -39,7 +40,7 @@
 <form class="{SideMinorPadding} {FlexVert} {Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                     on:input={validateForm} on:change={validateForm}
-                    label="Name" autofocus={true}
+                    label={$_("common.labels.name")} autofocus={true}
                     type="text" name="name"
                     bind:value={data.name} required={true}/>
 </form>

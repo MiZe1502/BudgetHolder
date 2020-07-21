@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import { _ } from 'svelte-i18n'
     import {fade} from 'svelte/transition';
 
     import {ColumnConfig} from "./utils";
@@ -33,7 +34,7 @@
 
 <section class="{SectionBottomMargin}">
     <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}>
-        <EditShopActionElement withButton={true} buttonTitle="Add new shop"}/>
+        <EditShopActionElement withButton={true} buttonTitle={$_("shops.buttons.new")}/>
     </CommonTitle>
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner />
@@ -50,6 +51,6 @@
             {/if}
         {/if}
     {:else if status === LoadingStatus.Error}
-        Error fetching data
+        {$_("common.messages.errors.fetching")}
     {/if}
 </section>

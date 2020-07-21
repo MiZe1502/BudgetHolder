@@ -46,10 +46,6 @@
         </div>
     </div>
     <CategoryActionsElement data={category}/>
-<!--    <div class="{FlexHorCenter}">-->
-<!--        <ButtonIconEdit width={16} height={16}/>-->
-<!--        <ButtonIconRemove width={16} height={16}/>-->
-<!--    </div>-->
 </div>
 {#if isOpened}
     {#each category.categories as innerCategory (`${innerCategory.id}-${innerCategory.name}`)}

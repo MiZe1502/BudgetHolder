@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import {_} from 'svelte-i18n'
     import {Shop} from "../types";
     import {removeShopFromStore} from "../../../stores/shops";
     import {EntityType, ActionType} from "../../../stores/utils";
@@ -41,11 +42,11 @@
                         onAcceptHandler={onAcceptHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={true}
-                        title={`Remove ${data.name}` || "Remove"}
+                        title={`${$_("common.titles.remove")} ${data.name}` || $_("common.titles.remove")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler} popupClass={Popup}>
             <div class="{SideMainPadding} {FlexHorCenter} {Message} {Font732Black}">
-                Do You really want to remove {data.name}?
+                {`${$_("shops.messages.remove_part1")}${data.name}${$_("shops.messages.remove_part2")}`}
             </div>
         </PopupContainer>
     {/if}

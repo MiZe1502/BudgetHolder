@@ -29,15 +29,15 @@
     }
 
     const tableData: CommonTableInterface = {
-      title: "Shops",
+      title: "shops.titles.shops",
       total: 0,
       withButton: true,
-      buttonTitle: "Add new shop",
+      buttonTitle: "shops.buttons.new",
       buttonClickHandler: () => {},
       status: LoadingStatus.Loading,
       columnsConfig: [
         {
-          header: 'Name',
+          header: 'common.labels.name',
           component: UrlElement,
           overflowed: true,
           style: 'flex: 1 0 20%',
@@ -49,13 +49,13 @@
           }
         },
         {
-          header: 'Address',
+          header: 'common.labels.address',
           component: SimpleTextElement,
           style: 'flex: 1 0 20%',
           mapping: (data: Shop) => data.address,
         },
         {
-          header: 'Comment',
+          header: 'common.labels.comment',
           component: SimpleTextElement,
           style: 'flex: 1 0 40%',
           mapping: (data: Shop) => data.comment,

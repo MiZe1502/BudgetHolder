@@ -8,23 +8,23 @@ interface SingleMenuBlock {
 
 export default [
     {
-        title: 'Home',
+        title: 'common.components.menu.home',
         url: routes.home
     },
     {
-        title: 'Budget',
+        title: 'common.components.menu.budget',
         url: routes.budget
     },
     {
-        title: 'Shops',
+        title: 'common.components.menu.shops',
         url: routes.shops
     },
     {
-        title: 'Statistics',
+        title: 'common.components.menu.statistics',
         url: routes.stats
     },
     {
-        title: 'Categorization',
+        title: 'common.components.menu.categorization',
         url: routes.categorization
     }
 ]

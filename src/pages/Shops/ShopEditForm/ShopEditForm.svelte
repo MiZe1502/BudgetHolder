@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
     import {Shop} from "../types";
     import {isFieldInvalid} from "../../../common/utils/validation";
@@ -8,12 +9,14 @@
         FlexVert,
         Form
     } from "./style";
-    import InputWithLabel from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
+    import InputWithLabel
+        from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel
         from "../../../common/components/Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
     import InputWithClearButton
         from "../../../common/components/Inputs/InputWithClearButton/InputWithClearButton.svelte";
-    import InputWithMap from "../../../common/components/Inputs/InputWithMap/InputWithMap.svelte";
+    import InputWithMap
+        from "../../../common/components/Inputs/InputWithMap/InputWithMap.svelte";
 
     import {
         openedPopups,
@@ -49,15 +52,17 @@
 
 <form class="{SideMinorPadding} {FlexVert} {Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
-                          on:input={validateForm} on:change={validateForm}
-                          label="Name" autofocus={true}
-                          type="text" name="name"
-                          bind:value={shop.name} required={true}/>
-    <InputWithLabel label="Url" type="text" name="url" bind:value={shop.url}/>
-    <InputWithMap label="Address" type="text" name="address"
+                    on:input={validateForm} on:change={validateForm}
+                    label={$_("common.labels.name")} autofocus={true}
+                    type="text" name="name"
+                    bind:value={shop.name} required={true}/>
+    <InputWithLabel label={$_("common.labels.url")} type="text" name="url"
+                    bind:value={shop.url}/>
+    <InputWithMap label={$_("common.labels.address")} type="text" name="address"
                   bind:value={shop.address} bind:data={shop}/>
     <TextAreaWithLabel invalid={isFieldInvalid("comment", formErrors)}
                        on:input={validateForm} on:change={validateForm}
-                       textAreaClass={TextArea} label="Comment" name="comment"
+                       textAreaClass={TextArea}
+                       label={$_("common.labels.comment")} name="comment"
                        bind:value={shop.comment}/>
 </form>

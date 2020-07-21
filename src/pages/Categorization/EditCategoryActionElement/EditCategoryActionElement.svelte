@@ -1,7 +1,9 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
     import {Category} from "../types";
-    import Button from "../../../common/components/Buttons/Button/Button.svelte";
+    import Button
+        from "../../../common/components/Buttons/Button/Button.svelte";
     import ButtonIconEdit
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import PopupContainer
@@ -55,13 +57,13 @@
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
-                        withCancelButton="Cancel"
+                        withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.Category}
                         actionType={ActionType.Remove} entityId={data.id}
-                        title={data.id ? `Edit ${data.name}` || "Edit" : "New category"}
+                        title={data.id ? `${$_("common.titles.edit")} ${data.name}` || $_("common.titles.edit") : $_("categories.titles.new")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
-                        acceptButtonTitle="Save">
+                        acceptButtonTitle={$_("common.components.buttons.save")}>
             <CategoryEditForm outerPopupUuid={uuid} data={data}/>
         </PopupContainer>
     {/if}

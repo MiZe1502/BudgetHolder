@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
     import {Shop} from "../types";
     import {updateShopInStore, addShopToStore} from "../../../stores/shops";
@@ -6,10 +7,13 @@
     import {Popup} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";
 
-    import ButtonIconEdit from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte"
-    import PopupContainer from "../../../common/components/PopupContainer/PopupContainer.svelte"
+    import ButtonIconEdit
+        from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte"
+    import PopupContainer
+        from "../../../common/components/PopupContainer/PopupContainer.svelte"
     import ShopEditForm from "../ShopEditForm/ShopEditForm.svelte";
-    import Button from "../../../common/components/Buttons/Button/Button.svelte";
+    import Button
+        from "../../../common/components/Buttons/Button/Button.svelte";
 
     let isPopupOpened = false;
 
@@ -51,12 +55,13 @@
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
-                        withCancelButton="Cancel" entityType={EntityType.Shop}
+                        withCancelButton={$_("common.components.buttons.cancel")}
+                        entityType={EntityType.Shop}
                         actionType={ActionType.Remove} entityId={data.id}
-                        title={data.id ? `Edit ${data.name}` || "Edit" : "New shop"}
+                        title={data.id ? `${$_("common.titles.edit")} ${data.name}` || $_("common.titles.edit") : $_("shops.titles.new")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
-                        acceptButtonTitle="Save">
+                        acceptButtonTitle={$_("common.components.buttons.save")}>
             <ShopEditForm outerPopupUuid={uuid} shop={data}/>
         </PopupContainer>
     {/if}

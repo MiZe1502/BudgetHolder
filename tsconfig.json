@@ -4,6 +4,8 @@
   "compilerOptions": {
     "target": "es2020",
     "types": ["svelte"],
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
   }
 }

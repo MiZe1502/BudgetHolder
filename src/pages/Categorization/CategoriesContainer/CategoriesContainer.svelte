@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { _ } from 'svelte-i18n'
     import SimpleBar from '@woden/svelte-simplebar'
     import {
         Container,
@@ -24,9 +25,9 @@
     export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
-<CommonTitle title="Categories" withButton={true}>
+<CommonTitle title={$_("categories.titles.categories")} withButton={true}>
     <EditCategoryActionElement withButton={true}
-                               buttonTitle="Add new category"/>
+                               buttonTitle={$_('categories.buttons.new')}/>
 </CommonTitle>
 <div class="{SideMainPadding}">
     <div class="{Container} {(!categories || categories.length === 0) && ContainerWithoutData}">
@@ -43,7 +44,7 @@
                 </SimpleBar>
             {/if}
         {:else if status === LoadingStatus.Error}
-            Error fetching data
+            {$_("common.messages.errors.fetching")}
         {/if}
     </div>
 </div>

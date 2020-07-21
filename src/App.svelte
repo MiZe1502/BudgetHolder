@@ -2,6 +2,7 @@
     import SimpleBar from '@woden/svelte-simplebar'
     import MainMenu from './common/components/Menu/MainMenu/MainMenu.svelte'
     import routes from "./common/utils/routes";
+    import "./localization/localization";
 
     import { yandexMapsReady, googleMapsReady } from "./stores/maps";
 
