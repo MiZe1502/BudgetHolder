@@ -1,4 +1,80 @@
-import {Category} from "./types";
+import {Category, SimpleCategory} from "./types";
+
+export const mockCategories: SimpleCategory[] = [
+    {
+        id: 1,
+        value: "Products",
+    },
+    {
+        id: 4,
+        value: "Milk",
+    },
+    {
+        id: 5,
+        value: "Fish",
+    },
+    {
+        id: 7,
+        value: "Snack",
+    },
+    {
+        id: 8,
+        value: "Groceries",
+    },
+    {
+        id: 2,
+        value: "Sport",
+    },
+    {
+        id: 3,
+        value: "Entertainment",
+    },
+    {
+        id: 6,
+        value: "Movies",
+    },
+    {
+        id: 9,
+        value: "Games",
+    },
+    {
+        id: 17,
+        value: "PS4",
+    },
+    {
+        id: 18,
+        value: "PC",
+    },
+    {
+        id: 10,
+        value: "Electronics",
+    },
+    {
+        id: 11,
+        value: "TV",
+    },
+    {
+        id: 12,
+        value: "Furniture",
+    },
+    {
+        id: 13,
+        value: "Clothes",
+    },
+    {
+        id: 14,
+        value: "Children",
+    },
+    {
+        id: 15,
+        value: "Women",
+    },
+    {
+        id: 16,
+        value: "Men",
+    },
+
+];
 
 export const mockData: Category[] = [
     {

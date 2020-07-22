@@ -17,6 +17,7 @@
     export let disabled = false;
     export let required = false;
     export let invalid = false;
+    export let readonly = false;
 
     let inputElement: HTMLInputElement = null;
 
@@ -33,7 +34,7 @@
     {/if}
     <input on:input on:change bind:this={inputElement} on:focus={onFocus}
            class="{Input} {Font312Black} {invalid && InvalidInput}" {required}
-           {disabled} {name}
+           {disabled} {name} {readonly}
            bind:value={value} {autofocus}/>
 </div>
 

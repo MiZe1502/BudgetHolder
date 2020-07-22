@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { _ } from 'svelte-i18n'
+    import {_} from 'svelte-i18n'
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import {Category} from "../types";
@@ -13,8 +13,11 @@
         openedPopups,
         updatePopupInnerValidation
     } from "../../../stores/popup";
+    import {simpleCategories} from "../../../stores/categories";
     import {onMount} from "svelte";
     import {validationRules} from "./validationRules";
+    import InputDropdown
+        from "../../../common/components/Inputs/InputDropdown/InputDropdown.svelte";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         //Dirty hack to change data before on:input
@@ -43,4 +46,6 @@
                     label={$_("common.labels.name")} autofocus={true}
                     type="text" name="name"
                     bind:value={data.name} required={true}/>
+
+    <InputDropdown value={1} name="category" label="Category" data={$simpleCategories}/>
 </form>

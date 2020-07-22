@@ -4,3 +4,8 @@ export interface Category {
     categories?: Category[];
     parentId: number | null;
 }
+
+export interface SimpleCategory {
+    id: number;
+    value: string;
+}
