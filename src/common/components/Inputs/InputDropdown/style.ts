@@ -16,11 +16,12 @@ export const Wrapper = css`
 
 export const DropdownInput = css`
   cursor: pointer;
+  width: 100%;
 `;
 
 export const Dropdown = css`
   position: absolute;
-  top: 60px;
+  top: 54px;
   max-height: ${maxHeight}px;
   width: 100%;
   background-color: ${colors.white};
@@ -31,7 +32,7 @@ export const SingleLine = css`
   cursor: pointer;
   padding: 4px 8px;
   height: 30px;
-  border-bottom: 1px solid ${colors.darkGray};
+  border-bottom: 1px solid ${colors.greenPrimary};
   
   &:hover {
     background-color: ${colors.greenLight};
@@ -44,4 +45,25 @@ export const SingleLine = css`
 
 export const SelectedLine = css`
   background-color: ${colors.greenActive};
+`;
+
+export const ButtonWrapper = css`
+  position: absolute;
+  right: 8px;
+`;
+
+export const IconButton = css`
+  padding-top: 0px;
+`;
+
+export const ArrowIcon = css`
+  & > svg {
+    transform: rotate(90deg);
+  }
+`;
+
+export const ArrowIconExpanded = css`
+  & > svg {
+    transform: rotate(270deg);
+  }
 `;

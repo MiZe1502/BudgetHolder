@@ -14,10 +14,16 @@
         SingleLine,
         FlexHorCenter,
         maxHeight,
-        SelectedLine
+        SelectedLine,
+        ButtonWrapper,
+        ArrowIcon,
+        ArrowIconExpanded,
+        IconButton
     } from "./style";
 
     import {InputDropdownData} from "./utils";
+    import ButtonIconExpandArrow
+        from "../../Buttons/ButtonIconExpandArrow/ButtonIconExpandArrow.svelte";
 
     let isOpen = false;
 
@@ -48,11 +54,18 @@
                for={name}>{label}</label>
     {/if}
 
-    <input on:input on:change readonly on:click={onClickHandler}
-           class="{Input} {DropdownInput} {Font312Black} {invalid && InvalidInput}"
-           {required}
-           {disabled} {name}
-           value={data && data.find((elem) => elem.id === value).value} {autofocus}/>
+    <div class="{Wrapper} {FlexHorCenter}">
+        <input on:input on:change readonly on:click={onClickHandler}
+               class="{Input} {DropdownInput} {Font312Black} {invalid && InvalidInput}"
+               {required}
+               {disabled} {name}
+               value={data && data.find((elem) => elem.id === value).value} {autofocus}/>
+        <div class="{ButtonWrapper}">
+            <ButtonIconExpandArrow onClickHandler={onClickHandler} width={16}
+                                   height={16}
+                                   className="{IconButton} {isOpen ? ArrowIconExpanded : ArrowIcon}"/>
+        </div>
+    </div>
     {#if isOpen}
         <div class={Dropdown}>
             <SimpleBar style="max-height: {maxHeight}px; width: 100%">
