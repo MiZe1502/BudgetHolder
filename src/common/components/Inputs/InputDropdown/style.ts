@@ -19,20 +19,32 @@ export const DropdownInput = css`
   width: 100%;
 `;
 
+export const DropdownInputExpanded = css`
+    border-bottom: 0px !important;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+`;
+
 export const Dropdown = css`
   position: absolute;
-  top: 54px;
+  top: 56px;
   max-height: ${maxHeight}px;
   width: 100%;
   background-color: ${colors.white};
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 4px 20px 0px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 4px 10px 0px;
+  border-right: 1px solid ${colors.greenActive};
+  border-left: 1px solid ${colors.greenActive};
+  border-bottom: 1px solid ${colors.greenActive};
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-sizing: border-box;
 `;
 
 export const SingleLine = css`
   cursor: pointer;
   padding: 4px 8px;
   height: 30px;
-  border-bottom: 1px solid ${colors.greenPrimary};
+  border-bottom: 1px solid ${colors.darkGray};
   
   &:hover {
     background-color: ${colors.greenLight};
@@ -44,7 +56,7 @@ export const SingleLine = css`
 `;
 
 export const SelectedLine = css`
-  background-color: ${colors.greenActive};
+  background-color: ${colors.mediumGray};
 `;
 
 export const ButtonWrapper = css`

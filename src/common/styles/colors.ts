@@ -11,6 +11,7 @@ export default {
   redAttention: "#c21807",
 
   gray: '#faf8f6',
+  mediumGray: '#e8e5e2',
   darkGray: "#d6d2ce",
 
   black: "#1b1b1b",

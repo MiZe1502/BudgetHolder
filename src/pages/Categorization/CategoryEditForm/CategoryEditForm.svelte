@@ -35,6 +35,11 @@
         validateForm(null);
     })
 
+    const onSelectParentIdHandler = (selectedId: number) => {
+        data.parentId = selectedId;
+    }
+
+
     $: formErrors = $openedPopups.filter((popup) => popup.uuid === outerPopupUuid).length > 0 && $openedPopups.filter((popup) => popup.uuid === outerPopupUuid)[0].innerValidationErrors;
 
     export let data: Partial<Category> = {};
@@ -47,5 +52,7 @@
                     type="text" name="name"
                     bind:value={data.name} required={true}/>
 
-    <InputDropdown value={1} name="category" label="Category" data={$simpleCategories}/>
+    <InputDropdown onSelectHandler={onSelectParentIdHandler}
+                   bind:value={data.parentId} name="category" label="Category"
+                   data={$simpleCategories}/>
 </form>
