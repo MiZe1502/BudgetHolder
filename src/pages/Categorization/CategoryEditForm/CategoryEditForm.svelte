@@ -37,6 +37,7 @@
 
     const onSelectParentIdHandler = (selectedId: number) => {
         data.parentId = selectedId;
+        console.log("onSelectParentIdHandler", data)
     }
 
 

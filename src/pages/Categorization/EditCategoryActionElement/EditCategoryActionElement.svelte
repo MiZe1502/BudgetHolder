@@ -28,6 +28,7 @@
     }
 
     const onSaveHandler = () => {
+        console.log("onSaveHandler", data)
         if (data.id) {
             updateCategoryInStore(data)
         } else {

@@ -11,7 +11,7 @@
 </script>
 
 <CommonActionElement>
-    <EditCategoryActionElement data={data}/>
+    <EditCategoryActionElement data={{...data}}/>
     <RemoveCategoryActionElement data={data}/>
 </CommonActionElement>
 

@@ -24,7 +24,12 @@ export const addCategoryToStore = (newCategory: Category) => {
             return [...categories, newCategory]
         }
         const parentCategory = findCategoryById(newCategory.parentId, categories);
-        parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory];
+
+        if (parentCategory){
+            parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory];
+        } else {
+            categories = [...categories, newCategory];
+        }
 
         return categories;
     });
@@ -70,7 +75,11 @@ export const updateCategoryInStore = (updatedCategory: Category) => {
         const newParentCategory = findCategoryById(updatedCategory.parentId, categories);
 
         newParentCategory.categories = newParentCategory.categories ? [...newParentCategory.categories, updatedCategory] : [updatedCategory];
-        oldParentCategory.categories = oldParentCategory.categories.filter((category) => category.id !== updatedCategory.id);
+        if (oldParentCategory) {
+            oldParentCategory.categories = oldParentCategory.categories.filter((category) => category.id !== updatedCategory.id);
+        } else {
+            categories = categories.filter((category) => category.id !== updatedCategory.id)
+        }
 
         return categories
     });
