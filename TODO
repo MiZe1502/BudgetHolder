@@ -10,8 +10,12 @@
     3.7. auth
         3.7.1. login + pass + session
         3.7.2. client cert
-    3.9. categorization page
-        3.9.3. tags component
-            3.9.3.1. tags input
-    3.10. main
+    3.8. budget page
+        3.8.1. input form
+            3.8.1.1. data structure
+            3.8.1.2. store
+            3.8.1.3. input purchase data
+            3.8.1.4. input goods data + appending new forms
+        3.8.2. purchases table
+    3.10. common
         3.10.1. side navigation and scrollto section
