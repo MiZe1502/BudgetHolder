@@ -6,9 +6,6 @@
     3.4. common popup
         3.4.1. refactor z-index logic on linked list
         3.4.2. implement message block
-    3.5. inputs
-        3.5.1. dropdown menu
-            3.5.1.2. loader on button
     3.6. websockets
     3.7. auth
         3.7.1. login + pass + session

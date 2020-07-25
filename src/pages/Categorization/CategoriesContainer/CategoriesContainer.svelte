@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { _ } from 'svelte-i18n'
+    import {_} from 'svelte-i18n'
     import SimpleBar from '@woden/svelte-simplebar'
     import {
         Container,
@@ -26,7 +26,7 @@
 </script>
 
 <CommonTitle title={$_("categories.titles.categories")} withButton={true}>
-    <EditCategoryActionElement withButton={true}
+    <EditCategoryActionElement withButton={true} {status}
                                buttonTitle={$_('categories.buttons.new')}/>
 </CommonTitle>
 <div class="{SideMainPadding}">

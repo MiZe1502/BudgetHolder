@@ -9,12 +9,14 @@
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {Popup} from "./style";
-    import {EntityType, ActionType} from "../../../stores/utils";
+    import {EntityType, ActionType, LoadingStatus} from "../../../stores/utils";
     import CategoryEditForm from "../CategoryEditForm/CategoryEditForm.svelte";
     import {
         addCategoryToStore,
         updateCategoryInStore
     } from "../../../stores/categories";
+    import ButtonWithLoader
+        from "../../../common/components/Buttons/ButtonWithLoader/ButtonWithLoader.svelte";
 
     let isPopupOpened = false;
 
@@ -45,12 +47,14 @@
     export let data: Category = {};
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
+    export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
 
 <div>
     {#if withButton}
-        <Button title={buttonTitle} onClickHandler={onClickHandler}/>
+        <ButtonWithLoader {status} title={buttonTitle}
+                          onClickHandler={onClickHandler}/>
     {:else}
         <ButtonIconEdit width={16} height={16} onClickHandler={onClickHandler}/>
     {/if}
