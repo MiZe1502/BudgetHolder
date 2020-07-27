@@ -8,6 +8,7 @@
 
     import Shops from "./pages/Shops/Shops.svelte";
     import Categorization from "./pages/Categorization/Categorization.svelte";
+    import Budget from "./pages/Budget/Budget.svelte";
 
     import { Router, Link, Route } from "svelte-routing";
 
@@ -65,7 +66,7 @@
         <MainMenu />
         <SimpleBar style="max-height: 100vh; width: 100%">
         <div class="RouteWrapper">
-                <!-- <Route path="blog/:id" component="{BlogPost}" /> -->
+                <Route path={routes.budget} component="{Budget}" />
                 <Route path={routes.shops} component="{Shops}" />
                 <Route path={routes.categorization} component="{Categorization}" />
                 <!-- <Route path="/"><Home /></Route> -->
