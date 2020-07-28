@@ -61,5 +61,17 @@ export default {
             remove_part1: "Вы действительно хотите удалить магазин ",
             remove_part2: "?",
         }
+    },
+    budget: {
+        buttons: {
+            new: "Добавить новую покупку"
+        },
+        titles: {
+            purchases: "Покупки"
+        },
+        labels: {
+            price: "Общая стоимость",
+            shop: "Магазин",
+        }
     }
 }

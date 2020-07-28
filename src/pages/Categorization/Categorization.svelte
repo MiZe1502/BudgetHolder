@@ -14,7 +14,7 @@
     } from "../../stores/categories";
     import {LoadingStatus} from "../../stores/utils";
 
-    onMount(() => {
+    onMount(async () => {
         categoriesStatus.set(LoadingStatus.Loading)
         simpleCategoriesStatus.set(LoadingStatus.Loading)
 

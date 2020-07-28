@@ -61,5 +61,17 @@ export default {
             remove_part1: "Do You really want to remove",
             remove_part2: "?",
         }
+    },
+    budget: {
+        buttons: {
+            new: "Add new purchase"
+        },
+        titles: {
+            purchases: "Purchases"
+        },
+        labels: {
+            price: "Total price",
+            shop: "Shop",
+        }
     }
 }
