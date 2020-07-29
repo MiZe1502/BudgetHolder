@@ -10,6 +10,8 @@
     import CommonTable from '../../common/components/Tables/CommonTable/CommonTable.svelte'
     import UrlElement
         from '../../common/components/ElementsAndBlocks/UrlElement/UrlElement.svelte'
+    import SimpleDateElement
+        from '../../common/components/ElementsAndBlocks/SimpleDateElement/SimpleDateElement.svelte'
     import SimpleTextElement
         from '../../common/components/ElementsAndBlocks/SimpleTextElement/SimpleTextElement.svelte'
     import {CommonTable as CommonTableInterface} from '../../common/components/Tables/CommonTable/utils'
@@ -35,7 +37,7 @@
         columnsConfig: [
             {
                 header: 'budget.labels.date',
-                component: SimpleTextElement,
+                component: SimpleDateElement,
                 overflowed: true,
                 style: 'flex: 1 0 10%',
                 mapping: (data: Purchase) => data.date,
