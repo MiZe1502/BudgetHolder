@@ -20,10 +20,6 @@ export default [
         url: routes.shops
     },
     {
-        title: 'common.components.menu.statistics',
-        url: routes.stats
-    },
-    {
         title: 'common.components.menu.categorization',
         url: routes.categorization
     }
