@@ -2,9 +2,11 @@
     import { get } from 'svelte/store';
     import {onMount} from "svelte";
     import {Purchase} from "./types";
+    import {BudgetActionsData} from "./BudgetActionsElement/utils";
     import {LoadingStatus} from "../../stores/utils";
     import {mockGoods, mockPurchases} from "./data";
 
+    import BudgetActionsElement from "./BudgetActionsElement/BudgetActionsElement.svelte";
     import CommonTable from '../../common/components/Tables/CommonTable/CommonTable.svelte'
     import UrlElement
         from '../../common/components/ElementsAndBlocks/UrlElement/UrlElement.svelte'
@@ -39,12 +41,6 @@
                 mapping: (data: Purchase) => data.totalPrice,
             },
             {
-                header: 'common.labels.comment',
-                component: SimpleTextElement,
-                style: 'flex: 1 0 40%',
-                mapping: (data: Purchase) => data.comment,
-            },
-            {
                 header: 'budget.labels.shop',
                 component: UrlElement,
                 overflowed: true,
@@ -56,6 +52,23 @@
                     }
                 }
             },
+            {
+                header: 'common.labels.comment',
+                component: SimpleTextElement,
+                style: 'flex: 1 0 40%',
+                mapping: (data: Purchase) => data.comment,
+            },
+            {
+                header: "",
+                component: BudgetActionsElement,
+                style: 'flex: 1 0 10%',
+                mapping: (data: Purchase): BudgetActionsData => {
+                    return {
+                        id: data.id,
+                        goodsData: data.goods,
+                    }
+                },
+            }
         ]
     }
 

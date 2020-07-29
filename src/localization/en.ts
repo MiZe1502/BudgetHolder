@@ -32,8 +32,9 @@ export default {
             comment: "Comment"
         },
         titles: {
-            edit: "Edit",
-            remove: "Remove"
+            edit: "Edit: ",
+            remove: "Remove: ",
+            details: "Details",
         }
     },
     categories: {

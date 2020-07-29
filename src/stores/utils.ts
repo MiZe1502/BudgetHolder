@@ -10,6 +10,7 @@ export enum LoadingStatus {
 export enum EntityType {
     Shop = "Shop",
     Category = "Category",
+    Budget = "Budget",
 }
 
 export enum ActionType {
@@ -17,6 +18,7 @@ export enum ActionType {
     Edit = "Edit",
     Remove = "Remove",
     Add = "Add",
+    Details = "Details",
 }
 
 export const buildUniqueIdBasedOnEntityAndAction = (entityType: EntityType, actionType: ActionType, entityId: number): string => {
