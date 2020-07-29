@@ -11,3 +11,8 @@ export const Header = css`
     background-color: ${colors.white};
     box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.25);
 `;
+
+export let PopupPadding = css`
+    padding-left: 16px;
+    padding-right: 16px;
+`;

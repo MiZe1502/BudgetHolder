@@ -71,8 +71,12 @@ export default {
             purchases: "Purchases"
         },
         labels: {
+            date: "Date",
             price: "Total price",
             shop: "Shop",
+            category: "Category",
+            amount: "Amount",
+            single_price: "Price",
         }
     }
 }

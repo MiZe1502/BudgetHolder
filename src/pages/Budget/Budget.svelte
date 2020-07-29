@@ -34,17 +34,24 @@
         status: LoadingStatus.Loading,
         columnsConfig: [
             {
+                header: 'budget.labels.date',
+                component: SimpleTextElement,
+                overflowed: true,
+                style: 'flex: 1 0 10%',
+                mapping: (data: Purchase) => data.date,
+            },
+            {
                 header: 'budget.labels.price',
                 component: SimpleTextElement,
                 overflowed: true,
-                style: 'flex: 1 0 20%',
+                style: 'flex: 1 0 10%',
                 mapping: (data: Purchase) => data.totalPrice,
             },
             {
                 header: 'budget.labels.shop',
                 component: UrlElement,
                 overflowed: true,
-                style: 'flex: 1 0 20%',
+                style: 'flex: 1 0 10%',
                 mapping: (data: Purchase) => {
                     return {
                         name: data.shop.name,

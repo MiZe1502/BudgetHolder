@@ -8,6 +8,8 @@
         from "../../../common/components/Buttons/ButtonIconShowDetails/ButtonIconShowDetails.svelte";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
+    import BudgetPurchaseDetails
+        from "../BudgetPurchaseDetails/BudgetPurchaseDetails.svelte";
 
     let isPopupOpened = false;
 
@@ -28,7 +30,7 @@
     let initialData: GoodsDetails = [];
 
     export let data: GoodsDetails = [];
-    export let entityId: number = 0;
+    export let entityId: number = -1;
 </script>
 
 <div>
@@ -41,7 +43,7 @@
                         title={$_("common.titles.details")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}>
-            DETAILS
+            <BudgetPurchaseDetails data={data}/>
         </PopupContainer>
     {/if}
 </div>

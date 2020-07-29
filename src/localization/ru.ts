@@ -32,8 +32,9 @@ export default {
             comment: "Комментарий"
         },
         titles: {
-            edit: "Редактировать ",
-            remove: "Удалить "
+            edit: "Редактирование: ",
+            remove: "Удаление: ",
+            details: "Детализация",
         }
     },
     categories: {
@@ -70,8 +71,12 @@ export default {
             purchases: "Покупки"
         },
         labels: {
+            date: "Дата",
             price: "Общая стоимость",
             shop: "Магазин",
+            category: "Категория",
+            amount: "Количество",
+            single_price: "Стоимость",
         }
     }
 }

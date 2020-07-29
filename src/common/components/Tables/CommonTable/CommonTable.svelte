@@ -1,5 +1,5 @@
 <script lang="typescript">
-    import { _ } from 'svelte-i18n'
+    import {_} from 'svelte-i18n'
     import {fade} from 'svelte/transition';
 
     import {ColumnConfig} from "./utils";
@@ -11,9 +11,12 @@
     import CommonTitle from '../CommonTitle/CommonTitle.svelte'
     import CommonTableHeader
         from '../CommonTableHeader/CommonTableHeader.svelte'
-    import LoadingSpinner from '../../ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte'
-    import NoDataFoundBlock from '../../ElementsAndBlocks/NoDataFoundBlock/NoDataFoundBlock.svelte'
-    import Pagination from '../../Pagination/PaginationBlock/PaginationBlock.svelte'
+    import LoadingSpinner
+        from '../../ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte'
+    import NoDataFoundBlock
+        from '../../ElementsAndBlocks/NoDataFoundBlock/NoDataFoundBlock.svelte'
+    import Pagination
+        from '../../Pagination/PaginationBlock/PaginationBlock.svelte'
 
     import {maxRecordsPerPage} from "../../Pagination/PaginationBlock/utils";
     import EditShopActionElement
@@ -21,6 +24,7 @@
 
     export let config: ColumnConfig[] = [];
     export let data: Record<any, any>[] = [];
+    export let inPopup: boolean = false;
     export let title: string = "";
     export let total: number = 0;
     export let status: LoadingStatus = LoadingStatus.None;
@@ -33,18 +37,23 @@
 </script>
 
 <section class="{SectionBottomMargin}">
-    <CommonTitle buttonClickHandler={buttonClickHandler} withButton={withButton} buttonTitle={buttonTitle} title={title} dataLength={total}>
-        <EditShopActionElement withButton={true} buttonTitle={$_("shops.buttons.new")}/>
-    </CommonTitle>
+    {#if title}
+        <CommonTitle buttonClickHandler={buttonClickHandler}
+                     withButton={withButton}
+                     buttonTitle={buttonTitle} title={title} dataLength={total}>
+            <EditShopActionElement withButton={true}
+                                   buttonTitle={$_("shops.buttons.new")}/>
+        </CommonTitle>
+    {/if}
     {#if status === LoadingStatus.Loading}
-        <LoadingSpinner />
+        <LoadingSpinner/>
     {:else if status === LoadingStatus.Finished}
         {#if !data || data.length === 0}
-            <NoDataFoundBlock />
+            <NoDataFoundBlock/>
         {:else}
-            <CommonTableHeader config={config}/>
+            <CommonTableHeader {inPopup} config={config}/>
             {#each data as dataItem (dataItem.id)}
-                <CommonTableRow data={dataItem} config={config} />
+                <CommonTableRow {inPopup} data={dataItem} config={config}/>
             {/each}
             {#if total > maxRecordsPerPage}
                 <Pagination onPageChange={onPageChange} totalCount={total}/>
