@@ -29,8 +29,6 @@
     const tableData: CommonTableInterface = {
         title: "budget.titles.purchases",
         total: 0,
-        withButton: true,
-        buttonTitle: "budget.buttons.new",
         buttonClickHandler: () => {
         },
         status: LoadingStatus.Loading,
@@ -75,6 +73,8 @@
                     return {
                         id: data.id,
                         goodsData: data.goods,
+                        date: data.date,
+                        totalPrice: data.totalPrice
                     }
                 },
             }

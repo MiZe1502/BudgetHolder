@@ -64,6 +64,10 @@ export default {
         }
     },
     budget: {
+        messages: {
+            remove_part1: "Do You really want to remove purchase with all connected goods details",
+            remove_part2: "?",
+        },
         buttons: {
             new: "Add new purchase"
         },

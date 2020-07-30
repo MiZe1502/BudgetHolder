@@ -10,7 +10,8 @@ export enum LoadingStatus {
 export enum EntityType {
     Shop = "Shop",
     Category = "Category",
-    Budget = "Budget",
+    Purchase = "Purchase",
+    Goods = "Goods",
 }
 
 export enum ActionType {

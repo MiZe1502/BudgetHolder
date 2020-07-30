@@ -38,7 +38,7 @@
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup}
-                        entityType={EntityType.Budget}
+                        entityType={EntityType.Purchase}
                         actionType={ActionType.Remove} entityId={entityId}
                         title={$_("common.titles.details")}
                         isPopupOpened={isPopupOpened}

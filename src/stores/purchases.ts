@@ -5,3 +5,7 @@ import {LoadingStatus} from "./utils";
 export const purchases = writable<Purchase[]>([]);
 export const purchasesTotal = writable<number>(0);
 export const purchasesStatus = writable<LoadingStatus>(LoadingStatus.None);
+
+export const removePurchaseFromStore = (id: number): void => {
+    purchases.update((purchases) => purchases.filter((purchase) => purchase.id !== id))
+}
