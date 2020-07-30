@@ -12,6 +12,22 @@ export const ButtonReset = css`
     padding: 0;
 `;
 
+export const ButtonNegative = css`
+    background-color: ${colors.redAttention}; 
+    fill: ${colors.redAttention}; 
+    
+    &:hover,
+    &:active {
+        background-color: ${colors.redActive}; 
+        fill: ${colors.redActive}; 
+    }
+    
+    &:active {
+        background-color: ${colors.redLight};
+        fill: ${colors.redLight};
+    }
+`
+
 export const ButtonSecondary = css`
     background-color: ${colors.orangePrimary}; 
     fill: ${colors.orangePrimary}; 

@@ -7,6 +7,7 @@ export {
     ButtonDefault,
     ButtonPrimary,
     ButtonSecondary,
+    ButtonNegative,
     defaultButtonIconSize
 } from "../../../styles/buttons";
 

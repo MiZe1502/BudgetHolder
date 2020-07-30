@@ -5,6 +5,7 @@
         ButtonDefault,
         ButtonPrimary,
         ButtonSecondary,
+        ButtonNegative,
         defaultButtonIconSize
     } from './style';
 
@@ -15,10 +16,11 @@
     export let className: string = "";
     export let disabled: boolean = false;
     export let secondary: boolean = false;
+    export let negative: boolean = false;
 </script>
 
 <button disabled={disabled}
-        class="{Button} {ButtonReset} {ButtonDefault} {secondary ? ButtonSecondary : ButtonPrimary} {className}"
+        class="{Button} {ButtonReset} {ButtonDefault} {secondary ? ButtonSecondary : negative ? ButtonNegative : ButtonPrimary} {className}"
         on:click={onClickHandler}>
     <slot width={width} height={width}/>
 </button>
