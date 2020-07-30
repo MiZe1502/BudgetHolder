@@ -82,5 +82,11 @@ export default {
             amount: "Amount",
             single_price: "Price",
         }
+    },
+    goods: {
+        messages: {
+            remove_part1: "Do You really want to remove goods item from this purchase",
+            remove_part2: "?",
+        },
     }
 }

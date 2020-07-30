@@ -24,4 +24,5 @@ export interface GoodsData {
 export interface GoodsItemDetails {
     amount?: number;
     price: number;
+    purchaseId: number;
 }

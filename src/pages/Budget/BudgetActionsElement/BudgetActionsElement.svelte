@@ -12,7 +12,7 @@
 
 <CommonActionElement>
     <ShowDetailsBudgetActionElement entityId={data.id}
-                                    data={[...data.goodsData]}/>
+                                    data={data.goodsData}/>
     <RemovePurchaseActionElement
             data={{id: data.id, date: data.date, totalPrice: data.totalPrice}}/>
 </CommonActionElement>

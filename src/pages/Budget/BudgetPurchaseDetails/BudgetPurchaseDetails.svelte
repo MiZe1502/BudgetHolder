@@ -1,7 +1,10 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {Wrapper} from "./style";
+    import {purchases} from "../../../stores/purchases";
 
+    import GoodsItemActionsElement
+        from "../GoodsItemActionsElement/GoodsItemActionsElement.svelte";
     import SimpleTextElement
         from '../../../common/components/ElementsAndBlocks/SimpleTextElement/SimpleTextElement.svelte'
     import CommonTable
@@ -17,8 +20,7 @@
             {
                 header: 'common.labels.name',
                 component: SimpleTextElement,
-                overflowed: true,
-                style: 'flex: 1 0 25%',
+                style: 'flex: 1 0 20%',
                 mapping: (data: GoodsDetails) => data.name,
             },
             {
@@ -45,9 +47,15 @@
             {
                 header: 'common.labels.comment',
                 component: SimpleTextElement,
-                style: 'flex: 1 0 30%',
+                style: 'flex: 1 0 25%',
                 mapping: (data: GoodsDetails) => data.comment,
             },
+            {
+                header: "",
+                component: GoodsItemActionsElement,
+                style: 'flex: 1 0 10%',
+                mapping: (data: GoodsDetails): GoodsDetails => data,
+            }
         ],
         data: []
     }
@@ -55,14 +63,14 @@
     onMount(async () => {
         tableData.status = LoadingStatus.Finished;
         tableData.total = data.length;
-        tableData.data = data;
     })
 
-    export let data: GoodsDetails[] = [];
+    export let purchaseId: number = -1;
 </script>
 
 <div class="{Wrapper}">
     <CommonTable inPopup={true} status={tableData.status}
-                 total={tableData.total} data={tableData.data}
+                 total={tableData.total}
+                 data={$purchases.find((purchase) => purchase.id === purchaseId).goods}
                  config={tableData.columnsConfig}/>
 </div>

@@ -39,11 +39,11 @@
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup}
                         entityType={EntityType.Purchase}
-                        actionType={ActionType.Remove} entityId={entityId}
+                        actionType={ActionType.Details} entityId={entityId}
                         title={$_("common.titles.details")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}>
-            <BudgetPurchaseDetails data={data}/>
+            <BudgetPurchaseDetails purchaseId={entityId}/>
         </PopupContainer>
     {/if}
 </div>

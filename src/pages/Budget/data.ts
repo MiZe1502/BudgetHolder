@@ -4,44 +4,46 @@ export const mockPurchases: Purchase[] = [
     {
         id: 1,
         totalPrice: 300,
-        comment: "Test purchase 1",
+        comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
         shop: {
             id: 1,
             name: "Dicksy",
             url: "https://dicksy.ru",
             address: "Moscow, 2-ya Vladimirskaya, 20",
-            comment: "Good shop",
+            comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         },
         date: new Date(),
         goods: [
             {
                 id: 1,
-                name: "Burger",
+                name: "Burger - the most powerful burger in the entire universe with bacon and chips and chocolate",
                 category: {
                     id: 1,
                     value: "Products",
                 },
-                comment: "Test burger",
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                 price: 200,
-                amount: 4
+                amount: 4,
+                purchaseId: 1,
             },
             {
                 id: 2,
-                name: "Milk",
+                name: "Milk with juice",
                 category: {
                     id: 1,
                     value: "Products",
                 },
-                comment: "Test milk",
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 price: 100,
-                amount: 1
+                amount: 1,
+                purchaseId: 1,
             },
         ],
     },
     {
         id: 2,
         totalPrice: 100,
-        comment: "Test purchase 2",
+        comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         shop: {
             id: 3,
             name: "Karusel",
@@ -57,16 +59,17 @@ export const mockPurchases: Purchase[] = [
                     id: 1,
                     value: "Products",
                 },
-                comment: "Test burger",
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 price: 100,
-                amount: 1
+                amount: 1,
+                purchaseId: 2,
             },
         ],
     },
     {
         id: 3,
         totalPrice: 15000,
-        comment: "Test purchase 3",
+        comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
         shop: {
             id: 3,
             name: "Karusel",
@@ -80,7 +83,8 @@ export const mockPurchases: Purchase[] = [
                 name: "Without category",
                 category: null,
                 comment: "Test with no category",
-                price: 10000
+                price: 10000,
+                purchaseId: 3,
             },
             {
                 id: 5,
@@ -89,9 +93,10 @@ export const mockPurchases: Purchase[] = [
                     id: 12,
                     value: "Furniture",
                 },
-                comment: "Test table",
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                 price: 5000,
                 amount: 1,
+                purchaseId: 3,
             },
         ],
     },
