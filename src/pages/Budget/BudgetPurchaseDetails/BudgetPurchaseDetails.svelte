@@ -2,7 +2,10 @@
     import {onMount} from 'svelte';
     import {Wrapper} from "./style";
     import {purchases} from "../../../stores/purchases";
+    import {buildCategoryList} from "../../../stores/categories";
 
+    import CategoriesListElement
+        from '../../../common/components/ElementsAndBlocks/CategoriesListElement/CategoriesListElement.svelte'
     import GoodsItemActionsElement
         from "../GoodsItemActionsElement/GoodsItemActionsElement.svelte";
     import SimpleTextElement
@@ -25,10 +28,13 @@
             },
             {
                 header: 'budget.labels.category',
-                component: SimpleTextElement,
+                component: CategoriesListElement,
                 overflowed: true,
                 style: 'flex: 1 0 15%',
-                mapping: (data: GoodsDetails) => data.category ? data.category.value : null,
+                mapping: (data: GoodsDetails) => {
+                    console.log(buildCategoryList(data.category ? data.category.id : null))
+                    return buildCategoryList(data.category ? data.category.id : null);
+                }
             },
             {
                 header: 'budget.labels.amount',
@@ -62,7 +68,6 @@
 
     onMount(async () => {
         tableData.status = LoadingStatus.Finished;
-        tableData.total = data.length;
     })
 
     export let purchaseId: number = -1;

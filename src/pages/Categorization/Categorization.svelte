@@ -10,7 +10,8 @@
         categories,
         simpleCategories,
         simpleCategoriesStatus,
-        categoriesTotal
+        categoriesTotal,
+        findParentCategory
     } from "../../stores/categories";
     import {LoadingStatus} from "../../stores/utils";
 
@@ -26,6 +27,8 @@
             simpleCategories.set(mockCategories);
 
             categoriesTotal.set(mockData.length);
+
+            console.log(findParentCategory(17, $categories))
         }, 5000)
     })
 

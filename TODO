@@ -19,9 +19,7 @@
             3.8.1.4. input goods data + appending new forms
         3.8.2. purchases table
             3.8.2.1. increase data to enable pagination
-            3.8.2.2. add delete icon button
         3.8.3. goods details popup
             3.8.3.1. add scroll to table inside popup
-            3.8.3.2. add delete icon button
     3.10. common
         3.10.1. side navigation and scrollto section

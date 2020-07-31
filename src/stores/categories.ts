@@ -9,6 +9,8 @@ export const categoriesStatus = writable<LoadingStatus>(LoadingStatus.None);
 export const simpleCategories = writable<SimpleCategory[]>([]);
 export const simpleCategoriesStatus = writable<LoadingStatus>(LoadingStatus.None);
 
+const categoryPathDelimeter = " | ";
+
 export const addCategoryToStore = (newCategory: Category) => {
     //TODO: remove when backend ready. artificial id generation
     let maxId = 0;
@@ -25,7 +27,7 @@ export const addCategoryToStore = (newCategory: Category) => {
         }
         const parentCategory = findCategoryById(newCategory.parentId, categories);
 
-        if (parentCategory){
+        if (parentCategory) {
             parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory];
         } else {
             categories = [...categories, newCategory];
@@ -33,6 +35,36 @@ export const addCategoryToStore = (newCategory: Category) => {
 
         return categories;
     });
+}
+
+export const buildCategoryList = (categoryId: number | null): string[] => {
+    if (!categoryId) {
+        return [];
+    }
+
+    console.log("BUILD", categoryId)
+    const path = findParentCategory(categoryId, get(categories));
+
+    return path.split(categoryPathDelimeter);
+}
+
+export const findParentCategory = (categoryId: number, categories: Category[]) => {
+    let name = "";
+
+    for (let i = 0; i < categories.length; i++) {
+        if (categories[i].id === categoryId) {
+            return categories[i].name;
+        }
+
+        if (categories[i].categories && categories[i].categories.length > 0) {
+            let foundName = findParentCategory(categoryId, categories[i].categories);
+            if (foundName) {
+                name = `${categories[i].name}${categoryPathDelimeter}${foundName}`;
+            }
+        }
+    }
+
+    return name;
 }
 
 const findCategoryById = (id: number, categories: Category[]): Category => {

@@ -1,13 +1,19 @@
 <script lang="ts">
-    import { get } from 'svelte/store';
+    import {get} from 'svelte/store';
     import {onMount} from "svelte";
     import {Purchase} from "./types";
     import {BudgetActionsData} from "./BudgetActionsElement/utils";
     import {LoadingStatus} from "../../stores/utils";
     import {mockGoods, mockPurchases} from "./data";
+    import {
+        mockData as mockCategoriesData,
+        mockCategories
+    } from "../Categorization/data";
 
-    import BudgetActionsElement from "./BudgetActionsElement/BudgetActionsElement.svelte";
-    import CommonTable from '../../common/components/Tables/CommonTable/CommonTable.svelte'
+    import BudgetActionsElement
+        from "./BudgetActionsElement/BudgetActionsElement.svelte";
+    import CommonTable
+        from '../../common/components/Tables/CommonTable/CommonTable.svelte'
     import UrlElement
         from '../../common/components/ElementsAndBlocks/UrlElement/UrlElement.svelte'
     import SimpleDateElement
@@ -15,6 +21,14 @@
     import SimpleTextElement
         from '../../common/components/ElementsAndBlocks/SimpleTextElement/SimpleTextElement.svelte'
     import {CommonTable as CommonTableInterface} from '../../common/components/Tables/CommonTable/utils'
+    import {
+        categoriesStatus,
+        categories,
+        simpleCategories,
+        simpleCategoriesStatus,
+        categoriesTotal,
+        findParentCategory
+    } from "../../stores/categories";
     import {
         goodsStatus,
         goods,
@@ -91,6 +105,14 @@
         purchasesStatus.set(LoadingStatus.Loading);
 
         setTimeout(() => {
+            categoriesStatus.set(LoadingStatus.Finished)
+            simpleCategoriesStatus.set(LoadingStatus.Finished)
+
+            categories.set(mockCategoriesData);
+            simpleCategories.set(mockCategories);
+
+            categoriesTotal.set(mockCategories.length);
+
             goodsStatus.set(LoadingStatus.Finished);
             purchasesStatus.set(LoadingStatus.Finished);
 

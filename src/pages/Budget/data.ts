@@ -38,6 +38,18 @@ export const mockPurchases: Purchase[] = [
                 amount: 1,
                 purchaseId: 1,
             },
+            {
+                id: 4,
+                name: "God of war",
+                category: {
+                    id: 17,
+                    value: "PS4",
+                },
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                price: 100,
+                amount: 1,
+                purchaseId: 1,
+            },
         ],
     },
     {
