@@ -7,7 +7,7 @@ import colors from "../../../common/styles/colors";
 
 export const Wrapper = css`
   width: 100%;
-  height: 400px;
+  min-height: 150px;
   border: 1px solid ${colors.darkGray};
   border-radius: 4px;
   padding: 20px;
