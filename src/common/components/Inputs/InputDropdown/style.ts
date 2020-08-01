@@ -27,6 +27,7 @@ export const DropdownInputExpanded = css`
 
 export const Dropdown = css`
   position: absolute;
+  z-index: 2;
   top: 56px;
   max-height: ${maxHeight}px;
   width: 100%;

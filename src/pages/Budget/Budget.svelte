@@ -9,6 +9,7 @@
         mockData as mockCategoriesData,
         mockCategories
     } from "../Categorization/data";
+    import {mockData as mockShops} from "../Shops/data";
 
     import BudgetActionsElement
         from "./BudgetActionsElement/BudgetActionsElement.svelte";
@@ -34,6 +35,7 @@
         goods,
         goodsTotal,
     } from "../../stores/goods";
+    import {allShops} from "../../stores/shops";
     import {
         purchasesStatus,
         purchases,
@@ -41,6 +43,10 @@
     } from "../../stores/purchases";
     import BudgetFormContainer
         from "./BudgetFormContainer/BudgetFormContainer.svelte";
+    import BudgetPurchaseForm
+        from "./BudgetPurchaseForm/BudgetPurchaseForm.svelte";
+    import LoadingSpinner
+        from "../../common/components/ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte";
 
     const tableData: CommonTableInterface = {
         title: "budget.titles.purchases",
@@ -113,6 +119,8 @@
             categories.set(mockCategoriesData);
             simpleCategories.set(mockCategories);
 
+            allShops.set(mockShops);
+
             categoriesTotal.set(mockCategories.length);
 
             goodsStatus.set(LoadingStatus.Finished);
@@ -132,7 +140,13 @@
 </script>
 
 <section>
-    <BudgetFormContainer />
+    <BudgetFormContainer>
+        {#if tableData.status === LoadingStatus.Loading}
+            <LoadingSpinner/>
+        {:else}
+            <BudgetPurchaseForm/>
+        {/if}
+    </BudgetFormContainer>
     <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
                  total={tableData.total} data={$purchases}

@@ -7,6 +7,15 @@ export const allShops = writable<Shop[]>([]);
 export const shopsTotal = writable<number>(0)
 export const shopsStatus = writable<LoadingStatus>(LoadingStatus.None);
 
+export const getSimpleShopsData = () => {
+    return get(allShops).map((shop: Shop) => {
+        return {
+            id: shop.id,
+            value: shop.name,
+        }
+    })
+}
+
 export const removeShopFromStore = (id: number) => {
     shops.update((shops) => shops.filter((shop: Shop) => shop.id !== id));
     allShops.update((shops) => shops.filter((shop: Shop) => shop.id !== id));

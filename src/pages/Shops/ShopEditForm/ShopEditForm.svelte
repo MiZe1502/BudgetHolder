@@ -46,10 +46,6 @@
     export let outerPopupUuid: string = "";
 </script>
 
-<style>
-
-</style>
-
 <form class="{SideMinorPadding} {FlexVert} {Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                     on:input={validateForm} on:change={validateForm}
