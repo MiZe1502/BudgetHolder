@@ -39,6 +39,8 @@
         purchases,
         purchasesTotal,
     } from "../../stores/purchases";
+    import BudgetFormContainer
+        from "./BudgetFormContainer/BudgetFormContainer.svelte";
 
     const tableData: CommonTableInterface = {
         title: "budget.titles.purchases",
@@ -130,6 +132,7 @@
 </script>
 
 <section>
+    <BudgetFormContainer />
     <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
                  total={tableData.total} data={$purchases}
