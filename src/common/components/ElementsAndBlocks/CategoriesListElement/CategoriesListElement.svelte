@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {FlexVert} from "./style";
+    import {FlexVert, Delimeter, SingleLine} from "./style";
     import SimpleTextElement
         from "../SimpleTextElement/SimpleTextElement.svelte";
 
@@ -9,7 +9,8 @@
 <div class="{FlexVert}">
     {#if data}
         {#each data as category (category)}
-            <SimpleTextElement data={category}/>
+            <SimpleTextElement className={SingleLine} data={category}/>
+            <div class="{Delimeter}"/>
         {/each}
     {:else}
         {"\u2014"}
