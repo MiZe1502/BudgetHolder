@@ -1,5 +1,6 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
+    import {v4 as uuidv4} from 'uuid';
     import SimpleBar from '@woden/svelte-simplebar'
     import {onMount} from "svelte";
     import {Purchase} from "../types";
@@ -13,7 +14,10 @@
         MainFieldsWrapper,
         MinorFieldsWrapper,
         maxHeight,
-        ButtonsWrapper
+        ButtonsWrapper,
+        MainColumn,
+        MinorColumn,
+        NotLastColumn
     } from "./style";
 
     import {simpleCategories} from "../../../stores/categories";
@@ -27,6 +31,8 @@
         from "../../../common/components/Buttons/ButtonIconNew/ButtonIconNew.svelte";
     import ButtonIconMinus
         from "../../../common/components/Buttons/ButtonIconMinus/ButtonIconMinus.svelte";
+    import Button
+        from "../../../common/components/Buttons/Button/Button.svelte";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
@@ -38,12 +44,23 @@
 
     const onAddNewItemToPurchase = () => {
         purchase.goods = [...purchase.goods, {
+            tempId: uuidv4(),
             category: {}
         }]
     }
 
-    const onRemoveLastItemFromPurchase = () => {
-        purchase.goods = [...purchase.goods.slice(0, purchase.goods.length - 1)]
+    const onRemoveItemFromPurchase = (tempId: string) => {
+        purchase.goods = [...purchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
+    }
+
+    const onClearForm = () => {
+        purchase = Object.assign({}, {
+            shop: {},
+            goods: [{
+                tempId: uuidv4(),
+                category: {}
+            }],
+        })
     }
 
     onMount(() => {
@@ -53,6 +70,7 @@
     let purchase: Purchase = {
         shop: {},
         goods: [{
+            tempId: uuidv4(),
             category: {}
         }],
     };
@@ -60,9 +78,9 @@
 </script>
 
 
-<form class="{SideMinorPadding} {Form}">
-    <div class="{FlexHor} {MainFieldsWrapper}">
-        <div class="{FlexVert}" style="width: 50%; margin-right: 32px">
+<form class="{Form}">
+    <div class="{SideMinorPadding} {FlexHor} {MainFieldsWrapper}">
+        <div class="{FlexVert} {MainColumn} {NotLastColumn}">
             <InputWithLabel
                     on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.price")} autofocus={true}
@@ -78,7 +96,7 @@
                            label={$_("budget.labels.shop")}
                            data={getSimpleShopsData()}/>
         </div>
-        <div class="{FlexVert}" style="width: 50%">
+        <div class="{FlexVert} {MainColumn}">
             <TextAreaWithLabel
                     on:input={validateForm} on:change={validateForm}
                     textAreaClass={TextArea}
@@ -87,49 +105,57 @@
         </div>
     </div>
     <SimpleBar style="max-height: {maxHeight}px; width: 100%">
-        {#each purchase.goods as goodsItem}
-            <div class="{FlexHor} {MinorFieldsWrapper}">
-                <div class="{FlexVert}"
-                     style="width: 33.333%; margin-right: 32px">
-                    <InputWithLabel
-                            on:input={validateForm} on:change={validateForm}
-                            label={$_("common.labels.name")}
-                            type="text" name="name"
-                            bind:value={goodsItem.name}/>
-                    <InputDropdown onSelectHandler={onShopSelect}
-                                   bind:value={goodsItem.category.id}
-                                   name="category"
-                                   label={$_("budget.labels.category")}
-                                   data={$simpleCategories}/>
+        {#each purchase.goods as goodsItem (goodsItem.tempId)}
+            <div class="{FlexVert} {MinorFieldsWrapper}">
+                <div class="{FlexHor}">
+                    <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
+                        <InputWithLabel
+                                on:input={validateForm} on:change={validateForm}
+                                label={$_("common.labels.name")}
+                                type="text" name="name"
+                                bind:value={goodsItem.name}/>
+                        <InputDropdown onSelectHandler={onShopSelect}
+                                       bind:value={goodsItem.category.id}
+                                       name="category"
+                                       label={$_("budget.labels.category")}
+                                       data={$simpleCategories}/>
+                    </div>
+                    <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
+                        <InputWithLabel
+                                on:input={validateForm} on:change={validateForm}
+                                label={$_("budget.labels.amount")}
+                                type="number" name="amount"
+                                bind:value={goodsItem.amount}/>
+                        <InputWithLabel
+                                on:input={validateForm} on:change={validateForm}
+                                label={$_("budget.labels.single_price")}
+                                type="number" name="price"
+                                bind:value={goodsItem.price}/>
+                    </div>
+                    <div class="{FlexVert} {MinorColumn}">
+                        <TextAreaWithLabel
+                                on:input={validateForm} on:change={validateForm}
+                                textAreaClass={TextArea}
+                                label={$_("common.labels.comment")}
+                                name="comment"
+                                bind:value={goodsItem.comment}/>
+                    </div>
                 </div>
-                <div class="{FlexVert}"
-                     style="width: 33.333%; margin-right: 32px">
-                    <InputWithLabel
-                            on:input={validateForm} on:change={validateForm}
-                            label={$_("budget.labels.amount")}
-                            type="number" name="amount"
-                            bind:value={goodsItem.amount}/>
-                    <InputWithLabel
-                            on:input={validateForm} on:change={validateForm}
-                            label={$_("budget.labels.single_price")}
-                            type="number" name="price"
-                            bind:value={goodsItem.price}/>
-                </div>
-                <div class="{FlexVert}" style="width: 33.333%">
-                    <TextAreaWithLabel
-                            on:input={validateForm} on:change={validateForm}
-                            textAreaClass={TextArea}
-                            label={$_("common.labels.comment")} name="comment"
-                            bind:value={goodsItem.comment}/>
+                <div class="{FlexHor}">
+                    <ButtonIconMinus width={32} height={32}
+                                     onClickHandler={() => onRemoveItemFromPurchase(goodsItem.tempId)}/>
                 </div>
             </div>
         {/each}
-        <div class="{ButtonsWrapper}">
-            <ButtonIconNew width={32} height={32}
-                           onClickHandler={onAddNewItemToPurchase}/>
-            <ButtonIconMinus width={32} height={32}
-                             onClickHandler={onRemoveLastItemFromPurchase}/>
-        </div>
-
     </SimpleBar>
+    <div class="{ButtonsWrapper} {FlexHor}">
+        <ButtonIconNew width={32} height={32}
+                       onClickHandler={onAddNewItemToPurchase}/>
+        <div>
+            <Button title={$_("budget.buttons.save")}/>
+            <Button onClickHandler={onClearForm} secondary={true}
+                    title={$_("budget.buttons.clear")}/>
+        </div>
+    </div>
+
 </form>

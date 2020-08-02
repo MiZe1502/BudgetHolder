@@ -69,7 +69,9 @@ export default {
             remove_part2: "?",
         },
         buttons: {
-            new: "Add new purchase"
+            new: "Add new purchase",
+            clear: "Clear all data",
+            save: "Save purchase"
         },
         titles: {
             purchases: "Purchases"
