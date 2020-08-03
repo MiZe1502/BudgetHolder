@@ -43,6 +43,8 @@
         isOpen = false;
     }
 
+    let dropdownElement: HTMLDivElement = null;
+
     export let data: InputDropdownData[] = [];
     export let onSelectHandler = (selectedId: number) => {
     };
@@ -75,7 +77,7 @@
             </div>
         </div>
         {#if isOpen}
-            <div class={Dropdown}>
+            <div class={Dropdown} bind:this={dropdownElement}>
                 <SimpleBar style="max-height: {maxHeight}px; width: 100%">
                     {#each data as item (item.id)}
                         <div on:click={() => onSelect(item.id)}

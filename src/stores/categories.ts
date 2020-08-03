@@ -1,6 +1,7 @@
 import {get, writable} from 'svelte/store'
 import {Category, SimpleCategory} from "../pages/Categorization/types";
 import {LoadingStatus} from "./utils";
+import {generateNewArtificialId} from "./common";
 
 export const categories = writable<Category[]>([]);
 export const categoriesTotal = writable<number>(0);
@@ -13,13 +14,7 @@ const categoryPathDelimeter = " | ";
 
 export const addCategoryToStore = (newCategory: Category) => {
     //TODO: remove when backend ready. artificial id generation
-    let maxId = 0;
-    for (let i = 0; i < get(categories).length; i++) {
-        if (get(categories)[i].id > maxId) {
-            maxId = get(categories)[i].id
-        }
-    }
-    newCategory.id = maxId + 1;
+    newCategory.id = generateNewArtificialId(categories);
 
     categories.update((categories) => {
         if (!newCategory.parentId) {

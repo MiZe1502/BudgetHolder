@@ -4,7 +4,7 @@
     import SimpleBar from '@woden/svelte-simplebar'
     import {onMount} from "svelte";
     import {Purchase} from "../types";
-    import {getSimpleShopsData} from "../../../stores/shops";
+    import {getShopById, getSimpleShopsData} from "../../../stores/shops";
     import {
         SideMinorPadding,
         TextArea,
@@ -33,16 +33,20 @@
         from "../../../common/components/Buttons/ButtonIconMinus/ButtonIconMinus.svelte";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
+    import {addPurchaseToStore} from "../../../stores/purchases";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
     }
 
     const onShopSelect = (selectedId: number) => {
-        console.log(selectedId)
+        const selectedShop = getShopById(selectedId);
+        purchase.shop = {...selectedShop}
     }
 
-    const onAddNewItemToPurchase = () => {
+    const onAddNewItemToPurchase = (event: MouseEvent) => {
+        event.preventDefault();
+
         purchase.goods = [...purchase.goods, {
             tempId: uuidv4(),
             category: {}
@@ -53,7 +57,9 @@
         purchase.goods = [...purchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
     }
 
-    const onClearForm = () => {
+    const onClearForm = (event: MouseEvent) => {
+        event.preventDefault();
+
         purchase = Object.assign({}, {
             shop: {},
             goods: [{
@@ -61,6 +67,12 @@
                 category: {}
             }],
         })
+    }
+
+    const onSave = (event: MouseEvent) => {
+        event.preventDefault();
+
+        addPurchaseToStore(purchase);
     }
 
     onMount(() => {
@@ -142,17 +154,17 @@
                     </div>
                 </div>
                 <div class="{FlexHor}">
-                    <ButtonIconMinus width={32} height={32}
+                    <ButtonIconMinus width={16} height={16}
                                      onClickHandler={() => onRemoveItemFromPurchase(goodsItem.tempId)}/>
                 </div>
             </div>
         {/each}
     </SimpleBar>
     <div class="{ButtonsWrapper} {FlexHor}">
-        <ButtonIconNew width={32} height={32}
+        <ButtonIconNew width={24} height={24}
                        onClickHandler={onAddNewItemToPurchase}/>
         <div>
-            <Button title={$_("budget.buttons.save")}/>
+            <Button title={$_("budget.buttons.save")} onClickHandler={onSave}/>
             <Button onClickHandler={onClearForm} secondary={true}
                     title={$_("budget.buttons.clear")}/>
         </div>
