@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store'
+import { writable, get, derived } from 'svelte/store'
 import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 
@@ -6,6 +6,15 @@ export const shops = writable<Shop[]>([])
 export const allShops = writable<Shop[]>([]);
 export const shopsTotal = writable<number>(0)
 export const shopsStatus = writable<LoadingStatus>(LoadingStatus.None);
+
+export const simpleShops = derived(allShops, ($allShops) => {
+    return $allShops.map((shop) => {
+        return {
+            id: shop.id,
+            value: shop.name,
+        }
+    })
+})
 
 export const getSimpleShopsData = () => {
     return get(allShops).map((shop: Shop) => {
@@ -54,5 +63,5 @@ export const updateCurrentShopsSlice = (from: number, to: number) => {
 }
 
 export const getShopById = (id: number) => {
-    get(getSimpleShopsData()).find((shop: Shop) => shop.id === id);
+    get(allShops).find((shop: Shop) => shop.id === id);
 }

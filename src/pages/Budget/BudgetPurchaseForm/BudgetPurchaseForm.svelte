@@ -20,7 +20,11 @@
         NotLastColumn
     } from "./style";
 
-    import {simpleCategories} from "../../../stores/categories";
+    import {
+        getSimpleCategoryById,
+        simpleCategories
+    } from "../../../stores/categories";
+    import {simpleShops} from "../../../stores/shops";
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel
@@ -40,8 +44,8 @@
     }
 
     const onShopSelect = (selectedId: number) => {
-        const selectedShop = getShopById(selectedId);
-        purchase.shop = {...selectedShop}
+      //  const selectedShop = getShopById(selectedId);
+      //  purchase.shop = {...selectedShop}
     }
 
     const onAddNewItemToPurchase = (event: MouseEvent) => {
@@ -55,6 +59,11 @@
 
     const onRemoveItemFromPurchase = (tempId: string) => {
         purchase.goods = [...purchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
+    }
+
+    const onCategorySelect = (goodsItemTempId: number, selectedId: number) => {
+        const updatedGoodsItem = purchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
+        updatedGoodsItem.category = getSimpleCategoryById(selectedId);
     }
 
     const onClearForm = (event: MouseEvent) => {
@@ -106,7 +115,7 @@
             <InputDropdown onSelectHandler={onShopSelect}
                            bind:value={purchase.shop.id} name="shop"
                            label={$_("budget.labels.shop")}
-                           data={getSimpleShopsData()}/>
+                           data={$simpleShops}/>
         </div>
         <div class="{FlexVert} {MainColumn}">
             <TextAreaWithLabel
@@ -126,7 +135,7 @@
                                 label={$_("common.labels.name")}
                                 type="text" name="name"
                                 bind:value={goodsItem.name}/>
-                        <InputDropdown onSelectHandler={onShopSelect}
+                        <InputDropdown onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
                                        bind:value={goodsItem.category.id}
                                        name="category"
                                        label={$_("budget.labels.category")}
@@ -154,7 +163,7 @@
                     </div>
                 </div>
                 <div class="{FlexHor}">
-                    <ButtonIconMinus width={16} height={16}
+                    <ButtonIconMinus width={24} height={24}
                                      onClickHandler={() => onRemoveItemFromPurchase(goodsItem.tempId)}/>
                 </div>
             </div>

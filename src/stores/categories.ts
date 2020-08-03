@@ -111,3 +111,7 @@ export const updateCategoryInStore = (updatedCategory: Category) => {
         return categories
     });
 }
+
+export const getSimpleCategoryById = (id: number) => {
+    return get(simpleCategories).find((category) => category.id === id);
+}

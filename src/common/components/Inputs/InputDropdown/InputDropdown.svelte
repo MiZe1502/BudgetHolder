@@ -45,6 +45,8 @@
 
     let dropdownElement: HTMLDivElement = null;
 
+    $: inputValue = data.find((elem) => elem.id === value) ? data.find((elem) => elem.id === value).value : null;
+
     export let data: InputDropdownData[] = [];
     export let onSelectHandler = (selectedId: number) => {
     };
@@ -68,7 +70,7 @@
                    class="{Input} {DropdownInput} {isOpen && DropdownInputExpanded} {Font312Black} {invalid && InvalidInput}"
                    {required}
                    {disabled} {name}
-                   value={data.find((elem) => elem.id === value) ? data.find((elem) => elem.id === value).value : null} {autofocus}/>
+                   value={inputValue} {autofocus}/>
             <div class="{ButtonWrapper}">
                 <ButtonIconExpandArrow onClickHandler={onClickHandler}
                                        width={16}
