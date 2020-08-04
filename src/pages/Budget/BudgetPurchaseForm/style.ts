@@ -16,6 +16,7 @@ export const TextArea = css`
 
 export const Form = css`
     padding-top: 8px;
+    width: 100%;
 `;
 
 export const MainFieldsWrapper = css`

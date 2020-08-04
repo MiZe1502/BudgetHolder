@@ -10,6 +10,7 @@ export const Wrapper = css`
   min-height: 150px;
   border: 1px solid ${colors.darkGray};
   border-radius: 4px;
+  display: flex;
 `;
 
 export const Container = css`

@@ -14,12 +14,18 @@
         3.7.2. client cert
     3.8. budget page
         3.8.1. input form
-            3.8.1.2. store
-            3.8.1.3. input purchase data
-            3.8.1.4. input goods data + appending new forms
+            3.8.1.1. store current data from form in store
+            3.8.1.2. sync current data in form with indexedDB or localStorage/cookies
+            3.8.1.3. save new goods to goods store
+            3.8.1.4. validation + restrictions on input fields
+            3.8.1.5. custom text field with suggestions
+            3.8.1.6. disable default css for number fields
+            3.8.1.7. fix dropdown issue with overflow:scroll
         3.8.2. purchases table
             3.8.2.1. increase data to enable pagination
+            3.8.2.2. edit purchase icon button
         3.8.3. goods details popup
             3.8.3.1. add scroll to table inside popup
+            3.8.3.2. edit goods details icon button
     3.10. common
         3.10.1. side navigation and scrollto section
