@@ -44,8 +44,7 @@
     }
 
     const onShopSelect = (selectedId: number) => {
-      //  const selectedShop = getShopById(selectedId);
-      //  purchase.shop = {...selectedShop}
+        purchase.shop = {...getShopById(selectedId)};
     }
 
     const onAddNewItemToPurchase = (event: MouseEvent) => {

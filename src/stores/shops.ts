@@ -62,6 +62,6 @@ export const updateCurrentShopsSlice = (from: number, to: number) => {
     shops.set([...get(allShops).slice(from, to + 1)]);
 }
 
-export const getShopById = (id: number) => {
-    get(allShops).find((shop: Shop) => shop.id === id);
+export const getShopById = (id: number): Shop => {
+    return get(allShops).find((shop: Shop) => shop.id === id);
 }
