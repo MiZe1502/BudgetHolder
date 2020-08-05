@@ -37,7 +37,16 @@
         from "../../../common/components/Buttons/ButtonIconMinus/ButtonIconMinus.svelte";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
-    import {addPurchaseToStore, currentPurchase} from "../../../stores/purchases";
+    import {
+        addPurchaseToStore,
+        currentPurchase,
+        clearCurrentPurchaseData,
+        purchaseLocalStorageKey
+    } from "../../../stores/purchases";
+    import {
+        addDataToLocalStorage,
+        getDataFromLocalStorageByKey
+    } from "../../../common/utils/localStorage";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
@@ -68,13 +77,7 @@
     const onClearForm = (event: MouseEvent) => {
         event.preventDefault();
 
-        purchase = Object.assign({}, {
-            shop: {},
-            goods: [{
-                tempId: uuidv4(),
-                category: {}
-            }],
-        })
+        clearCurrentPurchaseData();
     }
 
     const onSave = (event: MouseEvent) => {
@@ -85,6 +88,14 @@
 
     onMount(() => {
         validateForm(null);
+
+        if (!getDataFromLocalStorageByKey(purchaseLocalStorageKey)) {
+            addDataToLocalStorage(purchaseLocalStorageKey, $currentPurchase);
+        }
+
+        setInterval(() => {
+            addDataToLocalStorage(purchaseLocalStorageKey, $currentPurchase);
+        }, 20000)
     })
 
     let purchase: Purchase = $currentPurchase;
@@ -128,11 +139,12 @@
                                 label={$_("common.labels.name")}
                                 type="text" name="name"
                                 bind:value={goodsItem.name}/>
-                        <InputDropdown onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
-                                       bind:value={goodsItem.category.id}
-                                       name="category"
-                                       label={$_("budget.labels.category")}
-                                       data={$simpleCategories}/>
+                        <InputDropdown
+                                onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
+                                bind:value={goodsItem.category.id}
+                                        name="category"
+                                label={$_("budget.labels.category")}
+                                        data={$simpleCategories}/>
                     </div>
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
                         <InputWithLabel

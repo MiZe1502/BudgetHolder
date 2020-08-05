@@ -5,6 +5,9 @@ import {generateNewArtificialId} from "./common";
 import {v4 as uuidv4} from 'uuid';
 import {Shop} from "../pages/Shops/types";
 import {SimpleCategory} from "../pages/Categorization/types";
+import {removeDataFromLocalStorageByKey} from "../common/utils/localStorage";
+
+export const purchaseLocalStorageKey = "CURRENT_PURCHASE_FORM_STATE";
 
 export const currentPurchase = writable<Purchase>(new Purchase())
 
@@ -35,5 +38,12 @@ export const addPurchaseToStore = (newPurchase: Purchase) => {
     })
     purchasesTotal.update(total => total + 1);
 
-    currentPurchase.set(new Purchase());
+    clearCurrentPurchaseData();
 }
+
+export const clearCurrentPurchaseData = () => {
+    currentPurchase.set(new Purchase());
+    removeDataFromLocalStorageByKey(purchaseLocalStorageKey);
+}
+
+
