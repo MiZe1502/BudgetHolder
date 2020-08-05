@@ -41,7 +41,8 @@
         addPurchaseToStore,
         currentPurchase,
         clearCurrentPurchaseData,
-        purchaseLocalStorageKey
+        purchaseLocalStorageKey,
+        purchaseLocalStorageUpdateInterval
     } from "../../../stores/purchases";
     import {
         addDataToLocalStorage,
@@ -95,7 +96,7 @@
 
         setInterval(() => {
             addDataToLocalStorage(purchaseLocalStorageKey, $currentPurchase);
-        }, 20000)
+        }, purchaseLocalStorageUpdateInterval)
     })
 
     let purchase: Purchase = $currentPurchase;

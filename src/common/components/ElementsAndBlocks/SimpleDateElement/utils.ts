@@ -1,4 +1,8 @@
 export const dateToDMY = (date: Date): string => {
+    if (!date) {
+        return "";
+    }
+
     let parsedDate = typeof date === "string" ? new Date(date) : date;
     const d = parsedDate.getDate();
     const m = parsedDate.getMonth() + 1;

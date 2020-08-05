@@ -8,6 +8,7 @@ import {SimpleCategory} from "../pages/Categorization/types";
 import {removeDataFromLocalStorageByKey} from "../common/utils/localStorage";
 
 export const purchaseLocalStorageKey = "CURRENT_PURCHASE_FORM_STATE";
+export const purchaseLocalStorageUpdateInterval = 20000;
 
 export const currentPurchase = writable<Purchase>(new Purchase())
 
