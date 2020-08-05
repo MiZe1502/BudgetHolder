@@ -37,31 +37,31 @@
         from "../../../common/components/Buttons/ButtonIconMinus/ButtonIconMinus.svelte";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
-    import {addPurchaseToStore} from "../../../stores/purchases";
+    import {addPurchaseToStore, currentPurchase} from "../../../stores/purchases";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
     }
 
     const onShopSelect = (selectedId: number) => {
-        purchase.shop = {...getShopById(selectedId)};
+        $currentPurchase.shop = {...getShopById(selectedId)};
     }
 
     const onAddNewItemToPurchase = (event: MouseEvent) => {
         event.preventDefault();
 
-        purchase.goods = [...purchase.goods, {
+        $currentPurchase.goods = [...$currentPurchase.goods, {
             tempId: uuidv4(),
             category: {}
         }]
     }
 
     const onRemoveItemFromPurchase = (tempId: string) => {
-        purchase.goods = [...purchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
+        $currentPurchase.goods = [...$currentPurchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
     }
 
     const onCategorySelect = (goodsItemTempId: number, selectedId: number) => {
-        const updatedGoodsItem = purchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
+        const updatedGoodsItem = $currentPurchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
         updatedGoodsItem.category = getSimpleCategoryById(selectedId);
     }
 
@@ -80,20 +80,14 @@
     const onSave = (event: MouseEvent) => {
         event.preventDefault();
 
-        addPurchaseToStore(purchase);
+        addPurchaseToStore($currentPurchase);
     }
 
     onMount(() => {
         validateForm(null);
     })
 
-    let purchase: Purchase = {
-        shop: {},
-        goods: [{
-            tempId: uuidv4(),
-            category: {}
-        }],
-    };
+    let purchase: Purchase = $currentPurchase;
 
 </script>
 
@@ -105,14 +99,14 @@
                     on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.price")} autofocus={true}
                     type="number" name="totalPrice"
-                    bind:value={purchase.totalPrice} required={true}/>
+                    bind:value={$currentPurchase.totalPrice} required={true}/>
             <InputWithLabel
                     on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.date")} autofocus={true}
                     type="date" name="date"
-                    bind:value={purchase.date} required={true}/>
+                    bind:value={$currentPurchase.date} required={true}/>
             <InputDropdown onSelectHandler={onShopSelect}
-                           bind:value={purchase.shop.id} name="shop"
+                           bind:value={$currentPurchase.shop.id} name="shop"
                            label={$_("budget.labels.shop")}
                            data={$simpleShops}/>
         </div>
@@ -121,11 +115,11 @@
                     on:input={validateForm} on:change={validateForm}
                     textAreaClass={TextArea}
                     label={$_("common.labels.comment")} name="comment"
-                    bind:value={purchase.comment}/>
+                    bind:value={$currentPurchase.comment}/>
         </div>
     </div>
     <SimpleBar style="max-height: {maxHeight}px; width: 100%">
-        {#each purchase.goods as goodsItem (goodsItem.tempId)}
+        {#each $currentPurchase.goods as goodsItem (goodsItem.tempId)}
             <div class="{FlexVert} {MinorFieldsWrapper}">
                 <div class="{FlexHor}">
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">

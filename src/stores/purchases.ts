@@ -1,7 +1,12 @@
 import {get, writable} from 'svelte/store'
-import {Purchase} from "../pages/Budget/types";
+import {GoodsDetails, Purchase} from "../pages/Budget/types";
 import {LoadingStatus} from "./utils";
 import {generateNewArtificialId} from "./common";
+import {v4 as uuidv4} from 'uuid';
+import {Shop} from "../pages/Shops/types";
+import {SimpleCategory} from "../pages/Categorization/types";
+
+export const currentPurchase = writable<Purchase>(new Purchase())
 
 export const purchases = writable<Purchase[]>([]);
 export const purchasesTotal = writable<number>(0);
@@ -29,4 +34,6 @@ export const addPurchaseToStore = (newPurchase: Purchase) => {
         return [...purchases, newPurchase];
     })
     purchasesTotal.update(total => total + 1);
+
+    currentPurchase.set(new Purchase());
 }
