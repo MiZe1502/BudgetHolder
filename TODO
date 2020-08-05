@@ -17,7 +17,6 @@
             3.8.1.3. save new goods to goods store
             3.8.1.4. validation + restrictions on input fields
             3.8.1.5. custom text field with suggestions
-            3.8.1.6. disable default css for number fields
             3.8.1.7. fix dropdown issue with overflow:scroll
         3.8.2. purchases table
             3.8.2.2. edit purchase icon button

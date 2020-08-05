@@ -40,6 +40,16 @@
         background: #5b9c35;
     }
 
+    :global(input::-webkit-outer-spin-button),
+    :global(input::-webkit-inner-spin-button) {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    :global(input[type=number]) {
+        -moz-appearance: textfield;
+    }
+
     .MainWrapper {
         display: flex;
         flex-direction: column;
