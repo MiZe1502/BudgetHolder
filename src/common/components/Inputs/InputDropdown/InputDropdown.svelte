@@ -56,7 +56,8 @@
     export let label = "";
     export let disabled = false;
     export let required = false;
-    export let invalid = false;</script>
+    export let invalid = false;
+</script>
 
 <div class="{FlexVert} {Wrapper}">
     {#if label}

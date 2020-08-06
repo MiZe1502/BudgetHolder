@@ -48,6 +48,8 @@
         addDataToLocalStorage,
         getDataFromLocalStorageByKey
     } from "../../../common/utils/localStorage";
+    import InputWithSuggestion
+        from "../../../common/components/Inputs/InputWithSuggestion/InputWithSuggestion.svelte";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
@@ -135,7 +137,8 @@
             <div class="{FlexVert} {MinorFieldsWrapper}">
                 <div class="{FlexHor}">
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
-                        <InputWithLabel
+                        <InputWithSuggestion
+                                suggestionsList={["test", "testst", "t", "este"]}
                                 on:input={validateForm} on:change={validateForm}
                                 label={$_("common.labels.name")}
                                 type="text" name="name"
