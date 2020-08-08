@@ -4,6 +4,7 @@
     import SimpleBar from '@woden/svelte-simplebar'
     import {onMount} from "svelte";
     import {Purchase} from "../types";
+    import {SuggestionItem} from "../../../common/components/Inputs/InputWithSuggestion/utils";
     import {getShopById, getSimpleShopsData} from "../../../stores/shops";
     import {
         SideMinorPadding,
@@ -44,6 +45,7 @@
         purchaseLocalStorageKey,
         purchaseLocalStorageUpdateInterval
     } from "../../../stores/purchases";
+    import {goodsForSuggestions, goods} from "../../../stores/goods";
     import {
         addDataToLocalStorage,
         getDataFromLocalStorageByKey
@@ -53,6 +55,14 @@
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
+    }
+
+    const onGoodsItemSelect = (selectedItem: SuggestionItem, goodsItemTempId: string) => {
+        let goodsItemDetails = $currentPurchase.goods.find((item) => item.tempId === goodsItemTempId);
+        const goodsItemData = $goods.find((item) => item.id === selectedItem.id);
+        if (goodsItemData && goodsItemDetails) {
+            goodsItemDetails = {...goodsItemDetails, ...goodsItemData};
+        }
     }
 
     const onShopSelect = (selectedId: number) => {
@@ -138,7 +148,8 @@
                 <div class="{FlexHor}">
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
                         <InputWithSuggestion
-                                suggestionsList={["test", "testst", "t", "este"]}
+                                onSelectHandler={(selectedItem) => onGoodsItemSelect(selectedItem, goodsItem.tempId)}
+                                suggestionsList={$goodsForSuggestions}
                                 on:input={validateForm} on:change={validateForm}
                                 label={$_("common.labels.name")}
                                 type="text" name="name"

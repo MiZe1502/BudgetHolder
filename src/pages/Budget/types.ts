@@ -39,3 +39,8 @@ export interface GoodsItemDetails {
     price: number;
     purchaseId: number;
 }
+
+export interface GoodsSuggestion {
+    id: number;
+    value: string;
+}

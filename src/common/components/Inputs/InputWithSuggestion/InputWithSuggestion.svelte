@@ -1,6 +1,7 @@
 <script lang="ts">
     import ClickOutside from "svelte-click-outside";
 
+    import {SuggestionItem} from "./utils";
     import {
         Font312DarkGray,
         Font312Black,
@@ -21,47 +22,53 @@
     }
 
     const findTopSuggestions = () => {
-        if (!value) {
+        if (!value || value.length === 0 || value === "") {
+            console.log("here")
             currentSuggestions = [];
         }
 
-        currentSuggestions = [...suggestionsList.filter(item => item.indexOf(value) != -1)];
-        console.log(currentSuggestions)
+        currentSuggestions = [...suggestionsList.filter(item =>
+                item.value.trim().toLowerCase().indexOf(value.trim().toLowerCase()) != -1)];
+
+        console.log(value, currentSuggestions)
     }
 
-    const onInputHandler = () => {
-        console.log(value)
-        if (currentSuggestions) {
-            isOpen = true;
-        }
-
-        if (!value) {
-            return;
-        }
+    const onInputHandler = (event) => {
+        value = event.target.value;
 
         findTopSuggestions();
+
+        if (value.length > 0) {
+            if (currentSuggestions.length > 0) {
+                isOpen = true;
+            }
+        } else {
+            isOpen = false;
+        }
     }
 
     //TODO:
-    //1. implement real suggestions list
     //2. implement arrow buttons logic
     //3. dry - implement dropdown component
     //4. check chrome
     //5. only 5 top suggestions
+    //6. load all goods data to form
 
     const onSelect = (selectedValue) => {
-        value = selectedValue;
+        value = selectedValue.value;
+        onSelectHandler(selectedValue);
         isOpen = false;
     }
 
     let isOpen = false;
-    let currentSuggestions: string[] = [];
+    let currentSuggestions: SuggestionItem[] = [];
 
     let dropdownElement: HTMLDivElement = null;
 
     export let value: string = "";
-    export let suggestionsList: string[] = [];
+    export let suggestionsList: SuggestionItem[] = [];
 
+    export let onSelectHandler: (selectedItem: SuggestionItem) => void;
     export let autofocus = false;
     export let name = "";
     export let label = "";
@@ -78,7 +85,7 @@
 
     <ClickOutside on:clickoutside={onClickOutside}>
         <div class={Wrapper}>
-            <input autocomplete="off" on:input={onInputHandler} on:change
+            <input autocomplete="off" on:keyup={onInputHandler} on:change
                    class="{Input} {InputWithSuggestion} {Font312Black} {isOpen && DropdownInputExpanded} {invalid && InvalidInput}"
                    {required}
                    {disabled} {name}
@@ -88,7 +95,7 @@
             <div class={Dropdown} bind:this={dropdownElement}>
                 {#each currentSuggestions as suggestion}
                     <div on:click={() => onSelect(suggestion)}
-                         class="{SingleLine} {FlexHorCenter} {Font312Black}">{suggestion}</div>
+                         class="{SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>
                 {/each}
             </div>
         {/if}

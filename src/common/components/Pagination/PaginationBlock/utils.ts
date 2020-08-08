@@ -10,7 +10,7 @@
     export const formPagesArray = (totalPages: number, currentPage: number): number[] => {
         const pagesInMiddle = [];
         if (totalPages > 2) {
-            const anchorPage = Math.max(2, Math.min(currentPage - 2, totalPages - 5));
+            const anchorPage = Math.max(2, Math.min(currentPage - 2, totalPages - middleRange));
             if (anchorPage > 2) {
                 pagesInMiddle.push(Delimeters.Left);
             }
