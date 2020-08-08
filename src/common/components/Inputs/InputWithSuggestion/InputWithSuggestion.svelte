@@ -1,7 +1,7 @@
 <script lang="ts">
     import ClickOutside from "svelte-click-outside";
 
-    import {SuggestionItem} from "./utils";
+    import {SuggestionItem, maxSuggestionsListSize} from "./utils";
     import {
         Font312DarkGray,
         Font312Black,
@@ -28,7 +28,7 @@
         }
 
         currentSuggestions = [...suggestionsList.filter(item =>
-                item.value.trim().toLowerCase().indexOf(value.trim().toLowerCase()) != -1)];
+                item.value.trim().toLowerCase().indexOf(value.trim().toLowerCase()) != -1)].slice(0, maxSuggestionsListSize);
 
         console.log(value, currentSuggestions)
     }
@@ -51,7 +51,6 @@
     //2. implement arrow buttons logic
     //3. dry - implement dropdown component
     //4. check chrome
-    //5. only 5 top suggestions
     //6. load all goods data to form
 
     const onSelect = (selectedValue) => {
