@@ -76,7 +76,6 @@
 
     //TODO:
     //3. dry - implement dropdown component
-    //6. load all goods data to form
 
     const onSelect = (selectedValue) => {
         value = selectedValue.value;

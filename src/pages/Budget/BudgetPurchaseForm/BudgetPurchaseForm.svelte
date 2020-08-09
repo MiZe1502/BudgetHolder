@@ -58,11 +58,25 @@
     }
 
     const onGoodsItemSelect = (selectedItem: SuggestionItem, goodsItemTempId: string) => {
+        console.log("onGoodsItemSelect", selectedItem, goodsItemTempId)
         let goodsItemDetails = $currentPurchase.goods.find((item) => item.tempId === goodsItemTempId);
+        console.log("onGoodsItemSelect", goodsItemDetails)
+
         const goodsItemData = $goods.find((item) => item.id === selectedItem.id);
+
+        console.log("onGoodsItemSelect", goodsItemData)
+
         if (goodsItemData && goodsItemDetails) {
-            goodsItemDetails = {...goodsItemDetails, ...goodsItemData};
+            // goodsItemDetails.id = goodsItemData.id;
+            // goodsItemDetails.name = goodsItemData.name;
+            // goodsItemDetails.category = goodsItemData.category;
+            // goodsItemDetails.comment = goodsItemData.comment;
+            goodsItemDetails = Object.assign(goodsItemDetails, goodsItemData);
         }
+
+        console.log("onGoodsItemSelect", goodsItemDetails)
+        console.log("onGoodsItemSelect", $currentPurchase)
+
     }
 
     const onShopSelect = (selectedId: number) => {
@@ -156,7 +170,7 @@
                                 bind:value={goodsItem.name}/>
                         <InputDropdown
                                 onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
-                                bind:value={goodsItem.category.id}
+                                bind:value={goodsItem.category}
                                         name="category"
                                 label={$_("budget.labels.category")}
                                         data={$simpleCategories}/>

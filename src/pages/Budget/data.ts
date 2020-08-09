@@ -1,4 +1,5 @@
 import {GoodsData, Purchase} from "./types";
+import {SimpleCategory} from "../Categorization/types";
 
 export const mockPurchases: Purchase[] = [
     {
@@ -208,7 +209,7 @@ export const mockGoods: GoodsData[] = [
     {
         id: 6,
         name: "Without category",
-        category: null,
+        category: {} as SimpleCategory,
         comment: "Test with no category",
     }
 ]
