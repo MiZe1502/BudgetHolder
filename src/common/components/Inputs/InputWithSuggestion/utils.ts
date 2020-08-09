@@ -4,3 +4,9 @@ export interface SuggestionItem {
 }
 
 export const maxSuggestionsListSize = 5;
+
+export enum KeyboardKeys {
+    ArrowUp = 38,
+    ArrowDown = 40,
+    Enter= 13,
+}

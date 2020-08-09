@@ -55,3 +55,7 @@ export const SingleLine = css`
     border: 0;
   }
 `;
+
+export const SelectedLine = css`
+  background-color: ${colors.greenLight};
+`

@@ -1,7 +1,11 @@
 <script lang="ts">
     import ClickOutside from "svelte-click-outside";
 
-    import {SuggestionItem, maxSuggestionsListSize} from "./utils";
+    import {
+        SuggestionItem,
+        maxSuggestionsListSize,
+        KeyboardKeys
+    } from "./utils";
     import {
         Font312DarkGray,
         Font312Black,
@@ -14,7 +18,8 @@
         SingleLine,
         FlexHorCenter,
         DropdownInputExpanded,
-        InputWithSuggestion
+        InputWithSuggestion,
+        SelectedLine
     } from "./style";
 
     const onClickOutside = () => {
@@ -47,10 +52,30 @@
         }
     }
 
+    const onKeyHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.which === KeyboardKeys.ArrowUp) {
+            if (currentSelectedSuggestionInList === 0) {
+                currentSelectedSuggestionInList = currentSuggestions.length - 1;
+                return;
+            }
+            currentSelectedSuggestionInList -= 1;
+            return;
+        }
+        if (event.which === KeyboardKeys.ArrowDown) {
+            if (currentSelectedSuggestionInList === currentSuggestions.length - 1) {
+                currentSelectedSuggestionInList = 0
+                return;
+            }
+            currentSelectedSuggestionInList += 1;
+            return;
+        }
+        if (event.which === KeyboardKeys.Enter) {
+            onSelect(currentSuggestions[currentSelectedSuggestionInList]);
+        }
+    }
+
     //TODO:
-    //2. implement arrow buttons logic
     //3. dry - implement dropdown component
-    //4. check chrome
     //6. load all goods data to form
 
     const onSelect = (selectedValue) => {
@@ -63,6 +88,8 @@
     let currentSuggestions: SuggestionItem[] = [];
 
     let dropdownElement: HTMLDivElement = null;
+
+    let currentSelectedSuggestionInList: number = 0;
 
     export let value: string = "";
     export let suggestionsList: SuggestionItem[] = [];
@@ -84,7 +111,8 @@
 
     <ClickOutside on:clickoutside={onClickOutside}>
         <div class={Wrapper}>
-            <input autocomplete="off" on:keyup={onInputHandler} on:change
+            <input autocomplete="off" on:keyup={onKeyHandler}
+                   on:input={onInputHandler} on:change
                    class="{Input} {InputWithSuggestion} {Font312Black} {isOpen && DropdownInputExpanded} {invalid && InvalidInput}"
                    {required}
                    {disabled} {name}
@@ -94,7 +122,7 @@
             <div class={Dropdown} bind:this={dropdownElement}>
                 {#each currentSuggestions as suggestion}
                     <div on:click={() => onSelect(suggestion)}
-                         class="{SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>
+                         class="{suggestion.id === currentSuggestions[currentSelectedSuggestionInList].id && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>
                 {/each}
             </div>
         {/if}

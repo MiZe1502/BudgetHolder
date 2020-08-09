@@ -1,4 +1,5 @@
 <script lang="typescript" >
+    import {onMount} from "svelte";
     import SimpleBar from '@woden/svelte-simplebar'
     import MainMenu from './common/components/Menu/MainMenu/MainMenu.svelte'
     import routes from "./common/utils/routes";
@@ -11,6 +12,15 @@
     import Budget from "./pages/Budget/Budget.svelte";
 
     import { Router, Link, Route } from "svelte-routing";
+
+    onMount(() => {
+        document.addEventListener('keypress', function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    })
 
 </script>
 

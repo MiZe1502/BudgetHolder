@@ -30,7 +30,7 @@
     let isOpen = false;
 
     const onClickHandler = () => {
-        isOpen = !isOpen;
+       isOpen = !isOpen;
     }
 
     const onClickOutside = () => {
