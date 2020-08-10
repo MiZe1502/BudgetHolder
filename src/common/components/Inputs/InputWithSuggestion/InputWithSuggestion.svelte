@@ -21,6 +21,7 @@
         InputWithSuggestion,
         SelectedLine
     } from "./style";
+    import DropdownMenu from "../../DropdownMenu/DropdownMenu.svelte";
 
     const onClickOutside = () => {
         isOpen = false;
@@ -118,12 +119,14 @@
                    bind:value={value} {autofocus}/>
         </div>
         {#if isOpen}
-            <div class={Dropdown} bind:this={dropdownElement}>
-                {#each currentSuggestions as suggestion}
-                    <div on:click={() => onSelect(suggestion)}
-                         class="{suggestion.id === currentSuggestions[currentSelectedSuggestionInList].id && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>
-                {/each}
-            </div>
+            <DropdownMenu isActiveCondition={(val1, val2) => val1 === val2} data={currentSuggestions} onSelectHandler={onSelect}/>
+
+<!--            <div class={Dropdown} bind:this={dropdownElement}>-->
+<!--                {#each currentSuggestions as suggestion}-->
+<!--                    <div on:click={() => onSelect(suggestion)}-->
+<!--                         class="{suggestion.id === currentSuggestions[currentSelectedSuggestionInList].id && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>-->
+<!--                {/each}-->
+<!--            </div>-->
         {/if}
     </ClickOutside>
 </div>

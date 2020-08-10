@@ -10,12 +10,8 @@
         Wrapper,
         Font312RedAttention,
         InvalidInput,
-        Dropdown,
         DropdownInput,
-        SingleLine,
         FlexHorCenter,
-        maxHeight,
-        SelectedLine,
         ButtonWrapper,
         ArrowIcon,
         ArrowIconExpanded,
@@ -26,11 +22,12 @@
     import {InputDropdownData} from "./utils";
     import ButtonIconExpandArrow
         from "../../Buttons/ButtonIconExpandArrow/ButtonIconExpandArrow.svelte";
+    import DropdownMenu from "../../DropdownMenu/DropdownMenu.svelte";
 
     let isOpen = false;
 
     const onClickHandler = () => {
-       isOpen = !isOpen;
+        isOpen = !isOpen;
     }
 
     const onClickOutside = () => {
@@ -38,6 +35,7 @@
     }
 
     const onSelect = (selectedId: number) => {
+        console.log(selectedId)
         value = selectedId;
         onSelectHandler && onSelectHandler(selectedId);
         isOpen = false;
@@ -45,7 +43,10 @@
 
     let dropdownElement: HTMLDivElement = null;
 
-    $: inputValue = data.find((elem) => elem.id === value) ? data.find((elem) => elem.id === value).value : null;
+    $: inputValue = data.find((elem) => {
+        console.log(elem.id, value.id)
+        return elem.id === value.id
+    }) ? data.find((elem) => elem.id === value.id).value : null;
 
     export let data: InputDropdownData[] = [];
     export let onSelectHandler = (selectedId: number) => {
@@ -80,14 +81,7 @@
             </div>
         </div>
         {#if isOpen}
-            <div class={Dropdown} bind:this={dropdownElement}>
-                <SimpleBar style="max-height: {maxHeight}px; width: 100%">
-                    {#each data as item (item.id)}
-                        <div on:click={() => onSelect(item.id)}
-                             class="{item.id === value && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{item.value}</div>
-                    {/each}
-                </SimpleBar>
-            </div>
+            <DropdownMenu value={value} isActiveCondition={(val1, val2) => val1 === val2} data={data} onSelectHandler={onSelect}/>
         {/if}
     </ClickOutside>
 </div>
