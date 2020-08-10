@@ -14,12 +14,9 @@
         Wrapper,
         Font312RedAttention,
         InvalidInput,
-        Dropdown,
-        SingleLine,
         FlexHorCenter,
         DropdownInputExpanded,
         InputWithSuggestion,
-        SelectedLine
     } from "./style";
     import DropdownMenu from "../../DropdownMenu/DropdownMenu.svelte";
 
@@ -75,9 +72,6 @@
         }
     }
 
-    //TODO:
-    //3. dry - implement dropdown component
-
     const onSelect = (selectedValue) => {
         value = selectedValue.value;
         onSelectHandler(selectedValue);
@@ -86,8 +80,6 @@
 
     let isOpen = false;
     let currentSuggestions: SuggestionItem[] = [];
-
-    let dropdownElement: HTMLDivElement = null;
 
     let currentSelectedSuggestionInList: number = 0;
 
@@ -119,14 +111,10 @@
                    bind:value={value} {autofocus}/>
         </div>
         {#if isOpen}
-            <DropdownMenu isActiveCondition={(val1, val2) => val1 === val2} data={currentSuggestions} onSelectHandler={onSelect}/>
-
-<!--            <div class={Dropdown} bind:this={dropdownElement}>-->
-<!--                {#each currentSuggestions as suggestion}-->
-<!--                    <div on:click={() => onSelect(suggestion)}-->
-<!--                         class="{suggestion.id === currentSuggestions[currentSelectedSuggestionInList].id && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{suggestion.value}</div>-->
-<!--                {/each}-->
-<!--            </div>-->
+            <DropdownMenu
+                    value={currentSuggestions[currentSelectedSuggestionInList].id}
+                    isActiveCondition={(val1, val2) => val1 === val2}
+                    data={currentSuggestions} onSelectHandler={onSelect}/>
         {/if}
     </ClickOutside>
 </div>

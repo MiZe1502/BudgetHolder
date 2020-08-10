@@ -170,7 +170,7 @@
                                 bind:value={goodsItem.name}/>
                         <InputDropdown
                                 onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
-                                bind:value={goodsItem.category}
+                                bind:value={goodsItem.category.id}
                                         name="category"
                                 label={$_("budget.labels.category")}
                                         data={$simpleCategories}/>

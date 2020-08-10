@@ -34,19 +34,13 @@
         isOpen = false;
     }
 
-    const onSelect = (selectedId: number) => {
-        console.log(selectedId)
-        value = selectedId;
-        onSelectHandler && onSelectHandler(selectedId);
+    const onSelect = (selectedItem) => {
+        value = selectedItem.id;
+        onSelectHandler && onSelectHandler(selectedItem.id);
         isOpen = false;
     }
 
-    let dropdownElement: HTMLDivElement = null;
-
-    $: inputValue = data.find((elem) => {
-        console.log(elem.id, value.id)
-        return elem.id === value.id
-    }) ? data.find((elem) => elem.id === value.id).value : null;
+    $: inputValue = data.find((elem) => elem.id === value) ? data.find((elem) => elem.id === value).value : null;
 
     export let data: InputDropdownData[] = [];
     export let onSelectHandler = (selectedId: number) => {
@@ -81,7 +75,9 @@
             </div>
         </div>
         {#if isOpen}
-            <DropdownMenu value={value} isActiveCondition={(val1, val2) => val1 === val2} data={data} onSelectHandler={onSelect}/>
+            <DropdownMenu value={value}
+                          isActiveCondition={(val1, val2) => val1 === val2}
+                          data={data} onSelectHandler={onSelect}/>
         {/if}
     </ClickOutside>
 </div>

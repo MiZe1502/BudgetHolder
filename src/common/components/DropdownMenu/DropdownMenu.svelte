@@ -13,13 +13,13 @@
     export let value: string | number = "";
     export let isActiveCondition: (firstValue, secondValue) => boolean;
     export let data: DropdownData[] = [];
-    export let onSelectHandler: (id: number) => void;
+    export let onSelectHandler: (item: DropdownData) => void;
 </script>
 
 <div class={Dropdown}>
     <SimpleBar style="max-height: {maxHeight}px; width: 100%">
         {#each data as item (item.id)}
-            <div on:click={() => onSelectHandler(item.id)}
+            <div on:click={() => onSelectHandler(item)}
                  class="{isActiveCondition(item.id, value) && SelectedLine} {SingleLine} {FlexHorCenter} {Font312Black}">{item.value}</div>
         {/each}
     </SimpleBar>

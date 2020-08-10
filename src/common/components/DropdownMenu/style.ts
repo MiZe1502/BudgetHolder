@@ -40,5 +40,5 @@ export const SingleLine = css`
 `;
 
 export const SelectedLine = css`
-  background-color: ${colors.mediumGray};
+  background-color: ${colors.greenLight};
 `;
