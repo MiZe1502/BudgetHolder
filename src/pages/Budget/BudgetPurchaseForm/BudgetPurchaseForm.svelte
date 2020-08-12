@@ -45,7 +45,11 @@
         purchaseLocalStorageKey,
         purchaseLocalStorageUpdateInterval
     } from "../../../stores/purchases";
-    import {goodsForSuggestions, goods} from "../../../stores/goods";
+    import {
+        goodsForSuggestions,
+        goods,
+        addGoodsToStore
+    } from "../../../stores/goods";
     import {
         addDataToLocalStorage,
         getDataFromLocalStorageByKey
@@ -97,7 +101,7 @@
     }
 
     const onCategorySelect = (goodsItemTempId: number, selectedId: number) => {
-        const updatedGoodsItem = $currentPurchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
+        const updatedGoodsItem = purchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
         updatedGoodsItem.category = getSimpleCategoryById(selectedId);
     }
 
@@ -110,7 +114,8 @@
     const onSave = (event: MouseEvent) => {
         event.preventDefault();
 
-        addPurchaseToStore($currentPurchase);
+        addPurchaseToStore(purchase);
+        addGoodsToStore(purchase.goods);
     }
 
     onMount(() => {

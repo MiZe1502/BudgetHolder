@@ -1,6 +1,7 @@
 import {get, writable, derived, Writable} from 'svelte/store'
-import {GoodsData, GoodsSuggestion} from "../pages/Budget/types";
+import {GoodsData, GoodsDetails, GoodsSuggestion, GoodsItem} from "../pages/Budget/types";
 import {LoadingStatus} from "./utils";
+import {generateNewArtificialId} from "./common";
 
 export const goods = writable<GoodsData[]>([]);
 export const goodsTotal = writable<number>(0);
@@ -16,3 +17,16 @@ export const goodsForSuggestions = derived<Writable<GoodsData[]>, GoodsSuggestio
 export const getGoodsItemById = (id: number): GoodsData => {
     return get(goods).find((item: GoodsData) => item.id === id);
 }
+
+export const addGoodsToStore = (newGoods: GoodsDetails[]) => {
+    newGoods.forEach((item) => {
+        if (item.id) {
+            return;
+        }
+
+        const newId = generateNewArtificialId(goods)
+        item.id = newId;
+        const goodsItem = GoodsItem.fromGoodsDetails(item);
+        goods.update((goods) => [...goods, goodsItem as GoodsData]);
+
+    })}

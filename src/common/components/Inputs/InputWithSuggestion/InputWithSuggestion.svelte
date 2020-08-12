@@ -42,9 +42,7 @@
         findTopSuggestions();
 
         if (value.length > 0) {
-            if (currentSuggestions.length > 0) {
-                isOpen = true;
-            }
+            isOpen = currentSuggestions.length > 0;
         } else {
             isOpen = false;
         }
@@ -112,7 +110,7 @@
         </div>
         {#if isOpen}
             <DropdownMenu
-                    value={currentSuggestions[currentSelectedSuggestionInList].id}
+                    value={currentSuggestions[currentSelectedSuggestionInList] ? currentSuggestions[currentSelectedSuggestionInList].id : ""}
                     isActiveCondition={(val1, val2) => val1 === val2}
                     data={currentSuggestions} onSelectHandler={onSelect}/>
         {/if}
