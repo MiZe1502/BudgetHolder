@@ -1,5 +1,5 @@
 import {get, writable} from 'svelte/store'
-import {GoodsDetails, Purchase} from "../pages/Budget/types";
+import {GoodsDetails, Purchase, ValidationResult} from "../pages/Budget/types";
 import {LoadingStatus} from "./utils";
 import {generateNewArtificialId} from "./common";
 import {v4 as uuidv4} from 'uuid';
@@ -11,6 +11,8 @@ export const purchaseLocalStorageKey = "CURRENT_PURCHASE_FORM_STATE";
 export const purchaseLocalStorageUpdateInterval = 20000;
 
 export const currentPurchase = writable<Purchase>(new Purchase())
+
+export const validationResults = writable<ValidationResult[]>([]);
 
 export const purchases = writable<Purchase[]>([]);
 export const purchasesTotal = writable<number>(0);
@@ -45,6 +47,15 @@ export const addPurchaseToStore = (newPurchase: Purchase) => {
 export const clearCurrentPurchaseData = () => {
     currentPurchase.set(new Purchase());
     removeDataFromLocalStorageByKey(purchaseLocalStorageKey);
+}
+
+export const updateValidationResults = (message: string, counter?: number) => {
+    const validationResult: ValidationResult = {
+        goodsItemCounter: counter,
+        message: message,
+    }
+
+    validationResults.update((items) => [...items, validationResult]);
 }
 
 

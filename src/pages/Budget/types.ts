@@ -66,3 +66,8 @@ export interface GoodsSuggestion {
     id: number;
     value: string;
 }
+
+export interface ValidationResult {
+    message: string;
+    goodsItemCounter?: number;
+}

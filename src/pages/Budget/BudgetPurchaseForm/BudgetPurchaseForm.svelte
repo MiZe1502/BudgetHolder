@@ -43,7 +43,8 @@
         currentPurchase,
         clearCurrentPurchaseData,
         purchaseLocalStorageKey,
-        purchaseLocalStorageUpdateInterval
+        purchaseLocalStorageUpdateInterval,
+        updateValidationResults, validationResults
     } from "../../../stores/purchases";
     import {
         goodsForSuggestions,
@@ -61,14 +62,21 @@
         validationRulesPurchase
     } from "./validationRules";
 
-    const validateForm = (event: Event<HTMLInputElement>) => {
-        console.log("validation")
-        for (let rule in validationRulesPurchase) {
-
+    const validateForm = () => {
+        for (let rule of validationRulesPurchase) {
+            const isInvalid = rule.validator($currentPurchase);
+            if (isInvalid) {
+                updateValidationResults(rule.message)
+            }
         }
 
-        for (let rule in validationRulesGoods) {
-
+        for (let rule of validationRulesGoods) {
+            for (let i = 0; i < $currentPurchase.goods.length; i++) {
+                const isInvalid = rule.validator($currentPurchase.goods[i]);
+                if (isInvalid) {
+                    updateValidationResults(rule.message, i)
+                }
+            }
         }
     }
 
@@ -112,13 +120,17 @@
     const onSave = (event: MouseEvent) => {
         event.preventDefault();
 
+        validateForm();
+
+        if ($validationResults.length > 0) {
+            return;
+        }
+
         addPurchaseToStore(purchase);
         addGoodsToStore(purchase.goods);
     }
 
     onMount(() => {
-        validateForm(null);
-
         if (!getDataFromLocalStorageByKey(purchaseLocalStorageKey)) {
             addDataToLocalStorage(purchaseLocalStorageKey, $currentPurchase);
         }
@@ -137,12 +149,10 @@
     <div class="{SideMinorPadding} {FlexHor} {MainFieldsWrapper}">
         <div class="{FlexVert} {MainColumn} {NotLastColumn}">
             <InputWithLabel
-                    on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.price")} autofocus={true}
                     type="number" name="totalPrice"
                     bind:value={$currentPurchase.totalPrice} required={true}/>
             <InputWithLabel
-                    on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.date")} autofocus={true}
                     type="date" name="date"
                     bind:value={$currentPurchase.date} required={true}/>
@@ -153,7 +163,6 @@
         </div>
         <div class="{FlexVert} {MainColumn}">
             <TextAreaWithLabel
-                    on:input={validateForm} on:change={validateForm}
                     textAreaClass={TextArea}
                     label={$_("common.labels.comment")} name="comment"
                     bind:value={$currentPurchase.comment}/>
@@ -167,7 +176,6 @@
                         <InputWithSuggestion
                                 onSelectHandler={(selectedItem) => onGoodsItemSelect(selectedItem, goodsItem.tempId)}
                                 suggestionsList={$goodsForSuggestions}
-                                on:input={validateForm} on:change={validateForm}
                                 label={$_("common.labels.name")}
                                 type="text" name="name"
                                 bind:value={goodsItem.name}/>
@@ -180,19 +188,16 @@
                     </div>
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
                         <InputWithLabel
-                                on:input={validateForm} on:change={validateForm}
                                 label={$_("budget.labels.amount")}
                                 type="number" name="amount"
                                 bind:value={goodsItem.amount}/>
                         <InputWithLabel
-                                on:input={validateForm} on:change={validateForm}
                                 label={$_("budget.labels.single_price")}
                                 type="number" name="price"
                                 bind:value={goodsItem.price}/>
                     </div>
                     <div class="{FlexVert} {MinorColumn}">
                         <TextAreaWithLabel
-                                on:input={validateForm} on:change={validateForm}
                                 textAreaClass={TextArea}
                                 label={$_("common.labels.comment")}
                                 name="comment"
@@ -210,7 +215,7 @@
         <ButtonIconNew width={24} height={24}
                        onClickHandler={onAddNewItemToPurchase}/>
         <div>
-            <Button title={$_("budget.buttons.save")} onClickHandler={onSave}/>
+            <Button disabled={!$currentPurchase.totalPrice} title={$_("budget.buttons.save")} onClickHandler={onSave}/>
             <Button onClickHandler={onClearForm} secondary={true}
                     title={$_("budget.buttons.clear")}/>
         </div>
