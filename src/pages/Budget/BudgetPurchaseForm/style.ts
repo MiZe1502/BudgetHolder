@@ -71,3 +71,17 @@ export const ButtonsBlock = css`
 export const ButtonForm = css`
     margin-left: 8px;
 `;
+
+export const CounterBlock = css`
+    border-radius: 4px;
+    border: 1px solid ${colors.greenPrimary};
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    justify-content: center;
+`;
+
+export const GoodsItemControlBlock = css`
+  justify-content: space-between;
+`;

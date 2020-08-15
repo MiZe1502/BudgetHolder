@@ -21,9 +21,12 @@
         NotLastColumn,
         ValidationBlock,
         Font312Red,
+        Font312Black,
         FlexHorCenter,
         ButtonsBlock,
-        ButtonForm
+        ButtonForm,
+        CounterBlock,
+        GoodsItemControlBlock
     } from "./style";
 
     import {
@@ -181,7 +184,7 @@
         </div>
     </div>
     <SimpleBar style="max-height: {maxHeight}px; width: 100%">
-        {#each $currentPurchase.goods as goodsItem (goodsItem.tempId)}
+        {#each $currentPurchase.goods as goodsItem, index (goodsItem.tempId)}
             <div class="{FlexVert} {MinorFieldsWrapper}">
                 <div class="{FlexHor}">
                     <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
@@ -216,9 +219,12 @@
                                 bind:value={goodsItem.comment}/>
                     </div>
                 </div>
-                <div class="{FlexHor}">
+                <div class="{FlexHorCenter} {GoodsItemControlBlock}">
                     <ButtonIconMinus width={24} height={24}
                                      onClickHandler={() => onRemoveItemFromPurchase(goodsItem.tempId)}/>
+                    <div class="{FlexHorCenter} {CounterBlock} {Font312Black}">
+                        {index + 1}
+                    </div>
                 </div>
             </div>
         {/each}
