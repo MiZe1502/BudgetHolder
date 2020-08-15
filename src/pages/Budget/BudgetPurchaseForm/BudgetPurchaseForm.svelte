@@ -69,12 +69,18 @@
         from "../../../common/components/Inputs/InputWithSuggestion/InputWithSuggestion.svelte";
     import {
         validationRulesGoods,
-        validationRulesPurchase
+        validationRulesPurchase,
+        arePricesFit
     } from "./validationRules";
 
     const validateForm = () => {
-        console.log($currentPurchase)
         clearValidationResults();
+
+        let pricesFit = arePricesFit($currentPurchase);
+
+        if (!pricesFit) {
+            updateValidationResults("Total purchase price not fits to summary price of all goods")
+        }
 
         for (let rule of validationRulesPurchase) {
             const isInvalid = rule.validator($currentPurchase);

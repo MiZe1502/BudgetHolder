@@ -4,6 +4,24 @@ import {
 } from "../../../common/utils/validation";
 import {GoodsDetails, Purchase} from "../types";
 
+export const arePricesFit = (purchase: Purchase): boolean  => {
+    if (isNaN(purchase.totalPrice)) {
+        return false;
+    }
+
+    const totalPrice = Number(purchase.totalPrice);
+    let goodsSumPrice = 0;
+
+    for (let i = 0; i < purchase.goods.length; i++) {
+        if (isNaN(purchase.goods[i].price)) {
+            return false;
+        }
+        goodsSumPrice += Number(purchase.goods[i].price);
+    }
+
+    return totalPrice === goodsSumPrice;
+}
+
 export const validationRulesPurchase: ValidationRule[] = [
     {
         fieldName: "totalPrice",
