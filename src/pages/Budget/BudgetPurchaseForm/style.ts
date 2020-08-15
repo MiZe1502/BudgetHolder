@@ -1,8 +1,10 @@
 import {css} from 'emotion'
 
-export {Font312DarkGray, Font312Black} from "../../../common/styles/fonts";
 export {
-    SideMinorPadding, FlexVert, FlexHor
+    Font312DarkGray, Font312Black, Font312Red
+} from "../../../common/styles/fonts";
+export {
+    SideMinorPadding, FlexVert, FlexHor, FlexHorCenter
 } from "../../../common/styles/positioning";
 
 export const maxHeight = 400;
@@ -13,6 +15,10 @@ export const TextArea = css`
     min-height: 50px;
     height: 100%;
 `;
+
+export const ValidationBlock = css`
+    width: 100%;;
+`
 
 export const Form = css`
     padding-top: 8px;
@@ -49,10 +55,19 @@ export const MinorColumn = css`
 
 export const NotLastColumn = css`
     margin-right: 32px;
-`
+`;
 
 export const ButtonsWrapper = css`
     padding: 16px 32px;
     justify-content: space-between;
     box-shadow: 0 -2px 4px -2px rgba(0,0,0,0.25);
-`
+`;
+
+export const ButtonsBlock = css`
+    min-width: 30%;
+    justify-content: flex-end;
+`;
+
+export const ButtonForm = css`
+    margin-left: 8px;
+`;

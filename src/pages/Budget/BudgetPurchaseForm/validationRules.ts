@@ -23,7 +23,7 @@ export const validationRulesPurchase: ValidationRule[] = [
         fieldName: "shop",
         message: "Shop field should not be empty",
         validator: function (data: Purchase) {
-            return !Boolean(data[this.fieldName]) || !Boolean(data[this.fieldName].id);
+            return !Boolean(data[this.fieldName]) || data[this.fieldName].id <= 0;
         }
     },
 ]
@@ -45,7 +45,7 @@ export const validationRulesGoods: ValidationRule[] = [
         fieldName: "category",
         message: "Category field should not be empty",
         validator: function (data: GoodsDetails) {
-            return !Boolean(data[this.fieldName]) || !Boolean(data[this.fieldName].id);
+            return !Boolean(data[this.fieldName]) || data[this.fieldName].id <= 0;
         }
     },
     {

@@ -51,11 +51,15 @@ export const clearCurrentPurchaseData = () => {
 
 export const updateValidationResults = (message: string, counter?: number) => {
     const validationResult: ValidationResult = {
-        goodsItemCounter: counter,
+        goodsItemCounter: counter + 1,
         message: message,
     }
 
     validationResults.update((items) => [...items, validationResult]);
+}
+
+export const clearValidationResults = () => {
+    validationResults.set([]);
 }
 
 

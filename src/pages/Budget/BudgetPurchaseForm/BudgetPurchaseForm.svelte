@@ -18,7 +18,12 @@
         ButtonsWrapper,
         MainColumn,
         MinorColumn,
-        NotLastColumn
+        NotLastColumn,
+        ValidationBlock,
+        Font312Red,
+        FlexHorCenter,
+        ButtonsBlock,
+        ButtonForm
     } from "./style";
 
     import {
@@ -44,7 +49,9 @@
         clearCurrentPurchaseData,
         purchaseLocalStorageKey,
         purchaseLocalStorageUpdateInterval,
-        updateValidationResults, validationResults
+        updateValidationResults,
+        validationResults,
+        clearValidationResults
     } from "../../../stores/purchases";
     import {
         goodsForSuggestions,
@@ -63,6 +70,9 @@
     } from "./validationRules";
 
     const validateForm = () => {
+        console.log($currentPurchase)
+        clearValidationResults();
+
         for (let rule of validationRulesPurchase) {
             const isInvalid = rule.validator($currentPurchase);
             if (isInvalid) {
@@ -70,8 +80,8 @@
             }
         }
 
-        for (let rule of validationRulesGoods) {
-            for (let i = 0; i < $currentPurchase.goods.length; i++) {
+        for (let i = 0; i < $currentPurchase.goods.length; i++) {
+            for (let rule of validationRulesGoods) {
                 const isInvalid = rule.validator($currentPurchase.goods[i]);
                 if (isInvalid) {
                     updateValidationResults(rule.message, i)
@@ -115,6 +125,7 @@
         event.preventDefault();
 
         clearCurrentPurchaseData();
+        clearValidationResults();
     }
 
     const onSave = (event: MouseEvent) => {
@@ -128,6 +139,7 @@
 
         addPurchaseToStore(purchase);
         addGoodsToStore(purchase.goods);
+        clearValidationResults();
     }
 
     onMount(() => {
@@ -176,8 +188,8 @@
                         <InputWithSuggestion
                                 onSelectHandler={(selectedItem) => onGoodsItemSelect(selectedItem, goodsItem.tempId)}
                                 suggestionsList={$goodsForSuggestions}
-                                label={$_("common.labels.name")}
-                                type="text" name="name"
+                                        label={$_("common.labels.name")}
+                                        type="text" name="name"
                                 bind:value={goodsItem.name}/>
                         <InputDropdown
                                 onSelectHandler={(selectedId) => onCategorySelect(goodsItem.tempId, selectedId)}
@@ -214,9 +226,19 @@
     <div class="{ButtonsWrapper} {FlexHor}">
         <ButtonIconNew width={24} height={24}
                        onClickHandler={onAddNewItemToPurchase}/>
-        <div>
-            <Button disabled={!$currentPurchase.totalPrice} title={$_("budget.buttons.save")} onClickHandler={onSave}/>
-            <Button onClickHandler={onClearForm} secondary={true}
+        {#if $validationResults.length > 0}
+            <ul class="{FlexVert} {Font312Red} {ValidationBlock}">
+                {#each $validationResults as error (`${error.goodsItemCounter}-${error.message}`)}
+                    <li>{error.goodsItemCounter ? `Item № ${error.goodsItemCounter}: `: ""}{error.message}</li>
+                {/each}
+            </ul>
+        {/if}
+        <div class="{FlexHorCenter} {ButtonsBlock}">
+            <Button disabled={!$currentPurchase.totalPrice}
+                    buttonClass="{ButtonForm}"
+                    title={$_("budget.buttons.save")} onClickHandler={onSave}/>
+            <Button onClickHandler={onClearForm} buttonClass={ButtonForm}
+                    secondary={true}
                     title={$_("budget.buttons.clear")}/>
         </div>
     </div>
