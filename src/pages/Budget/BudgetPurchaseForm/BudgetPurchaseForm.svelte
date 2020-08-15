@@ -56,31 +56,29 @@
     } from "../../../common/utils/localStorage";
     import InputWithSuggestion
         from "../../../common/components/Inputs/InputWithSuggestion/InputWithSuggestion.svelte";
+    import {
+        validationRulesGoods,
+        validationRulesPurchase
+    } from "./validationRules";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
         console.log("validation")
+        for (let rule in validationRulesPurchase) {
+
+        }
+
+        for (let rule in validationRulesGoods) {
+
+        }
     }
 
     const onGoodsItemSelect = (selectedItem: SuggestionItem, goodsItemTempId: string) => {
-        console.log("onGoodsItemSelect", selectedItem, goodsItemTempId)
         let goodsItemDetails = $currentPurchase.goods.find((item) => item.tempId === goodsItemTempId);
-        console.log("onGoodsItemSelect", goodsItemDetails)
-
         const goodsItemData = $goods.find((item) => item.id === selectedItem.id);
 
-        console.log("onGoodsItemSelect", goodsItemData)
-
         if (goodsItemData && goodsItemDetails) {
-            // goodsItemDetails.id = goodsItemData.id;
-            // goodsItemDetails.name = goodsItemData.name;
-            // goodsItemDetails.category = goodsItemData.category;
-            // goodsItemDetails.comment = goodsItemData.comment;
             goodsItemDetails = Object.assign(goodsItemDetails, goodsItemData);
         }
-
-        console.log("onGoodsItemSelect", goodsItemDetails)
-        console.log("onGoodsItemSelect", $currentPurchase)
-
     }
 
     const onShopSelect = (selectedId: number) => {
