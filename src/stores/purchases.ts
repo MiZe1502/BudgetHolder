@@ -65,12 +65,13 @@ export const clearValidationResults = () => {
 export const updatePurchaseDataInStore = (newData: Purchase) => {
     purchases.update((purchases) => {
         let purchase = purchases.find((item) => item.id === newData.id);
-        purchase = {...purchase, ...newData}
+        purchase.comment = newData.comment;
+        purchase.totalPrice = newData.totalPrice;
+        purchase.shop = newData.shop;
+        purchase.date = newData.date;
 
         return purchases;
     })
-
-
 }
 
 

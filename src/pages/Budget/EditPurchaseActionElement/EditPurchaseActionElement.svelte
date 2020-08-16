@@ -11,6 +11,7 @@
     import {EntityType, ActionType} from "../../../stores/utils";
     import {updatePurchaseDataInStore} from "../../../stores/purchases";
     import {Popup} from "./style";
+    import PurchaseEditForm from "../PurchaseEditForm/PurchaseEditForm.svelte";
 
     let isPopupOpened = false;
 
@@ -24,6 +25,7 @@
     }
 
     const onSaveHandler = () => {
+        console.log(data)
         updatePurchaseDataInStore(data);
     }
 
@@ -50,7 +52,7 @@
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle={$_("common.components.buttons.save")}>
-            EDIT PURCHASE
+            <PurchaseEditForm outerPopupUuid={uuid} data={data}/>
         </PopupContainer>
     {/if}
 </div>

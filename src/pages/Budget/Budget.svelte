@@ -96,7 +96,8 @@
                         id: data.id,
                         goodsData: data.goods,
                         date: data.date,
-                        totalPrice: data.totalPrice
+                        totalPrice: data.totalPrice,
+                        shop: data.shop,
                     }
                 },
             }
