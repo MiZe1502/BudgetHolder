@@ -74,7 +74,8 @@ export default {
             save: "Save purchase"
         },
         titles: {
-            purchases: "Purchases"
+            purchases: "Purchases",
+            edit: "Edit purchase at: ",
         },
         labels: {
             date: "Date",
@@ -83,7 +84,7 @@ export default {
             category: "Category",
             amount: "Amount",
             single_price: "Price",
-        }
+        },
     },
     goods: {
         messages: {

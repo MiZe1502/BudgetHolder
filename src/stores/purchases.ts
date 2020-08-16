@@ -62,4 +62,15 @@ export const clearValidationResults = () => {
     validationResults.set([]);
 }
 
+export const updatePurchaseDataInStore = (newData: Purchase) => {
+    purchases.update((purchases) => {
+        let purchase = purchases.find((item) => item.id === newData.id);
+        purchase = {...purchase, ...newData}
+
+        return purchases;
+    })
+
+
+}
+
 

@@ -1,22 +1,16 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
-    import {Category} from "../types";
-    import Button
-        from "../../../common/components/Buttons/Button/Button.svelte";
+    import {dateToDMY} from "../../../common/components/ElementsAndBlocks/SimpleDateElement/utils";
     import ButtonIconEdit
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
+    import {Purchase} from "../types";
+    import {LoadingStatus} from "../../../stores/utils";
+    import {EntityType, ActionType} from "../../../stores/utils";
+    import {updatePurchaseDataInStore} from "../../../stores/purchases";
     import {Popup} from "./style";
-    import {EntityType, ActionType, LoadingStatus} from "../../../stores/utils";
-    import CategoryEditForm from "../CategoryEditForm/CategoryEditForm.svelte";
-    import {
-        addCategoryToStore,
-        updateCategoryInStore
-    } from "../../../stores/categories";
-    import ButtonWithLoader
-        from "../../../common/components/Buttons/ButtonWithLoader/ButtonWithLoader.svelte";
 
     let isPopupOpened = false;
 
@@ -30,46 +24,33 @@
     }
 
     const onSaveHandler = () => {
-        if (data.id) {
-            updateCategoryInStore(data)
-        } else {
-            addCategoryToStore(data)
-        }
+        updatePurchaseDataInStore(data);
     }
 
     onMount(() => {
         initialData = {...data};
     })
 
-    let initialData: Category = {};
+    let initialData: Purchase = {};
 
-    export let data: Category = {};
-    export let withButton: boolean = false;
-    export let buttonTitle: string = "";
+    export let data: Purchase = {};
     export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
-
 <div>
-    {#if withButton}
-        <ButtonWithLoader {status} title={buttonTitle}
-                          onClickHandler={onClickHandler}/>
-    {:else}
-        <ButtonIconEdit width={16} height={16} onClickHandler={onClickHandler}/>
-    {/if}
+    <ButtonIconEdit onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
-                        entityType={EntityType.Category}
+                        entityType={EntityType.Purchase}
                         actionType={ActionType.Remove} entityId={data.id}
-                        title={data.id ? `${$_("common.titles.edit")} ${data.name}` || $_("common.titles.edit") : $_("categories.titles.new")}
+                        title={`${$_("budget.titles.edit")}${dateToDMY(data.date)}`}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle={$_("common.components.buttons.save")}>
-            <CategoryEditForm outerPopupUuid={uuid} data={data}/>
+            EDIT PURCHASE
         </PopupContainer>
     {/if}
-
 </div>
