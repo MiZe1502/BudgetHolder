@@ -21,9 +21,18 @@
         Form,
         TextArea
     } from "./style";
+    import {validationRulesPurchase} from "../BudgetPurchaseForm/validationRules";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
-        //valitaion
+        //Dirty hack to change data before on:input
+        if (event) {
+            data[event.target.name] = event.target.value;
+        }
+
+        for (let rule of validationRulesPurchase) {
+            const isInvalid = rule.validator(data);
+            updatePopupInnerValidation(outerPopupUuid, rule.message, rule.fieldName, isInvalid)
+        }
     }
 
     const onShopSelect = (selectedId: number) => {
@@ -31,8 +40,6 @@
     }
 
     onMount(() => {
-        console.log("here", data)
-
         validateForm(null);
     })
 

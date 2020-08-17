@@ -41,7 +41,7 @@ export interface Purchase {
     totalPrice: number;
     comment?: string;
     shop: Shop;
-    date: Date;
+    date: Date | string;
     goods: GoodsDetails[];
 }
 

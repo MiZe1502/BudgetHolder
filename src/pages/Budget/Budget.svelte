@@ -98,6 +98,7 @@
                         date: data.date,
                         totalPrice: data.totalPrice,
                         shop: data.shop,
+                        comment: data.comment,
                     }
                 },
             }
