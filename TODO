@@ -15,8 +15,6 @@
     3.8. budget page
         3.8.1. input form
             3.8.1.7. fix dropdown issue with overflow:scroll
-        3.8.2. purchases table
-            3.8.2.2. edit purchase icon button
         3.8.3. goods details popup
             3.8.3.1. add scroll to table inside popup
             3.8.3.2. edit goods details icon button
