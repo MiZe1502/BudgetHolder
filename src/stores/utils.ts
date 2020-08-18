@@ -12,6 +12,7 @@ export enum EntityType {
     Category = "Category",
     Purchase = "Purchase",
     Goods = "Goods",
+    GoodsDetails = "GoodsDetails",
 }
 
 export enum ActionType {

@@ -91,5 +91,8 @@ export default {
             remove_part1: "Do You really want to remove goods item from this purchase",
             remove_part2: "?",
         },
+        titles: {
+            edit: "Edit goods details"
+        }
     }
 }

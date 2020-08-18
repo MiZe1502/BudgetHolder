@@ -1,17 +1,14 @@
 <script lang="ts">
+    import {GoodsDetails} from "../types";
     import {_} from 'svelte-i18n'
-    import {onMount} from "svelte";
-    import {dateToDMY} from "../../../common/components/ElementsAndBlocks/SimpleDateElement/utils";
-    import ButtonIconEdit
-        from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
+    import {LoadingStatus} from "../../../stores/utils";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
-    import {Purchase} from "../types";
-    import {LoadingStatus} from "../../../stores/utils";
+    import ButtonIconEdit
+        from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import {EntityType, ActionType} from "../../../stores/utils";
-    import {updatePurchaseDataInStore} from "../../../stores/purchases";
+    import {onMount} from "svelte";
     import {Popup} from "./style";
-    import PurchaseEditForm from "../PurchaseEditForm/PurchaseEditForm.svelte";
 
     let isPopupOpened = false;
 
@@ -25,33 +22,34 @@
     }
 
     const onSaveHandler = () => {
-        updatePurchaseDataInStore(data);
+        console.log(data)
+        //update goods details data
     }
 
     onMount(() => {
         initialData = {...data};
     })
 
-    let initialData: Purchase = {};
+    let initialData: GoodsDetails = {};
 
-    export let data: Purchase = {};
+    export let data: GoodsDetails = {};
     export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
 <div>
-    <ButtonIconEdit onClickHandler={onClickHandler}/>
+    <ButtonIconEdit width={16} height={16} onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
                         popupClass={Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
-                        entityType={EntityType.Purchase}
+                        entityType={EntityType.GoodsDetails}
                         actionType={ActionType.Edit} entityId={data.id}
-                        title={`${$_("budget.titles.edit")}${dateToDMY(data.date)}`}
+                        title={`${$_("goods.titles.edit")}`}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle={$_("common.components.buttons.save")}>
-            <PurchaseEditForm outerPopupUuid={uuid} data={data}/>
+            EDIT GOODS DETAILS
         </PopupContainer>
     {/if}
 </div>
