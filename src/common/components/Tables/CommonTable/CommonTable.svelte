@@ -68,9 +68,9 @@
                     <CommonTableRow {inPopup} data={dataItem}
                                     config={config}/>
                 {/each}
-            {/if}
-            {#if total > maxRecordsPerPage}
-                <Pagination onPageChange={onPageChange} totalCount={total}/>
+                {#if total > maxRecordsPerPage}
+                    <Pagination onPageChange={onPageChange} totalCount={total}/>
+                {/if}
             {/if}
         {/if}
     {:else if status === LoadingStatus.Error}
