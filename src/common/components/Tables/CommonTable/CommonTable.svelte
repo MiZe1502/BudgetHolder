@@ -1,6 +1,7 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
     import {fade} from 'svelte/transition';
+    import SimpleBar from '@woden/svelte-simplebar';
 
     import {ColumnConfig} from "./utils";
     import {LoadingStatus} from "../../../../stores/utils";
@@ -30,6 +31,8 @@
     export let status: LoadingStatus = LoadingStatus.None;
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
+    export let withScroll: boolean = false;
+    export let maxHeightWithScroll: number = 700;
     export let buttonClickHandler = () => {
     };
     export let onPageChange = () => {
@@ -52,9 +55,20 @@
             <NoDataFoundBlock/>
         {:else}
             <CommonTableHeader {inPopup} config={config}/>
-            {#each data as dataItem (dataItem.id)}
-                <CommonTableRow {inPopup} data={dataItem} config={config}/>
-            {/each}
+            {#if withScroll}
+                <SimpleBar
+                        style="max-height: {maxHeightWithScroll}px; width: 100%">
+                    {#each data as dataItem (dataItem.id)}
+                        <CommonTableRow {inPopup} data={dataItem}
+                                        config={config}/>
+                    {/each}
+                </SimpleBar>
+            {:else}
+                {#each data as dataItem (dataItem.id)}
+                    <CommonTableRow {inPopup} data={dataItem}
+                                    config={config}/>
+                {/each}
+            {/if}
             {#if total > maxRecordsPerPage}
                 <Pagination onPageChange={onPageChange} totalCount={total}/>
             {/if}
