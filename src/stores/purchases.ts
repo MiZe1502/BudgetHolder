@@ -74,4 +74,17 @@ export const updatePurchaseDataInStore = (newData: Purchase) => {
     })
 }
 
+export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
+    purchases.update((purchases) => {
+        let purchase = purchases.find((item) => item.id === newData.purchaseId);
+        let goodsItem = purchase.goods.find((item) => item.id === newData.id);
+        goodsItem.price = newData.price;
+        goodsItem.comment = newData.comment;
+        goodsItem.category = newData.category;
+        goodsItem.amount = newData.amount;
+
+        return purchases;
+    })
+}
+
 

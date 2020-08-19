@@ -9,6 +9,9 @@
     import {EntityType, ActionType} from "../../../stores/utils";
     import {onMount} from "svelte";
     import {Popup} from "./style";
+    import EditGoodsItemForm
+        from "../EditGoodsItemForm/EditGoodsItemForm.svelte";
+    import {updatePurchaseGoodsItemInStore} from "../../../stores/purchases";
 
     let isPopupOpened = false;
 
@@ -23,7 +26,7 @@
 
     const onSaveHandler = () => {
         console.log(data)
-        //update goods details data
+        updatePurchaseGoodsItemInStore(data);
     }
 
     onMount(() => {
@@ -49,7 +52,7 @@
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         acceptButtonTitle={$_("common.components.buttons.save")}>
-            EDIT GOODS DETAILS
+            <EditGoodsItemForm outerPopupUuid={uuid} data={data}/>
         </PopupContainer>
     {/if}
 </div>
