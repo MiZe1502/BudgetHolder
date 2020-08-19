@@ -15,8 +15,6 @@
     3.8. budget page
         3.8.1. input form
             3.8.1.7. fix dropdown issue with overflow:scroll
-        3.8.3. goods details popup
-            3.8.3.2. edit goods details icon button
     3.10. common
         3.10.1. side navigation and scrollto section
         3.10.2. pass styles to component as object to prevent multiple imports
