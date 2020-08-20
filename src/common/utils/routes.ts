@@ -2,5 +2,6 @@ export default {
     home: '/',
     budget: '/budget',
     shops: '/shops',
-    categorization: '/categorization'
+    categorization: '/categorization',
+    auth: '/auth'
 }
