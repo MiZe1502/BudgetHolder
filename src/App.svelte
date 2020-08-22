@@ -13,7 +13,7 @@
     import Budget from "./pages/Budget/Budget.svelte";
     import Auth from "./pages/Auth/Auth.svelte";
 
-    import {Router, Link, Route} from "svelte-routing";
+    import {Router, Link, Route, navigate} from "svelte-routing";
 
     onMount(() => {
         document.addEventListener('keypress', function (e) {
@@ -23,6 +23,11 @@
             }
         });
     })
+
+    $: if (!$authStatus) {
+        console.log("HERE", $authStatus)
+        navigate(routes.auth, {replace: true})
+    }
 
 </script>
 
@@ -87,19 +92,18 @@
 
 <Router>
     <div class="MainWrapper">
-        {#if !$authStatus}
-            <Route path={routes.auth} component="{Auth}"/>
-        {:else}
+        <Route path={routes.auth} component="{Auth}"/>
+        {#if $authStatus}
             <MainMenu/>
-            <SimpleBar style="max-height: 100vh; width: 100%">
-                <div class="RouteWrapper">
-                    <Route path={routes.budget} component="{Budget}"/>
-                    <Route path={routes.shops} component="{Shops}"/>
-                    <Route path={routes.categorization}
-                           component="{Categorization}"/>
-                    <!-- <Route path="/"><Home /></Route> -->
-                </div>
-            </SimpleBar>
         {/if}
+        <SimpleBar style="max-height: 100vh; width: 100%">
+            <div class="RouteWrapper">
+                <Route path={routes.budget} component="{Budget}"/>
+                <Route path={routes.shops} component="{Shops}"/>
+                <Route path={routes.categorization}
+                       component="{Categorization}"/>
+                <!-- <Route path="/"><Home /></Route> -->
+            </div>
+        </SimpleBar>
     </div>
 </Router>

@@ -24,4 +24,5 @@ export const ButtonsBlock = css`
 export const AuthButton = css`
     width: 100px;
     height: 40px;
+    margin-left: 8px;
 `;
