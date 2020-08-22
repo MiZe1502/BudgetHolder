@@ -1,6 +1,6 @@
 import {UserData} from "../../stores/auth";
 
-type MockedUserData = UserData & {password: string}
+export type MockedUserData = UserData & {password: string}
 
 export const mockedUsers: MockedUserData[]   =[
     {

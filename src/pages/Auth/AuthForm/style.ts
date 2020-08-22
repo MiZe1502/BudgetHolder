@@ -8,7 +8,7 @@ export const Form = css`
 
     padding: 16px;
     
-    margin: 150px auto auto;
+    margin: 250px auto auto;
     border: 1px solid ${colors.greenPrimary};
     box-sizing: border-box;
     border-radius: 4px;

@@ -6,7 +6,7 @@
     import {
         currentAuthData,
         currentRegData,
-        mockAuthorize
+        mockAuthorize, mockSaveAndAuthorize
     } from "../../../stores/auth";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
@@ -24,8 +24,13 @@
         }
     }
 
-    const saveAndAuth = () => {
+    const saveAndAuth = (event: Event<HTMLFormElement>) => {
+        event.preventDefault();
+        const error = mockSaveAndAuthorize($currentRegData);
 
+        if (!error) {
+            navigate(routes.budget, {replace: true});
+        }
     }
 
     const onChangeForm = (isRegistration: boolean) => {

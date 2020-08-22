@@ -1,5 +1,5 @@
-import {writable} from "svelte/store";
-import {mockedUsers} from "../pages/Auth/data";
+import {get, writable} from "svelte/store";
+import {MockedUserData, mockedUsers} from "../pages/Auth/data";
 
 export interface UserData {
     name?: string;
@@ -33,6 +33,9 @@ export const currentRegData = writable<RegistrationData>({} as RegistrationData)
 
 export const currentSession = writable<UserSession>({} as UserSession);
 
+//TODO: mock store to save users
+export const users = writable<MockedUserData[]>(mockedUsers);
+
 export const setAuthStatus = (isAuthorized: boolean) => {
     authStatus.set(isAuthorized);
 }
@@ -46,7 +49,7 @@ export const setCurrentSession = (userData: UserData) => {
 
 //TODO: mock method to emulate auth
 export const mockAuthorize = (authData: AuthData): string | undefined => {
-    const currentUser = mockedUsers.find((item) => item.login === authData.login);
+    const currentUser = get(users).find((item) => item.login === authData.login);
 
     if (!currentUser) {
         return `User with login ${authData.login} not found`;
@@ -57,6 +60,22 @@ export const mockAuthorize = (authData: AuthData): string | undefined => {
     }
 
     setCurrentSession(currentUser);
+    setAuthStatus(true);
+    return;
+}
+
+export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefined => {
+    const existedUser = get(users).find((item) => item.login === regData.login);
+
+    if (existedUser) {
+        return `User with login ${regData.login} already exists`;
+    }
+
+    users.update((users => {
+        return [...users, regData];
+    }))
+
+    setCurrentSession(regData);
     setAuthStatus(true);
     return;
 }
