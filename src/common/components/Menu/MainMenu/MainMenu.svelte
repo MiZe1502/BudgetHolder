@@ -1,13 +1,28 @@
 <script lang="typescript">
-    import { MainMenu, FlexHorCenter } from "./style";
+    import {
+        MainMenu,
+        FlexHorCenter,
+        SideMainPadding,
+        Wrapper
+    } from "./style";
 
+    import {authStatus} from "../../../../stores/auth";
     import SingleMenuBlock from '../SingleMenuBlock/SingleMenuBlock.svelte'
-    
+
     import menuConfig from './menuConfig'
+    import UserBlock from "../UserBlock/UserBlock.svelte";
 </script>
 
 <header class="{MainMenu} {FlexHorCenter}">
-    {#each menuConfig as menu}
-        <SingleMenuBlock url={menu.url} title={menu.title} />
-    {/each}
+    <div class="{SideMainPadding} {FlexHorCenter} {Wrapper}">
+        <div class="{FlexHorCenter}">
+            {#each menuConfig as menu}
+                <SingleMenuBlock url={menu.url} title={menu.title}/>
+            {/each}
+        </div>
+
+        {#if $authStatus}
+            <UserBlock/>
+        {/if}
+    </div>
 </header>

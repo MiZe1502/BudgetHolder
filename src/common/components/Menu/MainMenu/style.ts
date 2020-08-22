@@ -1,7 +1,7 @@
 import { css } from 'emotion';
 import colors from "../../../styles/colors";
 
-export { FlexHorCenter } from "../../../styles/positioning";
+export { FlexHorCenter, SideMainPadding } from "../../../styles/positioning";
 
 export const MainMenu = css`
     width: 100%;
@@ -10,4 +10,9 @@ export const MainMenu = css`
     background-color: ${colors.greenPrimary};
     position: fixed;
     z-index: 2;
+`;
+
+export const Wrapper = css`
+    justify-content: space-between;
+    width: 100%;
 `;
