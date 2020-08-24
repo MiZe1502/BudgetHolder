@@ -18,6 +18,7 @@ export const Image = css`
 `;
 
 export const UserBlock = css`
+    padding-top: 4px;
     background-color: ${colors.greenPrimary};
     border-radius: 50%;
     position: relative;
