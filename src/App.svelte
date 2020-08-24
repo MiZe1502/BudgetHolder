@@ -6,7 +6,12 @@
     import "./localization/localization";
 
     import {yandexMapsReady, googleMapsReady} from "./stores/maps";
-    import {authStatus} from "./stores/auth";
+    import {
+        authStatusKey, sessionKey,
+        setAuthStatus,
+        setCurrentSession,
+        authStatus, currentSession
+    } from "./stores/auth";
 
     import Shops from "./pages/Shops/Shops.svelte";
     import Categorization from "./pages/Categorization/Categorization.svelte";
@@ -14,6 +19,7 @@
     import Auth from "./pages/Auth/Auth.svelte";
 
     import {Router, Link, Route, navigate} from "svelte-routing";
+    import {getDataFromLocalStorageByKey} from "./common/utils/localStorage";
 
     onMount(() => {
         document.addEventListener('keypress', function (e) {
@@ -24,9 +30,12 @@
         });
     })
 
-    $: if (!$authStatus) {
-        console.log("HERE", $authStatus)
+    $: if (!getDataFromLocalStorageByKey(authStatusKey) || !getDataFromLocalStorageByKey(sessionKey)) {
         navigate(routes.auth, {replace: true})
+    } else {
+        setAuthStatus(getDataFromLocalStorageByKey(authStatusKey));
+        setCurrentSession(getDataFromLocalStorageByKey(sessionKey))
+        console.log("here", $authStatus)
     }
 
 </script>

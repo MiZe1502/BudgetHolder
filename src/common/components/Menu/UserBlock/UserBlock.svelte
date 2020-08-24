@@ -8,9 +8,16 @@
         Font312Black
     } from "./style";
     import ClickOutside from "svelte-click-outside";
+    import routes from "../../../../common/utils/routes";
 
-    import {currentSession} from "../../../../stores/auth";
+    import {
+        authStatusKey,
+        sessionKey,
+        currentSession, setCurrentSession, setAuthStatus
+    } from "../../../../stores/auth";
     import DefaultUserImage from "../DefaultUserImage/DefaultUserImage.svelte";
+    import {removeDataFromLocalStorageByKey} from "../../../utils/localStorage";
+    import {navigate} from "svelte-routing";
 
 
     let isUserPopupOpened = false;
@@ -21,6 +28,16 @@
 
     const onClickOutside = () => {
         isUserPopupOpened = false;
+    }
+
+    const onLogout = () => {
+        setAuthStatus(false);
+        setCurrentSession({});
+
+        removeDataFromLocalStorageByKey(sessionKey);
+        removeDataFromLocalStorageByKey(authStatusKey);
+
+        navigate(routes.auth, {replace: true})
     }
 
 </script>
@@ -41,7 +58,8 @@
                 <div class="{PopupItem} {FlexHorCenter} {Font312Black}">
                     Settings
                 </div>
-                <div class="{PopupItem} {FlexHorCenter} {Font312Black}">
+                <div on:click={onLogout}
+                     class="{PopupItem} {FlexHorCenter} {Font312Black}">
                     Logout
                 </div>
             </div>
