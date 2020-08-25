@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n'
     import {FlexVert, Form, ButtonsBlock, AuthButton} from "./style";
 
     import InputWithLabel
@@ -41,31 +42,36 @@
 
 <form class="{Form} {FlexVert}">
     {#if isRegistrationForm}
-        <InputWithLabel label="Login" name="login" type="text"
+        <InputWithLabel label={$_("auth.labels.login")} name="login" type="text"
                         bind:value={$currentRegData.login}/>
-        <InputWithLabel label="Password" name="password" type="password"
+        <InputWithLabel label={$_("auth.labels.password")} name="password"
+                        type="password"
                         bind:value={$currentRegData.password}/>
-        <InputWithLabel label="Name" name="name" type="text"
+        <InputWithLabel label={$_("auth.labels.name")} name="name" type="text"
                         bind:value={$currentRegData.name}/>
-        <InputWithLabel label="Surname" name="surname" type="text"
+        <InputWithLabel label={$_("auth.labels.surname")} name="surname"
+                        type="text"
                         bind:value={$currentRegData.surname}/>
     {:else}
-        <InputWithLabel label="Login" name="login" type="text"
+        <InputWithLabel label={$_("auth.labels.login")} name="login" type="text"
                         bind:value={$currentAuthData.login}/>
-        <InputWithLabel label="Password" name="password" type="password"
+        <InputWithLabel label={$_("auth.labels.password")} name="password"
+                        type="password"
                         bind:value={$currentAuthData.password}/>
     {/if}
     <div class="{ButtonsBlock}">
         {#if !isRegistrationForm}
-        <Button title="Register" onClickHandler={() => onChangeForm(true)}
+        <Button title={$_("auth.buttons.register")}
+                onClickHandler={() => onChangeForm(true)}
                 secondary={true}
                         buttonClass={AuthButton}/>
         {:else}
-        <Button title="Authorization" onClickHandler={() => onChangeForm(false)}
+        <Button title={$_("auth.buttons.auth")}
+                onClickHandler={() => onChangeForm(false)}
                 secondary={true}
                         buttonClass={AuthButton}/>
         {/if}
-        <Button title={isRegistrationForm ? "Save and login " : "Login"}
+        <Button title={isRegistrationForm ? $_("auth.buttons.save_and_login") : $_("auth.labels.login")}
                 onClickHandler={isRegistrationForm ? saveAndAuth : onAuth}
                 buttonClass={AuthButton}/>
     </div>

@@ -1,4 +1,5 @@
 <script lang="typescript">
+    import {_} from 'svelte-i18n'
     import {
         MainMenu,
         FlexHorCenter,

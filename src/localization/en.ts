@@ -94,5 +94,25 @@ export default {
         titles: {
             edit: "Edit goods details"
         }
+    },
+    auth: {
+        labels: {
+            login: "Login",
+            password: "Password",
+            name: "Name",
+            surname: "Surname"
+        },
+        buttons: {
+            login: "Login",
+            save_and_login: "Save amd login",
+            register: "Register",
+            auth: "Authorization",
+        }
+    },
+    user: {
+        menu: {
+            settings: "Settings",
+            logout: "Logout",
+        }
     }
 }

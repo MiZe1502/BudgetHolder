@@ -18,4 +18,3 @@
         3.10.1. side navigation and scrollto section
         3.10.2. pass styles to component as object to prevent multiple imports
         3.10.3. set todos labels across the codebase
-        3.10.4. create common dropdown element

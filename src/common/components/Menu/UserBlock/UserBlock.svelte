@@ -1,9 +1,10 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n'
+
     import {
         Image,
         UserBlock,
         FlexHorCenter,
-        Popup,
         PopupItem,
         Font312Black
     } from "./style";
@@ -18,6 +19,7 @@
     import DefaultUserImage from "../DefaultUserImage/DefaultUserImage.svelte";
     import {removeDataFromLocalStorageByKey} from "../../../utils/localStorage";
     import {navigate} from "svelte-routing";
+    import Dropdown from "../../ElementsAndBlocks/Dropdown/Dropdown.svelte";
 
 
     let isUserPopupOpened = false;
@@ -54,15 +56,15 @@
             <DefaultUserImage/>
         {/if}
         {#if isUserPopupOpened}
-            <div class="{Popup}">
+            <Dropdown width={200}>
                 <div class="{PopupItem} {FlexHorCenter} {Font312Black}">
-                    Settings
+                    {$_("user.menu.settings")}
                 </div>
                 <div on:click={onLogout}
                      class="{PopupItem} {FlexHorCenter} {Font312Black}">
-                    Logout
+                    {$_("user.menu.logout")}
                 </div>
-            </div>
+            </Dropdown>
         {/if}
     </ClickOutside>
 </div>
