@@ -1,10 +1,25 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
-    import {FlexVert, Form, ButtonsBlock, AuthButton} from "./style";
+    import {
+        FlexVert,
+        Form,
+        ButtonsBlock,
+        AuthButton,
+        Font312Red,
+        FlexHor,
+        ValidationBlock,
+        ButtonsBlockWithErrors,
+        ButtonsWrapper
+    } from "./style";
+    import {
+        clearValidationResults,
+        validationResults
+    } from "../../../stores/purchases";
 
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import {
+        clearAuthAndRegData,
         currentAuthData,
         currentRegData,
         mockAuthorize, mockSaveAndAuthorize
@@ -13,28 +28,62 @@
         from "../../../common/components/Buttons/Button/Button.svelte";
     import {navigate} from "svelte-routing";
     import routes from "../../../common/utils/routes"
+    import {validationRules} from "./validationRules";
+    import {updateValidationResults} from "../../../stores/purchases";
 
     let isRegistrationForm = false;
 
+    const validateForm = (currentData) => {
+        for (let rule of validationRules) {
+            const isInvalid = rule.validator(currentData);
+            if (isInvalid) {
+                updateValidationResults(rule.message)
+            }
+        }
+    }
+
     const onAuth = (event: Event<HTMLFormElement>) => {
         event.preventDefault();
+
+        clearValidationResults();
+
+        validateForm($currentAuthData);
+
+        if ($validationResults.length > 0) {
+            return;
+        }
+
         const error = mockAuthorize($currentAuthData);
 
         if (!error) {
+            clearValidationResults();
+            clearAuthAndRegData();
             navigate(routes.budget, {replace: true});
         }
     }
 
     const saveAndAuth = (event: Event<HTMLFormElement>) => {
         event.preventDefault();
+
+        clearValidationResults();
+
+        validateForm($currentRegData);
+
+        if ($validationResults.length > 0) {
+            return;
+        }
+
         const error = mockSaveAndAuthorize($currentRegData);
 
         if (!error) {
+            clearValidationResults();
+            clearAuthAndRegData();
             navigate(routes.budget, {replace: true});
         }
     }
 
     const onChangeForm = (isRegistration: boolean) => {
+        clearValidationResults();
         isRegistrationForm = isRegistration;
     }
 
@@ -59,20 +108,29 @@
                         type="password"
                         bind:value={$currentAuthData.password}/>
     {/if}
-    <div class="{ButtonsBlock}">
-        {#if !isRegistrationForm}
-        <Button title={$_("auth.buttons.register")}
-                onClickHandler={() => onChangeForm(true)}
-                secondary={true}
-                        buttonClass={AuthButton}/>
-        {:else}
-        <Button title={$_("auth.buttons.auth")}
-                onClickHandler={() => onChangeForm(false)}
-                secondary={true}
-                        buttonClass={AuthButton}/>
+    <div class="{$validationResults.length > 0 ? ButtonsBlockWithErrors :ButtonsBlock} {FlexHor}">
+        {#if $validationResults.length > 0}
+            <ul class="{FlexVert} {Font312Red} {ValidationBlock}">
+                {#each $validationResults as error (`${error.message}`)}
+                    <li>{error.message}</li>
+                {/each}
+            </ul>
         {/if}
-        <Button title={isRegistrationForm ? $_("auth.buttons.save_and_login") : $_("auth.labels.login")}
-                onClickHandler={isRegistrationForm ? saveAndAuth : onAuth}
-                buttonClass={AuthButton}/>
+        <div class="{ButtonsWrapper}">
+            {#if !isRegistrationForm}
+            <Button title={$_("auth.buttons.register")}
+                    onClickHandler={() => onChangeForm(true)}
+                    secondary={true}
+                            buttonClass={AuthButton}/>
+            {:else}
+            <Button title={$_("auth.buttons.auth")}
+                    onClickHandler={() => onChangeForm(false)}
+                    secondary={true}
+                            buttonClass={AuthButton}/>
+            {/if}
+            <Button title={isRegistrationForm ? $_("auth.buttons.save_and_login") : $_("auth.labels.login")}
+                    onClickHandler={isRegistrationForm ? saveAndAuth : onAuth}
+                    buttonClass={AuthButton}/>
+        </div>
     </div>
 </form>

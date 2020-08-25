@@ -1,6 +1,7 @@
 import { css } from 'emotion'
 
-export { FlexVert } from "../../../common/styles/positioning";
+export { FlexVert, FlexHor } from "../../../common/styles/positioning";
+export { Font312Red } from "../../../common/styles/fonts";
 import colors from "../../../common/styles/colors";
 
 export const Form = css`
@@ -21,8 +22,22 @@ export const ButtonsBlock = css`
     margin-top: 8px;
 `;
 
+export const ButtonsBlockWithErrors = css`
+    margin-top: 8px;
+    justify-content: space-between;
+`;
+
 export const AuthButton = css`
-    width: 100px;
+    min-width: 100px;
     height: 40px;
     margin-left: 8px;
+`;
+
+export const ValidationBlock = css`
+    margin: 0;
+    padding-left: 12px;
+`
+
+export const ButtonsWrapper = css`
+  display: flex;
 `;

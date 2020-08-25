@@ -1,6 +1,7 @@
 import {get, writable} from "svelte/store";
 import {MockedUserData, mockedUsers} from "../pages/Auth/data";
 import {addDataToLocalStorage} from "../common/utils/localStorage";
+import {ValidationResult} from "../pages/Budget/types";
 
 export interface UserData {
     name?: string;
@@ -86,4 +87,9 @@ export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefi
     addDataToLocalStorage(sessionKey, regData);
     addDataToLocalStorage(authStatusKey, get(authStatus));
     return;
+}
+
+export const clearAuthAndRegData = () => {
+    currentAuthData.set({} as AuthData);
+    currentRegData.set({} as RegistrationData);
 }

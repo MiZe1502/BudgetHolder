@@ -104,7 +104,7 @@ export default {
         },
         buttons: {
             login: "Login",
-            save_and_login: "Save amd login",
+            save_and_login: "Save and login",
             register: "Register",
             auth: "Authorization",
         }
