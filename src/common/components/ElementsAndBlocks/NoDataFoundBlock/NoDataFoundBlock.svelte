@@ -1,8 +1,8 @@
 <script lang="typescript">
-    import { _ } from 'svelte-i18n'
-    import { SideMainPadding, Font316DarkGray } from "./style";
+    import {_} from 'svelte-i18n'
+    import {style} from "./style";
 </script>
 
-<div class="{SideMainPadding} {Font316DarkGray}">
+<div class="{style.SideMainPadding} {style.Font316DarkGray}">
     {$_("common.messages.no_data.not_found")}
 </div>

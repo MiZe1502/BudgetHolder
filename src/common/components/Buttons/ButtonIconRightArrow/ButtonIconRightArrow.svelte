@@ -1,19 +1,23 @@
 <script lang="typescript">
     import ButtonIcon from "../ButtonIcon/ButtonIcon.svelte";
-	import { defaultButtonIconSize } from './style';
+    import {style} from './style';
 
-    import { Button } from "./style";
-
-    export let width: number = defaultButtonIconSize;
-    export let height: number = defaultButtonIconSize;
+    export let width: number = style.defaultButtonIconSize;
+    export let height: number = style.defaultButtonIconSize;
     export let className: string = "";
     export let disabled: boolean = false;
-    export let onClickHandler = () => {};
+    export let onClickHandler = () => {
+    };
 </script>
 
-<ButtonIcon disabled={disabled} className="{Button} {className}" onClickHandler={onClickHandler}>
-    <svg height={height} width={width} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        viewBox="0 0 512.002 512.002" style="enable-background:new 0 0 512.002 512.002;" xml:space="preserve">
+<ButtonIcon disabled={disabled} className="{style.Button} {className}"
+            onClickHandler={onClickHandler}>
+    <svg height={height} width={width} version="1.1" id="Capa_1"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 512.002 512.002"
+         style="enable-background:new 0 0 512.002 512.002;"
+         xml:space="preserve">
         <g>
             <g>
                 <path d="M388.425,241.951L151.609,5.79c-7.759-7.733-20.321-7.72-28.067,0.04c-7.74,7.759-7.72,20.328,0.04,28.067l222.72,222.105

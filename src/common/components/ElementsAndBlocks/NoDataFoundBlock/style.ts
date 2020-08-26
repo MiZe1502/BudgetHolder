@@ -1,2 +1,7 @@
-export { Font316DarkGray } from "../../../styles/fonts";
-export { SideMainPadding } from "../../../styles/positioning";
+import { Font316DarkGray } from "../../../styles/fonts";
+import { SideMainPadding } from "../../../styles/positioning";
+
+export const style = {
+    Font316DarkGray,
+    SideMainPadding
+}

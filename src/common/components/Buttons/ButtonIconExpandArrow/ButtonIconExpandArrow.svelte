@@ -1,18 +1,16 @@
 <script lang="typescript">
     import ButtonIcon from "../ButtonIcon/ButtonIcon.svelte";
-    import {defaultButtonIconSize} from './style';
+    import {style} from './style';
 
-    import {Button} from "./style";
-
-    export let width: number = defaultButtonIconSize;
-    export let height: number = defaultButtonIconSize;
+    export let width: number = style.defaultButtonIconSize;
+    export let height: number = style.defaultButtonIconSize;
     export let className: string = "";
     export let disabled: boolean = false;
     export let onClickHandler = () => {
     };
 </script>
 
-<ButtonIcon disabled={disabled} className="{Button} {className}"
+<ButtonIcon disabled={disabled} className="{style.Button} {className}"
             onClickHandler={onClickHandler}>
     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
          width={width}

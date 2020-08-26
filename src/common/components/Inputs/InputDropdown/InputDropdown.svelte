@@ -2,22 +2,7 @@
     import SimpleBar from '@woden/svelte-simplebar'
     import ClickOutside from "svelte-click-outside";
     import InputWithLabel from "../InputWithLabel/InputWithLabel.svelte";
-    import {
-        Font312DarkGray,
-        Font312Black,
-        Input,
-        FlexVert,
-        Wrapper,
-        Font312RedAttention,
-        InvalidInput,
-        DropdownInput,
-        FlexHorCenter,
-        ButtonWrapper,
-        ArrowIcon,
-        ArrowIconExpanded,
-        IconButton,
-        DropdownInputExpanded
-    } from "./style";
+    import {style} from "./style";
 
     import {InputDropdownData} from "./utils";
     import ButtonIconExpandArrow
@@ -54,24 +39,24 @@
     export let invalid = false;
 </script>
 
-<div class="{FlexVert} {Wrapper}">
+<div class="{style.FlexVert} {style.Wrapper}">
     {#if label}
-        <label class="{Font312DarkGray} {invalid && Font312RedAttention}"
+        <label class="{style.Font312DarkGray} {invalid && style.Font312RedAttention}"
                for={name}>{label}</label>
     {/if}
 
     <ClickOutside on:clickoutside={onClickOutside}>
-        <div class="{Wrapper} {FlexHorCenter}">
+        <div class="{style.Wrapper} {style.FlexHorCenter}">
             <input on:input on:change readonly on:click={onClickHandler}
-                   class="{Input} {DropdownInput} {isOpen && DropdownInputExpanded} {Font312Black} {invalid && InvalidInput}"
+                   class="{style.Input} {style.DropdownInput} {isOpen && style.DropdownInputExpanded} {style.Font312Black} {invalid && style.InvalidInput}"
                    {required}
                    {disabled} {name}
                    value={inputValue} {autofocus}/>
-            <div class="{ButtonWrapper}">
+            <div class="{style.ButtonWrapper}">
                 <ButtonIconExpandArrow onClickHandler={onClickHandler}
                                        width={16}
                                        height={16}
-                                       className="{IconButton} {isOpen ? ArrowIconExpanded : ArrowIcon}"/>
+                                       className="{style.IconButton} {isOpen ? style.ArrowIconExpanded : style.ArrowIcon}"/>
             </div>
         </div>
         {#if isOpen}

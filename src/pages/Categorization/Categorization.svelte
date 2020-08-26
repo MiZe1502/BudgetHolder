@@ -1,6 +1,5 @@
 <script lang="typescript">
     import {onMount} from "svelte";
-    import {SideMainPadding} from "./style";
     import {mockData, mockCategories} from "./data";
     import CategoryRow from "./CategoryRow/CategoryRow.svelte";
     import CategoriesContainer

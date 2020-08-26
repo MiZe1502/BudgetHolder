@@ -1,16 +1,17 @@
 <script lang="typescript">
     import ButtonIcon from "../ButtonIcon/ButtonIcon.svelte";
-	import { defaultButtonIconSize } from './style';
+    import {style} from "./style";
 
-    import { Button } from "./style";
-
-    export let width: number = defaultButtonIconSize;
-    export let height: number = defaultButtonIconSize;
-    export let onClickHandler = () => {};
+    export let width: number = style.defaultButtonIconSize;
+    export let height: number = style.defaultButtonIconSize;
+    export let onClickHandler = () => {
+    };
 </script>
 
-<ButtonIcon className={Button} onClickHandler={onClickHandler}>
-    <svg id="Capa_1" enable-background="new 0 0 512 512" height="{height}" viewBox="0 0 512 512" width="{width}" xmlns="http://www.w3.org/2000/svg">
+<ButtonIcon className={style.Button} onClickHandler={onClickHandler}>
+    <svg id="Capa_1" enable-background="new 0 0 512 512" height="{height}"
+         viewBox="0 0 512 512" width="{width}"
+         xmlns="http://www.w3.org/2000/svg">
         <g>
             <path d="m384.721 0-323.626 323.627-61.095 188.373 188.374-61.094 323.626-323.627zm84.853 127.279-42.427 42.427-84.853-84.853 42.426-42.427zm-388.611 232.331 71.427 71.428-32.036 10.39-49.782-49.782zm14.501-27.925 225.617-225.618 31.82 31.82-225.618 225.617zm53.032 53.032 225.618-225.619 31.82 31.82-225.618 225.619zm-88.313 38.965 28.136 28.136-41.642 13.505z"/>
         </g>

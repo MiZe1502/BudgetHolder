@@ -1,7 +1,10 @@
 import { css } from 'emotion';
 
-export { defaultButtonIconSize } from "../../../styles/buttons";
+import { defaultButtonIconSize } from "../../../styles/buttons";
 
-export const Button = css`
-    padding-top: 4px;
-`;
+export const style = {
+    defaultButtonIconSize,
+    Button: css`
+        padding-top: 4px;
+    `
+}

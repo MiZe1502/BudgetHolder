@@ -11,7 +11,7 @@
     } from '../../stores/shops';
     import {EntityType, ActionType} from '../../stores/utils';
 
-    import {SideMainPadding} from "./style";
+    import {style} from "./style";
 
     import {mockData} from "./data";
     import {Shop} from "./types";

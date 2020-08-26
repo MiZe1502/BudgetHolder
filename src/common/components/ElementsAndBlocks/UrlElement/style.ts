@@ -1,28 +1,34 @@
 import { css } from 'emotion';
 import colors from "../../../styles/colors";
 
-export { Font312Black } from "../../../styles/fonts";
-export { FlexHorCenter, Overflowed } from "../../../styles/positioning";
+import { Font312Black } from "../../../styles/fonts";
+import { FlexHorCenter, Overflowed } from "../../../styles/positioning";
 
-export const UrlWrapper = css`
-    max-width: 100%;
-`;
+export const style = {
+    Font312Black,
+    FlexHorCenter,
+    Overflowed,
 
-export const Url = css`
-    color: ${colors.orangePrimary};
-    font-weight: 500;
-    text-decoration: underline;
+    UrlWrapper: css`
+        max-width: 100%;
+    `,
 
-    &:hover {
-        color: ${colors.orangeActive};
-    }
-
-    &:active {
-        color: ${colors.orangeLight};
-        text-decoration: none;
-    }
-
-    &:focus {
-        outline: none;
-    }
-`;
+    Url: css`
+        color: ${colors.orangePrimary};
+        font-weight: 500;
+        text-decoration: underline;
+    
+        &:hover {
+            color: ${colors.orangeActive};
+        }
+    
+        &:active {
+            color: ${colors.orangeLight};
+            text-decoration: none;
+        }
+    
+        &:focus {
+            outline: none;
+        }
+    `
+}

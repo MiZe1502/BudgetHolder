@@ -1,46 +1,60 @@
 import {css} from 'emotion'
 
-export {
+import {
     Font312DarkGray, Font312RedAttention, Font312Black
 } from "../../../styles/fonts";
-export {FlexVert, FlexHorCenter} from "../../../styles/positioning";
-export {InvalidInput, Input} from "../../../styles/inputs";
+import {FlexVert, FlexHorCenter} from "../../../styles/positioning";
+import {InvalidInput, Input} from "../../../styles/inputs";
 
-export const maxHeight = 400;
+const maxHeight = 400;
 
-export const Wrapper = css`
-  width: 100%;
-  position: relative;
-`;
+export const style = {
+    Font312DarkGray,
+    Font312RedAttention,
+    Font312Black,
 
-export const DropdownInput = css`
-  cursor: pointer;
-  width: 100%;
-`;
+    FlexVert,
+    FlexHorCenter,
 
-export const DropdownInputExpanded = css`
-    border-bottom: 0px !important;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-`;
+    InvalidInput,
+    Input,
 
-export const ButtonWrapper = css`
-  position: absolute;
-  right: 8px;
-`;
+    maxHeight,
 
-export const IconButton = css`
-  padding-top: 0px;
-`;
+    Wrapper: css`
+      width: 100%;
+      position: relative;
+    `,
 
-export const ArrowIcon = css`
-  & > svg {
-    transform: rotate(90deg);
-  }
-`;
+    DropdownInput: css`
+      cursor: pointer;
+      width: 100%;
+    `,
 
-export const ArrowIconExpanded = css`
-  & > svg {
-    transform: rotate(270deg);
-  }
-`;
+    DropdownInputExpanded: css`
+        border-bottom: 0px !important;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    `,
+
+    ButtonWrapper: css`
+      position: absolute;
+      right: 8px;
+    `,
+
+    IconButton: css`
+      padding-top: 0px;
+    `,
+
+    ArrowIcon: css`
+      & > svg {
+        transform: rotate(90deg);
+      }
+    `,
+
+    ArrowIconExpanded: css`
+      & > svg {
+        transform: rotate(270deg);
+      }
+    `
+}

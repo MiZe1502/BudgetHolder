@@ -1,6 +1,6 @@
 <script lang="ts">
     import {LoadingStatus} from "../../../../stores/utils";
-    import {WrapperWhileLoading, FlexHorCenter} from "./style";
+    import {style} from "./style";
     import LoadingSpinner
         from "../../ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte";
     import Button from "../Button/Button.svelte";
@@ -15,7 +15,7 @@
 </script>
 
 
-<div class="{FlexHorCenter} {status === LoadingStatus.Loading && WrapperWhileLoading}">
+<div class="{style.FlexHorCenter} {status === LoadingStatus.Loading && style.WrapperWhileLoading}">
     {#if status === LoadingStatus.Loading}
         <LoadingSpinner width={30} height={30}/>
     {:else if status === LoadingStatus.Finished}

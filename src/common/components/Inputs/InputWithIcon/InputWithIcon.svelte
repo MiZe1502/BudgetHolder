@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Wrapper, ButtonWrapper, FlexHorCenter } from "./style";
+    import { style } from "./style";
 
     import InputWithLabel from "../InputWithLabel/InputWithLabel.svelte";
 
@@ -13,10 +13,10 @@
     export let invalid = false;
 </script>
 
-<div class="{Wrapper} {FlexHorCenter}">
+<div class="{style.Wrapper} {style.FlexHorCenter}">
     <InputWithLabel on:input on:change bind:value={value} {autofocus} {name} {type}
                     {label} {disabled} {required} {invalid}/>
-    <div class="{ButtonWrapper}">
+    <div class="{style.ButtonWrapper}">
         <slot />
     </div>
 </div>

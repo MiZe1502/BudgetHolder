@@ -1,6 +1,6 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
-    import {MapContainerWrapper, Popup} from "./style";
+    import {style} from "./style";
 
     import ButtonIconMap from "../../Buttons/ButtonIconMap/ButtonIconMap.svelte"
     import PopupContainer from "../../PopupContainer/PopupContainer.svelte"
@@ -48,11 +48,11 @@
                         withAcceptButton={isEditable}
                         withCancelButton={isEditable}
                         onCancelHandler={onCancel}
-                        popupClass={Popup}>
+                        popupClass={style.Popup}>
             {#if isDomReady}
                 <MapContainer {isEditable} {data}
                               updateAddress={updateAddress}
-                              wrapperClass={MapContainerWrapper}/>
+                              wrapperClass={style.MapContainerWrapper}/>
             {/if}
         </PopupContainer>
     {/if}

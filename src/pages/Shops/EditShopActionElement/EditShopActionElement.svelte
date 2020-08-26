@@ -4,7 +4,7 @@
     import {Shop} from "../types";
     import {updateShopInStore, addShopToStore} from "../../../stores/shops";
 
-    import {Popup} from "./style";
+    import {style} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";
 
     import ButtonIconEdit
@@ -53,7 +53,7 @@
     {/if}
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
-                        popupClass={Popup} onAcceptHandler={onSaveHandler}
+                        popupClass={style.Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.Shop}

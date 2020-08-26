@@ -1,6 +1,6 @@
 <script lang="typescript">
-    import { UrlElementData } from "./utils";
-    import { Font312Black, FlexHorCenter, Overflowed, UrlWrapper, Url } from "./style";
+    import {UrlElementData} from "./utils";
+    import {style} from "./style";
 
     export let data: UrlElementData = {};
     export let style = "";
@@ -10,10 +10,12 @@
 
 </style>
 
-<div style={style} class="{UrlWrapper} {Overflowed} {FlexHorCenter} {Font312Black}">
+<div style={style}
+     class="{style.UrlWrapper} {style.Overflowed} {style.FlexHorCenter} {style.Font312Black}">
     {#if data.url}
-        <a title={data.name} class="{Url} {Overflowed}" href={data.url}>{data.name}</a>
+        <a title={data.name} class="{style.Url} {style.Overflowed}"
+           href={data.url}>{data.name}</a>
     {:else}
-        <span title={data.name} class="{Overflowed}">{data.name}</span>
+        <span title={data.name} class="{style.Overflowed}">{data.name}</span>
     {/if}
 </div>

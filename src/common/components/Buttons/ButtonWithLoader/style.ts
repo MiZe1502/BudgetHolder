@@ -1,7 +1,10 @@
 import { css } from 'emotion';
 
-export { FlexHorCenter } from "../../../styles/positioning";
+import { FlexHorCenter } from "../../../styles/positioning";
 
-export const WrapperWhileLoading = css`
-  width: 120px;
-`;
+export const style = {
+    FlexHorCenter,
+    WrapperWhileLoading: css`
+      width: 120px;
+    `
+}

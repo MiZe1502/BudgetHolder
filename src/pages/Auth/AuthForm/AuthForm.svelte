@@ -1,15 +1,7 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
     import {
-        FlexVert,
-        Form,
-        ButtonsBlock,
-        AuthButton,
-        Font312Red,
-        FlexHor,
-        ValidationBlock,
-        ButtonsBlockWithErrors,
-        ButtonsWrapper
+        style
     } from "./style";
     import {
         clearValidationResults,
@@ -89,7 +81,7 @@
 
 </script>
 
-<form class="{Form} {FlexVert}">
+<form class="{style.Form} {style.FlexVert}">
     {#if isRegistrationForm}
         <InputWithLabel label={$_("auth.labels.login")} name="login" type="text"
                         bind:value={$currentRegData.login}/>
@@ -108,29 +100,29 @@
                         type="password"
                         bind:value={$currentAuthData.password}/>
     {/if}
-    <div class="{$validationResults.length > 0 ? ButtonsBlockWithErrors :ButtonsBlock} {FlexHor}">
+    <div class="{$validationResults.length > 0 ? style.ButtonsBlockWithErrors : style.ButtonsBlock} {style.FlexHor}">
         {#if $validationResults.length > 0}
-            <ul class="{FlexVert} {Font312Red} {ValidationBlock}">
+            <ul class="{style.FlexVert} {style.Font312Red} {style.ValidationBlock}">
                 {#each $validationResults as error (`${error.message}`)}
                     <li>{error.message}</li>
                 {/each}
             </ul>
         {/if}
-        <div class="{ButtonsWrapper}">
+        <div class="{style.ButtonsWrapper}">
             {#if !isRegistrationForm}
             <Button title={$_("auth.buttons.register")}
                     onClickHandler={() => onChangeForm(true)}
                     secondary={true}
-                            buttonClass={AuthButton}/>
+                            buttonClass={style.AuthButton}/>
             {:else}
             <Button title={$_("auth.buttons.auth")}
                     onClickHandler={() => onChangeForm(false)}
                     secondary={true}
-                            buttonClass={AuthButton}/>
+                            buttonClass={style.AuthButton}/>
             {/if}
             <Button title={isRegistrationForm ? $_("auth.buttons.save_and_login") : $_("auth.labels.login")}
                     onClickHandler={isRegistrationForm ? saveAndAuth : onAuth}
-                    buttonClass={AuthButton}/>
+                    buttonClass={style.AuthButton}/>
         </div>
     </div>
 </form>
