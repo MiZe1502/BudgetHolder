@@ -1,11 +1,6 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
-    import {
-        SingleMenuBlock,
-        Font422Black,
-        FlexHorCenter,
-        ActiveBlock
-    } from "./style";
+    import {style} from "./style";
 
     import {Link} from 'svelte-routing'
     import {currentPage} from "../../../../stores/common";
@@ -20,7 +15,7 @@
 
 <Link class="" to={url}>
     <div on:click={() => handleClick(url)}
-         class="{$currentPage === url && ActiveBlock} {SingleMenuBlock} {Font422Black} {FlexHorCenter}">
+         class="{$currentPage === url && style.ActiveBlock} {style.SingleMenuBlock} {style.Font422Black} {style.FlexHorCenter}">
         {$_(title)}
     </div>
 </Link>

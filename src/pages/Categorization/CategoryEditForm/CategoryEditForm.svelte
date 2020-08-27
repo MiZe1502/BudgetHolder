@@ -4,11 +4,7 @@
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import {Category} from "../types";
     import {isFieldInvalid} from "../../../common/utils/validation";
-    import {
-        SideMinorPadding,
-        FlexVert,
-        Form
-    } from "./style";
+    import {style} from "./style";
     import {
         openedPopups,
         updatePopupInnerValidation
@@ -46,7 +42,7 @@
     export let data: Partial<Category> = {};
     export let outerPopupUuid: string = "";
 </script>
-<form class="{SideMinorPadding} {FlexVert} {Form}">
+<form class="{style.SideMinorPadding} {style.FlexVert} {style.Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                     on:input={validateForm} on:change={validateForm}
                     label={$_("common.labels.name")} autofocus={true}

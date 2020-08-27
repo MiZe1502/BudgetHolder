@@ -1,11 +1,6 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
-    import {
-        SideMainPadding,
-        FlexVert,
-        SectionBottomMargin,
-        MapContainerWrapper
-    } from "./style";
+    import {style} from "./style";
     import {LoadingStatus} from "../../../../stores/utils";
 
     import {MapItemData} from "../../ActionElements/MapActionElement/utils";
@@ -21,7 +16,7 @@
     export let status: LoadingStatus = LoadingStatus.None;
 </script>
 
-<section class="{FlexVert} {SectionBottomMargin}">
+<section class="{style.FlexVert} {style.SectionBottomMargin}">
     <CommonTitle withButton={false} title={$_("common.components.map.title")}
                  dataLength={null}/>
     {#if status === LoadingStatus.Loading}
@@ -30,8 +25,9 @@
         {#if !data || data.length === 0}
             <NoDataFoundBlock/>
         {:else}
-            <div class="{SideMainPadding}">
-                <MapContainer data={data} wrapperClass={MapContainerWrapper}/>
+            <div class="{style.SideMainPadding}">
+                <MapContainer data={data}
+                              wrapperClass={style.MapContainerWrapper}/>
             </div>
         {/if}
     {:else if status === LoadingStatus.Error}

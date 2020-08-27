@@ -8,7 +8,7 @@
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
-    import {Popup} from "./style";
+    import {style} from "./style";
     import {EntityType, ActionType, LoadingStatus} from "../../../stores/utils";
     import CategoryEditForm from "../CategoryEditForm/CategoryEditForm.svelte";
     import {
@@ -59,7 +59,7 @@
     {/if}
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
-                        popupClass={Popup} onAcceptHandler={onSaveHandler}
+                        popupClass={style.Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.Category}

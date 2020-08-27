@@ -1,9 +1,9 @@
 <script lang="typescript">
-    import { FlexHorCenter, SingleDot } from "./style";
+    import { style } from "./style";
 </script>
 
-<div class="{FlexHorCenter}">
-    <div class="{SingleDot}" />
-    <div class="{SingleDot}" />
-    <div class="{SingleDot}" />
+<div class="{style.FlexHorCenter}">
+    <div class="{style.SingleDot}" />
+    <div class="{style.SingleDot}" />
+    <div class="{style.SingleDot}" />
 </div>

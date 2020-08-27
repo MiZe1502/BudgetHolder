@@ -1,12 +1,7 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
     import SimpleBar from '@woden/svelte-simplebar'
-    import {
-        Container,
-        maxHeight,
-        SideMainPadding,
-        ContainerWithoutData
-    } from "./style";
+    import {style} from "./style";
     import {Category} from "../types";
     import CategoryRow from "../CategoryRow/CategoryRow.svelte";
     import ButtonIconNew
@@ -29,15 +24,15 @@
     <EditCategoryActionElement withButton={true} {status}
                                buttonTitle={$_('categories.buttons.new')}/>
 </CommonTitle>
-<div class="{SideMainPadding}">
-    <div class="{Container} {(!categories || categories.length === 0) && ContainerWithoutData}">
+<div class="{style.SideMainPadding}">
+    <div class="{style.Container} {(!categories || categories.length === 0) && style.ContainerWithoutData}">
         {#if status === LoadingStatus.Loading}
             <LoadingSpinner/>
         {:else if status === LoadingStatus.Finished}
             {#if !categories || categories.length === 0}
                 <NoDataFoundBlock/>
             {:else}
-                <SimpleBar style="max-height: {maxHeight}px; width: 100%">
+                <SimpleBar style="max-height: {style.maxHeight}px; width: 100%">
                     {#each categories as category (`${category.id}-${category.name}`)}
                         <CategoryRow category={category}/>
                     {/each}

@@ -1,11 +1,5 @@
 <script lang="ts">
-    import {
-        Font312DarkGray,
-        Font312RedAttention,
-        Font312Black,
-        TextArea,
-        InvalidInput
-    } from "./style";
+    import {style} from "./style";
 
     export let value = "";
     export let autofocus = false;
@@ -17,10 +11,10 @@
 </script>
 
 {#if label}
-    <label class="{Font312DarkGray} {invalid && Font312RedAttention}"
+    <label class="{style.Font312DarkGray} {invalid && style.Font312RedAttention}"
            for={name}>{label}</label>
 {/if}
 <textarea on:input on:change
-          class="{TextArea} {Font312Black} {textAreaClass} {invalid && InvalidInput}"
+          class="{style.TextArea} {style.Font312Black} {textAreaClass} {invalid && style.InvalidInput}"
           {disabled} {name}
           bind:value={value}></textarea>

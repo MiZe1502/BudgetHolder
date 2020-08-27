@@ -15,12 +15,7 @@
         updatePopupInnerValidation
     } from "../../../stores/popup";
     import {isFieldInvalid} from "../../../common/utils/validation";
-    import {
-        SideMinorPadding,
-        FlexVert,
-        Form,
-        TextArea
-    } from "./style";
+    import {style} from "./style";
     import {validationRulesPurchase} from "../BudgetPurchaseForm/validationRules";
 
     const validateForm = (event: Event<HTMLInputElement>) => {
@@ -50,7 +45,7 @@
 </script>
 
 
-<form class="{SideMinorPadding} {FlexVert} {Form}">
+<form class="{style.SideMinorPadding} {style.FlexVert} {style.Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                     on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.price")} autofocus={true}
@@ -65,7 +60,7 @@
                    label={$_("budget.labels.shop")}
                    data={$simpleShops}/>
     <TextAreaWithLabel
-            textAreaClass="{TextArea}"
+            textAreaClass="{style.TextArea}"
             label={$_("common.labels.comment")} name="comment"
             bind:value={data.comment}/>
 </form>

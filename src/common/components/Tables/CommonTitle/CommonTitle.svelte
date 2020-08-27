@@ -1,6 +1,6 @@
 <script lang="typescript">
-    import { _ } from 'svelte-i18n'
-    import { Font732Black, Font732DarkGray, Title, TitleText, SideMainPadding, FlexHorCenter} from "./style";
+    import {_} from 'svelte-i18n'
+    import {style} from "./style";
 
     import Button from '../../Buttons/Button/Button.svelte'
 
@@ -9,15 +9,16 @@
 
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
-    export let buttonClickHandler = () => {};
+    export let buttonClickHandler = () => {
+    };
 </script>
 
-<div class="{SideMainPadding} {Title} {FlexHorCenter}">
-    <span class="{TitleText} {Font732Black}">{$_(title)}</span>
+<div class="{style.SideMainPadding} {style.Title} {style.FlexHorCenter}">
+    <span class="{style.TitleText} {style.Font732Black}">{$_(title)}</span>
     {#if dataLength}
-        <span class="{TitleText} {Font732DarkGray}">({dataLength})</span>
+        <span class="{style.TitleText} {style.Font732DarkGray}">({dataLength})</span>
     {/if}
     {#if withButton}
-        <slot />
+        <slot/>
     {/if}
 </div>

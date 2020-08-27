@@ -6,28 +6,7 @@
     import {Purchase} from "../types";
     import {SuggestionItem} from "../../../common/components/Inputs/InputWithSuggestion/utils";
     import {getShopById, getSimpleShopsData} from "../../../stores/shops";
-    import {
-        SideMinorPadding,
-        TextArea,
-        FlexVert,
-        FlexHor,
-        Form,
-        MainFieldsWrapper,
-        MinorFieldsWrapper,
-        maxHeight,
-        ButtonsWrapper,
-        MainColumn,
-        MinorColumn,
-        NotLastColumn,
-        ValidationBlock,
-        Font312Red,
-        Font312Black,
-        FlexHorCenter,
-        ButtonsBlock,
-        ButtonForm,
-        CounterBlock,
-        GoodsItemControlBlock
-    } from "./style";
+    import {style} from "./style";
 
     import {
         getSimpleCategoryById,
@@ -166,9 +145,9 @@
 </script>
 
 
-<form class="{Form}">
-    <div class="{SideMinorPadding} {FlexHor} {MainFieldsWrapper}">
-        <div class="{FlexVert} {MainColumn} {NotLastColumn}">
+<form class="{style.Form}">
+    <div class="{style.SideMinorPadding} {style.FlexHor} {style.MainFieldsWrapper}">
+        <div class="{style.FlexVert} {style.MainColumn} {style.NotLastColumn}">
             <InputWithLabel
                     label={$_("budget.labels.price")} autofocus={true}
                     type="number" name="totalPrice"
@@ -182,18 +161,18 @@
                            label={$_("budget.labels.shop")}
                            data={$simpleShops}/>
         </div>
-        <div class="{FlexVert} {MainColumn}">
+        <div class="{style.FlexVert} {style.MainColumn}">
             <TextAreaWithLabel
-                    textAreaClass={TextArea}
+                    textAreaClass={style.TextArea}
                     label={$_("common.labels.comment")} name="comment"
                     bind:value={$currentPurchase.comment}/>
         </div>
     </div>
-    <SimpleBar style="max-height: {maxHeight}px; width: 100%">
+    <SimpleBar style="max-height: {style.maxHeight}px; width: 100%">
         {#each $currentPurchase.goods as goodsItem, index (goodsItem.tempId)}
-            <div class="{FlexVert} {MinorFieldsWrapper}">
-                <div class="{FlexHor}">
-                    <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
+            <div class="{style.FlexVert} {style.MinorFieldsWrapper}">
+                <div class="{style.FlexHor}">
+                    <div class="{style.FlexVert} {style.MinorColumn} {style.NotLastColumn}">
                         <InputWithSuggestion
                                 onSelectHandler={(selectedItem) => onGoodsItemSelect(selectedItem, goodsItem.tempId)}
                                 suggestionsList={$goodsForSuggestions}
@@ -207,7 +186,7 @@
                                 label={$_("budget.labels.category")}
                                         data={$simpleCategories}/>
                     </div>
-                    <div class="{FlexVert} {MinorColumn} {NotLastColumn}">
+                    <div class="{style.FlexVert} {style.MinorColumn} {style.NotLastColumn}">
                         <InputWithLabel
                                 label={$_("budget.labels.amount")}
                                 type="number" name="amount"
@@ -217,39 +196,39 @@
                                 type="number" name="price"
                                 bind:value={goodsItem.price}/>
                     </div>
-                    <div class="{FlexVert} {MinorColumn}">
+                    <div class="{style.FlexVert} {style.MinorColumn}">
                         <TextAreaWithLabel
-                                textAreaClass={TextArea}
+                                textAreaClass={style.TextArea}
                                 label={$_("common.labels.comment")}
                                 name="comment"
                                 bind:value={goodsItem.comment}/>
                     </div>
                 </div>
-                <div class="{FlexHorCenter} {GoodsItemControlBlock}">
+                <div class="{style.FlexHorCenter} {style.GoodsItemControlBlock}">
                     <ButtonIconMinus width={24} height={24}
                                      onClickHandler={() => onRemoveItemFromPurchase(goodsItem.tempId)}/>
-                    <div class="{FlexHorCenter} {CounterBlock} {Font312Black}">
+                    <div class="{style.FlexHorCenter} {style.CounterBlock} {style.Font312Black}">
                         {index + 1}
                     </div>
                 </div>
             </div>
         {/each}
     </SimpleBar>
-    <div class="{ButtonsWrapper} {FlexHor}">
+    <div class="{style.ButtonsWrapper} {style.FlexHor}">
         <ButtonIconNew width={24} height={24}
                        onClickHandler={onAddNewItemToPurchase}/>
         {#if $validationResults.length > 0}
-            <ul class="{FlexVert} {Font312Red} {ValidationBlock}">
+            <ul class="{style.FlexVert} {style.Font312Red} {style.ValidationBlock}">
                 {#each $validationResults as error (`${error.goodsItemCounter}-${error.message}`)}
                     <li>{error.goodsItemCounter ? `Item № ${error.goodsItemCounter}: `: ""}{error.message}</li>
                 {/each}
             </ul>
         {/if}
-        <div class="{FlexHorCenter} {ButtonsBlock}">
+        <div class="{style.FlexHorCenter} {style.ButtonsBlock}">
             <Button disabled={!$currentPurchase.totalPrice}
-                    buttonClass="{ButtonForm}"
+                    buttonClass="{style.ButtonForm}"
                     title={$_("budget.buttons.save")} onClickHandler={onSave}/>
-            <Button onClickHandler={onClearForm} buttonClass={ButtonForm}
+            <Button onClickHandler={onClearForm} buttonClass={style.ButtonForm}
                     secondary={true}
                     title={$_("budget.buttons.clear")}/>
         </div>

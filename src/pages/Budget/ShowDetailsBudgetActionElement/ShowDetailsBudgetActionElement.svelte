@@ -1,7 +1,7 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
-    import {Popup} from "./style";
+    import {style} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {GoodsDetails} from "../types";
     import ButtonIconShowDetails
@@ -37,7 +37,7 @@
     <ButtonIconShowDetails onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
-                        popupClass={Popup}
+                        popupClass={style.Popup}
                         entityType={EntityType.Purchase}
                         actionType={ActionType.Details} entityId={entityId}
                         title={$_("common.titles.details")}

@@ -4,13 +4,7 @@
     import {removeShopFromStore} from "../../../stores/shops";
     import {EntityType, ActionType} from "../../../stores/utils";
 
-    import {
-        Popup,
-        Font732Black,
-        Message,
-        SideMainPadding,
-        FlexHorCenter
-    } from "./style";
+    import {style} from "./style";
 
     import ButtonIconRemove
         from "../../../common/components/Buttons/ButtonIconRemove/ButtonIconRemove.svelte"
@@ -44,8 +38,9 @@
                         withCancelButton={true}
                         title={`${$_("common.titles.remove")} ${data.name}` || $_("common.titles.remove")}
                         isPopupOpened={isPopupOpened}
-                        onCloseHandler={onCloseHandler} popupClass={Popup}>
-            <div class="{SideMainPadding} {FlexHorCenter} {Message} {Font732Black}">
+                        onCloseHandler={onCloseHandler}
+                        popupClass={style.Popup}>
+            <div class="{style.SideMainPadding} {style.FlexHorCenter} {style.Message} {style.Font732Black}">
                 {`${$_("shops.messages.remove_part1")}${data.name}${$_("shops.messages.remove_part2")}`}
             </div>
         </PopupContainer>

@@ -1,13 +1,7 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
 
-    import {
-        Image,
-        UserBlock,
-        FlexHorCenter,
-        PopupItem,
-        Font312Black
-    } from "./style";
+    import {style} from "./style";
     import ClickOutside from "svelte-click-outside";
     import routes from "../../../../common/utils/routes";
 
@@ -44,12 +38,13 @@
 
 </script>
 
-<div on:click={onUserImageClick} class="{UserBlock} {Image} {FlexHorCenter}"
+<div on:click={onUserImageClick}
+     class="{style.UserBlock} {style.Image} {style.FlexHorCenter}"
      title={$currentSession.userData.login}>
     <ClickOutside on:clickoutside={onClickOutside}>
 
         {#if $currentSession.userData.image}
-            <img class={Image}
+            <img class={style.Image}
                  src={$currentSession.userData.image}
                  alt={$currentSession.userData.login}/>
         {:else}
@@ -57,11 +52,11 @@
         {/if}
         {#if isUserPopupOpened}
             <Dropdown width={200}>
-                <div class="{PopupItem} {FlexHorCenter} {Font312Black}">
+                <div class="{style.PopupItem} {style.FlexHorCenter} {style.Font312Black}">
                     {$_("user.menu.settings")}
                 </div>
                 <div on:click={onLogout}
-                     class="{PopupItem} {FlexHorCenter} {Font312Black}">
+                     class="{style.PopupItem} {style.FlexHorCenter} {style.Font312Black}">
                     {$_("user.menu.logout")}
                 </div>
             </Dropdown>

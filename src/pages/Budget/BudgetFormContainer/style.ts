@@ -1,18 +1,25 @@
 import {css} from "emotion";
 
-export {Font312Black} from "../../../common/styles/fonts";
-export {FlexVert, SideMainPadding} from "../../../common/styles/positioning";
+import {Font312Black} from "../../../common/styles/fonts";
+import {FlexVert, SideMainPadding} from "../../../common/styles/positioning";
 
 import colors from "../../../common/styles/colors";
 
-export const Wrapper = css`
-  width: 100%;
-  min-height: 150px;
-  border: 1px solid ${colors.darkGray};
-  border-radius: 4px;
-  display: flex;
-`;
+export const style = {
+    Font312Black,
 
-export const Container = css`
-  margin-bottom: 40px;
-`;
+    FlexVert,
+    SideMainPadding,
+
+    Wrapper: css`
+      width: 100%;
+      min-height: 150px;
+      border: 1px solid ${colors.darkGray};
+      border-radius: 4px;
+      display: flex;
+    `,
+
+    Container: css`
+      margin-bottom: 40px;
+    `
+}

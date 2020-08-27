@@ -1,11 +1,6 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
-    import {
-        MainMenu,
-        FlexHorCenter,
-        SideMainPadding,
-        Wrapper
-    } from "./style";
+    import {style} from "./style";
 
     import {authStatus} from "../../../../stores/auth";
     import SingleMenuBlock from '../SingleMenuBlock/SingleMenuBlock.svelte'
@@ -14,9 +9,9 @@
     import UserBlock from "../UserBlock/UserBlock.svelte";
 </script>
 
-<header class="{MainMenu} {FlexHorCenter}">
-    <div class="{SideMainPadding} {FlexHorCenter} {Wrapper}">
-        <div class="{FlexHorCenter}">
+<header class="{style.MainMenu} {style.FlexHorCenter}">
+    <div class="{style.SideMainPadding} {style.FlexHorCenter} {style.Wrapper}">
+        <div class="{style.FlexHorCenter}">
             {#each menuConfig as menu}
                 <SingleMenuBlock url={menu.url} title={menu.title}/>
             {/each}

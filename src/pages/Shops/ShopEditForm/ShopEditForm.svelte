@@ -3,12 +3,7 @@
     import {onMount} from "svelte";
     import {Shop} from "../types";
     import {isFieldInvalid} from "../../../common/utils/validation";
-    import {
-        SideMinorPadding,
-        TextArea,
-        FlexVert,
-        Form
-    } from "./style";
+    import {style} from "./style";
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel
@@ -46,7 +41,7 @@
     export let outerPopupUuid: string = "";
 </script>
 
-<form class="{SideMinorPadding} {FlexVert} {Form}">
+<form class="{style.SideMinorPadding} {style.FlexVert} {style.Form}">
     <InputWithLabel invalid={isFieldInvalid("name", formErrors)}
                     on:input={validateForm} on:change={validateForm}
                     label={$_("common.labels.name")} autofocus={true}
@@ -58,7 +53,7 @@
                   bind:value={shop.address} bind:data={shop}/>
     <TextAreaWithLabel invalid={isFieldInvalid("comment", formErrors)}
                        on:input={validateForm} on:change={validateForm}
-                       textAreaClass={TextArea}
+                       textAreaClass={style.TextArea}
                        label={$_("common.labels.comment")} name="comment"
                        bind:value={shop.comment}/>
 </form>

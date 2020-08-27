@@ -7,13 +7,7 @@
     import {Category} from "../types";
     import {removeCategoryFromStore} from "../../../stores/categories";
     import {EntityType, ActionType} from "../../../stores/utils";
-    import {
-        Popup,
-        Font732Black,
-        Message,
-        SideMainPadding,
-        FlexHorCenter
-    } from "./style";
+    import {style} from "./style";
 
     let isPopupOpened = false;
 
@@ -44,8 +38,9 @@
                         withCancelButton={true}
                         title={`${$_("common.titles.remove")} ${data.name}` || $_("commmon.titles.remove")}
                         isPopupOpened={isPopupOpened}
-                        onCloseHandler={onCloseHandler} popupClass={Popup}>
-            <div class="{SideMainPadding} {FlexHorCenter} {Message} {Font732Black}">
+                        onCloseHandler={onCloseHandler}
+                        popupClass={style.Popup}>
+            <div class="{style.SideMainPadding} {style.FlexHorCenter} {style.Message} {style.Font732Black}">
                 {`${$_("categories.messages.remove_part1")}${data.name}${$_("categories.messages.remove_part2")}`}
             </div>
         </PopupContainer>

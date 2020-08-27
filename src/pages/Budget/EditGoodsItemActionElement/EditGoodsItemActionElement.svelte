@@ -8,7 +8,7 @@
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {onMount} from "svelte";
-    import {Popup} from "./style";
+    import {style} from "./style";
     import EditGoodsItemForm
         from "../EditGoodsItemForm/EditGoodsItemForm.svelte";
     import {updatePurchaseGoodsItemInStore} from "../../../stores/purchases";
@@ -43,7 +43,7 @@
     <ButtonIconEdit width={16} height={16} onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
-                        popupClass={Popup} onAcceptHandler={onSaveHandler}
+                        popupClass={style.Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.GoodsDetails}

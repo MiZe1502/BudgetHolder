@@ -1,11 +1,6 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
-    import {
-        SideMinorPadding,
-        FlexVert,
-        Form,
-        TextArea
-    } from "./style";
+    import {style} from "./style";
     import {SuggestionItem} from "../../../common/components/Inputs/InputWithSuggestion/utils";
     import InputWithSuggestion
         from "../../../common/components/Inputs/InputWithSuggestion/InputWithSuggestion.svelte";
@@ -59,7 +54,7 @@
     export let outerPopupUuid: string = "";
 </script>
 
-<form class="{SideMinorPadding} {FlexVert} {Form}">
+<form class="{style.SideMinorPadding} {style.FlexVert} {style.Form}">
     <InputWithSuggestion
             onSelectHandler={(selectedItem) => onGoodsItemSelect(selectedItem)}
             suggestionsList={$goodsForSuggestions}
@@ -81,7 +76,7 @@
             type="number" name="price"
             bind:value={data.price}/>
     <TextAreaWithLabel
-            textAreaClass={TextArea}
+            textAreaClass={style.TextArea}
             label={$_("common.labels.comment")}
             name="comment"
             bind:value={data.comment}/>

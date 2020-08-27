@@ -1,13 +1,5 @@
 <script lang="ts">
-    import {
-        Font312DarkGray,
-        Font312Black,
-        Input,
-        FlexVert,
-        Wrapper,
-        Font312RedAttention,
-        InvalidInput
-    } from "./style";
+    import {style} from "./style";
 
     export let value = "";
     export let autofocus = false;
@@ -27,13 +19,14 @@
     }
 </script>
 
-<div class="{FlexVert} {Wrapper}">
+<div class="{style.FlexVert} {style.Wrapper}">
     {#if label}
-        <label class="{Font312DarkGray} {invalid && Font312RedAttention}"
+        <label class="{style.Font312DarkGray} {invalid && style.Font312RedAttention}"
                for={name}>{label}</label>
     {/if}
     <input on:input on:change bind:this={inputElement} on:focus={onFocus}
-           class="{Input} {Font312Black} {invalid && InvalidInput}" {required}
+           class="{style.Input} {style.Font312Black} {invalid && style.InvalidInput}"
+           {required}
            {disabled} {name} {readonly}
            bind:value={value} {autofocus}/>
 </div>

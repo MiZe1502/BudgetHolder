@@ -1,24 +1,36 @@
 import {css} from "emotion";
 
-export {
+import {
     Font312DarkGray, Font312RedAttention, Font312Black
 } from "../../../styles/fonts";
-export {FlexVert, FlexHorCenter} from "../../../styles/positioning";
-export {InvalidInput, Input} from "../../../styles/inputs";
+import {FlexVert, FlexHorCenter} from "../../../styles/positioning";
+import {InvalidInput, Input} from "../../../styles/inputs";
 
-export const InputWithSuggestion = css`
-  box-sizing: border-box;
-  height: 40px;
-  width: 100%;
-`;
+export const style = {
+    Font312DarkGray,
+    Font312RedAttention,
+    Font312Black,
 
-export const Wrapper = css`
-  width: 100%;
-  position: relative;
-`;
+    FlexVert,
+    FlexHorCenter,
 
-export const DropdownInputExpanded = css`
-    border-bottom: 0px !important;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-`;
+    InvalidInput,
+    Input,
+
+    InputWithSuggestion: css`
+      box-sizing: border-box;
+      height: 40px;
+      width: 100%;
+    `,
+
+    Wrapper: css`
+      width: 100%;
+      position: relative;
+    `,
+
+    DropdownInputExpanded: css`
+        border-bottom: 0px !important;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    `
+}

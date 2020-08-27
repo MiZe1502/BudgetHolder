@@ -1,9 +1,17 @@
 import { css } from 'emotion'
 
-export { Font312DarkGray, Font312Black } from "../../../common/styles/fonts";
-export { SideMinorPadding, FlexVert } from "../../../common/styles/positioning";
+import { Font312DarkGray, Font312Black } from "../../../common/styles/fonts";
+import { SideMinorPadding, FlexVert } from "../../../common/styles/positioning";
 
-export const Form = css`
-    padding-top: 8px;
-    padding-bottom: 8px;
-`;
+export const style = {
+    Font312DarkGray,
+    Font312Black,
+
+    SideMinorPadding,
+    FlexVert,
+
+    Form: css`
+        padding-top: 8px;
+        padding-bottom: 8px;
+    `
+}

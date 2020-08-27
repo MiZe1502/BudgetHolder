@@ -6,7 +6,7 @@
     import {ColumnConfig} from "./utils";
     import {LoadingStatus} from "../../../../stores/utils";
 
-    import {SectionBottomMargin} from "./style";
+    import {style} from "./style";
 
     import CommonTableRow from '../CommonTableRow/CommonTableRow.svelte'
     import CommonTitle from '../CommonTitle/CommonTitle.svelte'
@@ -39,7 +39,7 @@
     };
 </script>
 
-<section class="{SectionBottomMargin}">
+<section class="{style.SectionBottomMargin}">
     {#if title}
         <CommonTitle buttonClickHandler={buttonClickHandler}
                      withButton={withButton}

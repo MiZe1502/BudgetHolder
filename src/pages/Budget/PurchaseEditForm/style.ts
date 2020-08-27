@@ -1,12 +1,17 @@
 import { css } from 'emotion'
 
-export { SideMinorPadding, FlexVert } from "../../../common/styles/positioning";
+import { SideMinorPadding, FlexVert } from "../../../common/styles/positioning";
 
-export const Form = css`
-    padding-top: 8px;
-    padding-bottom: 8px;
-`;
+export const style = {
+    SideMinorPadding,
+    FlexVert,
 
-export const TextArea = css`
-    min-height: 100px;
-`;
+    Form: css`
+        padding-top: 8px;
+        padding-bottom: 8px;
+    `,
+
+    TextArea: css`
+        min-height: 100px;
+    `
+}

@@ -5,12 +5,7 @@
         Delimeters,
         formPagesArray
     } from "./utils";
-    import {
-        SideMainPadding,
-        FirstPaginationElement,
-        FlexHorCenter,
-        Pagination
-    } from "./style";
+    import {style} from "./style";
     import {Direction} from "../PaginationArrowElement/utils";
 
     import {onMount} from 'svelte';
@@ -50,12 +45,12 @@
     export let onPageChange: () => {};
 </script>
 
-<div class="{SideMainPadding} {Pagination}">
-    <div class="{FlexHorCenter}">
+<div class="{style.SideMainPadding} {style.Pagination}">
+    <div class="{style.FlexHorCenter}">
         <PaginationArrowElement disabled={currentPage === 1}
                                 direction={Direction.Left}
                                 onClickHandler={previousPageHandler}/>
-        <PaginationSingleElement className={FirstPaginationElement}
+        <PaginationSingleElement className={style.FirstPaginationElement}
                                  isActive={1 === currentPage} pageNumber={1}
                                  onClick={changePage}/>
         {#each pagesInMiddle as page}

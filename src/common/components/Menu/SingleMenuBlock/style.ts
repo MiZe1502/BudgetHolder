@@ -1,17 +1,18 @@
 import { css } from 'emotion';
 import colors from "../../../styles/colors";
 
-export { Font422Black } from "../../../styles/fonts";
-export { FlexHorCenter } from "../../../styles/positioning";
+import { Font422Black } from "../../../styles/fonts";
+import { FlexHorCenter } from "../../../styles/positioning";
 
-export const SingleMenuBlock = css`
+export const style = {
+    Font422Black,
+    FlexHorCenter,
+
+    SingleMenuBlock: css`
         height: 5vh;
         width: auto;
         background-color: ${colors.greenPrimary};
-        padding-bottom: 8px;
-        padding-top: 8px;
-        padding-left: 12px;
-        padding-right: 12px;
+        padding: 8px 12px;
         min-width: 100px;
         justify-content: center;
         transition: background-color 300ms ease;
@@ -25,8 +26,9 @@ export const SingleMenuBlock = css`
         &:active {
             background-color: ${colors.greenLight};
         }
-`;
+    `,
 
-export const ActiveBlock = css`
-    background-color: ${colors.greenActive};
-`;
+    ActiveBlock: css`
+      background-color: ${colors.greenActive};
+    `
+}

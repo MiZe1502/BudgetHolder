@@ -1,13 +1,20 @@
 import { css } from 'emotion';
-import colors from "../../../styles/colors";
 
-export { Font732Black, Font732DarkGray } from "../../../styles/fonts";
-export { SideMainPadding, FlexHorCenter } from "../../../styles/positioning";
+import { Font732Black, Font732DarkGray } from "../../../styles/fonts";
+import { SideMainPadding, FlexHorCenter } from "../../../styles/positioning";
 
-export const Title = css`
-    margin-bottom: 8px;
-`;
+export const style = {
+    Font732Black,
+    Font732DarkGray,
 
-export const TitleText = css`
-    margin-right: 8px;
-`;
+    SideMainPadding,
+    FlexHorCenter,
+
+    Title: css`
+        margin-bottom: 8px;
+    `,
+
+    TitleText: css`
+        margin-right: 8px;
+    `
+}

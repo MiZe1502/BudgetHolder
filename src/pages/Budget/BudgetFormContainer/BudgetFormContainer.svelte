@@ -1,9 +1,9 @@
 <script lang="ts">
-    import {SideMainPadding, Wrapper, Container} from "./style";
+    import {style} from "./style";
 </script>
 
-<section class="{SideMainPadding} {Container}">
-    <div class={Wrapper}>
+<section class="{style.SideMainPadding} {style.Container}">
+    <div class={style.Wrapper}>
         <slot/>
     </div>
 </section>

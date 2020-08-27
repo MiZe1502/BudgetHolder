@@ -2,39 +2,46 @@ import {css} from 'emotion'
 
 import colors from "../../../common/styles/colors";
 
-export {Font312Black} from "../../../common/styles/fonts";
-export {
+import {Font312Black} from "../../../common/styles/fonts";
+import {
     SideMinorPadding, FlexHorCenter
 } from "../../../common/styles/positioning";
 
-export const ArrowButton = css`
-    margin-right: 8px;
-`;
+export const style = {
+    Font312Black,
 
-export const ArrowButtonExpanded = css`
-    margin-right: 8px;
+    SideMinorPadding,
+    FlexHorCenter,
 
-    & > svg {
-        transform: rotate(90deg);
-    }
-`;
+    ArrowButton: css`
+        margin-right: 8px;
+    `,
 
-export const MarginedName = css`
-    margin-left: 24px;
-`;
+    ArrowButtonExpanded: css`
+        margin-right: 8px;
+    
+        & > svg {
+            transform: rotate(90deg);
+        }
+    `,
 
-export const CategoryLine = css`
-    height: 40px;
-    padding-right: 8px;
-    border-bottom: 1px solid ${colors.darkGray};
-    display: flex;
-    justify-content: space-between;
+    MarginedName: css`
+        margin-left: 24px;
+    `,
 
-    &:last-of-type {
-        border-bottom: 0px;
-    }
-`;
+    CategoryLine: css`
+        height: 40px;
+        padding-right: 8px;
+        border-bottom: 1px solid ${colors.darkGray};
+        display: flex;
+        justify-content: space-between;
+    
+        &:last-of-type {
+            border-bottom: 0px;
+        }
+    `,
 
-export const CategoryLineExpanded = css`
-  background-color: ${colors.gray};
-`;
+    CategoryLineExpanded: css`
+      background-color: ${colors.gray};
+    `
+}

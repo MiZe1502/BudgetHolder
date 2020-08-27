@@ -2,7 +2,7 @@
 
     import { MapItemData } from '../../ActionElements/MapActionElement/utils';
 
-    import { ContainerWrapper, Container } from "./style";
+    import {style} from "./style";
 
     import { yandexMapsReady, googleMapsReady } from '../../../../stores/maps';
 
@@ -39,9 +39,9 @@
     export let updateAddress = () => {};
 </script>
 
-<div class="{ContainerWrapper} {wrapperClass}">
+<div class="{style.ContainerWrapper} {wrapperClass}">
     {#if yandexMapsReady && googleMapsReady}
-        <div class="{Container}" bind:this={container}>
+        <div class="{style.Container}" bind:this={container}>
         </div>
     {/if}
 </div>

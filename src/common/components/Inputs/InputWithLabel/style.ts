@@ -1,12 +1,22 @@
 import {css} from 'emotion'
 
-export {
+import {
     Font312DarkGray, Font312RedAttention, Font312Black
 } from "../../../styles/fonts";
-export {FlexVert} from "../../../styles/positioning";
-export {InvalidInput, Input} from "../../../styles/inputs";
-import colors from "../../../styles/colors";
+import {FlexVert} from "../../../styles/positioning";
+import {InvalidInput, Input} from "../../../styles/inputs";
 
-export const Wrapper = css`
-  width: 100%;
-`;
+export const style = {
+    Font312DarkGray,
+    Font312RedAttention,
+    Font312Black,
+
+    FlexVert,
+
+    InvalidInput,
+    Input,
+
+    Wrapper: css`
+      width: 100%;
+    `
+}

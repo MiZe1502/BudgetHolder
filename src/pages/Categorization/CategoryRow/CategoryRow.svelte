@@ -1,14 +1,5 @@
 <script lang="ts">
-    import {
-        Font312Black,
-        FlexHorCenter,
-        SideMinorPadding,
-        ArrowButton,
-        MarginedName,
-        ArrowButtonExpanded,
-        CategoryLineExpanded,
-        CategoryLine
-    } from "./style";
+    import {style} from "./style";
     import {Category} from "../types";
     import {categoryTreeLeftShift} from "./utils";
     import ButtonIconExpandArrow
@@ -31,17 +22,17 @@
     export let treeLevel: number = 0;
 </script>
 
-<div class="{FlexHorCenter} {CategoryLine} {isOpened && CategoryLineExpanded}"
+<div class="{style.FlexHorCenter} {style.CategoryLine} {isOpened && style.CategoryLineExpanded}"
      style="padding-left: {8 + treeLevel * categoryTreeLeftShift}px">
-    <div class="{FlexHorCenter}">
+    <div class="{style.FlexHorCenter}">
         {#if category.categories}
             <ButtonIconExpandArrow
                     height={16}
                     width={16}
-                    className={isOpened ? ArrowButtonExpanded : ArrowButton}
+                    className={isOpened ? style.ArrowButtonExpanded : style.ArrowButton}
                     onClickHandler={onExpandClick}/>
         {/if}
-        <div class="{Font312Black} {!category.categories && MarginedName}">
+        <div class="{style.Font312Black} {!category.categories && style.MarginedName}">
             {category.name}
         </div>
     </div>

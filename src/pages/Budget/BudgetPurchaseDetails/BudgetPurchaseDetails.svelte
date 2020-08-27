@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from 'svelte';
-    import {Wrapper} from "./style";
+    import {style} from "./style";
     import {purchases} from "../../../stores/purchases";
     import {buildCategoryList} from "../../../stores/categories";
 
@@ -73,7 +73,7 @@
     export let purchaseId: number = -1;
 </script>
 
-<div class="{Wrapper}">
+<div class="{style.Wrapper}">
     <CommonTable maxHeightWithScroll={500} withScroll={true} inPopup={true} status={tableData.status}
                  total={tableData.total}
                  data={$purchases.find((purchase) => purchase.id === purchaseId).goods}

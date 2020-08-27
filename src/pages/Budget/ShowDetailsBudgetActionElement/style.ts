@@ -1,6 +1,8 @@
 import { css } from 'emotion'
 
-export const Popup = css`
-    height: auto;
-    width: 1200px;
-`
+export const style = {
+    Popup: css`
+        height: auto;
+        width: 1200px;
+    `
+}

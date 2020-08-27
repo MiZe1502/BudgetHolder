@@ -6,18 +6,7 @@
         maxSuggestionsListSize,
         KeyboardKeys
     } from "./utils";
-    import {
-        Font312DarkGray,
-        Font312Black,
-        Input,
-        FlexVert,
-        Wrapper,
-        Font312RedAttention,
-        InvalidInput,
-        FlexHorCenter,
-        DropdownInputExpanded,
-        InputWithSuggestion,
-    } from "./style";
+    import {style} from "./style";
     import DropdownMenu from "../../DropdownMenu/DropdownMenu.svelte";
 
     const onClickOutside = () => {
@@ -93,17 +82,17 @@
     export let invalid = false;
 </script>
 
-<div class="{FlexVert} {Wrapper}">
+<div class="{style.FlexVert} {style.Wrapper}">
     {#if label}
-        <label class="{Font312DarkGray} {invalid && Font312RedAttention}"
+        <label class="{style.Font312DarkGray} {invalid && style.Font312RedAttention}"
                for={name}>{label}</label>
     {/if}
 
     <ClickOutside on:clickoutside={onClickOutside}>
-        <div class={Wrapper}>
+        <div class={style.Wrapper}>
             <input autocomplete="off" on:keyup={onKeyHandler}
                    on:input={onInputHandler} on:change
-                   class="{Input} {InputWithSuggestion} {Font312Black} {isOpen && DropdownInputExpanded} {invalid && InvalidInput}"
+                   class="{style.Input} {style.InputWithSuggestion} {style.Font312Black} {isOpen && style.DropdownInputExpanded} {invalid && style.InvalidInput}"
                    {required}
                    {disabled} {name}
                    bind:value={value} {autofocus}/>

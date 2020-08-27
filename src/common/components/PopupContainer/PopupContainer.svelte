@@ -1,5 +1,5 @@
 <script lang="typescript">
-    import { _ } from 'svelte-i18n'
+    import {_} from 'svelte-i18n'
     import {onMount} from 'svelte';
     import {fade} from 'svelte/transition';
     import {get} from 'svelte/store';
@@ -16,21 +16,7 @@
         countPositionDiff,
         Position
     } from "./utils";
-    import {
-        PopupButton,
-        UtilBlock,
-        Footer,
-        Font724Black,
-        FlexHorCenter,
-        Popup,
-        Header,
-        Overflowed,
-        HeaderText,
-        FlexVert,
-        Font312Red,
-        FooterWithErrors,
-        ErrorsBlock
-    } from "./style";
+    import {style} from "./style";
 
     import {
         addPopupToState,
@@ -173,20 +159,16 @@
 <div in:fade="{{duration: 200}}" out:fade="{{duration: 200}}"
      on:mousedown={onPopupMouseDownHandler}
      style="z-index: {curPopupState.zIndex};top: {currentPopupPosition.top}px; left: {currentPopupPosition.left}px"
-     class="{Popup} {popupClass}">
-    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{UtilBlock} {FlexHorCenter} {Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
-
-
-
-
-    <span class="{Font724Black} {Overflowed} {HeaderText}">{title}</span>
+     class="{style.Popup} {popupClass}">
+    <div style="cursor: {isMouseDown ? "grabbing" : "grab"}" class="{style.UtilBlock} {style.FlexHorCenter} {style.Header}" on:mousedown={onHeaderMouseDownHandler} on:mousemove={onHeaderMouseMoveHandler} on:mouseup={onHeaderMouseUpHandler} on:mouseout={onHeaderMouseOutHandler}>
+    <span class="{style.Font724Black} {style.Overflowed} {style.HeaderText}">{title}</span>
     <ButtonIconClose onClickHandler={onPopupCloseHandler}/>
 </div>
 <slot outerPopupUuid={uuid}/>
 {#if withAcceptButton || withCancelButton}
-    <div class="{UtilBlock} {FlexHorCenter} {Footer} {innerComponentErrors && FooterWithErrors}">
+    <div class="{style.UtilBlock} {style.FlexHorCenter} {style.Footer} {innerComponentErrors && style.FooterWithErrors}">
         {#if innerComponentErrors}
-            <ul class="{FlexVert} {Font312Red} {ErrorsBlock}">
+            <ul class="{style.FlexVert} {style.Font312Red} {style.ErrorsBlock}">
                 {#each innerComponentErrors as errorField}
                     {#each errorField.errors as error}
                         <li>{error}</li>
@@ -194,14 +176,16 @@
                 {/each}
             </ul>
         {/if}
-        <div class="{FlexHorCenter}">
+        <div class="{style.FlexHorCenter}">
             {#if withAcceptButton}
-                <Button disabled={innerComponentErrors.length > 0} buttonClass={PopupButton}
-                        title={acceptButtonTitle}
-                        onClickHandler={onPopupAcceptHandler}/>
+            <Button disabled={innerComponentErrors.length > 0}
+                    buttonClass={style.PopupButton}
+                            title={acceptButtonTitle}
+                            onClickHandler={onPopupAcceptHandler}/>
             {/if}
             {#if withCancelButton}
-                <Button secondary={true} buttonClass={PopupButton} title={$_("common.components.buttons.cancel")}
+                <Button secondary={true} buttonClass={style.PopupButton}
+                        title={$_("common.components.buttons.cancel")}
                         onClickHandler={onPopupCancelHandler}/>
             {/if}
         </div>

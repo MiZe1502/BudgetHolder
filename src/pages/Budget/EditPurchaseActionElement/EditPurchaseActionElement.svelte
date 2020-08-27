@@ -10,7 +10,7 @@
     import {LoadingStatus} from "../../../stores/utils";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {updatePurchaseDataInStore} from "../../../stores/purchases";
-    import {Popup} from "./style";
+    import {style} from "./style";
     import PurchaseEditForm from "../PurchaseEditForm/PurchaseEditForm.svelte";
 
     let isPopupOpened = false;
@@ -42,7 +42,7 @@
     <ButtonIconEdit onClickHandler={onClickHandler}/>
     {#if isPopupOpened}
         <PopupContainer let:outerPopupUuid={uuid}
-                        popupClass={Popup} onAcceptHandler={onSaveHandler}
+                        popupClass={style.Popup} onAcceptHandler={onSaveHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.Purchase}
