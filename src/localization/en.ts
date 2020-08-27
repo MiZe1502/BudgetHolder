@@ -98,6 +98,7 @@ export default {
     auth: {
         labels: {
             login: "Login",
+            prev_password: "Previous password",
             password: "Password",
             name: "Name",
             surname: "Surname"
@@ -113,6 +114,9 @@ export default {
         menu: {
             settings: "Settings",
             logout: "Logout",
+        },
+        titles: {
+            edit: "Edit user",
         }
     }
 }

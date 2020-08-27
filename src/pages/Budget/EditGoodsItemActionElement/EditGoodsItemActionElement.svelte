@@ -25,7 +25,6 @@
     }
 
     const onSaveHandler = () => {
-        console.log(data)
         updatePurchaseGoodsItemInStore(data);
     }
 

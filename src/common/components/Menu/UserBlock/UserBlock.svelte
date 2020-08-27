@@ -14,9 +14,12 @@
     import {removeDataFromLocalStorageByKey} from "../../../utils/localStorage";
     import {navigate} from "svelte-routing";
     import Dropdown from "../../ElementsAndBlocks/Dropdown/Dropdown.svelte";
+    import UserSettingsPopup
+        from "../UserSettingsPopup/UserSettingsPopup.svelte";
 
 
     let isUserPopupOpened = false;
+    let isUserSettingsPopupOpened = false;
 
     const onUserImageClick = () => {
         isUserPopupOpened = !isUserPopupOpened;
@@ -24,6 +27,10 @@
 
     const onClickOutside = () => {
         isUserPopupOpened = false;
+    }
+
+    const onUserSettingsClick = () => {
+        isUserSettingsPopupOpened = true;
     }
 
     const onLogout = () => {
@@ -52,7 +59,8 @@
         {/if}
         {#if isUserPopupOpened}
             <Dropdown width={200}>
-                <div class="{style.PopupItem} {style.FlexHorCenter} {style.Font312Black}">
+                <div on:click={onUserSettingsClick}
+                     class="{style.PopupItem} {style.FlexHorCenter} {style.Font312Black}">
                     {$_("user.menu.settings")}
                 </div>
                 <div on:click={onLogout}
@@ -63,4 +71,7 @@
         {/if}
     </ClickOutside>
 </div>
+{#if isUserSettingsPopupOpened}
+    <UserSettingsPopup bind:isPopupOpened={isUserSettingsPopupOpened}/>
+{/if}
 

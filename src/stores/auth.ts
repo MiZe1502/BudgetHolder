@@ -10,6 +10,11 @@ export interface UserData {
     image?: string;
 }
 
+export interface UserDataExtended extends UserData{
+    password: string;
+    prevPassword: string;
+}
+
 export interface UserSession {
     userData: UserData;
     lastLogin: Date;
