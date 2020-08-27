@@ -6,7 +6,6 @@
     3.3. maps
         3.3.1. pass gmaps and ymaps keys from config to env
     3.4. common popup
-        3.4.1. refactor z-index logic on linked list
         3.4.2. implement message block
     3.6. websockets
     3.7. auth
@@ -16,5 +15,4 @@
         3.7.4. validation on registration
     3.10. common
         3.10.1. side navigation and scrollto section
-        3.10.2. pass styles to component as object to prevent multiple imports
         3.10.3. set todos labels across the codebase

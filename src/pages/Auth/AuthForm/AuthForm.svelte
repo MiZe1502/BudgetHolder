@@ -47,6 +47,8 @@
 
         const error = mockAuthorize($currentAuthData);
 
+        updateValidationResults(error);
+
         if (!error) {
             clearValidationResults();
             clearAuthAndRegData();
@@ -66,6 +68,8 @@
         }
 
         const error = mockSaveAndAuthorize($currentRegData);
+
+        updateValidationResults(error);
 
         if (!error) {
             clearValidationResults();
