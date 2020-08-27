@@ -11,8 +11,6 @@
     3.7. auth
         3.7.1. client cert
         3.7.2. user settings popup
-        3.7.3. validation on auth
-        3.7.4. validation on registration
     3.10. common
         3.10.1. side navigation and scrollto section
         3.10.3. set todos labels across the codebase
