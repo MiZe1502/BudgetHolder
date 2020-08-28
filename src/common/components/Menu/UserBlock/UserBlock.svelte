@@ -72,6 +72,6 @@
     </ClickOutside>
 </div>
 {#if isUserSettingsPopupOpened}
-    <UserSettingsPopup bind:isPopupOpened={isUserSettingsPopupOpened}/>
+    <UserSettingsPopup data={$currentSession.userData} bind:isPopupOpened={isUserSettingsPopupOpened}/>
 {/if}
 

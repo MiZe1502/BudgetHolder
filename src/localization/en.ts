@@ -98,7 +98,7 @@ export default {
     auth: {
         labels: {
             login: "Login",
-            prev_password: "Previous password",
+            new_password: "New password",
             password: "Password",
             name: "Name",
             surname: "Surname"

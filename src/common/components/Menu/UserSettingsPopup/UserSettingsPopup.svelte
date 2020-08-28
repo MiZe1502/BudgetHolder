@@ -3,12 +3,27 @@
     import PopupContainer from "../../PopupContainer/PopupContainer.svelte";
     import {style} from "./style";
     import {onMount} from "svelte";
-    import {UserDataExtended} from "../../../../stores/auth";
+    import {
+        setCurrentSession,
+        updateUserDataInStore,
+        UserDataExtended
+    } from "../../../../stores/auth";
     import {EntityType, ActionType} from "../../../../stores/utils";
     import UserSettingsForm from "../UserSettingsForm/UserSettingsForm.svelte";
 
     const onSaveHandler = () => {
-        //save
+        const error = updateUserDataInStore(data, initialData.login);
+
+        if (error) {
+            //backend validation
+            return;
+        }
+
+        //TODO: update session by websocket from backend
+        setCurrentSession(Object.assign({}, data, {
+            password: undefined,
+            newPassword: undefined
+        }));
     }
 
     const onCloseHandler = () => {
@@ -30,7 +45,7 @@
                 onCancelHandler={onCloseHandler} withAcceptButton={true}
                 withCancelButton={$_("common.components.buttons.cancel")}
                 entityType={EntityType.UserSettings}
-                actionType={ActionType.Edit} entityId={data.id}
+                actionType={ActionType.Edit} entityId={data.login}
                 title={`${$_("user.titles.edit")}`}
                 isPopupOpened={isPopupOpened}
                 onCloseHandler={onCloseHandler}

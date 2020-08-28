@@ -12,7 +12,7 @@ export interface UserData {
 
 export interface UserDataExtended extends UserData{
     password: string;
-    prevPassword: string;
+    newPassword: string;
 }
 
 export interface UserSession {
@@ -69,9 +69,9 @@ export const mockAuthorize = (authData: AuthData): string | undefined => {
         return `Incorrect password for user ${authData.login}`;
     }
 
-    setCurrentSession(currentUser);
+    setCurrentSession(Object.assign({}, currentUser, {password: undefined}));
     setAuthStatus(true);
-    addDataToLocalStorage(sessionKey, currentUser);
+    addDataToLocalStorage(sessionKey, Object.assign({}, currentUser, {password: undefined}));
     addDataToLocalStorage(authStatusKey, get(authStatus));
     return;
 }
@@ -87,9 +87,9 @@ export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefi
         return [...users, regData];
     }))
 
-    setCurrentSession(regData);
+    setCurrentSession(Object.assign({}, regData, {password: undefined}));
     setAuthStatus(true);
-    addDataToLocalStorage(sessionKey, regData);
+    addDataToLocalStorage(sessionKey, Object.assign({}, regData, {password: undefined}));
     addDataToLocalStorage(authStatusKey, get(authStatus));
     return;
 }
@@ -97,4 +97,33 @@ export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefi
 export const clearAuthAndRegData = () => {
     currentAuthData.set({} as AuthData);
     currentRegData.set({} as RegistrationData);
+}
+
+export const updateUserDataInStore = (newData: UserDataExtended, login: string): string => {
+    let error = "";
+
+    users.update((users) => {
+        const user = users.find((user) => login === user.login);
+
+        if (newData.password !== user.password) {
+            error = `Incorrect password for user ${user.login}`;
+        }
+
+        if (newData.password === newData.newPassword) {
+            error = "You are not allowed to use the same password";
+        }
+
+        if (error) {
+            return users;
+        }
+
+        user.login = newData.login;
+        user.password = newData.newPassword;
+        user.name = newData.name;
+        user.surname = newData.surname;
+
+        return users;
+    })
+
+    return error;
 }
