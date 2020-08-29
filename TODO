@@ -3,8 +3,6 @@
 3. functionality
     3.2. tables
         3.2.1. pass header button as slot
-    3.3. maps
-        3.3.1. pass gmaps and ymaps keys from config to env
     3.6. websockets
     3.7. auth
         3.7.1. client cert

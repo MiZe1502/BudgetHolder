@@ -5,6 +5,8 @@
     import routes from "./common/utils/routes";
     import "./localization/localization";
 
+    import {config} from "./config";
+
     import {yandexMapsReady, googleMapsReady} from "./stores/maps";
     import {
         authStatusKey, sessionKey,
@@ -89,11 +91,11 @@
 </style>
 
 <svelte:head>
-    <script src='https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=cf1b8beb-bb0c-4563-9d28-c603002dd2ad'
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey={config.ymaps_api_key}"
             type="text/javascript" on:load={() => yandexMapsReady.set(true)}>
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh9VSJdpY9bDn3OuTaL8i2jvKKKDdPLxc"
-            on:load={() => googleMapsReady.set(true)}>
+    <script src="https://maps.googleapis.com/maps/api/js?key={config.gmaps_api_key}"
+            type="text/javascript" on:load={() => googleMapsReady.set(true)}>
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP"
           rel="stylesheet">
