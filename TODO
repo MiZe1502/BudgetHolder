@@ -5,12 +5,9 @@
         3.2.1. pass header button as slot
     3.3. maps
         3.3.1. pass gmaps and ymaps keys from config to env
-    3.4. common popup
-        3.4.2. implement message block
     3.6. websockets
     3.7. auth
         3.7.1. client cert
-        3.7.2. user settings popup
     3.10. common
         3.10.1. side navigation and scrollto section
         3.10.3. set todos labels across the codebase

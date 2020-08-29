@@ -9,6 +9,8 @@
     import {removeGoodsItemDetailsFromPurchase} from "../../../stores/purchases";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {style} from "./style";
+    import MessageBlock
+        from "../../../common/components/ElementsAndBlocks/MessageBlock/MessageBlock.svelte";
 
     let isPopupOpened = false;
 
@@ -41,9 +43,8 @@
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         popupClass={style.Popup}>
-            <div class="{style.SideMainPadding} {style.FlexHorCenter} {style.Message} {style.Font732Black}">
-                {`${$_("goods.messages.remove_part1")}${$_("goods.messages.remove_part2")}`}
-            </div>
+            <MessageBlock height={300}
+                    messageText={`${$_("goods.messages.remove_part1")}${$_("goods.messages.remove_part2")}`}/>
         </PopupContainer>
     {/if}
 </div>
