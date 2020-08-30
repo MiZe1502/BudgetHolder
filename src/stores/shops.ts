@@ -1,6 +1,7 @@
 import { writable, get, derived } from 'svelte/store'
 import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
+import {generateNewArtificialId} from "./common";
 
 export const shops = writable<Shop[]>([])
 export const allShops = writable<Shop[]>([]);
@@ -32,13 +33,8 @@ export const removeShopFromStore = (id: number) => {
 }
 
 export const addShopToStore = (newShop: Shop) => {
-    let maxId = 0;
-    for (let i = 0; i < get(allShops).length; i++) {
-        if (get(allShops)[i].id > maxId) {
-            maxId = get(allShops)[i].id
-        }
-    }
-    newShop.id = maxId + 1;
+    const newId = generateNewArtificialId(allShops)
+    newShop.id = newId;
 
     allShops.update((shops) => [...shops, newShop]);
     shopsTotal.update((total) => total + 1);

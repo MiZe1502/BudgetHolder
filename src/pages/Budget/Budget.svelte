@@ -36,6 +36,7 @@
         goodsStatus,
         goods,
         goodsTotal,
+        allGoods, updateCurrentGoodsSlice,
     } from "../../stores/goods";
     import {allShops} from "../../stores/shops";
     import {
@@ -49,6 +50,7 @@
         from "./BudgetPurchaseForm/BudgetPurchaseForm.svelte";
     import LoadingSpinner
         from "../../common/components/ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte";
+    import {maxRecordsPerPage} from "../../common/components/Pagination/PaginationBlock/utils";
 
     const goodsTableData: CommonTableInterface = {
         title: "budget.titles.goods",
@@ -140,12 +142,12 @@
         ]
     }
 
-    const onPageChange = () => {
+    const onPageChange = (currentPage: number) => {
         //TODO: implement change page
     }
 
-    const onGoodsPageChange = () => {
-        //TODO: implement change page
+    const onGoodsPageChange = (currentPage: number) => {
+        updateCurrentGoodsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
     }
 
 
@@ -167,7 +169,12 @@
             goodsStatus.set(LoadingStatus.Finished);
             purchasesStatus.set(LoadingStatus.Finished);
 
-            goods.set(mockGoods);
+            allGoods.set(mockGoods);
+
+            onGoodsPageChange(1);
+
+            //goods.set(mockGoods);
+
             purchases.set(mockPurchases);
 
             goodsTotal.set(mockGoods.length);
