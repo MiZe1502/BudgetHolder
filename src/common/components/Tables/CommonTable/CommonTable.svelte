@@ -44,8 +44,7 @@
         <CommonTitle buttonClickHandler={buttonClickHandler}
                      withButton={withButton}
                      buttonTitle={buttonTitle} title={title} dataLength={total}>
-            <EditShopActionElement withButton={true}
-                                   buttonTitle={$_("shops.buttons.new")}/>
+            <slot name="titleButton" />
         </CommonTitle>
     {/if}
     {#if status === LoadingStatus.Loading}

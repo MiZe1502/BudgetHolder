@@ -1,5 +1,6 @@
 <script lang="typescript">
     import {get} from 'svelte/store';
+    import {_} from 'svelte-i18n'
 
     import {LoadingStatus} from '../../stores/utils';
     import {
@@ -38,6 +39,8 @@
     import UrlElement
         from '../../common/components/ElementsAndBlocks/UrlElement/UrlElement.svelte'
     import {onMount} from 'svelte';
+    import EditShopActionElement
+        from "./EditShopActionElement/EditShopActionElement.svelte";
 
     const onPageChange = (currentPage: number) => {
         updateCurrentShopsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
@@ -121,7 +124,12 @@
     <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
                  total={tableData.total} data={$shops}
-                 config={tableData.columnsConfig} title={tableData.title}/>
+                 config={tableData.columnsConfig} title={tableData.title}>
+        <div slot="titleButton">
+            <EditShopActionElement withButton={true}
+                                   buttonTitle={$_("shops.buttons.new")}/>
+        </div>
+    </CommonTable>
     <CommonMap status={tableData.status}
                data={$shops.map(elem => ({name: elem.name, address: elem.address}))}/>
 </div>
