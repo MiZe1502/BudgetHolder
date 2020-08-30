@@ -32,7 +32,6 @@
                 overflowed: true,
                 style: 'flex: 1 0 15%',
                 mapping: (data: GoodsDetails) => {
-                    console.log(buildCategoryList(data.category ? data.category.id : null))
                     return buildCategoryList(data.category ? data.category.id : null);
                 }
             },

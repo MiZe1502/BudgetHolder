@@ -40,7 +40,6 @@ export const addShopToStore = (newShop: Shop) => {
     }
     newShop.id = maxId + 1;
 
-
     allShops.update((shops) => [...shops, newShop]);
     shopsTotal.update((total) => total + 1);
 }

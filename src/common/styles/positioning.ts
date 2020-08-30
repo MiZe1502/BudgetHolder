@@ -33,5 +33,5 @@ export const Overflowed = css`
 `;
 
 export const SectionBottomMargin = css`
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 `;

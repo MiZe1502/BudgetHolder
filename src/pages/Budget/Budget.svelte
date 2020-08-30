@@ -1,10 +1,12 @@
 <script lang="ts">
     import {get} from 'svelte/store';
     import {onMount} from "svelte";
-    import {Purchase} from "./types";
+    import {Purchase, GoodsData} from "./types";
     import {BudgetActionsData} from "./BudgetActionsElement/utils";
     import {LoadingStatus} from "../../stores/utils";
     import {mockGoods, mockPurchases} from "./data";
+    import CategoriesListElement
+        from '../../common/components/ElementsAndBlocks/CategoriesListElement/CategoriesListElement.svelte';
     import {
         mockData as mockCategoriesData,
         mockCategories
@@ -28,7 +30,7 @@
         simpleCategories,
         simpleCategoriesStatus,
         categoriesTotal,
-        findParentCategory
+        findParentCategory, buildCategoryList
     } from "../../stores/categories";
     import {
         goodsStatus,
@@ -47,6 +49,39 @@
         from "./BudgetPurchaseForm/BudgetPurchaseForm.svelte";
     import LoadingSpinner
         from "../../common/components/ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte";
+
+    const goodsTableData: CommonTableInterface = {
+        title: "budget.titles.goods",
+        total: 0,
+        withButton: true,
+        buttonClickHandler: () => {
+        },
+        status: LoadingStatus.Loading,
+        columnsConfig: [
+            {
+                header: 'common.labels.name',
+                component: SimpleTextElement,
+                overflowed: true,
+                style: 'flex: 1 0 30%',
+                mapping: (data: GoodsData) => data.name,
+            },
+            {
+                header: 'budget.labels.category',
+                component: CategoriesListElement,
+                overflowed: true,
+                style: 'flex: 1 0 20%',
+                mapping: (data: GoodsData) => {
+                    return buildCategoryList(data.category ? data.category.id : null);
+                }
+            },
+            {
+                header: 'common.labels.comment',
+                component: SimpleTextElement,
+                style: 'flex: 1 0 30%',
+                mapping: (data: GoodsData) => data.comment,
+            },
+        ]
+    }
 
     const tableData: CommonTableInterface = {
         title: "budget.titles.purchases",
@@ -109,6 +144,10 @@
         //TODO: implement change page
     }
 
+    const onGoodsPageChange = () => {
+        //TODO: implement change page
+    }
+
 
     onMount(async () => {
         goodsStatus.set(LoadingStatus.Loading);
@@ -137,6 +176,10 @@
             tableData.status = get(purchasesStatus);
             tableData.total = get(purchasesTotal);
             tableData.data = get(purchases);
+
+            goodsTableData.status = get(goodsStatus);
+            goodsTableData.total = get(goodsTotal);
+            goodsTableData.data = get(goods);
         }, 5000);
     })
 </script>
@@ -149,8 +192,15 @@
             <BudgetPurchaseForm/>
         {/if}
     </BudgetFormContainer>
+
     <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
                  total={tableData.total} data={$purchases}
                  config={tableData.columnsConfig} title={tableData.title}/>
+
+    <CommonTable onPageChange={onGoodsPageChange}
+                 withButton={goodsTableData.withButton}
+                 status={goodsTableData.status} total={goodsTableData.total}
+                 data={$goods} config={goodsTableData.columnsConfig}
+                 title={goodsTableData.title}/>
 </section>

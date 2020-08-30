@@ -76,6 +76,7 @@ export default {
         titles: {
             purchases: "Purchases",
             edit: "Edit purchase at: ",
+            goods: "Goods",
         },
         labels: {
             date: "Date",
