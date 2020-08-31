@@ -95,6 +95,7 @@ export default {
             remove_good_item_part2: "?",
         },
         titles: {
+            new: "New goods item",
             edit: "Edit goods details"
         }
     },

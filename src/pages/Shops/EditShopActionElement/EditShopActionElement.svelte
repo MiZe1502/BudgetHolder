@@ -57,7 +57,7 @@
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={$_("common.components.buttons.cancel")}
                         entityType={EntityType.Shop}
-                        actionType={ActionType.Remove} entityId={data.id}
+                        actionType={ActionType.Edit} entityId={data.id}
                         title={data.id ? `${$_("common.titles.edit")} ${data.name}` || $_("common.titles.edit") : $_("shops.titles.new")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}

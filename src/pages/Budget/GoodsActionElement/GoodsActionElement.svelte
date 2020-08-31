@@ -4,10 +4,13 @@
     import RemoveGoodsItemElement
         from "../RemoveGoodsItemElement/RemoveGoodsItemElement.svelte";
     import {GoodsData} from "../types";
+    import EditGoodsActionElement
+        from "../EditGoodsActionElement/EditGoodsActionElement.svelte";
 
     export let data: GoodsData = {}
 </script>
 
 <CommonActionElement>
-    <RemoveGoodsItemElement {data}/>
+    <EditGoodsActionElement {data} />
+    <RemoveGoodsItemElement {data} />
 </CommonActionElement>
