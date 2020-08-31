@@ -12,7 +12,7 @@
         mockCategories
     } from "../Categorization/data";
     import {mockData as mockShops} from "../Shops/data";
-
+    import GoodsActionElement from "./GoodsActionElement/GoodsActionElement.svelte";
     import BudgetActionsElement
         from "./BudgetActionsElement/BudgetActionsElement.svelte";
     import CommonTable
@@ -82,6 +82,12 @@
                 style: 'flex: 1 0 30%',
                 mapping: (data: GoodsData) => data.comment,
             },
+            {
+                header: "",
+                component: GoodsActionElement,
+                style: 'flex: 1 0 10%',
+                mapping: (data: GoodsData) => data,
+            }
         ]
     }
 
