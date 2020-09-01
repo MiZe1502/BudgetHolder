@@ -28,8 +28,8 @@ export const addGoodsToStore = (newGoods: GoodsDetails[]) => {
         const newId = generateNewArtificialId(allGoods)
         item.id = newId;
         const goodsItem = GoodsItem.fromGoodsDetails(item);
+
         allGoods.update((goods) => [...goods, goodsItem as GoodsData]);
-        goods.update((goods) => [...goods, goodsItem as GoodsData]);
         goodsTotal.update((total) => total + 1);
     });
 }

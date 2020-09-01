@@ -14,6 +14,7 @@
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {EntityType, ActionType} from "../../../stores/utils";
+    import GoodsItemForm from "../GoodsItemForm/GoodsItemForm.svelte";
 
     let isPopupOpened = false;
 
@@ -40,7 +41,9 @@
 
     let initialData: GoodsData = {};
 
-    export let data: GoodsData = {}
+    export let data: GoodsData = {
+        category: {}
+    }
     export let withButton: boolean = false;
     export let buttonTitle: string = "";
 </script>
@@ -62,7 +65,7 @@
                     isPopupOpened={isPopupOpened}
                     onCloseHandler={onCloseHandler}
                     acceptButtonTitle={$_("common.components.buttons.save")}>
-        EDIT GOODS ITEM FORM
+        <GoodsItemForm outerPopupUuid={uuid} goodsItem={data}/>
     </PopupContainer>
     {/if}
 </div>
