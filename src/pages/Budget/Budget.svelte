@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {_} from 'svelte-i18n'
     import {get} from 'svelte/store';
     import {onMount} from "svelte";
     import {Purchase, GoodsData} from "./types";
@@ -12,7 +13,8 @@
         mockCategories
     } from "../Categorization/data";
     import {mockData as mockShops} from "../Shops/data";
-    import GoodsActionElement from "./GoodsActionElement/GoodsActionElement.svelte";
+    import GoodsActionElement
+        from "./GoodsActionElement/GoodsActionElement.svelte";
     import BudgetActionsElement
         from "./BudgetActionsElement/BudgetActionsElement.svelte";
     import CommonTable
@@ -51,11 +53,14 @@
     import LoadingSpinner
         from "../../common/components/ElementsAndBlocks/LoadingSpinner/LoadingSpinner.svelte";
     import {maxRecordsPerPage} from "../../common/components/Pagination/PaginationBlock/utils";
+    import EditGoodsActionElement
+        from "./EditGoodsActionElement/EditGoodsActionElement.svelte";
 
     const goodsTableData: CommonTableInterface = {
         title: "budget.titles.goods",
         total: 0,
         withButton: true,
+        buttonTitle: "goods.titles.new",
         buttonClickHandler: () => {
         },
         status: LoadingStatus.Loading,
@@ -213,7 +218,13 @@
 
     <CommonTable onPageChange={onGoodsPageChange}
                  withButton={goodsTableData.withButton}
+                 buttonTitle={goodsTableData.buttonTitle}
                  status={goodsTableData.status} total={goodsTableData.total}
                  data={$goods} config={goodsTableData.columnsConfig}
-                 title={goodsTableData.title}/>
+                 title={goodsTableData.title}>
+        <div slot="titleButton">
+            <EditGoodsActionElement withButton={true}
+                                    buttonTitle={$_("goods.titles.new")}/>
+        </div>
+    </CommonTable>
 </section>

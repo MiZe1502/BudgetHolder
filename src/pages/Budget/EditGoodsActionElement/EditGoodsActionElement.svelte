@@ -7,6 +7,8 @@
         updateGoodsItemInStore,
         addGoodsToStore
     } from "../../../stores/goods";
+    import Button
+        from "../../../common/components/Buttons/Button/Button.svelte";
     import ButtonIconEdit
         from "../../../common/components/Buttons/ButtonIconEdit/ButtonIconEdit.svelte";
     import PopupContainer
