@@ -1,4 +1,3 @@
-
 import { EntityType, ActionType } from "../../../../stores/utils";
 
 export interface MapItemData {

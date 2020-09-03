@@ -14,15 +14,6 @@ export {
 export const Button = css`
     background-color: transparent;
 
-    /* & > svg {
-        transition: height 100ms, width 100ms;
-    }
-
-    &:hover > svg {
-        width: ${defaultButtonIconSize + 2}px;
-        height: ${defaultButtonIconSize + 2}px;
-    } */
-
     &:hover,
 	&:active,
     &:disabled {
