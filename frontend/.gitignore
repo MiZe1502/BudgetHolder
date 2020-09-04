@@ -1,8 +1,0 @@
-/node_modules/
-/public/build/
-/test_coverage/
-
-dist
-.DS_Store
-.vscode
-.idea

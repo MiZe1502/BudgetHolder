@@ -1,0 +1,10 @@
+/frontend/node_modules/
+/frontend/public/build/
+/frontend/test_coverage/
+
+frontend/dist
+.DS_Store
+frontend/.vscode
+frontend/.idea
+.idea
+.vscode
