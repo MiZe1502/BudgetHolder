@@ -13,7 +13,7 @@ BEGIN
     WHERE id = user_session_id AND is_active=TRUE;
 
     IF user_by_session_id IS NULL THEN
-        RAISE EXCEPTION 'No users found for session: %.', user_session_id;
+        RAISE EXCEPTION 'Error code: %. Description: No users found for session: %. ', 'ERR01', user_session_id;
     END IF;
 
     INSERT INTO budget.shops(name, url, address, comment, added_by_user_id)
