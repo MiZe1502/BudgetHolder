@@ -1,12 +1,14 @@
+SET search_path TO budget;
+
 CREATE OR REPLACE FUNCTION create_new_shop(name VARCHAR(3000),
                                            url VARCHAR(3000),
                                            address VARCHAR(3000),
                                            comment VARCHAR(3000),
                                            user_session_id INTEGER)
-    RETURNS INTEGER AS
+RETURNS INTEGER AS
 $BODY$
 DECLARE user_by_session_id INTEGER;
-    DECLARE new_id INTEGER;
+DECLARE new_id INTEGER;
 BEGIN
     SELECT user_id INTO user_by_session_id
     FROM budget.sessions
@@ -22,4 +24,4 @@ BEGIN
     RETURN new_id;
 END
 $BODY$
-    LANGUAGE plpgsql;
+LANGUAGE plpgsql;
