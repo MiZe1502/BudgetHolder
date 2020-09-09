@@ -30,7 +30,6 @@
         1.4.5. remove connection between goods and purchase (goods details records)
         1.4.6. get purchases slice / get all purchases
     1.5. shops
-        1.5.3. remove shop
         1.5.4. get shop by id
         1.5.5. get shops slice / get all shops
         1.5.6. find top shops by name
