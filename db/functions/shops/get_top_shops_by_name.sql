@@ -8,6 +8,7 @@ $$
     SELECT id, name
     FROM shops
     WHERE is_removed = FALSE AND name ~ shop_name
+    ORDER BY name
     LIMIT top;
 $$
 LANGUAGE sql;
