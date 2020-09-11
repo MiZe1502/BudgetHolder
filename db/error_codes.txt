@@ -1,1 +1,2 @@
 ERR01 - No data found (by id, for example)
+ERR02 - Entity with unique value (name, login, enc. already exists)
