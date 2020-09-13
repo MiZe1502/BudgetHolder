@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_online_at TIMESTAMP,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     description VARCHAR(3000),
-    user_group_id INTEGER NOT NULL,
+    user_group_id INTEGER,
 
     FOREIGN KEY (user_data_id) REFERENCES user_data (id),
     FOREIGN KEY (user_profile_id) REFERENCES user_profile (id),

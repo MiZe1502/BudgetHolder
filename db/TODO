@@ -1,6 +1,5 @@
 1. stored functions
     1.1. auth
-        1.1.1. create user: user profile + user data + cross table
         1.1.2. create session
         1.1.3. get user by login for auth
         1.1.4. check if user exists by login
