@@ -2,7 +2,6 @@
     1.1. auth
         1.1.5. update user data
         1.1.6. change user password/login
-        1.1.7. update session data (close session)
     1.2. categories
         1.2.1. create new category
         1.2.2. update existing category
