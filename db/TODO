@@ -1,6 +1,4 @@
 1. stored functions
-    1.1. auth
-        1.1.7. update last online timestamp
     1.2. categories
         1.2.1. create new category
         1.2.2. update existing category
@@ -23,5 +21,7 @@
         1.4.5. remove connection between goods and purchase (goods details records)
         1.4.6. get purchases slice / get all purchases
 2. indexes
+3. db
+    3.1. datetime in utc
 
 
