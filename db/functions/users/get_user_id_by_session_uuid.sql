@@ -10,7 +10,7 @@ BEGIN
     WHERE uuid = user_session_uuid AND is_active=TRUE;
 
     IF user_by_session_id IS NULL THEN
-        RAISE EXCEPTION 'Error code: %. Description: No users found for session: %. ', 'ERR01', user_session_id;
+        RAISE EXCEPTION 'Error code: %. Description: No users found for session: %. ', 'ERR01', user_session_uuid;
     END IF;
 
     RETURN user_by_session_id;

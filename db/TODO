@@ -1,6 +1,5 @@
 1. stored functions
     1.2. categories
-        1.2.1. create new category
         1.2.2. update existing category
         1.2.3. remove category
         1.2.4. get categories list
