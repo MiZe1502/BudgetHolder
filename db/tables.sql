@@ -185,9 +185,11 @@ CREATE TABLE goods (
     updated_at TIMESTAMP,
     is_removed BOOLEAN DEFAULT FALSE,
     added_by_user_id INTEGER NOT NULL,
+    updated_by_user_id INTEGER,
 
     FOREIGN KEY (added_by_user_id) REFERENCES users (id),
-    FOREIGN KEY (category_id) REFERENCES goods_categories (id)
+    FOREIGN KEY (category_id) REFERENCES goods_categories (id),
+    FOREIGN KEY (updated_by_user_id) REFERENCES users (id)
 );
 
 CREATE TABLE goods_details (
