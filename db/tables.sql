@@ -1,5 +1,7 @@
 SET search_path TO budget;
 
+SET TIME ZONE 'UTC';
+
 -- USERS
 
 CREATE TABLE IF NOT EXISTS user_data (

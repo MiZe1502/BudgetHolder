@@ -1,6 +1,4 @@
 1. stored functions
-    1.3. goods
-        1.3.3. update multiple goods items
     1.4. purchases
         1.4.1. create new purchase: purchase data + cross table (goods details) + create new goods if not exist
         1.4.2. update existing purchase
@@ -9,7 +7,5 @@
         1.4.5. remove connection between goods and purchase (goods details records)
         1.4.6. get purchases slice / get all purchases
 2. indexes
-3. db
-    3.1. datetime in utc
 
 
