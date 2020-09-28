@@ -205,8 +205,10 @@ CREATE TABLE goods_details (
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP,
     added_by_user_id INTEGER NOT NULL,
+    updated_by_user_id INTEGER,
 
     FOREIGN KEY (added_by_user_id) REFERENCES users (id),
     FOREIGN KEY (purchase_id) REFERENCES purchases (id),
-    FOREIGN KEY (goods_id) REFERENCES goods (id)
+    FOREIGN KEY (goods_id) REFERENCES goods (id),
+    FOREIGN KEY (updated_by_user_id) REFERENCES users (id)
 )

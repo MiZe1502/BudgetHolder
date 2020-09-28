@@ -1,6 +1,5 @@
 1. stored functions
     1.4. purchases
-        1.4.1. create new purchase: purchase data + cross table (goods details) + create new goods if not exist
         1.4.2. update existing purchase
         1.4.3. update goods details item
         1.4.4. remove existing purchase
