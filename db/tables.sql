@@ -150,9 +150,11 @@ CREATE TABLE IF NOT EXISTS purchases (
     updated_at TIMESTAMP,
     is_removed BOOLEAN DEFAULT FALSE,
     added_by_user_id INTEGER NOT NULL,
+    updated_by_user_id INTEGER,
 
     FOREIGN KEY (added_by_user_id) REFERENCES users (id),
-    FOREIGN KEY (shop_id) REFERENCES shops (id)
+    FOREIGN KEY (shop_id) REFERENCES shops (id),
+    FOREIGN KEY (updated_by_user_id) REFERENCES users (id)
 );
 
 -- GOODS
