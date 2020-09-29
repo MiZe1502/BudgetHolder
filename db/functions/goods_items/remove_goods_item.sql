@@ -18,6 +18,13 @@ BEGIN
     WHERE id = goods_item_id
     RETURNING id INTO removed_id;
 
+    IF removed_id IS NOT NULL THEN
+        PERFORM remove_goods_details(NULL,
+                                     NULL,
+                                     removed_id,
+                                     user_session_uuid);
+    END IF;
+
     RETURN removed_id;
 END
 $BODY$
