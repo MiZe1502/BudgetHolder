@@ -11,14 +11,6 @@ BEGIN
     SELECT * INTO user_by_session_id
     FROM get_user_id_by_session_uuid(user_session_uuid);
 
-    IF purchase_id_to_remove IS NOT NULL AND NOT EXISTS(SELECT * FROM get_purchase_by_id(purchase_id_to_remove)) THEN
-        RAISE EXCEPTION 'Error code: %. Description: Purchase with id % not found. ', 'ERR01', purchase_id_to_remove;
-    END IF;
-
-    IF goods_item_id_to_remove IS NOT NULL AND NOT EXISTS(SELECT * FROM get_goods_item_by_id(goods_item_id_to_remove)) THEN
-        RAISE EXCEPTION 'Error code: %. Description: Goods item with id % not found. ', 'ERR01', goods_item_id_to_remove;
-    END IF;
-
     UPDATE goods_details
     SET is_removed = TRUE,
         updated_at = now(),
@@ -30,5 +22,3 @@ BEGIN
 END
 $BODY$
     LANGUAGE plpgsql;
-
-
