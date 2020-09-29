@@ -204,6 +204,7 @@ CREATE TABLE goods_details (
     goods_id INTEGER,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP,
+    is_removed BOOLEAN DEFAULT FALSE,
     added_by_user_id INTEGER NOT NULL,
     updated_by_user_id INTEGER,
 

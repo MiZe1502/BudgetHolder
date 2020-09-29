@@ -3,7 +3,6 @@
         1.4.2. update existing purchase
         1.4.3. update goods details item
         1.4.4. remove existing purchase
-        1.4.5. remove connection between goods and purchase (goods details records)
         1.4.6. get purchases slice / get all purchases
 2. indexes
 
