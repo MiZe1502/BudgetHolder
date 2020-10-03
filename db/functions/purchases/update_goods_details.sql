@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION update_goods_details(goods_details_id INTEGER,
                                                 user_session_uuid UUID)
     RETURNS INTEGER AS
 $BODY$
-    DECLARE user_by_session_id INTEGER;
+DECLARE user_by_session_id INTEGER;
     DECLARE updated_id INTEGER;
 BEGIN
     SELECT * INTO user_by_session_id
@@ -25,7 +25,7 @@ BEGIN
     UPDATE goods_details
     SET amount = updated_amount,
         price = updated_price,
-        category_id = updated_category_id,
+        purchase_id = updated_purchase_id,
         goods_id = updated_goods_id,
         updated_at = now(),
         updated_by_user_id = user_by_session_id
