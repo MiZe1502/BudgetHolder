@@ -2,6 +2,8 @@
 /frontend/public/build/
 /frontend/test_coverage/
 
+/backend/be/configs
+
 frontend/dist
 .DS_Store
 frontend/.vscode
