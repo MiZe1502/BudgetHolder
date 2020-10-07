@@ -2,7 +2,7 @@
 /frontend/public/build/
 /frontend/test_coverage/
 
-/backend/be/configs
+/backend/be/configuration/configs
 
 frontend/dist
 .DS_Store
