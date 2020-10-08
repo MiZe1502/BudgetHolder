@@ -2,23 +2,44 @@ package main
 
 import (
 	db "./db"
+	"github.com/georgysavva/scany/pgxscan"
 
 	"context"
 	"fmt"
-	"os"
+	// "github.com/georgysavva/scany/pgxscan"
 )
+
+type Shop struct {
+	Id      int
+	Name    string
+	Address string
+	Comment string
+	Url     string
+}
 
 func main() {
 	conn := db.Connect("Dev")
 
-	defer conn.Close(context.Background())
+	defer conn.Close()
 
-	var greeting string
-	err := conn.QueryRow(context.Background(), "select 'Hello, world!'").Scan(&greeting)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
+	var shops []*Shop
 
-	fmt.Println(greeting)
+	// rows, err := conn.Query(context.Background(), "SELECT id, name from budget.shops")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// defer rows.Close()
+
+	// for rows.Next() {
+	// 	var shop *Shop = {}
+	// 	err = rows.Scan(&shop.Id, &shop.Name)
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// 	fmt.Println(shop)
+
+	// }
+	pgxscan.Select(context.Background(), conn, &shops, `SELECT budget.get_shops($1, $2)`, 0, 5)
+
+	fmt.Println(shops[0])
 }
