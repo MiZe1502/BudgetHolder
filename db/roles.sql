@@ -1,7 +1,7 @@
 CREATE ROLE api WITH
     NOLOGIN
     NOSUPERUSER
-    INHERIT
+    NOINHERIT
     NOCREATEDB
     NOCREATEROLE
     NOREPLICATION;
@@ -18,6 +18,7 @@ CREATE USER api_user WITH
 GRANT api TO api_user;
 
 ALTER USER api_user SET search_path = "budget";
+ALTER ROLE api SET search_path = "budget";
 
 CREATE SCHEMA budget
     AUTHORIZATION postgres;
