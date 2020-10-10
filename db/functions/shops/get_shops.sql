@@ -9,7 +9,7 @@ CREATE OR REPLACE FUNCTION get_shops(start INTEGER,
                   comment VARCHAR) AS
 $$
     SELECT id, name, url, address, comment
-    FROM shops
+    FROM budget.shops
     WHERE is_removed = FALSE
     ORDER BY name
     LIMIT count

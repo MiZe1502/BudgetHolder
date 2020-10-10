@@ -24,7 +24,7 @@ func main() {
 
 	var shops []*Shop
 
-	// rows, err := conn.Query(context.Background(), "SELECT id, name from budget.shops")
+	// rows, err := conn.Query(context.Background(), "SELECT id, name, comment from budget.shops")
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
@@ -39,7 +39,12 @@ func main() {
 	// 	fmt.Println(shop)
 
 	// }
-	pgxscan.Select(context.Background(), conn, &shops, `SELECT budget.get_shops($1, $2)`, 0, 5)
+	err := pgxscan.Select(context.Background(), conn, &shops, `SELECT id, name, comment from budget.get_shops(0, 5)`)
+	//err := pgxscan.Select(context.Background(), conn, &shops, `SELECT id, name, comment from budget.shops`)
 
-	fmt.Println(shops[0])
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(shops)
 }
