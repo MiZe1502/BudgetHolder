@@ -1,7 +1,6 @@
 1. db connection
     1.1. add sequrity definer to all function and set owner to ro user
-    1.2. grant permissions to tables (idn why default schema permission to api_user don`t work)
-    1.4. sync sql scripts with git repo
+    1.2. add indexes
 2. architecture
     2.1. global context
         2.1.1. db connection
