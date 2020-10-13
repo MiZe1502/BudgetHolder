@@ -22,8 +22,6 @@ type Config struct {
 	Port     int    `json:"port"`
 }
 
-//TODO: use pgx as driver. work through "database/sql"
-
 // FormConnectionString creates configuration string to
 // connect to pg db
 func FormConnectionString(config Config) string {

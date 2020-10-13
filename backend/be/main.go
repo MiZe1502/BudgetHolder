@@ -1,20 +1,11 @@
 package main
 
 import (
-	db "./db"
-	"github.com/georgysavva/scany/pgxscan"
-
-	"context"
 	"fmt"
-)
 
-type Shop struct {
-	Id      int
-	Name    string
-	Address string
-	Comment string
-	Url     string
-}
+	db "./db"
+	repos "./repositories"
+)
 
 func main() {
 	conn := db.Connect("Dev")
@@ -28,17 +19,16 @@ func main() {
 
 func testClosure(env *Env) func() {
 	return func() {
-		var shops []*Shop
-
-		err := pgxscan.Select(context.Background(), env.db, &shops, `SELECT id, name, comment from budget.get_shops(0, 5)`)
+		shops, err := repos.GetShops(env.db, 0, 5)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		fmt.Println(shops)
+		for i := 0; i < len(shops); i++ {
+			fmt.Println(shops[i].ID)
+		}
 	}
 }
-
 
 // func getHandlers(env *Env) http.Handler {
 //     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
