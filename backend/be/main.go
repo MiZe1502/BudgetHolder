@@ -6,7 +6,6 @@ import (
 
 	"context"
 	"fmt"
-	// "github.com/georgysavva/scany/pgxscan"
 )
 
 type Shop struct {
@@ -20,31 +19,29 @@ type Shop struct {
 func main() {
 	conn := db.Connect("Dev")
 
+	context := &Env{db: conn}
+
 	defer conn.Close()
 
-	var shops []*Shop
-
-	// rows, err := conn.Query(context.Background(), "SELECT id, name, comment from budget.shops")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// defer rows.Close()
-
-	// for rows.Next() {
-	// 	var shop *Shop = {}
-	// 	err = rows.Scan(&shop.Id, &shop.Name)
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	fmt.Println(shop)
-
-	// }
-	err := pgxscan.Select(context.Background(), conn, &shops, `SELECT id, name, comment from budget.get_shops(0, 5)`)
-	//err := pgxscan.Select(context.Background(), conn, &shops, `SELECT id, name, comment from budget.shops`)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(shops)
+	testClosure(context)()
 }
+
+func testClosure(env *Env) func() {
+	return func() {
+		var shops []*Shop
+
+		err := pgxscan.Select(context.Background(), env.db, &shops, `SELECT id, name, comment from budget.get_shops(0, 5)`)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println(shops)
+	}
+}
+
+
+// func getHandlers(env *Env) http.Handler {
+//     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		//get data from db
+// 	}
+// }

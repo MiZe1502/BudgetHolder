@@ -3,6 +3,7 @@
 /frontend/test_coverage/
 
 /backend/be/configuration/configs
+/backend/be/*.exe
 
 frontend/dist
 .DS_Store
