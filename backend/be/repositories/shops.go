@@ -26,11 +26,24 @@ type ShopsRepository struct {
 func (r *ShopsRepository) GetSlice(from int, to int) ([]*Shop, error) {
 	var shops []*Shop
 
-	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT id, name, comment from budget.get_shops($1, $2)`, from, to)
+	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT * from budget.get_shops($1, $2)`, from, to)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
 
 	return shops, err
+}
+
+//GetEntityByID returns shop`s data
+func (r *ShopsRepository) GetEntityByID(id int) (Shop, error) {
+	var shop Shop
+
+	err := pgxscan.Get(context.Background(), r.db, &shop, `SELECT * from budget.get_shop_by_id($1)`, id)
+	if err != nil {
+		fmt.Println(err)
+		return shop, err
+	}
+
+	return shop, err
 }

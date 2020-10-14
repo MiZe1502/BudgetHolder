@@ -25,7 +25,7 @@ func (e *Entity) getEntity() *Entity {
 type Repository interface {
 	SetDb(db *pgxpool.Pool)
 	GetSlice(from int, to int) ([]*EntityProvider, error)
-	GetEntityById(id int) (*EntityProvider, error)
+	GetEntityByID(id int) (*EntityProvider, error)
 }
 
 //EntityRepository describes basic repository structure

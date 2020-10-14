@@ -33,6 +33,15 @@ func testClosure(env *Env) func() {
 		for i := 0; i < len(shops); i++ {
 			fmt.Println(shops[i].ID)
 		}
+
+		shop, err := repo.GetEntityByID(3)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println(shop.Name)
+
 	}
 }
 
