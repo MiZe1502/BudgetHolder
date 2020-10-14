@@ -19,7 +19,11 @@ func main() {
 
 func testClosure(env *Env) func() {
 	return func() {
-		shops, err := repos.GetShops(env.db, 0, 5)
+
+		var repo repos.ShopsRepository
+
+		shops, err := repo.GetSlice(env.db, 0, 5)
+
 		if err != nil {
 			fmt.Println(err)
 		}
