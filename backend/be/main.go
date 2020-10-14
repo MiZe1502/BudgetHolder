@@ -22,7 +22,9 @@ func testClosure(env *Env) func() {
 
 		var repo repos.ShopsRepository
 
-		shops, err := repo.GetSlice(env.db, 0, 5)
+		repo.SetDb(env.db)
+
+		shops, err := repo.GetSlice(0, 5)
 
 		if err != nil {
 			fmt.Println(err)

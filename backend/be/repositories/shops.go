@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/georgysavva/scany/pgxscan"
-	"github.com/jackc/pgx/pgxpool"
 )
 
 //Shop represents shop data item
@@ -20,14 +19,14 @@ type Shop struct {
 
 //ShopsRepository is a repository for shops data
 type ShopsRepository struct {
-	Repository
+	EntityRepository
 }
 
 //GetSlice returns slice of shops data
-func (r *ShopsRepository) GetSlice(db *pgxpool.Pool, from int, to int) ([]*Shop, error) {
+func (r *ShopsRepository) GetSlice(from int, to int) ([]*Shop, error) {
 	var shops []*Shop
 
-	err := pgxscan.Select(context.Background(), db, &shops, `SELECT id, name, comment from budget.get_shops($1, $2)`, from, to)
+	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT id, name, comment from budget.get_shops($1, $2)`, from, to)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

@@ -23,5 +23,19 @@ func (e *Entity) getEntity() *Entity {
 
 //Repository interface describes methods for basic repositories
 type Repository interface {
-	GetSlice(db *pgxpool.Pool, from int, to int) ([]*EntityProvider, error)
+	SetDb(db *pgxpool.Pool)
+	GetSlice(from int, to int) ([]*EntityProvider, error)
+	GetEntityById(id int) (*EntityProvider, error)
+}
+
+//EntityRepository describes basic repository structure
+type EntityRepository struct {
+	db *pgxpool.Pool
+
+	Repository
+}
+
+//SetDb injects db connection into repository
+func (r *EntityRepository) SetDb(db *pgxpool.Pool) {
+	r.db = db
 }
