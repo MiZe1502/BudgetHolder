@@ -5,6 +5,8 @@ import (
 
 	db "./db"
 	repos "./repositories"
+
+	utils "./utils"
 )
 
 func main() {
@@ -42,7 +44,7 @@ func testClosure(env *Env) func() {
 
 		fmt.Println(shop.Name)
 
-		shopID, err := repo.RemoveEntityByID(2, "124e4567-e89b-12d3-a456-426655440000")
+		shopID, err := repo.RemoveEntityByID(2, utils.GetNewUUID())
 
 		if err != nil {
 			fmt.Println(err)

@@ -4,7 +4,7 @@ import (
 	"github.com/jackc/pgx/pgxpool"
 )
 
-const IncorrectId int = -1
+const IncorrectID int = -1
 
 //EntityProvider describes GetEntity method to get entity data
 //we need it to implement as Entity to provide repositories throught
