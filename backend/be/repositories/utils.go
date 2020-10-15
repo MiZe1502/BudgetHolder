@@ -4,6 +4,8 @@ import (
 	"github.com/jackc/pgx/pgxpool"
 )
 
+const IncorrectId int = -1
+
 //EntityProvider describes GetEntity method to get entity data
 //we need it to implement as Entity to provide repositories throught
 //interfaces
@@ -26,6 +28,7 @@ type Repository interface {
 	SetDb(db *pgxpool.Pool)
 	GetSlice(from int, to int) ([]*EntityProvider, error)
 	GetEntityByID(id int) (*EntityProvider, error)
+	RemoveEntityByID(id int) (int, error)
 }
 
 //EntityRepository describes basic repository structure
