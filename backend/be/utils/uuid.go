@@ -13,13 +13,12 @@ func generateNewUUID() (uuid.UUID, error) {
 
 //GetNewUUID generates new random UUID string
 func GetNewUUID() string {
-
-	uuid, err := generateNewUUID();
+	uuid, err := generateNewUUID()
 
 	if err != nil {
 		fmt.Println(err)
 		return ""
 	}
 
-	return uuid.String();
+	return uuid.String()
 }
