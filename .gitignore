@@ -4,6 +4,7 @@
 
 /backend/be/configuration/configs
 /backend/be/*.exe
+/backend/be/logs
 
 frontend/dist
 .DS_Store

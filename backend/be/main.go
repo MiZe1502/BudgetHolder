@@ -10,6 +10,11 @@ import (
 )
 
 func main() {
+	
+	log := utils.InitLogger("Dev")
+
+	log.Info("A group of walrus emerges from the ocean")
+
 	conn := db.Connect("Dev")
 
 	context := &Env{db: conn}
@@ -21,7 +26,6 @@ func main() {
 
 func testClosure(env *Env) func() {
 	return func() {
-
 		var repo repos.ShopsRepository
 
 		repo.SetDb(env.db)
