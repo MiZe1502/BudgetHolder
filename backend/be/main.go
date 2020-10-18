@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	
+
 	log := utils.InitLogger("Dev")
 
 	log.Info("A group of walrus emerges from the ocean")

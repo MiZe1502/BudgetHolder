@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+    "runtime/debug" 
 
 	conf "../configuration"
 	logrus "github.com/sirupsen/logrus"
@@ -23,8 +24,9 @@ const (
 
 // Config stores logger configuration
 type Config struct {
-	Output   OutputConfig `json:"output"`
-	LogLevel logrus.Level `json:"logLevel"`
+	Output        OutputConfig `json:"output"`
+	LogLevel      logrus.Level `json:"logLevel"`
+	LogMethodName bool         `json:"logMethodName"`
 }
 
 // OutputConfig represents struct for logger output configuration
@@ -32,7 +34,13 @@ type OutputConfig struct {
 	Type            LoggerOutputType `json:"type"`
 	Path            string           `json:"path"`
 	DefaultFileName string           `json:"defaultFileName"`
-	UseDefaultFile bool `json:"useDefaultFile"`
+	UseDefaultFile  bool             `json:"useDefaultFile"`
+	FileDateFormat  string           `json:"fileDateFormat"`
+	FileExt         string           `json:"fileExt"`
+}
+
+type Logger struct {
+	instance *logrus.Logger
 }
 
 // ParseLoggerConfig parses json config for logger
@@ -48,6 +56,17 @@ func ParseLoggerConfig(config []byte) Config {
 	return parsedConfig
 }
 
+func formFileName(parsedConfig Config) string {
+	fileName := ""
+	if !parsedConfig.Output.UseDefaultFile {
+		fileName = time.Now().UTC().Format(parsedConfig.Output.FileDateFormat) + parsedConfig.Output.FileExt
+	} else {
+		fileName = parsedConfig.Output.DefaultFileName + parsedConfig.Output.FileExt
+	}
+
+	return fileName
+}
+
 // InitLogger creates and configures logger instance
 func InitLogger(env conf.EnvironmentKey) *logrus.Logger {
 	conf := conf.ReadLoggerConfig(env)
@@ -56,14 +75,9 @@ func InitLogger(env conf.EnvironmentKey) *logrus.Logger {
 
 	var log = logrus.New()
 
-	fileName := parsedConfig.Output.DefaultFileName
-	if !parsedConfig.Output.UseDefaultFile {
-		fileName = time.Now().UTC().Format("2006-01-02 MST") + ".log"
-	}
 	if parsedConfig.Output.Type == File {
+		fileName := formFileName(parsedConfig)
 		fullPath := filepath.Join(parsedConfig.Output.Path, fileName)
-
-		fmt.Println(fullPath)
 
 		file, err := os.OpenFile(fullPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err == nil {
@@ -77,5 +91,21 @@ func InitLogger(env conf.EnvironmentKey) *logrus.Logger {
 
 	log.SetLevel(parsedConfig.LogLevel)
 
+	log.SetReportCaller(parsedConfig.LogMethodName)
+
 	return log
+}
+
+
+func writeLog(level logrus.Level) {
+	switch level {
+    case logrus.TraceLevel:
+        fmt.Println("one")
+    case logrus.InfoLevel:
+        fmt.Println("two")
+    case logrus.ErrorLevel:
+		fmt.Println("three")
+	case logrus.PanicLevel:
+        fmt.Println("three")
+    }
 }
