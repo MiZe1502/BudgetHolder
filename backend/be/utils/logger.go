@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-    "runtime/debug" 
+	"runtime"
 
 	conf "../configuration"
 	logrus "github.com/sirupsen/logrus"
@@ -27,6 +27,7 @@ type Config struct {
 	Output        OutputConfig `json:"output"`
 	LogLevel      logrus.Level `json:"logLevel"`
 	LogMethodName bool         `json:"logMethodName"`
+	WriteStackTrace bool         `json:"writeStackTrace"`
 }
 
 // OutputConfig represents struct for logger output configuration
@@ -39,8 +40,10 @@ type OutputConfig struct {
 	FileExt         string           `json:"fileExt"`
 }
 
+// Logger is the custom logger realization
 type Logger struct {
 	instance *logrus.Logger
+	config Config
 }
 
 // ParseLoggerConfig parses json config for logger
@@ -68,44 +71,131 @@ func formFileName(parsedConfig Config) string {
 }
 
 // InitLogger creates and configures logger instance
-func InitLogger(env conf.EnvironmentKey) *logrus.Logger {
+func InitLogger(env conf.EnvironmentKey) *Logger {
 	conf := conf.ReadLoggerConfig(env)
-
 	parsedConfig := ParseLoggerConfig(conf)
 
-	var log = logrus.New()
+	log := logrus.New()
+	logger := Logger{}
 
-	if parsedConfig.Output.Type == File {
-		fileName := formFileName(parsedConfig)
-		fullPath := filepath.Join(parsedConfig.Output.Path, fileName)
+	logger.setInstance(log)
+	logger.setConfig(parsedConfig)
+	logger.setLoggerOutput()
+	logger.setLoggingSettings()
+
+	return &logger
+}
+
+func (l *Logger) setInstance(logger *logrus.Logger) {
+	l.instance = logger
+}
+
+func (l *Logger) setConfig(parsedConfig Config) {
+	l.config = parsedConfig
+}
+
+func (l *Logger) setLoggerOutput() {
+	if l.instance == nil {
+		return
+	}
+
+	if l.config.Output.Type == File {
+		fileName := formFileName(l.config)
+		fullPath := filepath.Join(l.config.Output.Path, fileName)
 
 		file, err := os.OpenFile(fullPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err == nil {
-			log.SetOutput(file)
+			l.instance.SetOutput(file)
 		} else {
-			log.Info("Failed to log to file, using default stdout")
+			l.instance.Info("Failed to log to file, using default stdout")
 		}
-	} else if parsedConfig.Output.Type == StdOut {
-		log.SetOutput(os.Stdout)
+	} else if l.config.Output.Type == StdOut {
+		l.instance.SetOutput(os.Stdout)
 	}
 
-	log.SetLevel(parsedConfig.LogLevel)
-
-	log.SetReportCaller(parsedConfig.LogMethodName)
-
-	return log
 }
 
+func (l *Logger) setLoggingSettings() {
+	if l.instance == nil {
+		return
+	}
 
-func writeLog(level logrus.Level) {
-	switch level {
-    case logrus.TraceLevel:
-        fmt.Println("one")
-    case logrus.InfoLevel:
-        fmt.Println("two")
-    case logrus.ErrorLevel:
-		fmt.Println("three")
-	case logrus.PanicLevel:
-        fmt.Println("three")
-    }
+	l.instance.SetLevel(l.config.LogLevel)
+	l.instance.SetReportCaller(l.config.LogMethodName)
+}
+
+// GetInstance returns inner logrus logger from custom logger
+func (l *Logger) GetInstance() *logrus.Logger {
+	return l.instance
+}
+
+// Info writes log with info level
+func (l *Logger) Info(message string) {
+	if l.instance == nil {
+		return
+	}
+
+	l.writeLog(logrus.InfoLevel, message)
+}
+
+// Trace writes log with trace level
+func (l *Logger) Trace(message string) {
+	if l.instance == nil {
+		return
+	}
+
+	l.writeLog(logrus.TraceLevel, message)
+}
+
+// Error writes log with error level
+func (l *Logger) Error(message string) {
+	if l.instance == nil {
+		return
+	}
+
+	l.writeLog(logrus.ErrorLevel, message)
+}
+
+// Panic writes log with panic level
+func (l *Logger) Panic(message string) {
+	if l.instance == nil {
+		return
+	}
+
+	l.writeLog(logrus.PanicLevel, message)
+}
+
+func (l *Logger) addStackTraceToLog() *logrus.Entry {
+	b := make([]byte, 2048)
+	traceBytes := runtime.Stack(b, false)
+	traceString := string(b[:traceBytes])
+
+	return l.instance.WithFields(logrus.Fields{"stackTrace": traceString})
+}
+
+func (l *Logger) writeLog(level logrus.Level, message string) {
+	if (l.config.WriteStackTrace) {
+		entry := l.addStackTraceToLog()
+		switch level {
+		case logrus.TraceLevel:
+			entry.Trace(message)
+		case logrus.InfoLevel:
+			entry.Info(message)
+		case logrus.ErrorLevel:
+			entry.Error(message)
+		case logrus.PanicLevel:
+			entry.Panic(message)
+		}
+	} else {
+		switch level {
+		case logrus.TraceLevel:
+			l.instance.Trace(message)
+		case logrus.InfoLevel:
+			l.instance.Info(message)
+		case logrus.ErrorLevel:
+			l.instance.Error(message)
+		case logrus.PanicLevel:
+			l.instance.Panic(message)
+		}	
+	}
 }
