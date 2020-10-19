@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	db "./db"
 	repos "./repositories"
@@ -10,14 +11,21 @@ import (
 )
 
 func main() {
+	log, err := utils.InitLogger("Dev")
 
-	log := utils.InitLogger("Dev")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-	log.Info("A group of walrus emerges from the ocean")
+	conn, err := db.Connect("Dev")
 
-	conn := db.Connect("Dev")
+	if err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
 
-	context := &Env{db: conn}
+	context := &Env{db: conn, logger: log}
 
 	defer conn.Close()
 
@@ -31,30 +39,28 @@ func testClosure(env *Env) func() {
 		repo.SetDb(env.db)
 
 		shops, err := repo.GetSlice(0, 5)
-
 		if err != nil {
-			fmt.Println(err)
+			env.logger.Error(err.Error())
 		}
 
 		for i := 0; i < len(shops); i++ {
-			fmt.Println(shops[i].ID)
+			env.logger.Info(fmt.Sprint(shops[i].ID))
 		}
 
 		shop, err := repo.GetEntityByID(3)
-
 		if err != nil {
-			fmt.Println(err)
+			env.logger.Error(err.Error())
 		}
 
-		fmt.Println(shop.Name)
+		env.logger.Info(shop.Name)
 
 		shopID, err := repo.RemoveEntityByID(2, utils.GetNewUUID())
 
 		if err != nil {
-			fmt.Println(err)
+			env.logger.Error(err.Error())
 		}
 
-		fmt.Println(shopID)
+		env.logger.Info(fmt.Sprint(shopID))
 
 	}
 }

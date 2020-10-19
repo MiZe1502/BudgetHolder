@@ -2,7 +2,6 @@ package repos
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/georgysavva/scany/pgxscan"
 )
@@ -28,7 +27,6 @@ func (r *ShopsRepository) GetSlice(from int, to int) ([]*Shop, error) {
 
 	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT * from budget.get_shops($1, $2)`, from, to)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 
@@ -41,7 +39,6 @@ func (r *ShopsRepository) GetEntityByID(id int) (Shop, error) {
 
 	err := pgxscan.Get(context.Background(), r.db, &shop, `SELECT * from budget.get_shop_by_id($1)`, id)
 	if err != nil {
-		fmt.Println(err)
 		return shop, err
 	}
 
@@ -54,7 +51,6 @@ func (r *ShopsRepository) RemoveEntityByID(id int, uuid string) (int, error) {
 
 	err := pgxscan.Get(context.Background(), r.db, &removedShopID, `SELECT * from budget.remove_shop($1, $2)`, id, uuid)
 	if err != nil {
-		fmt.Println(err)
 		return IncorrectID, err
 	}
 

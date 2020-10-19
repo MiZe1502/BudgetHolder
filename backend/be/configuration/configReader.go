@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -16,36 +15,36 @@ const (
 )
 
 const (
-	dbConfigPath = "./configuration/configs/db.json"
+	dbConfigPath     = "./configuration/configs/db.json"
 	loggerConfigPath = "./configuration/configs/logger.json"
 )
 
 // ReadDbConfig reads config for pg db as byte array
-func ReadDbConfig(env EnvironmentKey) []byte {
+func ReadDbConfig(env EnvironmentKey) ([]byte, error) {
 	config, err := os.Open(dbConfigPath)
 
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	defer config.Close()
 
-	byteValue, _ := ioutil.ReadAll(config)
+	byteValue, err := ioutil.ReadAll(config)
 
-	return byteValue
+	return byteValue, err
 }
 
 // ReadLoggerConfig reads config for logger as byte array
-func ReadLoggerConfig(env EnvironmentKey) []byte {
+func ReadLoggerConfig(env EnvironmentKey) ([]byte, error) {
 	config, err := os.Open(loggerConfigPath)
 
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
 	defer config.Close()
 
-	byteValue, _ := ioutil.ReadAll(config)
+	byteValue, err := ioutil.ReadAll(config)
 
-	return byteValue
+	return byteValue, err
 }

@@ -2,11 +2,11 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"os"
 	"path/filepath"
-	"time"
 	"runtime"
+	"time"
 
 	conf "../configuration"
 	logrus "github.com/sirupsen/logrus"
@@ -24,9 +24,9 @@ const (
 
 // Config stores logger configuration
 type Config struct {
-	Output        OutputConfig `json:"output"`
-	LogLevel      logrus.Level `json:"logLevel"`
-	LogMethodName bool         `json:"logMethodName"`
+	Output          OutputConfig `json:"output"`
+	LogLevel        logrus.Level `json:"logLevel"`
+	LogMethodName   bool         `json:"logMethodName"`
 	WriteStackTrace bool         `json:"writeStackTrace"`
 }
 
@@ -43,20 +43,16 @@ type OutputConfig struct {
 // Logger is the custom logger realization
 type Logger struct {
 	instance *logrus.Logger
-	config Config
+	config   Config
 }
 
 // ParseLoggerConfig parses json config for logger
-func ParseLoggerConfig(config []byte) Config {
+func ParseLoggerConfig(config []byte) (Config, error) {
 	var parsedConfig Config
 
 	err := json.Unmarshal(config, &parsedConfig)
 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return parsedConfig
+	return parsedConfig, err
 }
 
 func formFileName(parsedConfig Config) string {
@@ -71,19 +67,30 @@ func formFileName(parsedConfig Config) string {
 }
 
 // InitLogger creates and configures logger instance
-func InitLogger(env conf.EnvironmentKey) *Logger {
-	conf := conf.ReadLoggerConfig(env)
-	parsedConfig := ParseLoggerConfig(conf)
+func InitLogger(env conf.EnvironmentKey) (*Logger, error) {
+	conf, err := conf.ReadLoggerConfig(env)
+	if err != nil {
+		return nil, err
+	}
+
+	parsedConfig, err := ParseLoggerConfig(conf)
+	if err != nil {
+		return nil, err
+	}
 
 	log := logrus.New()
 	logger := Logger{}
 
 	logger.setInstance(log)
 	logger.setConfig(parsedConfig)
-	logger.setLoggerOutput()
-	logger.setLoggingSettings()
+	err = logger.setLoggerOutput()
+	if err != nil {
+		return nil, err
+	}
 
-	return &logger
+	err = logger.setLoggingSettings()
+
+	return &logger, err
 }
 
 func (l *Logger) setInstance(logger *logrus.Logger) {
@@ -94,9 +101,10 @@ func (l *Logger) setConfig(parsedConfig Config) {
 	l.config = parsedConfig
 }
 
-func (l *Logger) setLoggerOutput() {
+func (l *Logger) setLoggerOutput() error {
+
 	if l.instance == nil {
-		return
+		return errors.New("no logger instance")
 	}
 
 	if l.config.Output.Type == File {
@@ -107,21 +115,23 @@ func (l *Logger) setLoggerOutput() {
 		if err == nil {
 			l.instance.SetOutput(file)
 		} else {
-			l.instance.Info("Failed to log to file, using default stdout")
+			return errors.New("Failed to log to file, using default stdout")
 		}
 	} else if l.config.Output.Type == StdOut {
 		l.instance.SetOutput(os.Stdout)
 	}
 
+	return nil
 }
 
-func (l *Logger) setLoggingSettings() {
+func (l *Logger) setLoggingSettings() error {
 	if l.instance == nil {
-		return
+		return errors.New("no logger instance")
 	}
 
 	l.instance.SetLevel(l.config.LogLevel)
 	l.instance.SetReportCaller(l.config.LogMethodName)
+	return nil
 }
 
 // GetInstance returns inner logrus logger from custom logger
@@ -149,11 +159,20 @@ func (l *Logger) Trace(message string) {
 
 // Error writes log with error level
 func (l *Logger) Error(message string) {
-	if l.instance == nil {
+	if &l.instance == nil {
 		return
 	}
 
 	l.writeLog(logrus.ErrorLevel, message)
+}
+
+// Fatal writes log with fatal level
+func (l *Logger) Fatal(message string) {
+	if l.instance == nil {
+		return
+	}
+
+	l.writeLog(logrus.FatalLevel, message)
 }
 
 // Panic writes log with panic level
@@ -174,7 +193,7 @@ func (l *Logger) addStackTraceToLog() *logrus.Entry {
 }
 
 func (l *Logger) writeLog(level logrus.Level, message string) {
-	if (l.config.WriteStackTrace) {
+	if l.config.WriteStackTrace {
 		entry := l.addStackTraceToLog()
 		switch level {
 		case logrus.TraceLevel:
@@ -196,6 +215,6 @@ func (l *Logger) writeLog(level logrus.Level, message string) {
 			l.instance.Error(message)
 		case logrus.PanicLevel:
 			l.instance.Panic(message)
-		}	
+		}
 	}
 }

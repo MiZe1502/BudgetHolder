@@ -3,8 +3,6 @@ package db
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -29,32 +27,29 @@ func FormConnectionString(config Config) string {
 }
 
 // ParseDbConfig parses json config for pg db
-func ParseDbConfig(config []byte) Config {
+func ParseDbConfig(config []byte) (Config, error) {
 	var parsedConfig Config
 
 	err := json.Unmarshal(config, &parsedConfig)
 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return parsedConfig
+	return parsedConfig, err
 }
 
 // Connect creates global connection to pg db
-func Connect(env conf.EnvironmentKey) *pgxpool.Pool {
-	config := conf.ReadDbConfig(env)
+func Connect(env conf.EnvironmentKey) (*pgxpool.Pool, error) {
+	config, err := conf.ReadDbConfig(env)
+	if err != nil {
+		return nil, err
+	}
 
-	parsedConfig := ParseDbConfig(config)
+	parsedConfig, err := ParseDbConfig(config)
+	if err != nil {
+		return nil, err
+	}
 
 	conString := FormConnectionString(parsedConfig)
 
 	conn, err := pgxpool.Connect(context.Background(), conString)
 
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-
-	return conn
+	return conn, err
 }
