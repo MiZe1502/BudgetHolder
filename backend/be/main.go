@@ -29,7 +29,8 @@ func main() {
 
 	defer conn.Close()
 
-	testClosure(context)()
+	//testClosure(context)()
+	initHandlers(context)
 }
 
 func testClosure(env *Env) func() {
