@@ -25,7 +25,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	context := &Env{db: conn, logger: log}
+	hub := createHub()
+
+	context := &Env{db: conn, logger: log, hub: hub}
+
+	go context.hub.runHub()
 
 	defer conn.Close()
 

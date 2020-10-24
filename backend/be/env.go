@@ -9,6 +9,7 @@ import (
 type Env struct {
 	db     *pgxpool.Pool
 	logger *utils.Logger
+	hub	   *Hub
 }
 
 // EnvironmentKey is a type for env keys enum
