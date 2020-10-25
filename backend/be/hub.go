@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -50,14 +51,22 @@ func (h *Hub) runHub() {
 				connection.conn.Close()
 			}
 		case message := <-h.send:
+			fmt.Printf("message in hub: %s\n", string(message))
 			for connection := range h.connections {
-				select {
-				case connection.send <- message:
-					connection.conn.WriteMessage(0, message)
-					// default:
-					// 	close(connection.send)
-					// 	delete(h.connections, connection)
+				err := connection.conn.WriteMessage(1, message)
+				if err != nil {
+					fmt.Println(err)
 				}
+				// select {
+				// case connection.send <- message:
+				// 	err := connection.conn.WriteMessage(1, message)
+				// 	if err != nil {
+				// 		fmt.Println(err)
+				// 	}
+				// 	// default:
+				// 	// 	close(connection.send)
+				// 	// 	delete(h.connections, connection)
+				// }
 			}
 		}
 	}
