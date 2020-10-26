@@ -2,8 +2,11 @@ package repos
 
 import (
 	"github.com/jackc/pgx/pgxpool"
+
+	utils "../utils"
 )
 
+//IncorrectID is used to mark empty record
 const IncorrectID int = -1
 
 //EntityProvider describes GetEntity method to get entity data
@@ -34,6 +37,7 @@ type Repository interface {
 //EntityRepository describes basic repository structure
 type EntityRepository struct {
 	db *pgxpool.Pool
+	log *utils.Logger
 
 	Repository
 }
@@ -42,3 +46,9 @@ type EntityRepository struct {
 func (r *EntityRepository) SetDb(db *pgxpool.Pool) {
 	r.db = db
 }
+
+//SetLogger injects logger into repository
+func (r *EntityRepository) SetLogger(logger *utils.Logger) {
+	r.log = logger
+}
+
