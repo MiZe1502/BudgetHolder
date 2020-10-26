@@ -29,9 +29,10 @@ func main() {
 
 	context := &Env{db: conn, logger: log, hub: hub}
 
-	go context.hub.runHub()
+	go context.hub.runHub(context)
 
 	defer conn.Close()
+	defer hub.closeAllConnections(context)
 
 	//testClosure(context)()
 	initHandlers(context)

@@ -28,9 +28,8 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 	case Logger:
 		return func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				env.logger.Info("logging middleware")
-
-				// logging request
+				env.logger.Info("got request")
+				env.logger.Info("user agent: " + r.UserAgent() + " | " + "ip: " + r.RemoteAddr + " | " + "method: " + r.Method)
 				next.ServeHTTP(w, r)
 			})
 		}
@@ -70,7 +69,7 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func createMessageHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
+func createTestMessageHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -93,7 +92,7 @@ func initHandlers(env *Env) {
 
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))
-	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createMessageHandler(env))))
+	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env))))
 
 	http.ListenAndServe(":8080", nil)
 

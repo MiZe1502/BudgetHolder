@@ -39,35 +39,31 @@ func createHub() *Hub {
 	}
 }
 
-func (h *Hub) runHub() {
+func (h *Hub) runHub(env *Env) {
 	for {
 		select {
 		case connection := <-h.register:
 			h.connections[connection] = true
-			fmt.Println(len(h.connections))
+			env.logger.Info("connections registered: " + fmt.Sprint(len(h.connections)))
 		case connection := <-h.unregister:
 			if _, ok := h.connections[connection]; ok {
 				delete(h.connections, connection)
 				connection.conn.Close()
 			}
 		case message := <-h.send:
-			fmt.Printf("message in hub: %s\n", string(message))
+			env.logger.Info("got message in hub: " + string(message))
 			for connection := range h.connections {
 				err := connection.conn.WriteMessage(1, message)
 				if err != nil {
 					fmt.Println(err)
 				}
-				// select {
-				// case connection.send <- message:
-				// 	err := connection.conn.WriteMessage(1, message)
-				// 	if err != nil {
-				// 		fmt.Println(err)
-				// 	}
-				// 	// default:
-				// 	// 	close(connection.send)
-				// 	// 	delete(h.connections, connection)
-				// }
 			}
 		}
+	}
+}
+
+func (h *Hub) closeAllConnections(env *Env) {
+	for connection := range h.connections {
+		h.unregister <- connection
 	}
 }
