@@ -22,3 +22,8 @@ func GetNewUUID() string {
 
 	return uuid.String()
 }
+
+func getUUIDfromString(str string) (uuid.UUID, error) {
+	parsedUUID, err := uuid.Parse(str)
+	return parsedUUID, err
+}

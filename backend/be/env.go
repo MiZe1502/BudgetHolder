@@ -10,6 +10,7 @@ type Env struct {
 	db     *pgxpool.Pool
 	logger *utils.Logger
 	hub	   *Hub
+	token *utils.TokenGenerator
 }
 
 // EnvironmentKey is a type for env keys enum

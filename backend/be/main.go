@@ -27,7 +27,13 @@ func main() {
 
 	hub := createHub()
 
-	context := &Env{db: conn, logger: log, hub: hub}
+	tokenGenerator, err := utils.InitTokenGenerator("Dev")
+	if err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
+
+	context := &Env{db: conn, logger: log, hub: hub, token: tokenGenerator}
 
 	go context.hub.runHub(context)
 
