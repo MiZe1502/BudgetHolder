@@ -71,11 +71,10 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 
 func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		body, err := ioutil.ReadAll(r.Body)
+		_, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			env.logger.Error("error reading body")
 		}
-
 
 	}
 }

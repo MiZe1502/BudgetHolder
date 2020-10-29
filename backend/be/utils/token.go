@@ -3,21 +3,23 @@ package utils
 import (
 	"encoding/json"
 
-	conf "../configuration"
+	"errors"
 
+	conf "../configuration"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
 )
 
 //TokenGenerator provides basic methods to generate and parse jwt token
 type TokenGenerator struct {
-	tokenPassword string `json:"tokenPassword"`
-	signingMethod string `json:"signingMethod"`
+	TokenPassword string `json:"tokenPassword"`
+	SigningMethod string `json:"signingMethod"`
 }
 
 //Token represents jwt token data
 type Token struct {
-	sessionID uuid.UUID
+	SessionID uuid.UUID
+
 	jwt.StandardClaims
 }
 
@@ -29,6 +31,7 @@ func InitTokenGenerator(env conf.EnvironmentKey) (*TokenGenerator, error) {
 	}
 
 	tokenGenerator, err := parseTokenConfig(config)
+
 	if err != nil {
 		return nil, err
 	}
@@ -47,13 +50,35 @@ func parseTokenConfig(config []byte) (*TokenGenerator, error) {
 
 //CreateNewToken returns new jwt token with user session UUID
 func (t *TokenGenerator) CreateNewToken(uuid uuid.UUID) (string, error) {
-	tk := &Token{sessionID: uuid}
-	token := jwt.NewWithClaims(jwt.GetSigningMethod(t.signingMethod), tk)
-	tokenString, err := token.SignedString([]byte(t.tokenPassword))
+	tk := &Token{SessionID: uuid}
+
+	token := jwt.NewWithClaims(jwt.GetSigningMethod(t.SigningMethod), tk)
+	tokenString, err := token.SignedString([]byte(t.TokenPassword))
 
 	return tokenString, err
 }
 
-func (t *TokenGenerator) ParseToken() {
-	
+//ParseToken parses jwt token
+func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
+	// splitted := strings.Split(tkn, " ") // check `Bearer {token-body}` format
+	// if len(splitted) != 2 {
+	// 	return nil, errors.New("Invalid token format for token: " + tkn)
+	// }
+
+	// tokenPart := splitted[1] //getting the first part of the token
+	tk := &Token{}
+
+	token, err := jwt.ParseWithClaims(tkn, tk, func(token *jwt.Token) (interface{}, error) {
+		return []byte(t.TokenPassword), nil
+	})
+
+	if err != nil {
+		return nil, errors.New("Error parsing token: " + tkn)
+	}
+
+	if !token.Valid {
+		return nil, errors.New("Invalid token: " + tkn)
+	}
+
+	return tk, nil
 }

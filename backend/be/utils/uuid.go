@@ -23,7 +23,8 @@ func GetNewUUID() string {
 	return uuid.String()
 }
 
-func getUUIDfromString(str string) (uuid.UUID, error) {
+//GetUUIDfromString parses uuid from string to uuid.UUID type
+func GetUUIDfromString(str string) (uuid.UUID, error) {
 	parsedUUID, err := uuid.Parse(str)
 	return parsedUUID, err
 }

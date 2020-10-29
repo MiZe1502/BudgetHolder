@@ -40,6 +40,29 @@ func main() {
 	defer conn.Close()
 	defer hub.closeAllConnections(context)
 
+	// uuid := utils.GetNewUUID()
+
+	// fmt.Println(uuid)
+
+	// uuidParsed, err := utils.GetUUIDfromString(uuid)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	// token, err := context.token.CreateNewToken(uuidParsed)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	// fmt.Println(token)
+
+	// tkn, err := context.token.ParseToken(token)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(tkn.SessionID)
+
+
 	//testClosure(context)()
 	initHandlers(context)
 }
