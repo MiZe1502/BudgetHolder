@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	repos "./repositories"
 	utils "./utils"
 	"github.com/gorilla/websocket"
 	"github.com/justinas/alice"
@@ -71,11 +73,29 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 
 func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		_, err := ioutil.ReadAll(r.Body)
+
+		userData := &repos.User{}
+		err := json.NewDecoder(r.Body).Decode(userData)
 		if err != nil {
-			env.logger.Error("error reading body")
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), utils.ServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
 		}
 
+		var repo repos.UserRepository
+
+		repo.SetDb(env.db)
+		repo.SetLogger(env.logger)
+		repo.SetTokenGenerator(env.token)
+
+		token, err := repo.ProcessUserAuth(userData.Login, userData.Password, r.RemoteAddr)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), utils.ServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		utils.Respond(w, utils.Message(true, token), env.logger)
 	}
 }
 

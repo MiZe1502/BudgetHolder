@@ -45,13 +45,13 @@ func (r *UserRepository) createUserSession(login, ip string) (string, error) {
 	return uuid, nil
 }
 
-// ProcessUser contains processing login logic:
+// ProcessUserAuth contains processing login logic:
 // get user data from db by login
 // check password and its hash
 // create session and save it to db
 // create websocket connection and add it to Hub
 // create jwt token and return it as response
-func (r *UserRepository) ProcessUser(login string, password string, ip string) (string, error) {
+func (r *UserRepository) ProcessUserAuth(login string, password string, ip string) (string, error) {
 	user, err := r.getUserByLogin(login)
 	if err != nil {
 		r.log.Error(err.Error())
@@ -73,7 +73,17 @@ func (r *UserRepository) ProcessUser(login string, password string, ip string) (
 
 	r.log.Info("created session: " + uuid + " for user: " + login)
 
+	parsedUUID, err := utils.GetUUIDfromString(uuid)
+	if err != nil {
+		r.log.Error(err.Error())
+		return "", err
+	}
 
+	token, err := r.token.CreateNewToken(parsedUUID)
+	if err != nil {
+		r.log.Error(err.Error())
+		return "", err
+	}
 
-	return "", nil
+	return token, nil
 }

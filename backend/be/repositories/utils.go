@@ -38,6 +38,7 @@ type Repository interface {
 type EntityRepository struct {
 	db *pgxpool.Pool
 	log *utils.Logger
+	token *utils.TokenGenerator
 
 	Repository
 }
@@ -52,3 +53,7 @@ func (r *EntityRepository) SetLogger(logger *utils.Logger) {
 	r.log = logger
 }
 
+//SetTokenGenerator injects logger into repository
+func (r *EntityRepository) SetTokenGenerator(token *utils.TokenGenerator) {
+	r.token = token
+}
