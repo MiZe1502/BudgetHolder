@@ -11,8 +11,8 @@ import (
 
 // User represents basic user data
 type User struct {
-	Login    string
-	Password string
+	Login    string `json:"login"`
+	Password string `json:"password"`
 
 	Entity
 }
@@ -35,14 +35,17 @@ func (r *UserRepository) getUserByLogin(login string) (User, error) {
 }
 
 func (r *UserRepository) createUserSession(login, ip string) (string, error) {
-	uuid := utils.GetNewUUID()
-
-	err := pgxscan.Get(context.Background(), r.db, &uuid, `SELECT * from budget.create_session($1, $2, $3)`, login, ip, uuid)
+	uuid, err := utils.GetUUIDfromString(utils.GetNewUUID())
 	if err != nil {
 		return "", err
 	}
 
-	return uuid, nil
+	err = pgxscan.Get(context.Background(), r.db, &uuid, `SELECT * from budget.create_session($1, $2, $3::uuid)`, login, ip, uuid)
+	if err != nil {
+		return "", err
+	}
+
+	return utils.DecodeUUIDIntoString(uuid), nil
 }
 
 // ProcessUserAuth contains processing login logic:

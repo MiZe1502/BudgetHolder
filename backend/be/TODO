@@ -3,8 +3,7 @@
     1.2. add indexes
 3. endpoints
     3.1. auth endpoint
-        3.1.1. create base endpoint, get login/pass
-        3.1.2. create session in db
-        3.1.3. save info about session in db
-        3.1.4. register connection on authorization and map it to session
-        3.1.5. create jwt token, send it to frontend with auth cookie
+        3.1.1. register connection on authorization and map it to session
+        3.1.2. create middleware to check auth session uuid and jwt token 
+        3.1.3. check post/get/etc inside handler
+        3.1.4. extend response message to {data: {...data struct}, status: status}

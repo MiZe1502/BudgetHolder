@@ -28,3 +28,8 @@ func GetUUIDfromString(str string) (uuid.UUID, error) {
 	parsedUUID, err := uuid.Parse(str)
 	return parsedUUID, err
 }
+
+//DecodeUUIDIntoString converts uuid into string form
+func DecodeUUIDIntoString(uuidBytes uuid.UUID) string {
+	return uuidBytes.String()
+}

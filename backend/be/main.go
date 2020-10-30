@@ -62,7 +62,6 @@ func main() {
 	// }
 	// fmt.Println(tkn.SessionID)
 
-
 	//testClosure(context)()
 	initHandlers(context)
 }

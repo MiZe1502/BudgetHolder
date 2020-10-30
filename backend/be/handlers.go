@@ -73,7 +73,6 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 
 func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		userData := &repos.User{}
 		err := json.NewDecoder(r.Body).Decode(userData)
 		if err != nil {
@@ -94,6 +93,8 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 			utils.RespondError(w, msg, env.logger)
 			return
 		}
+
+		//create web socket connection
 
 		utils.Respond(w, utils.Message(true, token), env.logger)
 	}
@@ -122,6 +123,9 @@ func initHandlers(env *Env) {
 
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))
+
+	http.Handle("/api/v1/auth", middlewareChain.Then(http.HandlerFunc(createAuthHandler(env))))
+
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env))))
 
 	http.ListenAndServe(":8080", nil)
