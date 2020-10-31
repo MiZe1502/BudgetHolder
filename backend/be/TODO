@@ -1,9 +1,11 @@
 1. db connection
     1.1. add sequrity definer to all function and set owner to ro user
     1.2. add indexes
+2. architecture
+    2.1.implement opentracing logging 
 3. endpoints
     3.1. auth endpoint
         3.1.1. register connection on authorization and map it to session
-        3.1.2. create middleware to check auth session uuid and jwt token 
         3.1.3. check post/get/etc inside handler
         3.1.4. extend response message to {data: {...data struct}, status: status}
+

@@ -42,8 +42,9 @@ type OutputConfig struct {
 
 // Logger is the custom logger realization
 type Logger struct {
-	instance *logrus.Logger
-	config   Config
+	instance  *logrus.Logger
+	config    Config
+	traceUUID string
 }
 
 // ParseLoggerConfig parses json config for logger
@@ -139,6 +140,11 @@ func (l *Logger) GetInstance() *logrus.Logger {
 	return l.instance
 }
 
+// SetTraceUUID injects traceUUID to trace all requests route
+func (l *Logger) SetTraceUUID(traceUUID string) {
+	l.traceUUID = traceUUID
+}
+
 // Info writes log with info level
 func (l *Logger) Info(message string) {
 	if l.instance == nil {
@@ -189,7 +195,12 @@ func (l *Logger) addStackTraceToLog() *logrus.Entry {
 	traceBytes := runtime.Stack(b, false)
 	traceString := string(b[:traceBytes])
 
-	return l.instance.WithFields(logrus.Fields{"stackTrace": traceString})
+	return l.instance.WithFields(logrus.Fields{"stackTrace": traceString, "traceUUID": l.traceUUID})
+}
+
+//TODO: too dirty, find the way how to append this field not in two different places
+func (l *Logger) addTraceUUIDToLog() *logrus.Entry {
+	return l.instance.WithFields(logrus.Fields{"traceUUID": l.traceUUID})
 }
 
 func (l *Logger) writeLog(level logrus.Level, message string) {
@@ -206,15 +217,16 @@ func (l *Logger) writeLog(level logrus.Level, message string) {
 			entry.Panic(message)
 		}
 	} else {
+		entry := l.addTraceUUIDToLog()
 		switch level {
 		case logrus.TraceLevel:
-			l.instance.Trace(message)
+			entry.Trace(message)
 		case logrus.InfoLevel:
-			l.instance.Info(message)
+			entry.Info(message)
 		case logrus.ErrorLevel:
-			l.instance.Error(message)
+			entry.Error(message)
 		case logrus.PanicLevel:
-			l.instance.Panic(message)
+			entry.Panic(message)
 		}
 	}
 }

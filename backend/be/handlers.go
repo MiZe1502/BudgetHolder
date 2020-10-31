@@ -24,6 +24,7 @@ type MiddlewareKey string
 const (
 	Logger       MiddlewareKey = "Logger"
 	CheckSession MiddlewareKey = "CheckSession"
+	Trace        MiddlewareKey = "Trace"
 )
 
 var endpointsWithoutAuth = []string{"/api/v1/user/new", "/api/v1/user/auth"}
@@ -38,6 +39,20 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 				next.ServeHTTP(w, r)
 			})
 		}
+	case Trace:
+		return func(next http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				traceUUID := utils.GetNewUUID()
+
+				ctx := context.WithValue(r.Context(), "traceUUID", traceUUID)
+				r = r.WithContext(ctx)
+
+				env.logger.SetTraceUUID(traceUUID)
+				env.logger.Info("init tracelog uuid: " + traceUUID)
+
+				next.ServeHTTP(w, r)
+			})
+		}
 	case CheckSession:
 		return func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -45,6 +60,8 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 
 				//check endpoints without auth
 				requestPath := r.URL.Path
+
+				env.logger.Info("requestPath: " + requestPath)
 
 				for _, value := range endpointsWithoutAuth {
 					if value == requestPath {
@@ -87,12 +104,12 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 					return
 				}
 
-				env.logger.Info("user with id : " + fmt.Sprint(userID) + " found for for session: " + token.SessionID.String())
+				env.logger.Info("user with id: " + fmt.Sprint(userID) + " found for for session: " + token.SessionID.String())
 
 				//pass user data as context value
 				userCtx := &repos.UserContext{
 					SessionUUID: token.SessionID,
-					UserID: userID,
+					UserID:      userID,
 				}
 
 				ctx := context.WithValue(r.Context(), "userCtx", userCtx)
@@ -165,8 +182,10 @@ func createTestMessageHandler(env *Env) func(w http.ResponseWriter, r *http.Requ
 			panic(err)
 		}
 
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+
 		// Print the message to the console
-		fmt.Printf("message: %s\n", string(body))
+		fmt.Printf("message: %s\n", fmt.Sprint(user.UserID))
 
 		env.hub.send <- body
 	}
@@ -177,7 +196,9 @@ func serveStatic(w http.ResponseWriter, r *http.Request) {
 }
 
 func initHandlers(env *Env) {
-	middlewareChain := alice.New(createMiddleware(env, Logger), createMiddleware(env, CheckSession))
+	middlewareChain := alice.New(createMiddleware(env, Trace), 
+								 createMiddleware(env, Logger), 
+								 createMiddleware(env, CheckSession))
 
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))
