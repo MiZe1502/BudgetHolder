@@ -7,6 +7,7 @@ import (
 	utils "../utils"
 
 	"github.com/georgysavva/scany/pgxscan"
+	"github.com/google/uuid"
 )
 
 // User represents basic user data
@@ -17,9 +18,26 @@ type User struct {
 	Entity
 }
 
+type UserContext struct {
+	SessionUUID uuid.UUID
+	UserID      int
+}
+
 // UserRepository provides methods to process user data
 type UserRepository struct {
 	EntityRepository
+}
+
+// GetUserIDBySessionUUID returns userId by its current session UUID
+func (r *UserRepository) GetUserIDBySessionUUID(sessionUUID uuid.UUID) (int, error) {
+	var userID int
+
+	err := pgxscan.Get(context.Background(), r.db, &userID, `SELECT * from budget.get_user_id_by_session_uuid($1::uuid)`, sessionUUID)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return userID, err
 }
 
 // GetUserByLogin returns single user with its encoded password

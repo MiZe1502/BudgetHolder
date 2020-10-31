@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -25,6 +26,8 @@ const (
 	CheckSession MiddlewareKey = "CheckSession"
 )
 
+var endpointsWithoutAuth = []string{"/api/v1/user/new", "/api/v1/user/auth"}
+
 func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Handler) http.Handler {
 	switch middleWareType {
 	case Logger:
@@ -39,7 +42,62 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 		return func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				env.logger.Info("check user middleware")
-				// check user token and session
+
+				//check endpoints without auth
+				requestPath := r.URL.Path
+
+				for _, value := range endpointsWithoutAuth {
+					if value == requestPath {
+						next.ServeHTTP(w, r)
+						return
+					}
+				}
+
+				//get and parse token
+				msg := make(map[string]interface{})
+				tokenHeader := r.Header.Get("Authorization")
+
+				env.logger.Info("check user token: " + tokenHeader)
+
+				if tokenHeader == "" {
+					msg = utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusBadRequest)
+					utils.RespondError(w, msg, env.logger)
+					return
+				}
+
+				token, err := env.token.ParseToken(tokenHeader)
+				if err != nil {
+					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+					utils.RespondError(w, msg, env.logger)
+					return
+				}
+
+				env.logger.Info("token: " + tokenHeader + " is valid for session: " + token.SessionID.String())
+
+				//get userID by sessionUUID from token
+				var repo repos.UserRepository
+
+				repo.SetDb(env.db)
+				repo.SetLogger(env.logger)
+
+				userID, err := repo.GetUserIDBySessionUUID(token.SessionID)
+				if err != nil {
+					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+					utils.RespondError(w, msg, env.logger)
+					return
+				}
+
+				env.logger.Info("user with id : " + fmt.Sprint(userID) + " found for for session: " + token.SessionID.String())
+
+				//pass user data as context value
+				userCtx := &repos.UserContext{
+					SessionUUID: token.SessionID,
+					UserID: userID,
+				}
+
+				ctx := context.WithValue(r.Context(), "userCtx", userCtx)
+				r = r.WithContext(ctx)
+
 				next.ServeHTTP(w, r)
 			})
 		}
@@ -76,7 +134,7 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 		userData := &repos.User{}
 		err := json.NewDecoder(r.Body).Decode(userData)
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), utils.ServerError)
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.logger)
 			return
 		}
@@ -89,7 +147,7 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 
 		token, err := repo.ProcessUserAuth(userData.Login, userData.Password, r.RemoteAddr)
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, err.Error()), utils.ServerError)
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.logger)
 			return
 		}
@@ -124,7 +182,7 @@ func initHandlers(env *Env) {
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))
 
-	http.Handle("/api/v1/auth", middlewareChain.Then(http.HandlerFunc(createAuthHandler(env))))
+	http.Handle("/api/v1/user/auth", middlewareChain.Then(http.HandlerFunc(createAuthHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env))))
 

@@ -5,11 +5,6 @@ import (
 	"net/http"
 )
 
-const (
-	HidedError  = 400
-	ServerError = 502
-)
-
 //Message creates message for handlers
 func Message(status bool, message string) map[string]interface{} {
 	return map[string]interface{}{
@@ -25,7 +20,7 @@ func MessageError(msg map[string]interface{}, errorCode int) map[string]interfac
 
 func hideError(data map[string]interface{}) map[string]interface{} {
 	data["message"] = ""
-	data["errorCode"] = HidedError
+	data["errorCode"] = http.StatusBadRequest
 
 	return data
 }
@@ -37,6 +32,7 @@ func RespondError(w http.ResponseWriter, data map[string]interface{}, log *Logge
 		log.Error(err.Error())
 	}
 	log.Error(string(jsonString))
+	w.WriteHeader(http.StatusBadRequest) //hide real error code
 	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(hideError(data))
 }
@@ -48,6 +44,7 @@ func Respond(w http.ResponseWriter, data map[string]interface{}, log *Logger) {
 		log.Error(err.Error())
 	}
 	log.Info(string(jsonString))
+	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
 }
