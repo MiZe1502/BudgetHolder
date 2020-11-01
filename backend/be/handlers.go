@@ -104,13 +104,24 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 					return
 				}
 
-				env.logger.Info("user with id: " + fmt.Sprint(userID) + " found for for session: " + token.SessionID.String())
+				env.logger.Info("user with id: " + fmt.Sprint(userID) + " found for session: " + token.SessionID.String())
+
+				//get user group id
+				groupID, err := repo.GetUserGroupIDByUserID(userID)
+				if err != nil {
+					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+					utils.RespondError(w, msg, env.logger)
+					return
+				}
 
 				//pass user data as context value
 				userCtx := &repos.UserContext{
 					SessionUUID: token.SessionID,
 					UserID:      userID,
+					UserGroupID: groupID,
 				}
+
+				env.logger.Info("group with id: " + fmt.Sprint(groupID) + " found for user with id: " + fmt.Sprint(userID))
 
 				ctx := context.WithValue(r.Context(), "userCtx", userCtx)
 				r = r.WithContext(ctx)
@@ -128,6 +139,8 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 		env.logger.Info("create ws handler")
 
 		conn, _ := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
+
+		// user := r.Context().Value("userCtx").(*repos.UserContext)
 
 		connectionData := &ConnectionData{ip: r.RemoteAddr, session: utils.GetNewUUID()}
 		connection := &Connection{conn: conn, connectionData: connectionData}
@@ -148,6 +161,18 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 
 func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		env.logger.Info("createAuthHandler")
+
+		env.logger.Info("check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		env.logger.Info("getting user data from request")
+
 		userData := &repos.User{}
 		err := json.NewDecoder(r.Body).Decode(userData)
 		if err != nil {
@@ -155,6 +180,8 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 			utils.RespondError(w, msg, env.logger)
 			return
 		}
+
+		env.logger.Info("processing user auth: 9login: " + userData.Login + " | pass: " + userData.Password)
 
 		var repo repos.UserRepository
 
@@ -169,7 +196,7 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//create web socket connection
+		env.logger.Info("got token: " + token + " for user: " + userData.Login)
 
 		utils.Respond(w, utils.Message(true, token), env.logger)
 	}
@@ -196,9 +223,9 @@ func serveStatic(w http.ResponseWriter, r *http.Request) {
 }
 
 func initHandlers(env *Env) {
-	middlewareChain := alice.New(createMiddleware(env, Trace), 
-								 createMiddleware(env, Logger), 
-								 createMiddleware(env, CheckSession))
+	middlewareChain := alice.New(createMiddleware(env, Trace),
+		createMiddleware(env, Logger),
+		createMiddleware(env, CheckSession))
 
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))

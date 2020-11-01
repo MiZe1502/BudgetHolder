@@ -18,14 +18,28 @@ type User struct {
 	Entity
 }
 
+// UserContext stores user data for request context and web socket connections
 type UserContext struct {
 	SessionUUID uuid.UUID
 	UserID      int
+	UserGroupID int
 }
 
 // UserRepository provides methods to process user data
 type UserRepository struct {
 	EntityRepository
+}
+
+// GetUserGroupIDByUserID returns user group id by user id from this group
+func (r *UserRepository) GetUserGroupIDByUserID(userID int) (int, error) {
+	var groupID int
+
+	err := pgxscan.Get(context.Background(), r.db, &groupID, `SELECT * from budget.get_user_group_id_by_user_id($1)`, userID)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return userID, err
 }
 
 // GetUserIDBySessionUUID returns userId by its current session UUID
