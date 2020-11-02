@@ -23,6 +23,7 @@ type UserContext struct {
 	SessionUUID uuid.UUID
 	UserID      int
 	UserGroupID int
+	Ip			string
 }
 
 // UserRepository provides methods to process user data

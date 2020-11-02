@@ -5,8 +5,11 @@
     2.1. implement opentracing logging 
     2.2. extend response message to {data: {...data struct}, status: status}
 3. endpoints
-    3.1. refactor web socket connection handler 
-        3.1.1. map it to session and user from ctx
-        3.1.2. user websocket.Upgrader()
     3.2. create new user
+        3.2.1. parse json data from requst
+        3.2.2. implement methods in repository
+        3.2.3. core handler logic
+4. connections hub
+    4.1. implement broadcast mechanism to send messages across single group
+    4.2. the same for all users
 

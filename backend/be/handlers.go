@@ -119,6 +119,7 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 					SessionUUID: token.SessionID,
 					UserID:      userID,
 					UserGroupID: groupID,
+					Ip: r.RemoteAddr,
 				}
 
 				env.logger.Info("group with id: " + fmt.Sprint(groupID) + " found for user with id: " + fmt.Sprint(userID))
@@ -136,24 +137,38 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 
 func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		env.logger.Info("create ws handler")
+		env.logger.Info("createWsHandler")
 
-		conn, _ := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
+		msg := make(map[string]interface{})
 
-		// user := r.Context().Value("userCtx").(*repos.UserContext)
-
-		connectionData := &ConnectionData{ip: r.RemoteAddr, session: utils.GetNewUUID()}
-		connection := &Connection{conn: conn, connectionData: connectionData}
-
-		env.hub.register <- connection
-		env.logger.Info("registered connection")
-
-		msgType, msg, err := conn.ReadMessage()
+		conn, err := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
 		if err != nil {
+			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
 			return
 		}
 
-		if err = conn.WriteMessage(msgType, msg); err != nil {
+		userCtx := r.Context().Value("userCtx").(*repos.UserContext)
+		traceUUID := r.Context().Value("traceUUID").(string)
+
+		env.logger.Info("got context data for connection in hub")
+
+		connectionData := &ConnectionData{userCtx: userCtx, traceUUID: traceUUID}
+		connection := &Connection{conn: conn, connectionData: connectionData}
+
+		env.hub.register <- connection
+		env.logger.Info("registered connection in hub for user: " + fmt.Sprint(userCtx.UserID) + " with session: " + userCtx.SessionUUID.String())
+
+		msgType, message, err := conn.ReadMessage()
+		if err != nil {
+			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		if err = conn.WriteMessage(msgType, message); err != nil {
+			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
 			return
 		}
 	}

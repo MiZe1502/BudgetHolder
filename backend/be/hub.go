@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	repos "./repositories"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -26,8 +28,8 @@ type Connection struct {
 // ConnectionData stores additional data about clients
 // associated with this connection
 type ConnectionData struct {
-	ip      string
-	session string
+	userCtx      *repos.UserContext
+	traceUUID 	 string
 }
 
 func createHub() *Hub {
