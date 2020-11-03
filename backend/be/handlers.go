@@ -119,7 +119,7 @@ func createMiddleware(env *Env, middleWareType MiddlewareKey) func(next http.Han
 					SessionUUID: token.SessionID,
 					UserID:      userID,
 					UserGroupID: groupID,
-					Ip: r.RemoteAddr,
+					IP:          r.RemoteAddr,
 				}
 
 				env.logger.Info("group with id: " + fmt.Sprint(groupID) + " found for user with id: " + fmt.Sprint(userID))
@@ -174,6 +174,49 @@ func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func createNewUserHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.logger.Info("createNewUserHandler")
+
+		env.logger.Info("check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		env.logger.Info("getting user data from request")
+
+		userData := &repos.FullUser{}
+		err := json.NewDecoder(r.Body).Decode(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		env.logger.Info("adding user: login: " + userData.Login)
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.db)
+		repo.SetLogger(env.logger)
+		repo.SetTokenGenerator(env.token)
+
+		newUserID, err := repo.CreateNewUser(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		env.logger.Info("added user: login: " + userData.Login + " | id: " + fmt.Sprint(newUserID))
+
+		// utils.Respond(w, utils.Message(true, userData), env.logger)
+	}
+}
+
 func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.logger.Info("createAuthHandler")
@@ -196,7 +239,7 @@ func createAuthHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		env.logger.Info("processing user auth: 9login: " + userData.Login + " | pass: " + userData.Password)
+		env.logger.Info("processing user auth: login: " + userData.Login + " | pass: " + userData.Password)
 
 		var repo repos.UserRepository
 

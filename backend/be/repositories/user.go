@@ -10,6 +10,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// UserGroup stores user group data
+type UserGroup struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+
+	Entity
+}
+
 // User represents basic user data
 type User struct {
 	Login    string `json:"login"`
@@ -18,12 +27,23 @@ type User struct {
 	Entity
 }
 
+// FullUser contains all data about user profile, login, pass etc.
+type FullUser struct {
+	User
+
+	Name        string `json:"name"`
+	Surname     string `json:"surname"`
+	ImagePath   string `json:"path"`
+	Description string `json:"description"`
+	GroupName   string `json:"groupname"`
+}
+
 // UserContext stores user data for request context and web socket connections
 type UserContext struct {
 	SessionUUID uuid.UUID
 	UserID      int
 	UserGroupID int
-	Ip			string
+	IP          string
 }
 
 // UserRepository provides methods to process user data
@@ -79,6 +99,50 @@ func (r *UserRepository) createUserSession(login, ip string) (string, error) {
 	}
 
 	return utils.DecodeUUIDIntoString(uuid), nil
+}
+
+// getUserGroupByName returns single user with its encoded password
+func (r *UserRepository) getUserGroupByName(groupName string) (UserGroup, error) {
+	var group UserGroup
+
+	err := pgxscan.Get(context.Background(), r.db, &group, `SELECT * from budget.get_user_group_by_name($1)`, groupName)
+	if err != nil {
+		return group, err
+	}
+
+	return group, err
+}
+
+//CreateNewUser creates new user and returns its id
+func (r *UserRepository) CreateNewUser(userData *FullUser) (int, error) {
+	var newUserID int
+
+	userGroup, err := r.getUserGroupByName(userData.GroupName)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	pwd, err := utils.HashPasswordWithSalt(userData.Password)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	err = pgxscan.Get(context.Background(),
+		r.db,
+		&newUserID,
+		`SELECT * from budget.create_user($1, $2, $3, $4, $5, $6, $7)`,
+		userData.Login,
+		pwd,
+		userData.Name,
+		userData.Surname,
+		userData.ImagePath,
+		userData.Description,
+		userGroup.ID)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return newUserID, nil
 }
 
 // ProcessUserAuth contains processing login logic:
