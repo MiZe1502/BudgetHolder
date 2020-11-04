@@ -213,7 +213,14 @@ func createNewUserHandler(env *Env) func(w http.ResponseWriter, r *http.Request)
 
 		env.logger.Info("added user: login: " + userData.Login + " | id: " + fmt.Sprint(newUserID))
 
-		// utils.Respond(w, utils.Message(true, userData), env.logger)
+		userDataJSON, err := json.Marshal(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), userDataJSON), env.logger)
 	}
 }
 
@@ -289,6 +296,7 @@ func initHandlers(env *Env) {
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env))))
 
 	http.Handle("/api/v1/user/auth", middlewareChain.Then(http.HandlerFunc(createAuthHandler(env))))
+	http.Handle("/api/v1/user/new", middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env))))
 

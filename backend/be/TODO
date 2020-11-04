@@ -3,12 +3,10 @@
     1.2. add indexes
 2. architecture
     2.1. implement opentracing logging 
-    2.2. extend response message to {data: {...data struct}, status: status}
 3. endpoints
+    3.1. refactoring - too long single file
     3.2. create new user
-        3.2.1. parse json data from requst
-        3.2.2. implement methods in repository
-        3.2.3. core handler logic
+        3.2.1. validation
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users

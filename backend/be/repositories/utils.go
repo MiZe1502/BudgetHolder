@@ -18,7 +18,7 @@ type EntityProvider interface {
 
 //Entity describes basic entity data structure
 type Entity struct {
-	ID int
+	ID int `json:"-"`
 }
 
 //getEntity returns entity data
@@ -36,8 +36,8 @@ type Repository interface {
 
 //EntityRepository describes basic repository structure
 type EntityRepository struct {
-	db *pgxpool.Pool
-	log *utils.Logger
+	db    *pgxpool.Pool
+	log   *utils.Logger
 	token *utils.TokenGenerator
 
 	Repository
