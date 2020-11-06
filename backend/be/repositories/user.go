@@ -51,6 +51,39 @@ type UserRepository struct {
 	EntityRepository
 }
 
+// IsUserValid validates user data
+func (r *UserRepository) IsUserValid(user *FullUser) (bool, error) {
+	if len(user.Login) == 0 {
+		return false, errors.New("Validation failed. No user login provided")
+	}
+
+	if len(user.Login) > 100 {
+		return false, errors.New("Validation failed. User login contains more than 100 characters")
+	}
+
+	if len(user.Password) < 8 {
+		return false, errors.New("Validation failed. User password is too short")
+	}
+
+	if len(user.Name) > 100 {
+		return false, errors.New("Validation failed. Too long user name")
+	}
+
+	if len(user.Name) > 100 {
+		return false, errors.New("Validation failed. Too long user name")
+	}
+
+	if len(user.Surname) > 100 {
+		return false, errors.New("Validation failed. Too long user surname")
+	}
+
+	if len(user.Description) > 3000 {
+		return false, errors.New("Validation failed. Too long user description")
+	}
+
+	return true, nil
+}
+
 // GetUserGroupIDByUserID returns user group id by user id from this group
 func (r *UserRepository) GetUserGroupIDByUserID(userID int) (int, error) {
 	var groupID int

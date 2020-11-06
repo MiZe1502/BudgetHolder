@@ -196,13 +196,31 @@ func createNewUserHandler(env *Env) func(w http.ResponseWriter, r *http.Request)
 			return
 		}
 
-		env.logger.Info("adding user: login: " + userData.Login)
+		env.logger.Info("init user repository")
 
 		var repo repos.UserRepository
 
 		repo.SetDb(env.db)
 		repo.SetLogger(env.logger)
 		repo.SetTokenGenerator(env.token)
+
+		env.logger.Info("validate user: login: " + userData.Login)
+
+		isValid, err := repo.IsUserValid(userData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.logger)
+			return
+		}
+
+		if (!isValid) {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.logger)
+			return	
+		}
+
+		env.logger.Info("adding user: login: " + userData.Login)
 
 		newUserID, err := repo.CreateNewUser(userData)
 		if err != nil {
