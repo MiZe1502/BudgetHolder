@@ -1,16 +1,15 @@
-package main
+package env
 
 import (
-	utils "./utils"
+	utils "../utils"
 	"github.com/jackc/pgx/pgxpool"
 )
 
 //Env stores current global app variables
 type Env struct {
-	db     *pgxpool.Pool
-	logger *utils.Logger
-	hub	   *Hub
-	token *utils.TokenGenerator
+	Db     *pgxpool.Pool
+	Logger *utils.Logger
+	Token  *utils.TokenGenerator
 }
 
 // EnvironmentKey is a type for env keys enum

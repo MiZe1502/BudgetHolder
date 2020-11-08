@@ -6,6 +6,9 @@ import (
 
 	db "./db"
 	repos "./repositories"
+	hub "./hub"
+	env "./env"
+	handlers "./handlers"
 
 	utils "./utils"
 )
@@ -25,7 +28,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	hub := createHub()
+	hub := hub.CreateHub()
 
 	tokenGenerator, err := utils.InitTokenGenerator("Dev")
 	if err != nil {
@@ -33,12 +36,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	context := &Env{db: conn, logger: log, hub: hub, token: tokenGenerator}
+	context := &env.Env{Db: conn, Logger: log, Token: tokenGenerator}
 
-	go context.hub.runHub(context)
+	go hub.RunHub(context)
 
 	defer conn.Close()
-	defer hub.closeAllConnections(context)
+	defer hub.CloseAllConnections(context)
 
 	// uuid := utils.GetNewUUID()
 
@@ -63,38 +66,38 @@ func main() {
 	// fmt.Println(tkn.SessionID)
 
 	//testClosure(context)()
-	initHandlers(context)
+	handlers.InitHandlers(context, hub)
 }
 
-func testClosure(env *Env) func() {
+func testClosure(env *env.Env) func() {
 	return func() {
 		var repo repos.ShopsRepository
 
-		repo.SetDb(env.db)
+		repo.SetDb(env.Db)
 
 		shops, err := repo.GetSlice(0, 5)
 		if err != nil {
-			env.logger.Error(err.Error())
+			env.Logger.Error(err.Error())
 		}
 
 		for i := 0; i < len(shops); i++ {
-			env.logger.Info(fmt.Sprint(shops[i].ID))
+			env.Logger.Info(fmt.Sprint(shops[i].ID))
 		}
 
 		shop, err := repo.GetEntityByID(3)
 		if err != nil {
-			env.logger.Error(err.Error())
+			env.Logger.Error(err.Error())
 		}
 
-		env.logger.Info(shop.Name)
+		env.Logger.Info(shop.Name)
 
 		shopID, err := repo.RemoveEntityByID(2, utils.GetNewUUID())
 
 		if err != nil {
-			env.logger.Error(err.Error())
+			env.Logger.Error(err.Error())
 		}
 
-		env.logger.Info(fmt.Sprint(shopID))
+		env.Logger.Info(fmt.Sprint(shopID))
 
 	}
 }

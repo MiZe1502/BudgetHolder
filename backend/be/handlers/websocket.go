@@ -1,11 +1,13 @@
-package main
+package handlers
 
 import (
 	"fmt"
 	"net/http"
 
-	repos "./repositories"
-	utils "./utils"
+	repos "../repositories"
+	utils "../utils"
+	env "../env"
+	wshub "../hub"
 	"github.com/gorilla/websocket"
 )
 
@@ -14,40 +16,40 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-func createWsHandler(env *Env) func(w http.ResponseWriter, r *http.Request) {
+func createWsHandler(env *env.Env, hub *wshub.Hub) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		env.logger.Info("createWsHandler")
+		env.Logger.Info("createWsHandler")
 
 		msg := make(map[string]interface{})
 
 		conn, err := upgrader.Upgrade(w, r, nil) // error ignored for sake of simplicity
 		if err != nil {
 			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.logger)
+			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
 		userCtx := r.Context().Value("userCtx").(*repos.UserContext)
 		traceUUID := r.Context().Value("traceUUID").(string)
 
-		env.logger.Info("got context data for connection in hub")
+		env.Logger.Info("got context data for connection in hub")
 
-		connectionData := &ConnectionData{userCtx: userCtx, traceUUID: traceUUID}
-		connection := &Connection{conn: conn, connectionData: connectionData}
+		connectionData := &wshub.ConnectionData{UserCtx: userCtx, TraceUUID: traceUUID}
+		connection := &wshub.Connection{Conn: conn, ConnectionData: connectionData}
 
-		env.hub.register <- connection
-		env.logger.Info("registered connection in hub for user: " + fmt.Sprint(userCtx.UserID) + " with session: " + userCtx.SessionUUID.String())
+		hub.Register <- connection
+		env.Logger.Info("registered connection in hub for user: " + fmt.Sprint(userCtx.UserID) + " with session: " + userCtx.SessionUUID.String())
 
 		msgType, message, err := conn.ReadMessage()
 		if err != nil {
 			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.logger)
+			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
 		if err = conn.WriteMessage(msgType, message); err != nil {
 			msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.logger)
+			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 	}
