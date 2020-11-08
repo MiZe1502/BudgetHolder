@@ -5,8 +5,7 @@
     2.1. implement opentracing logging 
 3. endpoints
     3.1. refactoring - too long single file
-    3.2. create new user
-        3.2.1. validation
+
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
