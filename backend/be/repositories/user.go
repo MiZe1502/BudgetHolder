@@ -14,7 +14,7 @@ import (
 type UserGroup struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
-	Description string `json:"description"`
+	Description string `json:"description,omitempty"`
 
 	Entity
 }
@@ -31,10 +31,10 @@ type User struct {
 type FullUser struct {
 	User
 
-	Name        string `json:"name"`
-	Surname     string `json:"surname"`
-	ImagePath   string `json:"path"`
-	Description string `json:"description"`
+	Name        string `json:"name,omitempty"`
+	Surname     string `json:"surname,omitempty"`
+	ImagePath   string `json:"path,omitempty"`
+	Description string `json:"description,omitempty"`
 	GroupName   string `json:"groupname"`
 }
 

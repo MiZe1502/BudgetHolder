@@ -9,6 +9,9 @@ import (
 //IncorrectID is used to mark empty record
 const IncorrectID int = -1
 
+//TopCounter shows how many records return from search by name or some other field
+const TopCounter int = 5
+
 //EntityProvider describes GetEntity method to get entity data
 //we need it to implement as Entity to provide repositories throught
 //interfaces
@@ -18,7 +21,7 @@ type EntityProvider interface {
 
 //Entity describes basic entity data structure
 type Entity struct {
-	ID int `json:"-"`
+	ID int `json:"id,omitempty"`
 }
 
 //getEntity returns entity data
