@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+// SliceData stores data to get slice of some entities from db
+type SliceData struct {
+	From  int `json:"from"`
+	Count int `json:"count"`
+}
+
 // Message creates message for handlers
 func Message(status bool, message string) map[string]interface{} {
 	return map[string]interface{}{

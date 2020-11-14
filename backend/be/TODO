@@ -30,4 +30,7 @@
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
     4.3. create wrapper methods for register and send
+5. security
+    5.1. https
+    5.2. do not store user token in logs
 
