@@ -44,6 +44,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/user/new", middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env))))
 	
 	http.Handle("/api/v1/shops/slice", middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env))))
+	http.Handle("/api/v1/shops/top", middlewareChain.Then(http.HandlerFunc(createGetTopShopsByNameHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 

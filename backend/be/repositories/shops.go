@@ -18,7 +18,7 @@ type Shop struct {
 
 //SimpleShop represents shop data item for dropdown menus
 type SimpleShop struct {
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 	Name string `json:"name"`
 }
 

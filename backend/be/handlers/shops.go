@@ -12,9 +12,9 @@ import (
 
 func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		env.Logger.Info("createGetShopsSliceHandler")
+		env.Logger.Info("createGetShopsSliceHandler: start")
 
-		env.Logger.Info("check request method: " + r.Method)
+		env.Logger.Info("createGetShopsSliceHandler: check request method: " + r.Method)
 
 		if r.Method != "GET" {
 			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
@@ -22,7 +22,7 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
-		env.Logger.Info("getting data from request")
+		env.Logger.Info("createGetShopsSliceHandler: getting data from request")
 
 		sliceData := &utils.SliceData{}
 
@@ -34,7 +34,7 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
-		env.Logger.Info("init shops repository")
+		env.Logger.Info("createGetShopsSliceHandler: init shops repository")
 
 		var repo repos.ShopsRepository
 
@@ -42,7 +42,7 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("getting slice of shops, from:" + fmt.Sprint(sliceData.From) + ", count: " + fmt.Sprint(sliceData.Count))
+		env.Logger.Info("createGetShopsSliceHandler: getting slice of shops, from:" + fmt.Sprint(sliceData.From) + ", count: " + fmt.Sprint(sliceData.Count))
 
 		shops, err := repo.GetSlice(sliceData.From, sliceData.Count)
 		if err != nil {
@@ -51,7 +51,61 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
-		env.Logger.Info("marshalling slice of shops")
+		env.Logger.Info("createGetShopsSliceHandler: marshalling slice of shops")
+
+		shopsJSON, err := json.Marshal(shops)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), shopsJSON), env.Logger)
+	}
+}
+
+func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetTopShopsByNameHandler: start")
+
+		env.Logger.Info("createGetTopShopsByNameHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopShopsByNameHandler: getting data from request")
+
+		shopData := &repos.SimpleShop{}
+
+		err := json.NewDecoder(r.Body).Decode(shopData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopShopsByNameHandler: init shops repository")
+
+		var repo repos.ShopsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetTopShopsByNameHandler: getting list of top shops for name: " + shopData.Name)
+
+		shops, err := repo.GetTopShopsByName(shopData.Name)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopShopsByNameHandler: marshalling list of top shops")
 
 		shopsJSON, err := json.Marshal(shops)
 		if err != nil {
