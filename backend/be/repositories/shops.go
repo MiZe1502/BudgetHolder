@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/georgysavva/scany/pgxscan"
+	"github.com/google/uuid"
 )
 
 //Shop represents shop data item
@@ -28,7 +29,7 @@ type ShopsRepository struct {
 }
 
 //UpdateShop updates existing shop and returns its id
-func (r *ShopsRepository) UpdateShop(shopData *Shop, sessionUUID string) (int, error) {
+func (r *ShopsRepository) UpdateShop(shopData *Shop, sessionUUID uuid.UUID) (int, error) {
 	var updatedShopID int
 
 	err := pgxscan.Get(context.Background(),
@@ -40,7 +41,7 @@ func (r *ShopsRepository) UpdateShop(shopData *Shop, sessionUUID string) (int, e
 		shopData.URL,
 		shopData.Address,
 		shopData.Comment,
-		sessionUUID)
+		sessionUUID.String())
 	if err != nil {
 		return IncorrectID, err
 	}
@@ -61,7 +62,7 @@ func (r *ShopsRepository) GetTopShopsByName(name string) ([]*SimpleShop, error) 
 }
 
 //CreateNewShop creates new shop and returns its id
-func (r *ShopsRepository) CreateNewShop(shopData *Shop, sessionUUID string) (int, error) {
+func (r *ShopsRepository) CreateNewShop(shopData *Shop, sessionUUID uuid.UUID) (int, error) {
 	var addedShopID int
 
 	err := pgxscan.Get(context.Background(),
@@ -72,7 +73,7 @@ func (r *ShopsRepository) CreateNewShop(shopData *Shop, sessionUUID string) (int
 		shopData.URL,
 		shopData.Address,
 		shopData.Comment,
-		sessionUUID)
+		sessionUUID.String())
 	if err != nil {
 		return IncorrectID, err
 	}

@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 
 	env "../env"
 	repos "../repositories"
@@ -108,6 +108,62 @@ func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r 
 		env.Logger.Info("createGetTopShopsByNameHandler: marshalling list of top shops")
 
 		shopsJSON, err := json.Marshal(shops)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), shopsJSON), env.Logger)
+	}
+}
+
+func createAddNewShopHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createAddNewShopHandler: start")
+
+		env.Logger.Info("createAddNewShopHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewShopHandler: getting data from request")
+
+		shopData := &repos.Shop{}
+
+		err := json.NewDecoder(r.Body).Decode(shopData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewShopHandler: init shops repository")
+
+		var repo repos.ShopsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createAddNewShopHandler: creating new shop")
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		addedShopID, err := repo.CreateNewShop(shopData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewShopHandler: created new shop with id: " + fmt.Sprint(addedShopID))
+
+		shopData.ID = addedShopID
+		shopsJSON, err := json.Marshal(shopData)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
