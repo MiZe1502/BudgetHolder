@@ -106,10 +106,10 @@ func (r *ShopsRepository) GetEntityByID(id int) (Shop, error) {
 }
 
 //RemoveEntityByID marks single shop as removed in db
-func (r *ShopsRepository) RemoveEntityByID(id int, uuid string) (int, error) {
+func (r *ShopsRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, error) {
 	var removedShopID int
 
-	err := pgxscan.Get(context.Background(), r.db, &removedShopID, `SELECT * from budget.remove_shop($1, $2)`, id, uuid)
+	err := pgxscan.Get(context.Background(), r.db, &removedShopID, `SELECT * from budget.remove_shop($1, $2::uuid)`, id, uuid)
 	if err != nil {
 		return IncorrectID, err
 	}

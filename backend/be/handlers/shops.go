@@ -173,3 +173,51 @@ func createAddNewShopHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), shopsJSON), env.Logger)
 	}
 }
+
+func createRemoveShopHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createRemoveShopHandler: start")
+
+		env.Logger.Info("createRemoveShopHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveShopHandler: getting data from request")
+
+		shopData := &repos.SimpleShop{}
+
+		err := json.NewDecoder(r.Body).Decode(shopData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveShopHandler: init shops repository")
+
+		var repo repos.ShopsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createRemoveShopHandler: removing shop with id: " + fmt.Sprint(shopData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		removedShopID, err := repo.RemoveEntityByID(shopData.ID, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveShopHandler: successfully removed shop with id: " + fmt.Sprint(removedShopID))
+
+		utils.Respond(w, utils.Message(true, fmt.Sprint(removedShopID)), env.Logger)
+	}
+}

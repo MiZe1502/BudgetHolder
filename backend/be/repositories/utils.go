@@ -2,6 +2,7 @@ package repos
 
 import (
 	"github.com/jackc/pgx/pgxpool"
+	"github.com/google/uuid"
 
 	utils "../utils"
 )
@@ -34,7 +35,7 @@ type Repository interface {
 	SetDb(db *pgxpool.Pool)
 	GetSlice(from int, count int) ([]*EntityProvider, error)
 	GetEntityByID(id int) (*EntityProvider, error)
-	RemoveEntityByID(id int) (int, error)
+	RemoveEntityByID(id int, sessionUUID uuid.UUID) (int, error)
 }
 
 //EntityRepository describes basic repository structure

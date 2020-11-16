@@ -5,10 +5,9 @@ import (
 	"os"
 
 	db "./db"
-	repos "./repositories"
-	hub "./hub"
 	env "./env"
 	handlers "./handlers"
+	hub "./hub"
 
 	utils "./utils"
 )
@@ -68,42 +67,3 @@ func main() {
 	//testClosure(context)()
 	handlers.InitHandlers(context, hub)
 }
-
-func testClosure(env *env.Env) func() {
-	return func() {
-		var repo repos.ShopsRepository
-
-		repo.SetDb(env.Db)
-
-		shops, err := repo.GetSlice(0, 5)
-		if err != nil {
-			env.Logger.Error(err.Error())
-		}
-
-		for i := 0; i < len(shops); i++ {
-			env.Logger.Info(fmt.Sprint(shops[i].ID))
-		}
-
-		shop, err := repo.GetEntityByID(3)
-		if err != nil {
-			env.Logger.Error(err.Error())
-		}
-
-		env.Logger.Info(shop.Name)
-
-		shopID, err := repo.RemoveEntityByID(2, utils.GetNewUUID())
-
-		if err != nil {
-			env.Logger.Error(err.Error())
-		}
-
-		env.Logger.Info(fmt.Sprint(shopID))
-
-	}
-}
-
-// func getHandlers(env *Env) http.Handler {
-//     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		//get data from db
-// 	}
-// }
