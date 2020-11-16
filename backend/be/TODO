@@ -6,7 +6,6 @@
 3. endpoints
     3.1. shops
         3.1.4. update shop
-        3.1.5. get shop by id
     3.2. categories
         3.2.1. get all categories
         3.2.2. make categories as tree
