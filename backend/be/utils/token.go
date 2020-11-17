@@ -2,8 +2,8 @@ package utils
 
 import (
 	"encoding/json"
-
 	"errors"
+	"time"
 
 	conf "../configuration"
 	jwt "github.com/dgrijalva/jwt-go"
@@ -22,6 +22,9 @@ type Token struct {
 
 	jwt.StandardClaims
 }
+
+//TokenExpirationPeriod contains max token expiration period in hours
+const TokenExpirationPeriod = 24;
 
 //InitTokenGenerator is used to read and parse token config and initialize token generator
 func InitTokenGenerator(env conf.EnvironmentKey) (*TokenGenerator, error) {
@@ -50,9 +53,13 @@ func parseTokenConfig(config []byte) (*TokenGenerator, error) {
 
 //CreateNewToken returns new jwt token with user session UUID
 func (t *TokenGenerator) CreateNewToken(uuid uuid.UUID) (string, error) {
-	tk := &Token{SessionID: uuid}
+	// tk := &Token{SessionID: uuid}
+	
+	atClaims := jwt.MapClaims{}
+	atClaims["exp"] = time.Now().Add(time.Hour * TokenExpirationPeriod).Unix()
+	atClaims["SessionID"] = uuid
 
-	token := jwt.NewWithClaims(jwt.GetSigningMethod(t.SigningMethod), tk)
+	token := jwt.NewWithClaims(jwt.GetSigningMethod(t.SigningMethod), atClaims)
 	tokenString, err := token.SignedString([]byte(t.TokenPassword))
 
 	return tokenString, err

@@ -29,7 +29,6 @@
     5.1. https
     5.2. do not store user token in logs
     5.3. token
-        5.4. expiration
-        5.5. add datetime salt
+        5.3.1. improve token by article https://www.nexmo.com/blog/2020/03/13/using-jwt-for-authentication-in-a-golang-application-dr
 6. logger
     6.1. create new file with new day
