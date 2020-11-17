@@ -24,7 +24,7 @@ type Token struct {
 }
 
 //TokenExpirationPeriod contains max token expiration period in hours
-const TokenExpirationPeriod = 24;
+const TokenExpirationPeriod = 24
 
 //InitTokenGenerator is used to read and parse token config and initialize token generator
 func InitTokenGenerator(env conf.EnvironmentKey) (*TokenGenerator, error) {
@@ -54,7 +54,7 @@ func parseTokenConfig(config []byte) (*TokenGenerator, error) {
 //CreateNewToken returns new jwt token with user session UUID
 func (t *TokenGenerator) CreateNewToken(uuid uuid.UUID) (string, error) {
 	// tk := &Token{SessionID: uuid}
-	
+
 	atClaims := jwt.MapClaims{}
 	atClaims["exp"] = time.Now().Add(time.Hour * TokenExpirationPeriod).Unix()
 	atClaims["SessionID"] = uuid
@@ -67,12 +67,6 @@ func (t *TokenGenerator) CreateNewToken(uuid uuid.UUID) (string, error) {
 
 //ParseToken parses jwt token
 func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
-	// splitted := strings.Split(tkn, " ") // check `Bearer {token-body}` format
-	// if len(splitted) != 2 {
-	// 	return nil, errors.New("Invalid token format for token: " + tkn)
-	// }
-
-	// tokenPart := splitted[1] //getting the first part of the token
 	tk := &Token{}
 
 	token, err := jwt.ParseWithClaims(tkn, tk, func(token *jwt.Token) (interface{}, error) {

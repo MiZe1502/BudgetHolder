@@ -150,6 +150,22 @@ func createAddNewShopHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
+		env.Logger.Info("createAddNewShopHandler: validate new shop")
+
+		isValid, err := repo.IsShopValid(shopData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
 		env.Logger.Info("createAddNewShopHandler: creating new shop")
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
@@ -205,6 +221,22 @@ func createUpdateShopHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		repo.SetDb(env.Db)
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createUpdateShopHandler: validate shop with id: " + fmt.Sprint(shopData.ID))
+
+		isValid, err := repo.IsShopValid(shopData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
 		env.Logger.Info("createUpdateShopHandler: updating shop with id: " + fmt.Sprint(shopData.ID))
 

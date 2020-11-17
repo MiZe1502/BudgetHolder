@@ -2,6 +2,7 @@ package repos
 
 import (
 	"context"
+	"errors"
 
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/google/uuid"
@@ -19,7 +20,7 @@ type Shop struct {
 
 //SimpleShop represents shop data item for dropdown menus
 type SimpleShop struct {
-	ID int `json:"id,omitempty"`
+	ID   int    `json:"id,omitempty"`
 	Name string `json:"name"`
 }
 
@@ -115,4 +116,21 @@ func (r *ShopsRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, error) 
 	}
 
 	return removedShopID, err
+}
+
+//IsShopValid validates shop data
+func (r *ShopsRepository) IsShopValid(shop *Shop) (bool, error) {
+	if len(shop.Name) == 0 {
+		return false, errors.New("Validation failed. No shop name provided")
+	}
+
+	if len(shop.Name) > 100 {
+		return false, errors.New("Validation failed. Shops name contains more than 100 characters")
+	}
+
+	if len(shop.Comment) > 3000 {
+		return false, errors.New("Validation failed. Shops comment contains more than 100 characters")
+	}
+
+	return true, nil
 }
