@@ -10,7 +10,7 @@ $$
         starting (id, name, parent_id, comment) AS
             (
                 SELECT gc.id, gc.name, gc.parent_id, gc.comment
-                FROM goods_categories AS gc
+                FROM budget.goods_categories AS gc
                 WHERE gc.parent_id IS NULL AND NOT gc.is_removed
             ),
         descendants (id, name, parent_id, comment) AS
@@ -19,17 +19,17 @@ $$
                 FROM starting AS s
                 UNION ALL
                 SELECT gc.id, gc.name, gc.parent_id, gc.comment
-                FROM goods_categories AS gc JOIN descendants AS d ON gc.parent_id = d.id
+                FROM budget.goods_categories AS gc JOIN descendants AS d ON gc.parent_id = d.id
                 WHERE NOT gc.is_removed
             ),
         ancestors (id, name, parent_id, comment) AS
             (
                 SELECT gc.id, gc.name, gc.parent_id, gc.comment
-                FROM goods_categories AS gc
+                FROM budget.goods_categories AS gc
                 WHERE gc.id IN (SELECT parent_id FROM starting) AND NOT gc.is_removed
                 UNION ALL
                 SELECT gc.id, gc.name, gc.parent_id, gc.comment
-                FROM goods_categories AS gc JOIN ancestors AS a ON gc.id = a.parent_id
+                FROM budget.goods_categories AS gc JOIN ancestors AS a ON gc.id = a.parent_id
                 WHERE NOT gc.is_removed
             )
         TABLE ancestors
