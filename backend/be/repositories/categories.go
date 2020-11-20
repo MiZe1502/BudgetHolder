@@ -13,7 +13,7 @@ type Category struct {
 	Comment  string `json:"comment,omitempty"`
 	ParentID *int   `json:"parent_id"`
 
-	Categories []Category `json:"categories,omitempty"`
+	Categories []*Category `json:"categories,omitempty"`
 
 	Entity
 }
@@ -33,5 +33,30 @@ func (r *CategoriesRepository) GetAllCategoriesAsChains() ([]*Category, error) {
 		return nil, err
 	}
 
-	return categories, err
+	catTree := r.CategoriesListToTree(categories)
+
+	return catTree, err
+}
+
+//CategoriesListToTree converts list categories structure into tree
+func (r *CategoriesRepository) CategoriesListToTree(list []*Category) []*Category {
+	m := map[int]int{}
+	roots := []*Category{}
+
+	for i := 0; i < len(list); i++ {
+		m[list[i].ID] = i
+		list[i].Categories = []*Category{}
+	}
+
+	for i := 0; i < len(list); i++ {
+		node := list[i]
+		if node.ParentID != nil {
+			parentID := *node.ParentID
+			list[m[parentID]].Categories = append(list[m[parentID]].Categories, node)
+		} else {
+			roots = append(roots, node)
+		}
+	}
+
+	return roots
 }
