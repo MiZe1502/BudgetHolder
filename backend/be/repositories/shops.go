@@ -20,8 +20,7 @@ type Shop struct {
 
 //SimpleShop represents shop data item for dropdown menus
 type SimpleShop struct {
-	ID   int    `json:"id,omitempty"`
-	Name string `json:"name"`
+	SimpleEntity
 }
 
 //ShopsRepository is a repository for shops data

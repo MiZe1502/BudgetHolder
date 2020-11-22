@@ -25,6 +25,12 @@ type Entity struct {
 	ID int `json:"id,omitempty"`
 }
 
+//SimpleEntity represents data items for dropdown menus
+type SimpleEntity struct {
+	ID   int    `json:"id,omitempty"`
+	Name string `json:"name"`
+}
+
 //getEntity returns entity data
 func (e *Entity) getEntity() *Entity {
 	return e

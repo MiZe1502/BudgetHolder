@@ -18,6 +18,11 @@ type Category struct {
 	Entity
 }
 
+//SimpleCategory represents category data items for dropdown menus
+type SimpleCategory struct {
+	SimpleEntity
+}
+
 //CategoriesRepository is a repository for categories data
 type CategoriesRepository struct {
 	EntityRepository
@@ -36,6 +41,47 @@ func (r *CategoriesRepository) GetAllCategoriesAsChains() ([]*Category, error) {
 	catTree := r.CategoriesListToTree(categories)
 
 	return catTree, err
+}
+
+//GetCategoryChainByParentID returns single categories chain
+func (r *CategoriesRepository) GetCategoryChainByParentID(parentID int) ([]*Category, error) {
+	var categories []*Category
+
+	err := pgxscan.Select(context.Background(), r.db, &categories, `SELECT * from budget.get_goods_categories_chain_by_id($1)`, parentID)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	catTree := r.CategoriesListToTree(categories)
+
+	return catTree, err
+}
+
+//GetSingleCategoryByID returns single category by its id
+func (r *CategoriesRepository) GetSingleCategoryByID(categoryID int) (*Category, error) {
+	var category *Category
+
+	err := pgxscan.Select(context.Background(), r.db, &category, `SELECT * from budget.get_goods_category_by_id($1)`, categoryID)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return category, err
+}
+
+//GetSimpleCategoriesList returns list of simple categories for menus
+func (r *CategoriesRepository) GetSimpleCategoriesList() ([]*SimpleCategory, error) {
+	var categories []*SimpleCategory
+
+	err := pgxscan.Select(context.Background(), r.db, &categories, `SELECT * from budget.get_simple_goods_categories()`)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return categories, err
 }
 
 //CategoriesListToTree converts list categories structure into tree
