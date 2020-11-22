@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/georgysavva/scany/pgxscan"
 )
 
@@ -82,6 +83,18 @@ func (r *CategoriesRepository) GetSimpleCategoriesList() ([]*SimpleCategory, err
 	}
 
 	return categories, err
+}
+
+//RemoveEntityByID marks single category as removed in db
+func (r *CategoriesRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, error) {
+	var removedCategoryID int
+
+	err := pgxscan.Get(context.Background(), r.db, &removedCategoryID, `SELECT * from budget.remove_goods_category($1, $2::uuid)`, id, uuid)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return removedCategoryID, err
 }
 
 //CategoriesListToTree converts list categories structure into tree
