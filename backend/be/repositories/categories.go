@@ -97,6 +97,46 @@ func (r *CategoriesRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, er
 	return removedCategoryID, err
 }
 
+//CreateNewCategory creates new goods category and returns its id
+func (r *CategoriesRepository) CreateNewCategory(categoryData *Category, sessionUUID uuid.UUID) (int, error) {
+	var addedCategoryID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&addedCategoryID,
+		`SELECT * from budget.create_new_goods_category($1, $2, $3, $4::uuid)`,
+		categoryData.Name,
+		categoryData.Comment,
+		categoryData.ParentID,
+		sessionUUID.String())
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return addedCategoryID, err
+}
+
+//UpdateCategory updates existing goods category and returns its id
+func (r *CategoriesRepository) UpdateCategory(categoryData *Category, sessionUUID uuid.UUID) (int, error) {
+	var updatedCategoryID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&updatedCategoryID,
+		`SELECT * from budget.update_goods_category($1, $2, $3, $4, $5::uuid)`,
+		categoryData.ID,
+		categoryData.Name,
+		categoryData.Comment,
+		categoryData.ParentID,
+		sessionUUID.String())
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return updatedCategoryID, err
+}
+
+
 //CategoriesListToTree converts list categories structure into tree
 func (r *CategoriesRepository) CategoriesListToTree(list []*Category) []*Category {
 	m := map[int]int{}
