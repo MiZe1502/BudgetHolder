@@ -30,8 +30,8 @@ type CategoriesRepository struct {
 	EntityRepository
 }
 
-//GetAllCategoriesAsChains returns all categories as tree structure
-func (r *CategoriesRepository) GetAllCategoriesAsChains() ([]*Category, error) {
+//GetAllCategoriesAsTree returns all categories as tree structure
+func (r *CategoriesRepository) GetAllCategoriesAsTree() ([]*Category, error) {
 	var categories []*Category
 
 	err := pgxscan.Select(context.Background(), r.db, &categories, `SELECT * from budget.get_all_goods_categories_chains()`)

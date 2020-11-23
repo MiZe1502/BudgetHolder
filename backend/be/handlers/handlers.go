@@ -50,6 +50,8 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/shops/get", middlewareChain.Then(http.HandlerFunc(createGetShopByIDHandler(env))))
 	http.Handle("/api/v1/shops/update", middlewareChain.Then(http.HandlerFunc(createUpdateShopHandler(env))))
 
+	http.Handle("/api/v1/categories/tree", middlewareChain.Then(http.HandlerFunc(createGetGoodsCategoriesTreeHandler(env))))
+
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
 	http.ListenAndServe(":8080", nil)
