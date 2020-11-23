@@ -2,10 +2,11 @@ package repos
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
-	"github.com/google/uuid"
 	"github.com/georgysavva/scany/pgxscan"
+	"github.com/google/uuid"
 )
 
 //Category represents category data item
@@ -136,6 +137,22 @@ func (r *CategoriesRepository) UpdateCategory(categoryData *Category, sessionUUI
 	return updatedCategoryID, err
 }
 
+//IsCategoryValid validates category data
+func (r *CategoriesRepository) IsCategoryValid(category *Category) (bool, error) {
+	if len(category.Name) == 0 {
+		return false, errors.New("Validation failed. No goods category name provided")
+	}
+
+	if len(category.Name) > 100 {
+		return false, errors.New("Validation failed. Category name contains more than 100 characters")
+	}
+
+	if len(category.Comment) > 3000 {
+		return false, errors.New("Validation failed. Category comment contains more than 100 characters")
+	}
+
+	return true, nil
+}
 
 //CategoriesListToTree converts list categories structure into tree
 func (r *CategoriesRepository) CategoriesListToTree(list []*Category) []*Category {
