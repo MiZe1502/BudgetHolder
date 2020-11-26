@@ -46,7 +46,7 @@ func (r *CategoriesRepository) GetAllCategoriesAsTree() ([]*Category, error) {
 }
 
 //GetCategoryChainByParentID returns single categories chain
-func (r *CategoriesRepository) GetCategoryChainByParentID(parentID int) ([]*Category, error) {
+func (r *CategoriesRepository) GetCategoryChainByParentID(parentID *int) ([]*Category, error) {
 	var categories []*Category
 
 	err := pgxscan.Select(context.Background(), r.db, &categories, `SELECT * from budget.get_goods_categories_chain_by_id($1)`, parentID)
