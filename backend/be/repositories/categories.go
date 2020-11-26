@@ -60,14 +60,14 @@ func (r *CategoriesRepository) GetCategoryChainByParentID(parentID *int) ([]*Cat
 	return catTree, err
 }
 
-//GetSingleCategoryByID returns single category by its id
-func (r *CategoriesRepository) GetSingleCategoryByID(categoryID int) (*Category, error) {
-	var category *Category
+//GetEntityByID returns single category by its id
+func (r *CategoriesRepository) GetEntityByID(id int) (Category, error) {
+	var category Category
 
-	err := pgxscan.Select(context.Background(), r.db, &category, `SELECT * from budget.get_goods_category_by_id($1)`, categoryID)
+	err := pgxscan.Get(context.Background(), r.db, &category, `SELECT * from budget.get_goods_category_by_id($1)`, id)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return category, err
 	}
 
 	return category, err

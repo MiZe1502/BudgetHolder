@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
-	"net/http"
 	"fmt"
-	
+	"net/http"
+
 	env "../env"
 	repos "../repositories"
 	utils "../utils"
@@ -103,5 +103,60 @@ func createGetCategoryChainByParentIDHandler(env *env.Env) func(w http.ResponseW
 		}
 
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoriesJSON), env.Logger)
+	}
+}
+
+func createGetSingleCategoryByIDHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetSingleCategoryByIDHandler: start")
+
+		env.Logger.Info("createGetSingleCategoryByIDHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetSingleCategoryByIDHandler: getting data from request")
+
+		categoryData := &repos.SimpleCategory{}
+
+		err := json.NewDecoder(r.Body).Decode(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetSingleCategoryByIDHandler: init categories repository")
+
+		var repo repos.CategoriesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetSingleCategoryByIDHandler: getting category by ID: " + fmt.Sprint(categoryData.ID))
+
+		category, err := repo.GetEntityByID(categoryData.ID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetSingleCategoryByIDHandler: marshalling category")
+
+		categoryJSON, err := json.Marshal(category)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoryJSON), env.Logger)
+
 	}
 }

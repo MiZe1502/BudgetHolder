@@ -52,6 +52,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 
 	http.Handle("/api/v1/categories/tree", middlewareChain.Then(http.HandlerFunc(createGetGoodsCategoriesTreeHandler(env))))
 	http.Handle("/api/v1/categories/chain", middlewareChain.Then(http.HandlerFunc(createGetCategoryChainByParentIDHandler(env))))
+	http.Handle("/api/v1/categories/category", middlewareChain.Then(http.HandlerFunc(createGetSingleCategoryByIDHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
