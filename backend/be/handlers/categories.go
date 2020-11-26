@@ -160,3 +160,45 @@ func createGetSingleCategoryByIDHandler(env *env.Env) func(w http.ResponseWriter
 
 	}
 }
+
+func createGetSimpleCategoriesListHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetSimpleCategoriesListHandler: start")
+
+		env.Logger.Info("createGetSimpleCategoriesListHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetSimpleCategoriesListHandler: init categories repository")
+
+		var repo repos.CategoriesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetSimpleCategoriesListHandler: getting simple categories list")
+
+		categories, err := repo.GetSimpleCategoriesList()
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetSimpleCategoriesListHandler: marshalling simple categories list")
+
+		categoriesJSON, err := json.Marshal(categories)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoriesJSON), env.Logger)
+	}
+}
