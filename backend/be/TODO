@@ -5,10 +5,7 @@
     2.1. implement opentracing logging 
 3. endpoints
     3.2. categories
-        3.2.1. get all categories
-        3.2.2. make categories as tree
         3.2.3. create new category
-        3.2.4. get chain by id
         3.2.5. get simple categories
         3.2.6. remove category
         3.2.7. update category
@@ -25,7 +22,6 @@
     4.3. create wrapper methods for register and send
 5. security
     5.1. https
-    5.2. do not store user token in logs
     5.3. token
         5.3.1. improve token by article https://www.nexmo.com/blog/2020/03/13/using-jwt-for-authentication-in-a-golang-application-dr
 6. logger
