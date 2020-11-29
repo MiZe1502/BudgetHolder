@@ -322,3 +322,74 @@ func createAddNewCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *ht
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoryJSON), env.Logger)
 	}
 }
+
+func createUpdateCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createAddNecreateUpdateCategoryHandlerwCategoryHandler: start")
+
+		env.Logger.Info("createUpdateCategoryHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateCategoryHandler: getting data from request")
+
+		categoryData := &repos.Category{}
+
+		err := json.NewDecoder(r.Body).Decode(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateCategoryHandler: init categories repository")
+
+		var repo repos.CategoriesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createUpdateCategoryHandler: validate category with id: " + fmt.Sprint(categoryData.ID))
+
+		isValid, err := repo.IsCategoryValid(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateCategoryHandler: updating category with id: " + fmt.Sprint(categoryData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		updatedCategoryID, err := repo.UpdateCategory(categoryData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateCategoryHandler: updated category with id: " + fmt.Sprint(updatedCategoryID))
+
+		categoryJSON, err := json.Marshal(categoryData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoryJSON), env.Logger)
+	}
+}
