@@ -215,7 +215,7 @@ func createRemoveCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *ht
 			return
 		}
 
-		env.Logger.Info("createRemoveShopHandler: getting data from request")
+		env.Logger.Info("createRemoveCategoryHandler: getting data from request")
 
 		categoryData := &repos.SimpleCategory{}
 
@@ -248,5 +248,77 @@ func createRemoveCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *ht
 		env.Logger.Info("createRemoveCategoryHandler: successfully removed category with id: " + fmt.Sprint(removedCategoryID))
 
 		utils.Respond(w, utils.Message(true, fmt.Sprint(removedCategoryID)), env.Logger)
+	}
+}
+
+func createAddNewCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createAddNewCategoryHandler: start")
+
+		env.Logger.Info("createAddNewCategoryHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewCategoryHandler: getting data from request")
+
+		categoryData := &repos.Category{}
+
+		err := json.NewDecoder(r.Body).Decode(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewCategoryHandler: init categories repository")
+
+		var repo repos.CategoriesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createAddNewCategoryHandler: validate new category")
+
+		isValid, err := repo.IsCategoryValid(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewCategoryHandler: creating new category")
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		addedCategoryID, err := repo.CreateNewCategory(categoryData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewCategoryHandler: created new category with id: " + fmt.Sprint(addedCategoryID))
+
+		categoryData.ID = addedCategoryID
+		categoryJSON, err := json.Marshal(categoryData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoryJSON), env.Logger)
 	}
 }
