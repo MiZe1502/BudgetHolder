@@ -4,11 +4,6 @@
 2. architecture
     2.1. implement opentracing logging 
 3. endpoints
-    3.2. categories
-        3.2.3. create new category
-        3.2.5. get simple categories
-        3.2.6. remove category
-        3.2.7. update category
     3.3. users
         3.3.1. actualize user online
         3.3.2. close session
