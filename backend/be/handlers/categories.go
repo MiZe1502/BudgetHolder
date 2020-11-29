@@ -202,3 +202,51 @@ func createGetSimpleCategoriesListHandler(env *env.Env) func(w http.ResponseWrit
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), categoriesJSON), env.Logger)
 	}
 }
+
+func createRemoveCategoryHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createRemoveCategoryHandler: start")
+
+		env.Logger.Info("createRemoveCategoryHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveShopHandler: getting data from request")
+
+		categoryData := &repos.SimpleCategory{}
+
+		err := json.NewDecoder(r.Body).Decode(categoryData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveCategoryHandler: init categories repository")
+
+		var repo repos.CategoriesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createRemoveCategoryHandler: removing category with id: " + fmt.Sprint(categoryData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		removedCategoryID, err := repo.RemoveEntityByID(categoryData.ID, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveCategoryHandler: successfully removed category with id: " + fmt.Sprint(removedCategoryID))
+
+		utils.Respond(w, utils.Message(true, fmt.Sprint(removedCategoryID)), env.Logger)
+	}
+}
