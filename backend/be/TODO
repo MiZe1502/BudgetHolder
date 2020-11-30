@@ -5,7 +5,6 @@
     2.1. implement opentracing logging 
 3. endpoints
     3.3. users
-        3.3.1. actualize user online
         3.3.2. close session
         3.3.3. update user
         3.3.4. remove user
