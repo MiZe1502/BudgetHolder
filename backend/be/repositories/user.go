@@ -189,7 +189,18 @@ func (r *UserRepository) GetFullUserInfo(login string) (FullUser, error) {
 	}
 
 	return user, err
+}
 
+//RemoveUserByLogin marks user as removed by login
+func (r *UserRepository) RemoveUserByLogin(login string) (int, error) {
+	var userID int
+
+	err := pgxscan.Get(context.Background(), r.db, &userID, `SELECT * from budget.remove_user($1)`, login)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return userID, err
 }
 
 // ProcessUserAuth contains processing login logic:

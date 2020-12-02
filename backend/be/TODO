@@ -7,8 +7,6 @@
     3.3. users
         3.3.2. close session
         3.3.3. update user
-        3.3.4. remove user
-        3.3.5. get full user info
         3.3.6. create user group
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group

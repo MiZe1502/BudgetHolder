@@ -164,7 +164,6 @@ func createActualizeUserLastOnlineHandler(env *env.Env) func(w http.ResponseWrit
 	}
 }
 
-
 func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.Logger.Info("createGetFullUserInfoHandler")
@@ -202,7 +201,7 @@ func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *h
 			return
 		}
 
-		env.Logger.Info("marshalling user data: login: " + userData.Login + " | id: " + fmt.Sprint(userData.ID))
+		env.Logger.Info("createGetFullUserInfoHandler: marshalling user data: login: " + userData.Login + " | id: " + fmt.Sprint(userData.ID))
 
 		userJSON, err := json.Marshal(user)
 		if err != nil {
@@ -215,3 +214,47 @@ func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *h
 	}
 }
 
+func createRemoveUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createRemoveUserHandler: start")
+
+		env.Logger.Info("createRemoveUserHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveUserHandler: getting data from request")
+
+		userData := &repos.User{}
+		err := json.NewDecoder(r.Body).Decode(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveUserHandler: init user repository")
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createRemoveUserHandler: removing user with login: " + userData.Login)
+		
+		removedUserID, err := repo.RemoveUserByLogin(userData.Login)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveUserHandler: successfully removed user with id: " + fmt.Sprint(removedUserID))
+
+		utils.Respond(w, utils.Message(true, fmt.Sprint(removedUserID)), env.Logger)
+	}
+}
