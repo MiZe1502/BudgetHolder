@@ -163,3 +163,55 @@ func createActualizeUserLastOnlineHandler(env *env.Env) func(w http.ResponseWrit
 		utils.Respond(w, utils.Message(true, fmt.Sprint(userID)), env.Logger)
 	}
 }
+
+
+func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetFullUserInfoHandler")
+
+		env.Logger.Info("createGetFullUserInfoHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetFullUserInfoHandler: getting user data from request")
+
+		userData := &repos.User{}
+		err := json.NewDecoder(r.Body).Decode(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetFullUserInfoHandler: processing user with login: " + userData.Login)
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		user, err := repo.GetFullUserInfo(userData.Login)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("marshalling user data: login: " + userData.Login + " | id: " + fmt.Sprint(userData.ID))
+
+		userJSON, err := json.Marshal(user)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), userJSON), env.Logger)
+	}
+}
+

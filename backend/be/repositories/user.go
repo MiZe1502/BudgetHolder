@@ -33,9 +33,10 @@ type FullUser struct {
 
 	Name        string `json:"name,omitempty"`
 	Surname     string `json:"surname,omitempty"`
-	ImagePath   string `json:"path,omitempty"`
+	PathToPhoto   string `json:"path_to_photo,omitempty"`
 	Description string `json:"description,omitempty"`
-	GroupName   string `json:"groupname"`
+	GroupName   string `json:"group_name"`
+	GroupDescription   string `json:"group_description"`
 }
 
 // UserContext stores user data for request context and web socket connections
@@ -168,7 +169,7 @@ func (r *UserRepository) CreateNewUser(userData *FullUser) (int, error) {
 		pwd,
 		userData.Name,
 		userData.Surname,
-		userData.ImagePath,
+		userData.PathToPhoto,
 		userData.Description,
 		userGroup.ID)
 	if err != nil {
@@ -176,6 +177,19 @@ func (r *UserRepository) CreateNewUser(userData *FullUser) (int, error) {
 	}
 
 	return newUserID, nil
+}
+
+//GetFullUserInfo returns full user data
+func (r *UserRepository) GetFullUserInfo(login string) (FullUser, error) {
+	var user FullUser
+
+	err := pgxscan.Get(context.Background(), r.db, &user, `SELECT * from budget.get_full_user_info($1)`, login)
+	if err != nil {
+		return user, err
+	}
+
+	return user, err
+
 }
 
 // ProcessUserAuth contains processing login logic:
