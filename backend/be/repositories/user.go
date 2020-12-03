@@ -31,12 +31,12 @@ type User struct {
 type FullUser struct {
 	User
 
-	Name        string `json:"name,omitempty"`
-	Surname     string `json:"surname,omitempty"`
-	PathToPhoto   string `json:"path_to_photo,omitempty"`
-	Description string `json:"description,omitempty"`
-	GroupName   string `json:"group_name"`
-	GroupDescription   string `json:"group_description"`
+	Name             string `json:"name,omitempty"`
+	Surname          string `json:"surname,omitempty"`
+	PathToPhoto      string `json:"path_to_photo,omitempty"`
+	Description      string `json:"description,omitempty"`
+	GroupName        string `json:"group_name"`
+	GroupDescription string `json:"group_description"`
 }
 
 // UserContext stores user data for request context and web socket connections
@@ -52,6 +52,23 @@ type UserRepository struct {
 	EntityRepository
 }
 
+// IsUserGroupValid validates user group data
+func (r *UserRepository) IsUserGroupValid(group *UserGroup) (bool, error) {
+	if len(group.Name) == 0 {
+		return false, errors.New("Validation failed. No user group name provided")
+	}
+
+	if len(group.Name) > 100 {
+		return false, errors.New("Validation failed. User group name contains more than 100 characters")
+	}
+
+	if len(group.Description) > 3000 {
+		return false, errors.New("Validation failed. Too long user group description")
+	}
+
+	return true, nil
+}
+
 // IsUserValid validates user data
 func (r *UserRepository) IsUserValid(user *FullUser) (bool, error) {
 	if len(user.Login) == 0 {
@@ -64,10 +81,6 @@ func (r *UserRepository) IsUserValid(user *FullUser) (bool, error) {
 
 	if len(user.Password) < 8 {
 		return false, errors.New("Validation failed. User password is too short")
-	}
-
-	if len(user.Name) > 100 {
-		return false, errors.New("Validation failed. Too long user name")
 	}
 
 	if len(user.Name) > 100 {
@@ -145,6 +158,23 @@ func (r *UserRepository) getUserGroupByName(groupName string) (UserGroup, error)
 	}
 
 	return group, err
+}
+
+//CreateNewUserGroup creates new user and returns its id
+func (r *UserRepository) CreateNewUserGroup(groupData *UserGroup, sessionUUID uuid.UUID) (int, error) {
+	var newID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db, &newID,
+		`SELECT * from budget.create_user_group($1, $2, $3::uuid)`,
+		groupData.Name,
+		groupData.Description,
+		sessionUUID.String())
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return newID, err
 }
 
 //CreateNewUser creates new user and returns its id

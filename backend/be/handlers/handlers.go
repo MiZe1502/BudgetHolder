@@ -44,6 +44,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/user/new", middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env))))
 	http.Handle("/api/v1/user/sync", middlewareChain.Then(http.HandlerFunc(createActualizeUserLastOnlineHandler(env))))
 	http.Handle("/api/v1/user/full", middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env))))
+	http.Handle("/api/v1/user/group/new", middlewareChain.Then(http.HandlerFunc(createNewUserGroupHandler(env))))
 
 	http.Handle("/api/v1/shops/slice", middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env))))
 	http.Handle("/api/v1/shops/top", middlewareChain.Then(http.HandlerFunc(createGetTopShopsByNameHandler(env))))

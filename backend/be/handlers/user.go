@@ -10,6 +10,76 @@ import (
 	utils "../utils"
 )
 
+func createNewUserGroupHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createNewUserGroupHandler: start")
+
+		env.Logger.Info("createNewUserGroupHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createNewUserGroupHandler: getting user group data from request")
+
+		groupData := &repos.UserGroup{}
+		err := json.NewDecoder(r.Body).Decode(groupData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createNewUserGroupHandler: init user repository")
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createNewUserGroupHandler: validate user group")
+
+		isValid, err := repo.IsUserGroupValid(groupData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createNewUserGroupHandler: adding user group with name: " + groupData.Name)
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		newGroupID, err := repo.CreateNewUserGroup(groupData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createNewUserGroupHandler: added user group with name: " + groupData.Name + " | id: " + fmt.Sprint(newGroupID))
+
+		groupData.ID = newGroupID
+		groupDataJSON, err := json.Marshal(groupData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), groupDataJSON), env.Logger)
+	}
+}
+
 func createNewUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.Logger.Info("createNewUserHandler")
@@ -245,7 +315,7 @@ func createRemoveUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		repo.SetTokenGenerator(env.Token)
 
 		env.Logger.Info("createRemoveUserHandler: removing user with login: " + userData.Login)
-		
+
 		removedUserID, err := repo.RemoveUserByLogin(userData.Login)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
