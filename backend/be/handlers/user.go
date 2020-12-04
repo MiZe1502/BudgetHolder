@@ -328,3 +328,40 @@ func createRemoveUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		utils.Respond(w, utils.Message(true, fmt.Sprint(removedUserID)), env.Logger)
 	}
 }
+
+func createCloseUserSessionHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createCloseUserSessionHandler: start")
+
+		env.Logger.Info("createCloseUserSessionHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createCloseUserSessionHandler: init user repository")
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+
+		env.Logger.Info("createCloseUserSessionHandler: closing user with UUID: " + user.SessionUUID.String())
+
+		closedSessionUUID, err := repo.CloseUserSession(user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveUserHandler: successfully closed user session with UUID: " + fmt.Sprint(closedSessionUUID))
+
+		utils.Respond(w, utils.Message(true, "OK"), env.Logger)
+	}
+}
