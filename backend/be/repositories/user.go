@@ -148,6 +148,18 @@ func (r *UserRepository) createUserSession(login, ip string) (string, error) {
 	return utils.DecodeUUIDIntoString(uuid), nil
 }
 
+//CloseUserSession closes user session
+func (r *UserRepository) CloseUserSession(sessionUUID uuid.UUID) (uuid.UUID, error) {
+	var closedSessionUUID uuid.UUID
+
+	err := pgxscan.Get(context.Background(), r.db, &closedSessionUUID, `SELECT * from budget.close_session($1::uuid)`, sessionUUID)
+	if err != nil {
+		return closedSessionUUID, err
+	}
+
+	return closedSessionUUID, err
+}
+
 // getUserGroupByName returns single user with its encoded password
 func (r *UserRepository) getUserGroupByName(groupName string) (UserGroup, error) {
 	var group UserGroup
