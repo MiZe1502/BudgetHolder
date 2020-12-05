@@ -365,3 +365,71 @@ func createCloseUserSessionHandler(env *env.Env) func(w http.ResponseWriter, r *
 		utils.Respond(w, utils.Message(true, "OK"), env.Logger)
 	}
 }
+
+func createUpdateUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createUpdateUserHandler: start")
+
+		env.Logger.Info("createUpdateUserHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateUserHandler: getting user data from request")
+
+		userData := &repos.UpdatedUser{}
+		err := json.NewDecoder(r.Body).Decode(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateUserHandler: init user repository")
+
+		var repo repos.UserRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createUpdateUserHandler: validate user: login: " + userData.Login)
+
+		isValid, err := repo.IsUserValid(repos.FullUser(userData))
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("adding user: login: " + userData.Login)
+
+		newUserID, err := repo.CreateNewUser(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("added user: login: " + userData.Login + " | id: " + fmt.Sprint(newUserID))
+
+		userDataJSON, err := json.Marshal(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), userDataJSON), env.Logger)
+	}
+}

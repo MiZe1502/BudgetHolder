@@ -39,6 +39,13 @@ type FullUser struct {
 	GroupDescription string `json:"group_description"`
 }
 
+// UpdatedUser is extended struct to store data for updated user
+type UpdatedUser struct {
+	FullUser
+
+	IsPasswordChanged string `json:"is_password_changed,omitempty"`
+}
+
 // UserContext stores user data for request context and web socket connections
 type UserContext struct {
 	SessionUUID uuid.UUID
@@ -298,4 +305,27 @@ func (r *UserRepository) ActualizeUserLastOnlineByLogin(userLogin string) (int, 
 	}
 
 	return userID, err
+}
+
+//UpdateUser updates existing user and returns its id
+func (r *ShopsRepository) UpdateUser(oldLogin string, userData *UpdatedUser) (int, error) {
+	var updatedUserID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&updatedUserID,
+		`SELECT * from budget.update_user($1, $2, $3, $4, $5, $6, &7, &8)`,
+		oldLogin,
+		userData.Login,
+		userData.IsPasswordChanged,
+		userData.Password,
+		userData.PathToPhoto,
+		userData.Name,
+		userData.Surname,
+		userData.Description)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return updatedUserID, err
 }
