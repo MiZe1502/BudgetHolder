@@ -396,23 +396,27 @@ func createUpdateUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createUpdateUserHandler: validate user: login: " + userData.Login)
+		user := r.Context().Value("userCtx").(*repos.UserContext)
 
-		isValid, err := repo.IsUserValid(repos.FullUser(userData))
+		
 
-		if err != nil {
-			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
-			utils.RespondError(w, msg, env.Logger)
-			return
-		}
+		env.Logger.Info("createUpdateUserHandler: validate user: old login: " + user.Login + " | new login: " + userData.Login)
 
-		if !isValid {
-			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
-			utils.RespondError(w, msg, env.Logger)
-			return
-		}
+		// isValid, err := repo.IsUserValid(&repos.FullUser{Login: userData.Login})
 
-		env.Logger.Info("adding user: login: " + userData.Login)
+		// if err != nil {
+		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+		// 	utils.RespondError(w, msg, env.Logger)
+		// 	return
+		// }
+
+		// if !isValid {
+		// 	msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+		// 	utils.RespondError(w, msg, env.Logger)
+		// 	return
+		// }
+
+		env.Logger.Info("updating user: newlogin: " + userData.Login)
 
 		newUserID, err := repo.CreateNewUser(userData)
 		if err != nil {
