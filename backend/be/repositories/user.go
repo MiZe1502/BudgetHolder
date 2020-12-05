@@ -43,7 +43,7 @@ type FullUser struct {
 type UpdatedUser struct {
 	FullUser
 
-	IsPasswordChanged string `json:"is_password_changed,omitempty"`
+	IsPasswordChanged bool `json:"is_password_changed,omitempty"`
 }
 
 // UserContext stores user data for request context and web socket connections
@@ -139,6 +139,18 @@ func (r *UserRepository) getUserByLogin(login string) (User, error) {
 	}
 
 	return user, err
+}
+
+// GetUserLoginByID returns user login by its id
+func (r *UserRepository) GetUserLoginByID(userID int) (string, error) {
+	var userLogin string
+
+	err := pgxscan.Get(context.Background(), r.db, &userLogin, `SELECT * from budget.get_user_by_id($1)`, userID)
+	if err != nil {
+		return userLogin, err
+	}
+
+	return userLogin, err
 }
 
 func (r *UserRepository) createUserSession(login, ip string) (string, error) {
@@ -308,13 +320,13 @@ func (r *UserRepository) ActualizeUserLastOnlineByLogin(userLogin string) (int, 
 }
 
 //UpdateUser updates existing user and returns its id
-func (r *ShopsRepository) UpdateUser(oldLogin string, userData *UpdatedUser) (int, error) {
+func (r *UserRepository) UpdateUser(oldLogin string, userData *UpdatedUser) (int, error) {
 	var updatedUserID int
 
 	err := pgxscan.Get(context.Background(),
 		r.db,
 		&updatedUserID,
-		`SELECT * from budget.update_user($1, $2, $3, $4, $5, $6, &7, &8)`,
+		`SELECT * from budget.update_user($1, $2, $3, $4, $5, $6, $7, $8)`,
 		oldLogin,
 		userData.Login,
 		userData.IsPasswordChanged,

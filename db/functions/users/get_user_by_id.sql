@@ -1,7 +1,7 @@
 SET search_path TO budget;
 
 CREATE OR REPLACE FUNCTION get_user_by_id(user_id INTEGER)
-    RETURNS VARCHAR AS
+    RETURNS VARCHAR(100) AS
 $BODY$
 DECLARE user_login VARCHAR;
 BEGIN

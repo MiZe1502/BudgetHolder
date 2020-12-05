@@ -398,11 +398,36 @@ func createUpdateUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 
-		
+		env.Logger.Info("getting user login by id: " + fmt.Sprint(user.UserID))
 
-		env.Logger.Info("createUpdateUserHandler: validate user: old login: " + user.Login + " | new login: " + userData.Login)
+		oldUserLogin, err := repo.GetUserLoginByID(user.UserID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
-		// isValid, err := repo.IsUserValid(&repos.FullUser{Login: userData.Login})
+		//TODO: Implement validation
+
+		// env.Logger.Info("createUpdateUserHandler: validate user: old login: " + oldUserLogin + " | new login: " + userData.Login)
+
+		// var userDataToValidation *repos.FullUser
+
+		// jsonedData, err := json.Marshal(userData)
+		// if err != nil {
+		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+		// 	utils.RespondError(w, msg, env.Logger)
+		// 	return
+		// }
+
+		// err = json.Unmarshal(jsonedData, &userDataToValidation)
+		// if err != nil {
+		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+		// 	utils.RespondError(w, msg, env.Logger)
+		// 	return
+		// }
+
+		// isValid, err := repo.IsUserValid(userDataToValidation)
 
 		// if err != nil {
 		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
@@ -416,24 +441,17 @@ func createUpdateUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 		// 	return
 		// }
 
-		env.Logger.Info("updating user: newlogin: " + userData.Login)
+		env.Logger.Info("updating user: old login: " + oldUserLogin + " | new login: " + userData.Login)
 
-		newUserID, err := repo.CreateNewUser(userData)
+		updatedUserID, err := repo.UpdateUser(oldUserLogin, userData)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
-		env.Logger.Info("added user: login: " + userData.Login + " | id: " + fmt.Sprint(newUserID))
+		env.Logger.Info("user updated: login: " + userData.Login + " | id: " + fmt.Sprint(updatedUserID))
 
-		userDataJSON, err := json.Marshal(userData)
-		if err != nil {
-			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.Logger)
-			return
-		}
-
-		utils.Respond(w, utils.MessageData(utils.Message(true, ""), userDataJSON), env.Logger)
+		utils.Respond(w, utils.Message(true, ""), env.Logger)
 	}
 }
