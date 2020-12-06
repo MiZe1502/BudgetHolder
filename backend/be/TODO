@@ -4,8 +4,27 @@
 2. architecture
     2.1. implement opentracing logging 
 3. endpoints
-    3.3. users
-        3.3.3. update user
+    3.1. goods
+        3.1.1. create repo and main structures
+        3.1.2. get item by id
+        3.1.3. create new item
+        3.1.4. get all items
+        3.1.5. get top items by name
+        3.1.6. remove item
+        3.1.7. update single item
+    3.2. purchases
+        3.2.1. create repo and main structures
+        3.2.2. create single purchase
+        3.2.3. create goods details items
+        3.2.4. create single purchase with connected goods items
+        3.2.5. get goods data for purchase by id
+        3.2.6. get purchase
+        3.2.7. get purchases list
+        3.2.8. get purchases list with goods items
+        3.2.9. remove goods details for purchase
+        3.2.10. remove purchase
+        3.2.11. update goods details
+        3.2.12. update purchase
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
