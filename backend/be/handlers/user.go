@@ -112,7 +112,7 @@ func createNewUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.Requ
 
 		env.Logger.Info("validate user: login: " + userData.Login)
 
-		isValid, err := repo.IsUserValid(userData)
+		isValid, err := repo.IsUserValid(userData, true)
 
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
@@ -409,37 +409,37 @@ func createUpdateUserHandler(env *env.Env) func(w http.ResponseWriter, r *http.R
 
 		//TODO: Implement validation
 
-		// env.Logger.Info("createUpdateUserHandler: validate user: old login: " + oldUserLogin + " | new login: " + userData.Login)
+		env.Logger.Info("createUpdateUserHandler: validate user: old login: " + oldUserLogin + " | new login: " + userData.Login)
 
-		// var userDataToValidation *repos.FullUser
+		var userDataForValidation *repos.FullUser
 
-		// jsonedData, err := json.Marshal(userData)
-		// if err != nil {
-		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-		// 	utils.RespondError(w, msg, env.Logger)
-		// 	return
-		// }
+		jsonedData, err := json.Marshal(userData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
-		// err = json.Unmarshal(jsonedData, &userDataToValidation)
-		// if err != nil {
-		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
-		// 	utils.RespondError(w, msg, env.Logger)
-		// 	return
-		// }
+		err = json.Unmarshal(jsonedData, &userDataForValidation)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
-		// isValid, err := repo.IsUserValid(userDataToValidation)
+		isValid, err := repo.IsUserValid(userDataForValidation, userData.IsPasswordChanged)
 
-		// if err != nil {
-		// 	msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
-		// 	utils.RespondError(w, msg, env.Logger)
-		// 	return
-		// }
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
-		// if !isValid {
-		// 	msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
-		// 	utils.RespondError(w, msg, env.Logger)
-		// 	return
-		// }
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 
 		env.Logger.Info("updating user: old login: " + oldUserLogin + " | new login: " + userData.Login)
 

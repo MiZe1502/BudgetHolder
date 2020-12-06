@@ -77,7 +77,7 @@ func (r *UserRepository) IsUserGroupValid(group *UserGroup) (bool, error) {
 }
 
 // IsUserValid validates user data
-func (r *UserRepository) IsUserValid(user *FullUser) (bool, error) {
+func (r *UserRepository) IsUserValid(user *FullUser, isPasswordChanged bool) (bool, error) {
 	if len(user.Login) == 0 {
 		return false, errors.New("Validation failed. No user login provided")
 	}
@@ -86,7 +86,7 @@ func (r *UserRepository) IsUserValid(user *FullUser) (bool, error) {
 		return false, errors.New("Validation failed. User login contains more than 100 characters")
 	}
 
-	if len(user.Password) < 8 {
+	if isPasswordChanged && len(user.Password) < 8 {
 		return false, errors.New("Validation failed. User password is too short")
 	}
 
