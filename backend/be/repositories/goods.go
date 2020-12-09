@@ -148,3 +148,43 @@ func (r *GoodsRepository) CreateNewGoodsDetailsItem(goodsDetailsItemData *GoodsD
 
 	return addedGoodsDetailsItemID, err
 }
+
+//RemoveGoodsDetails removes connection between purchase and goods item
+func (r *GoodsRepository) RemoveGoodsDetails(goodsDetailsID, purchaseID, goodsItemID int, uuid uuid.UUID) (int, error) {
+	var removedGoodsDetailsItemID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&removedGoodsDetailsItemID,
+		`SELECT * from budget.remove_goods_details($1, $2, $3, $4::uuid)`,
+		goodsDetailsID,
+		purchaseID,
+		goodsItemID,
+		uuid)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return removedGoodsDetailsItemID, err
+}
+
+//UpdateGoodsDetailsItem updates existing goods details item and returns its id
+func (r *GoodsRepository) UpdateGoodsDetailsItem(goodsDetailsItemData *GoodsDetailsItem, sessionUUID uuid.UUID) (int, error) {
+	var updatedGoodsDetailsItemID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&updatedGoodsDetailsItemID,
+		`SELECT * from budget.update_goods_details($1, $2, $3, $4, $5, $6::uuid)`,
+		goodsDetailsItemData.ID,
+		goodsDetailsItemData.Amount,
+		goodsDetailsItemData.Price,
+		goodsDetailsItemData.PurchaseID,
+		goodsDetailsItemData.GoodsItemID,
+		sessionUUID.String())
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return updatedGoodsDetailsItemID, err
+}
