@@ -18,6 +18,16 @@ type GoodsItem struct {
 	Entity
 }
 
+//GoodsDetailsItem represents goods data details item
+type GoodsDetailsItem struct {
+	Amount      int     `json:"amount"`
+	Price       float32 `json:"price"`
+	PurchaseID  int     `json:"purchase_id"`
+	GoodsItemID int     `json:"goods_item_id"`
+
+	Entity
+}
+
 //SimpleGoodsItem represents goods data items for dropdown menus
 type SimpleGoodsItem struct {
 	SimpleEntity
@@ -117,4 +127,24 @@ func (r *GoodsRepository) UpdateGoodsItem(goodsItemData *GoodsItem, sessionUUID 
 	}
 
 	return updatedGoodsItemID, err
+}
+
+//CreateNewGoodsDetailsItem creates new goods details item
+func (r *GoodsRepository) CreateNewGoodsDetailsItem(goodsDetailsItemData *GoodsDetailsItem, sessionUUID uuid.UUID) (int, error) {
+	var addedGoodsDetailsItemID int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&addedGoodsDetailsItemID,
+		`SELECT * from budget.create_new_goods_details($1, $2, $3, $4, $5::uuid)`,
+		goodsDetailsItemData.Amount,
+		goodsDetailsItemData.Price,
+		goodsDetailsItemData.PurchaseID,
+		goodsDetailsItemData.GoodsItemID,
+		sessionUUID.String())
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return addedGoodsDetailsItemID, err
 }
