@@ -28,6 +28,12 @@ type GoodsDetailsItem struct {
 	Entity
 }
 
+//GoodsItemWithDetails represents goods data item with details fields
+type GoodsItemWithDetails struct {
+	GoodsItem
+	GoodsDetailsItem
+}
+
 //SimpleGoodsItem represents goods data items for dropdown menus
 type SimpleGoodsItem struct {
 	SimpleEntity
