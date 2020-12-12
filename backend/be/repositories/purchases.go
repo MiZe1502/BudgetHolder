@@ -9,10 +9,10 @@ import (
 
 //Purchase represents purchase basic data
 type Purchase struct {
-	TotalPrice float32 `json:"total_price"`
-	ShopID     int     `json:"shop_id"`
-	Date       int32   `json:"date"`
-	Comment    string  `json:"comment"`
+	TotalPrice float32 `json:"total_price,omitempty"`
+	ShopID     int     `json:"shop_id,omitempty"`
+	Date       int32   `json:"date,omitempty"`
+	Comment    string  `json:"comment,omitempty"`
 
 	Entity
 }

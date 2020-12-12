@@ -10,20 +10,20 @@ import (
 
 //GoodsItem represents goods data item
 type GoodsItem struct {
-	Name       string `json:"name"`
-	CategoryID int    `json:"category_id"`
-	Comment    string `json:"comment"`
-	BarCode    string `json:"bar_code"`
+	Name       string `json:"name,omitempty"`
+	CategoryID int    `json:"category_id,omitempty"`
+	Comment    string `json:"comment,omitempty"`
+	BarCode    string `json:"bar_code,omitempty"`
 
 	Entity
 }
 
 //GoodsDetailsItem represents goods data details item
 type GoodsDetailsItem struct {
-	Amount      int     `json:"amount"`
-	Price       float32 `json:"price"`
-	PurchaseID  int     `json:"purchase_id"`
-	GoodsItemID int     `json:"goods_item_id"`
+	Amount      int     `json:"amount,omitempty"`
+	Price       float32 `json:"price,omitempty"`
+	PurchaseID  int     `json:"purchase_id,omitempty"`
+	GoodsItemID int     `json:"goods_item_id,omitempty"`
 
 	Entity
 }
@@ -32,6 +32,9 @@ type GoodsDetailsItem struct {
 type GoodsItemWithDetails struct {
 	GoodsItem
 	GoodsDetailsItem
+
+	GoodsDetailsID int `json:"goods_details_id"`
+	GoodsItemID    int `json:"goods_id"`
 }
 
 //SimpleGoodsItem represents goods data items for dropdown menus
@@ -193,4 +196,16 @@ func (r *GoodsRepository) UpdateGoodsDetailsItem(goodsDetailsItemData *GoodsDeta
 	}
 
 	return updatedGoodsDetailsItemID, err
+}
+
+//GetGoodsDataForPurchase returns full goods data for purchase by its id
+func (r *GoodsRepository) GetGoodsDataForPurchase(purchaseID int) ([]*GoodsItemWithDetails, error) {
+	var goodsData []*GoodsItemWithDetails
+
+	err := pgxscan.Select(context.Background(), r.db, &goodsData, `SELECT * from budget.get_goods_data_for_purchase($1)`, purchaseID)
+	if err != nil {
+		return nil, err
+	}
+
+	return goodsData, err
 }
