@@ -30,11 +30,11 @@ type GoodsDetailsItem struct {
 
 //GoodsItemWithDetails represents goods data item with details fields
 type GoodsItemWithDetails struct {
+	GoodsDetailsID int `json:"goods_details_id,omitempty"`
+	GoodsID    int `json:"goods_id,omitempty"`
+
 	GoodsItem
 	GoodsDetailsItem
-
-	GoodsDetailsID int `json:"goods_details_id"`
-	GoodsItemID    int `json:"goods_id"`
 }
 
 //SimpleGoodsItem represents goods data items for dropdown menus

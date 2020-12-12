@@ -43,7 +43,7 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 		purRepo.SetTokenGenerator(env.Token)
 
 		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting slice of purchases, from:" + fmt.Sprint(sliceData.From) + ", count: " + fmt.Sprint(sliceData.Count))
-		
+
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 
 		purchases, err := purRepo.GetSlice(sliceData.From, sliceData.Count, user.UserID)
@@ -53,9 +53,27 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 			return
 		}
 
-		//TODO: we can use single request to db to get all purchases by array of ids
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: init goods repository")
 
-		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: marshalling slice of purchases")
+		var goodsRepo repos.GoodsRepository
+
+		goodsRepo.SetDb(env.Db)
+		goodsRepo.SetLogger(env.Logger)
+		goodsRepo.SetTokenGenerator(env.Token)
+
+		//TODO: we can use single request to db to get all purchases by array of ids
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting goods data for purchases")
+		for _, p := range purchases {
+			goodsData, err := goodsRepo.GetGoodsDataForPurchase(p.ID)
+			if err != nil {
+				msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+				utils.RespondError(w, msg, env.Logger)
+				return
+			}
+			p.GoodsData = goodsData
+		}
+
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: marshalling slice of purchases with goods data")
 
 		purchasesJSON, err := json.Marshal(purchases)
 		if err != nil {

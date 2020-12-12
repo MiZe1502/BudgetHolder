@@ -18,6 +18,13 @@ type Purchase struct {
 	Entity
 }
 
+//PurchaseWithGoods represents purchase data with corresponding goods
+type PurchaseWithGoods struct {
+	Purchase
+
+	GoodsData []*GoodsItemWithDetails `json:"goods_data,omitempty"`
+}
+
 //PurchasesRepository is a repository for purchases data
 type PurchasesRepository struct {
 	EntityRepository
@@ -36,8 +43,8 @@ func (r *PurchasesRepository) GetEntityByID(id int) (Purchase, error) {
 }
 
 //GetSlice returns slice of purchases data
-func (r *PurchasesRepository) GetSlice(from int, count int, userID int) ([]*Purchase, error) {
-	var purchases []*Purchase
+func (r *PurchasesRepository) GetSlice(from int, count int, userID int) ([]*PurchaseWithGoods, error) {
+	var purchases []*PurchaseWithGoods
 
 	err := pgxscan.Select(context.Background(), r.db, &purchases, `SELECT * from budget.get_purchases($1, $2, $3)`, from, count, userID)
 	if err != nil {
