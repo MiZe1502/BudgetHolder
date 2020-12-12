@@ -2,6 +2,7 @@ package repos
 
 import (
 	"context"
+	"time"
 
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/google/uuid"
@@ -11,7 +12,7 @@ import (
 type Purchase struct {
 	TotalPrice float32 `json:"total_price,omitempty"`
 	ShopID     int     `json:"shop_id,omitempty"`
-	Date       int32   `json:"date,omitempty"`
+	Date       time.Time     `json:"date,omitempty"`
 	Comment    string  `json:"comment,omitempty"`
 
 	Entity
