@@ -64,6 +64,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/categories/update", middlewareChain.Then(http.HandlerFunc(createUpdateCategoryHandler(env))))
 	
 	http.Handle("/api/v1/purchases/slice", middlewareChain.Then(http.HandlerFunc(createGetPurchasesWithGoodsDataSliceHandler(env))))
+	http.Handle("/api/v1/purchases/remove", middlewareChain.Then(http.HandlerFunc(createRemovePurchasesWithGoodsDetailsHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 

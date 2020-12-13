@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION remove_purchase(purchase_id INTEGER,
                                            user_session_uuid UUID)
     RETURNS INTEGER AS
 $BODY$
-    DECLARE user_by_session_id INTEGER;
+DECLARE user_by_session_id INTEGER;
     DECLARE removed_id INTEGER;
 BEGIN
     SELECT * INTO user_by_session_id
@@ -19,6 +19,7 @@ BEGIN
         updated_at = now(),
         updated_by_user_id = user_by_session_id
     WHERE id = purchase_id
+      AND added_by_user_id = user_by_session_id
     RETURNING id INTO removed_id;
 
     IF removed_id IS NOT NULL THEN
