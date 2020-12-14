@@ -31,7 +31,7 @@ type GoodsDetailsItem struct {
 //GoodsItemWithDetails represents goods data item with details fields
 type GoodsItemWithDetails struct {
 	GoodsDetailsID int `json:"goods_details_id,omitempty"`
-	GoodsID    int `json:"goods_id,omitempty"`
+	GoodsID        int `json:"goods_id,omitempty"`
 
 	GoodsItem
 	GoodsDetailsItem
@@ -159,7 +159,7 @@ func (r *GoodsRepository) CreateNewGoodsDetailsItem(goodsDetailsItemData *GoodsD
 }
 
 //RemoveGoodsDetails removes connection between purchase and goods item
-func (r *GoodsRepository) RemoveGoodsDetails(goodsDetailsID, purchaseID, goodsItemID int, uuid uuid.UUID) (int, error) {
+func (r *GoodsRepository) RemoveGoodsDetails(goodsDetailsID int, uuid uuid.UUID) (int, error) {
 	var removedGoodsDetailsItemID int
 
 	err := pgxscan.Get(context.Background(),
@@ -167,8 +167,8 @@ func (r *GoodsRepository) RemoveGoodsDetails(goodsDetailsID, purchaseID, goodsIt
 		&removedGoodsDetailsItemID,
 		`SELECT * from budget.remove_goods_details($1, $2, $3, $4::uuid)`,
 		goodsDetailsID,
-		purchaseID,
-		goodsItemID,
+		nil,
+		nil,
 		uuid)
 	if err != nil {
 		return IncorrectID, err
