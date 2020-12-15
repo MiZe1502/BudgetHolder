@@ -86,7 +86,7 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 	}
 }
 
-func createRemovePurchasesWithGoodsDetailsHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+func createRemovePurchaseWithGoodsDetailsHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.Logger.Info("createRemovePurchasesWithGoodsDetailsHandler: start")
 
@@ -177,3 +177,69 @@ func createRemoveGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 		utils.Respond(w, utils.Message(true, fmt.Sprint(removedGoodsDetailsID)), env.Logger)
 	}
 }
+
+func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: start")
+
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: getting data from request")
+
+		reqData := &repos.PurchaseWithGoods{}
+		err := json.NewDecoder(r.Body).Decode(reqData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddNewShopHandler: init repositories")
+
+		var purRepo repos.PurchasesRepository
+
+		purRepo.SetDb(env.Db)
+		purRepo.SetLogger(env.Logger)
+		purRepo.SetTokenGenerator(env.Token)
+
+		var goodsRepo repos.GoodsRepository
+
+		purRepo.SetDb(env.Db)
+		purRepo.SetLogger(env.Logger)
+		purRepo.SetTokenGenerator(env.Token)
+
+		//TODO: implement purchase validation
+		//TODO: implement goods validation
+
+		env.Logger.Info("createAddNewShopHandler: creating new purchase")
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		addedPurchaseID, err := purRepo.CreateNewPurchase(reqData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		reqData.ID = addedPurchaseID
+
+		env.Logger.Info("createAddNewShopHandler: creating goods details")
+
+		for _, item := range reqData.GoodsData {
+			if item.GoodsID != nil {
+				//TODO: Save new goods details item as connection between purchase and goods item
+			} else {
+				//TODO: Save new goods item
+				//TODO: Save new goods details item as connection between purchase and goods item
+			}
+		}
+	}
+}
+

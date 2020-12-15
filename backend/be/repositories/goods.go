@@ -30,8 +30,8 @@ type GoodsDetailsItem struct {
 
 //GoodsItemWithDetails represents goods data item with details fields
 type GoodsItemWithDetails struct {
-	GoodsDetailsID int `json:"goods_details_id,omitempty"`
-	GoodsID        int `json:"goods_id,omitempty"`
+	GoodsDetailsID *int `json:"goods_details_id,omitempty"`
+	GoodsID        *int `json:"goods_id,omitempty"`
 
 	GoodsItem
 	GoodsDetailsItem

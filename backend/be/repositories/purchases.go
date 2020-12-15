@@ -67,7 +67,7 @@ func (r *PurchasesRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, err
 }
 
 //CreateNewPurchase creates new purchase and returns its id
-func (r *PurchasesRepository) CreateNewPurchase(purchaseData *Purchase, sessionUUID uuid.UUID) (int, error) {
+func (r *PurchasesRepository) CreateNewPurchase(purchaseData *PurchaseWithGoods, sessionUUID uuid.UUID) (int, error) {
 	var addedPurchaseID int
 
 	err := pgxscan.Get(context.Background(),
