@@ -217,6 +217,7 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 
 		//TODO: implement purchase validation
 		//TODO: implement goods validation
+		//TODO: use single transaction
 
 		env.Logger.Info("createAddNewShopHandler: creating new purchase")
 
@@ -233,13 +234,32 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 		env.Logger.Info("createAddNewShopHandler: creating goods details")
 
 		for _, item := range reqData.GoodsData {
-			if item.GoodsID != nil {
-				//TODO: Save new goods details item as connection between purchase and goods item
-			} else {
-				//TODO: Save new goods item
-				//TODO: Save new goods details item as connection between purchase and goods item
+			if item.GoodsID == nil {
+				addedGoodsItemID, err := goodsRepo.CreateNewGoodsItem(item, user.SessionUUID)
+				if err != nil {
+					msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+					utils.RespondError(w, msg, env.Logger)
+					return
+				}
+
+				item.GoodsID = &addedGoodsItemID
 			}
+			addedGoodsDetailsID, err := goodsRepo.CreateNewGoodsDetailsItem(item, user.SessionUUID)
+			if err != nil {
+				msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+				utils.RespondError(w, msg, env.Logger)
+				return
+			}
+			item.GoodsDetailsID = &addedGoodsDetailsID
 		}
+
+		purchaseWithGoodsDataJSON, err := json.Marshal(reqData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), purchaseWithGoodsDataJSON), env.Logger)
 	}
 }
-
