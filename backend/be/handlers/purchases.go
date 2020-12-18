@@ -180,6 +180,20 @@ func createRemoveGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 
 func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		// GoodsDetailsID *int `json:"goods_details_id,omitempty"`
+		// GoodsID        *int `json:"goods_id,omitempty"`
+
+		// Name       string `json:"name,omitempty"`
+		// CategoryID int    `json:"category_id,omitempty"`
+		// Comment    string `json:"comment,omitempty"`
+		// BarCode    string `json:"bar_code,omitempty"`
+
+		// Amount      int     `json:"amount,omitempty"`
+		// Price       float32 `json:"price,omitempty"`
+		// PurchaseID  int     `json:"purchase_id,omitempty"`
+		// GoodsItemID int     `json:"goods_item_id,omitempty"`
+
 		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: start")
 
 		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: check request method: " + r.Method)

@@ -89,6 +89,12 @@ func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, err
 func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItemWithDetails, sessionUUID uuid.UUID) (int, error) {
 	var addedGoodsItemID int
 
+	fmt.Printf(goodsItemData.Name)
+	fmt.Printf(fmt.Sprint(goodsItemData.CategoryID))
+	fmt.Printf(goodsItemData.Comment)
+	fmt.Printf(goodsItemData.BarCode)
+	fmt.Printf(sessionUUID.String())
+
 	err := pgxscan.Get(context.Background(),
 		r.db,
 		&addedGoodsItemID,
@@ -99,6 +105,8 @@ func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItemWithDetails
 		goodsItemData.BarCode,
 		sessionUUID.String())
 	if err != nil {
+		fmt.Printf(err.Error())
+
 		return IncorrectID, err
 	}
 
