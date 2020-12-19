@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION get_purchase_by_id(purchase_id INTEGER)
     RETURNS TABLE(id INTEGER,
                   total_price MONEY,
                   shop_id INTEGER,
-                  date DATE,
+                  date TIMESTAMP,
                   comment VARCHAR(3000)) AS
 $$
     SELECT DISTINCT id, total_price, shop_id, date, comment

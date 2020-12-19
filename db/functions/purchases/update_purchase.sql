@@ -3,7 +3,7 @@ SET search_path TO budget;
 CREATE OR REPLACE FUNCTION update_purchase(purchase_id INTEGER,
                                            updated_total_price MONEY,
                                            updated_shop_id INTEGER,
-                                           updated_date DATE,
+                                           updated_date TIMESTAMP,
                                            updated_comment VARCHAR(3000),
                                            user_session_uuid UUID)
     RETURNS INTEGER AS

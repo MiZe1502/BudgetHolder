@@ -2,7 +2,7 @@ SET search_path TO budget;
 
 CREATE OR REPLACE FUNCTION create_new_purchase(total_price MONEY,
                                                shop_id INTEGER,
-                                               date DATE,
+                                               date TIMESTAMP,
                                                comment VARCHAR(3000),
                                                user_session_uuid UUID)
     RETURNS INTEGER AS
