@@ -2,6 +2,7 @@ package repos
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/georgysavva/scany/pgxscan"
@@ -11,7 +12,7 @@ import (
 //Purchase represents purchase basic data
 type Purchase struct {
 	TotalPrice float32 `json:"total_price,omitempty"`
-	ShopID     int     `json:"shop_id,omitempty"`
+	ShopID     *int    `json:"shop_id,omitempty"`
 	Date       int64   `json:"date,omitempty"`
 	Comment    string  `json:"comment,omitempty"`
 
@@ -105,4 +106,47 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 	}
 
 	return updatedPurchaseID, err
+}
+
+//IsShopValid validates shop data
+func (r *PurchasesRepository) IsPurchaseWithGoodsValid(data *PurchaseWithGoods) (bool, error) {
+	if data.ShopID == nil {
+		return false, errors.New("Validation failed. No shop provided")
+	}
+
+	if len(data.Comment) > 3000 {
+		return false, errors.New("Validation failed. Purchase comment contains more than 3000 characters")
+	}
+
+	var totalPrice float32 = 0.0
+
+	for _, item := range data.GoodsData {
+		if len(item.Name) > 300 {
+			return false, errors.New("Validation failed. Goods items name contains more than 300 characters")
+		}
+
+		if len(item.Comment) > 3000 {
+			return false, errors.New("Validation failed. Goods items comment contains more than 3000 characters")
+		}
+
+		if len(item.Comment) > 3000 {
+			return false, errors.New("Validation failed. Goods items comment contains more than 3000 characters")
+		}
+
+		if item.Amount <= 0 {
+			return false, errors.New("Validation failed. Goods items amount can not be <= 0")
+		}
+
+		if item.Price <= 0 {
+			return false, errors.New("Validation failed. Goods items price can not be <= 0")
+		}
+
+		totalPrice += item.Price
+	}
+
+	if data.TotalPrice != totalPrice {
+		return false, errors.New("Validation failed. Wrong total price")
+	}
+
+	return true, nil
 }

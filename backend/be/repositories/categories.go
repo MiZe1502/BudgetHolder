@@ -148,7 +148,7 @@ func (r *CategoriesRepository) IsCategoryValid(category *Category) (bool, error)
 	}
 
 	if len(category.Comment) > 3000 {
-		return false, errors.New("Validation failed. Category comment contains more than 100 characters")
+		return false, errors.New("Validation failed. Category comment contains more than 3000 characters")
 	}
 
 	return true, nil

@@ -180,20 +180,6 @@ func createRemoveGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 
 func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		// GoodsDetailsID *int `json:"goods_details_id,omitempty"`
-		// GoodsID        *int `json:"goods_id,omitempty"`
-
-		// Name       string `json:"name,omitempty"`
-		// CategoryID int    `json:"category_id,omitempty"`
-		// Comment    string `json:"comment,omitempty"`
-		// BarCode    string `json:"bar_code,omitempty"`
-
-		// Amount      int     `json:"amount,omitempty"`
-		// Price       float32 `json:"price,omitempty"`
-		// PurchaseID  int     `json:"purchase_id,omitempty"`
-		// GoodsItemID int     `json:"goods_item_id,omitempty"`
-
 		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: start")
 
 		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: check request method: " + r.Method)
@@ -215,7 +201,7 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 			return
 		}
 
-		env.Logger.Info("createAddNewShopHandler: init repositories")
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: init repositories")
 
 		var purRepo repos.PurchasesRepository
 
@@ -229,11 +215,25 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 		goodsRepo.SetLogger(env.Logger)
 		goodsRepo.SetTokenGenerator(env.Token)
 
-		//TODO: implement purchase validation
-		//TODO: implement goods validation
 		//TODO: use single transaction
 
-		env.Logger.Info("createAddNewShopHandler: creating new purchase")
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: validate new purchase with goods")
+
+		isValid, err := purRepo.IsPurchaseWithGoodsValid(reqData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: creating new purchase")
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 		addedPurchaseID, err := purRepo.CreateNewPurchase(reqData, user.SessionUUID)
@@ -245,7 +245,7 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 
 		reqData.ID = addedPurchaseID
 
-		env.Logger.Info("createAddNewShopHandler: creating goods details")
+		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: creating goods details")
 
 		for _, item := range reqData.GoodsData {
 			if item.GoodsID == nil {

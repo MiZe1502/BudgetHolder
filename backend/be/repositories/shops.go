@@ -128,7 +128,7 @@ func (r *ShopsRepository) IsShopValid(shop *Shop) (bool, error) {
 	}
 
 	if len(shop.Comment) > 3000 {
-		return false, errors.New("Validation failed. Shops comment contains more than 100 characters")
+		return false, errors.New("Validation failed. Shops comment contains more than 3000 characters")
 	}
 
 	return true, nil
