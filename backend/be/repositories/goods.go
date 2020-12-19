@@ -23,7 +23,7 @@ type GoodsDetailsItem struct {
 	Amount      int     `json:"amount,omitempty"`
 	Price       float32 `json:"price,omitempty"`
 	PurchaseID  int     `json:"purchase_id,omitempty"`
-	GoodsItemID int     `json:"goods_item_id,omitempty"`
+	GoodsItemID *int    `json:"goods_item_id,omitempty"`
 
 	Entity
 }
@@ -88,12 +88,6 @@ func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, err
 //CreateNewGoodsItem creates new goods item and returns its id
 func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItemWithDetails, sessionUUID uuid.UUID) (int, error) {
 	var addedGoodsItemID int
-
-	fmt.Printf(goodsItemData.Name)
-	fmt.Printf(fmt.Sprint(goodsItemData.CategoryID))
-	fmt.Printf(goodsItemData.Comment)
-	fmt.Printf(goodsItemData.BarCode)
-	fmt.Printf(sessionUUID.String())
 
 	err := pgxscan.Get(context.Background(),
 		r.db,

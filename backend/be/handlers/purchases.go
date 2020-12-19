@@ -225,9 +225,9 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 
 		var goodsRepo repos.GoodsRepository
 
-		purRepo.SetDb(env.Db)
-		purRepo.SetLogger(env.Logger)
-		purRepo.SetTokenGenerator(env.Token)
+		goodsRepo.SetDb(env.Db)
+		goodsRepo.SetLogger(env.Logger)
+		goodsRepo.SetTokenGenerator(env.Token)
 
 		//TODO: implement purchase validation
 		//TODO: implement goods validation
@@ -256,8 +256,9 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 					return
 				}
 
-				item.GoodsID = &addedGoodsItemID
+				item.GoodsItemID = &addedGoodsItemID
 			}
+			item.PurchaseID = addedPurchaseID
 			addedGoodsDetailsID, err := goodsRepo.CreateNewGoodsDetailsItem(item, user.SessionUUID)
 			if err != nil {
 				msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
