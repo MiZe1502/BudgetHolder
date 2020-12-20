@@ -212,8 +212,19 @@ func createUpdatePurchaseHandler(env *env.Env) func(w http.ResponseWriter, r *ht
 
 		env.Logger.Info("createUpdatePurchaseHandler: validate purchase with id: " + fmt.Sprint(purchaseData.ID))
 
-		//TODO: validate purchase
+		isValid, err := repo.IsPurchaseValid(purchaseData)
 
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
 		env.Logger.Info("createUpdatePurchaseHandler: updating purchase with id: " + fmt.Sprint(purchaseData.ID))
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)

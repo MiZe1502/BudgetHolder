@@ -98,7 +98,7 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 		purchaseData.ID,
 		purchaseData.TotalPrice,
 		purchaseData.ShopID,
-		purchaseData.Date,
+		time.Unix(0, purchaseData.Date),
 		purchaseData.Comment,
 		sessionUUID.String())
 	if err != nil {
@@ -108,7 +108,20 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 	return updatedPurchaseID, err
 }
 
-//IsShopValid validates shop data
+//IsPurchaseWithGoodsValid validates purchase
+func (r *PurchasesRepository) IsPurchaseValid(data *Purchase) (bool, error) {
+	if data.ShopID == nil {
+		return false, errors.New("Validation failed. No shop provided")
+	}
+
+	if len(data.Comment) > 3000 {
+		return false, errors.New("Validation failed. Purchase comment contains more than 3000 characters")
+	}
+
+	return true, nil
+}
+
+//IsPurchaseWithGoodsValid validates purchase with goods data
 func (r *PurchasesRepository) IsPurchaseWithGoodsValid(data *PurchaseWithGoods) (bool, error) {
 	if data.ShopID == nil {
 		return false, errors.New("Validation failed. No shop provided")
