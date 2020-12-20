@@ -12,13 +12,9 @@
         3.1.6. remove item
         3.1.7. update single item
     3.2. purchases
-        3.2.2. create single purchase
-        3.2.3. create goods details items
-        3.2.4. create single purchase with connected goods items
         3.2.5. get goods data for purchase by id
         3.2.6. get purchase
         3.2.11. update goods details
-        3.2.12. update purchase
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
