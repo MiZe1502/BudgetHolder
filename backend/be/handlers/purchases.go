@@ -178,6 +178,65 @@ func createRemoveGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 	}
 }
 
+func createUpdatePurchaseHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createUpdatePurchaseHandler: start")
+
+		env.Logger.Info("createUpdatePurchaseHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdatePurchaseHandler: getting data from request")
+
+		purchaseData := &repos.Purchase{}
+
+		err := json.NewDecoder(r.Body).Decode(purchaseData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdatePurchaseHandler: init purchase repository")
+
+		var repo repos.PurchasesRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createUpdatePurchaseHandler: validate purchase with id: " + fmt.Sprint(purchaseData.ID))
+
+		//TODO: validate purchase
+
+		env.Logger.Info("createUpdatePurchaseHandler: updating purchase with id: " + fmt.Sprint(purchaseData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		updatedPurchaseID, err := repo.UpdatePurchase(purchaseData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdatePurchaseHandler: updated purchase with id: " + fmt.Sprint(updatedPurchaseID))
+
+		purchaseJSON, err := json.Marshal(purchaseData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), purchaseJSON), env.Logger)
+	}
+}
+
 func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.Logger.Info("createAddPurchaseWithGoodsDataHandler: start")
