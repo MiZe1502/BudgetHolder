@@ -132,6 +132,78 @@ func createRemovePurchaseWithGoodsDetailsHandler(env *env.Env) func(w http.Respo
 	}
 }
 
+func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: start")
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		goodsDetailsData := &repos.GoodsItemWithDetails{}
+
+		err := json.NewDecoder(r.Body).Decode(goodsDetailsData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: init goods repository")
+
+		var repo repos.GoodsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		//TODO: implement validation
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updating goods with details")
+
+		goodsData := repos.GoodsItem{
+			Name:       goodsDetailsData.Name,
+			BarCode:    goodsDetailsData.BarCode,
+			CategoryID: goodsDetailsData.CategoryID,
+			Comment:    goodsDetailsData.Comment,
+			Entity:     repos.Entity{ID: *goodsDetailsData.GoodsItemID},
+		}
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		updatedGoodsItemID, err := repo.UpdateGoodsItem(&goodsData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updated goods item with id: " + fmt.Sprint(updatedGoodsItemID))
+
+		goodsDetailsItemData := repos.GoodsDetailsItem{
+			GoodsItemID: goodsDetailsData.GoodsItemID,
+			Price:       goodsDetailsData.Price,
+			PurchaseID:  goodsDetailsData.PurchaseID,
+			Amount:      goodsDetailsData.Amount,
+			Entity:      repos.Entity{ID: *goodsDetailsData.GoodsDetailsID},
+		}
+		updatedGoodsDetailsItemID, err := repo.UpdateGoodsDetailsItem(&goodsDetailsItemData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updated goods details item with id: " + fmt.Sprint(updatedGoodsDetailsItemID))
+
+		utils.Respond(w, utils.Message(true, ""), env.Logger)
+	}
+}
+
 func createRemoveGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		env.Logger.Info("createRemoveGoodsDetailsItemHandler: start")
