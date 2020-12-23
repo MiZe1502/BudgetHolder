@@ -162,9 +162,7 @@ func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		//TODO: implement validation
-
-		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updating goods with details")
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: create separated structs with goods data")
 
 		goodsData := repos.GoodsItem{
 			Name:       goodsDetailsData.Name,
@@ -173,6 +171,48 @@ func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 			Comment:    goodsDetailsData.Comment,
 			Entity:     repos.Entity{ID: *goodsDetailsData.GoodsItemID},
 		}
+
+		goodsDetailsItemData := repos.GoodsDetailsItem{
+			GoodsItemID: goodsDetailsData.GoodsItemID,
+			Price:       goodsDetailsData.Price,
+			PurchaseID:  goodsDetailsData.PurchaseID,
+			Amount:      goodsDetailsData.Amount,
+			Entity:      repos.Entity{ID: *goodsDetailsData.GoodsDetailsID},
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: validate goods item with id: " + fmt.Sprint(goodsData.ID))
+
+		isValid, err := repo.IsGoodsItemValid(&goodsData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: validate goods details item with id: " + fmt.Sprint(goodsDetailsItemData.ID))
+
+		isValid, err = repo.IsGoodsDetailsItemValid(&goodsDetailsItemData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updating goods with details")
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 		updatedGoodsItemID, err := repo.UpdateGoodsItem(&goodsData, user.SessionUUID)
@@ -184,13 +224,6 @@ func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 
 		env.Logger.Info("createUpdateGoodsDetailsItemHandler: updated goods item with id: " + fmt.Sprint(updatedGoodsItemID))
 
-		goodsDetailsItemData := repos.GoodsDetailsItem{
-			GoodsItemID: goodsDetailsData.GoodsItemID,
-			Price:       goodsDetailsData.Price,
-			PurchaseID:  goodsDetailsData.PurchaseID,
-			Amount:      goodsDetailsData.Amount,
-			Entity:      repos.Entity{ID: *goodsDetailsData.GoodsDetailsID},
-		}
 		updatedGoodsDetailsItemID, err := repo.UpdateGoodsDetailsItem(&goodsDetailsItemData, user.SessionUUID)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)

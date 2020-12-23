@@ -142,10 +142,6 @@ func (r *PurchasesRepository) IsPurchaseWithGoodsValid(data *PurchaseWithGoods) 
 			return false, errors.New("Validation failed. Goods items comment contains more than 3000 characters")
 		}
 
-		if len(item.Comment) > 3000 {
-			return false, errors.New("Validation failed. Goods items comment contains more than 3000 characters")
-		}
-
 		if item.Amount <= 0 {
 			return false, errors.New("Validation failed. Goods items amount can not be <= 0")
 		}

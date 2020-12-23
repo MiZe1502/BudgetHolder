@@ -2,6 +2,7 @@ package repos
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/georgysavva/scany/pgxscan"
@@ -210,4 +211,30 @@ func (r *GoodsRepository) GetGoodsDataForPurchase(purchaseID int) ([]*GoodsItemW
 	}
 
 	return goodsData, err
+}
+
+//IsPurchaseWithGoodsValid validates purchase with goods data
+func (r *GoodsRepository) IsGoodsItemValid(item *GoodsItem) (bool, error) {
+	if len(item.Name) > 300 {
+		return false, errors.New("Validation failed. Goods items name contains more than 300 characters")
+	}
+
+	if len(item.Comment) > 3000 {
+		return false, errors.New("Validation failed. Goods items comment contains more than 3000 characters")
+	}
+
+	return true, nil
+}
+
+//IsPurchaseWithGoodsValid validates purchase with goods data
+func (r *GoodsRepository) IsGoodsDetailsItemValid(item *GoodsDetailsItem) (bool, error) {
+	if item.Amount <= 0 {
+		return false, errors.New("Validation failed. Goods items amount can not be <= 0")
+	}
+
+	if item.Price <= 0 {
+		return false, errors.New("Validation failed. Goods items price can not be <= 0")
+	}
+
+	return true, nil
 }
