@@ -11,8 +11,6 @@
         3.1.5. get top items by name
         3.1.6. remove item
         3.1.7. update single item
-    3.2. purchases
-        3.2.11. update goods details
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
