@@ -11,10 +11,10 @@ import (
 
 //GoodsItem represents goods data item
 type GoodsItem struct {
-	Name       string `json:"name,omitempty"`
-	CategoryID int    `json:"category_id,omitempty"`
-	Comment    string `json:"comment,omitempty"`
-	BarCode    string `json:"bar_code,omitempty"`
+	Name       string  `json:"name,omitempty"`
+	CategoryID int     `json:"category_id,omitempty"`
+	Comment    string  `json:"comment,omitempty"`
+	BarCode    *string `json:"bar_code,omitempty"`
 
 	Entity
 }
@@ -62,10 +62,10 @@ func (r *GoodsRepository) GetEntityByID(id int) (GoodsItem, error) {
 }
 
 //GetSlice returns slice of goods items
-func (r *GoodsRepository) GetSlice(from int, count int) ([]*GoodsItem, error) {
+func (r *GoodsRepository) GetSlice(from int, count int, userID int) ([]*GoodsItem, error) {
 	var goodsItems []*GoodsItem
 
-	err := pgxscan.Select(context.Background(), r.db, &goodsItems, `SELECT * from budget.get_goods_items($1, $2)`, from, count)
+	err := pgxscan.Select(context.Background(), r.db, &goodsItems, `SELECT * from budget.get_goods_items($1, $2, $3)`, from, count, userID)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
