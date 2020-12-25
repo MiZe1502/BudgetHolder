@@ -115,3 +115,57 @@ func createGetGoodsItemByIDHandler(env *env.Env) func(w http.ResponseWriter, r *
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemJSON), env.Logger)
 	}
 }
+
+func createGetTopGoodsItemByNameHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: start")
+
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: getting data from request")
+
+		goodsData := &repos.SimpleEntity{}
+
+		err := json.NewDecoder(r.Body).Decode(goodsData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: init goods repository")
+
+		var repo repos.GoodsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: getting list of top goods items for name: " + goodsData.Name)
+
+		goodsItems, err := repo.GetTopGoodsItemsByName(goodsData.Name)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetTopGoodsItemByNameHandler: marshalling list of top goods items")
+
+		goodsItemsJSON, err := json.Marshal(goodsItems)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemsJSON), env.Logger)
+	}
+}

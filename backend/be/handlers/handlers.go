@@ -72,6 +72,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 
 	http.Handle("/api/v1/goods/slice", middlewareChain.Then(http.HandlerFunc(createGetGoodsSliceHandler(env))))
 	http.Handle("/api/v1/goods/get", middlewareChain.Then(http.HandlerFunc(createGetGoodsItemByIDHandler(env))))
+	http.Handle("/api/v1/goods/top", middlewareChain.Then(http.HandlerFunc(createGetTopGoodsItemByNameHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
