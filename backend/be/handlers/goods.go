@@ -169,3 +169,51 @@ func createGetTopGoodsItemByNameHandler(env *env.Env) func(w http.ResponseWriter
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemsJSON), env.Logger)
 	}
 }
+
+func createRemoveGoodsItemHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createRemoveGoodsItemHandler: start")
+
+		env.Logger.Info("createRemoveGoodsItemHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveGoodsItemHandler: getting data from request")
+
+		goodsData := &repos.Entity{}
+
+		err := json.NewDecoder(r.Body).Decode(goodsData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveGoodsItemHandler: init goods repository")
+
+		var repo repos.GoodsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createRemoveGoodsItemHandler: removing goods item with id: " + fmt.Sprint(goodsData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		removedGoodsItemID, err := repo.RemoveEntityByID(goodsData.ID, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createRemoveShopHandler: successfully removed goods item with id: " + fmt.Sprint(removedGoodsItemID))
+
+		utils.Respond(w, utils.Message(true, fmt.Sprint(removedGoodsItemID)), env.Logger)
+	}
+}
