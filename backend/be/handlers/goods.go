@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	env "../env"
@@ -60,5 +61,57 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 		}
 
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsJSON), env.Logger)
+	}
+}
+
+func createGetGoodsItemByIDHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createGetGoodsItemByIDHandler: start")
+
+		env.Logger.Info("createGetGoodsItemByIDHandler: check request method: " + r.Method)
+
+		if r.Method != "GET" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetGoodsItemByIDHandler: getting data from request")
+
+		goodsItemData := &repos.Entity{}
+
+		err := json.NewDecoder(r.Body).Decode(goodsItemData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetGoodsItemByIDHandler: init goods repository")
+
+		var repo repos.GoodsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetGoodsItemByIDHandler: getting goods item with id: " + fmt.Sprint(goodsItemData.ID))
+
+		goodsItem, err := repo.GetEntityByID(goodsItemData.ID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		goodsItemJSON, err := json.Marshal(goodsItem)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemJSON), env.Logger)
 	}
 }
