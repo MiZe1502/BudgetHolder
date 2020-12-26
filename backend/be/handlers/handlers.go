@@ -75,9 +75,9 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/goods/top", middlewareChain.Then(http.HandlerFunc(createGetTopGoodsItemByNameHandler(env))))
 	http.Handle("/api/v1/goods/remove", middlewareChain.Then(http.HandlerFunc(createRemoveGoodsItemHandler(env))))
 	http.Handle("/api/v1/goods/add", middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env))))
+	http.Handle("/api/v1/goods/update", middlewareChain.Then(http.HandlerFunc(createUpdateGoodsItemHandler(env))))
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
 	http.ListenAndServe(":8080", nil)
-
 }

@@ -289,3 +289,74 @@ func createAddNewGoodsItemHandler(env *env.Env) func(w http.ResponseWriter, r *h
 		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemJSON), env.Logger)
 	}
 }
+
+func createUpdateGoodsItemHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		env.Logger.Info("createUpdateGoodsItemHandler: start")
+
+		env.Logger.Info("createUpdateGoodsItemHandler: check request method: " + r.Method)
+
+		if r.Method != "POST" {
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsItemHandler: getting data from request")
+
+		goodsItemData := &repos.GoodsItem{}
+
+		err := json.NewDecoder(r.Body).Decode(goodsItemData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsItemHandler: init goods repository")
+
+		var repo repos.GoodsRepository
+
+		repo.SetDb(env.Db)
+		repo.SetLogger(env.Logger)
+		repo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createUpdateGoodsItemHandler: validate goods item with id: " + fmt.Sprint(goodsItemData.ID))
+
+		isValid, err := repo.IsGoodsItemValid(goodsItemData)
+
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		if !isValid {
+			msg := utils.MessageError(utils.Message(false, "Smth went wrong. Validation failed without error"), http.StatusBadRequest)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsItemHandler: updating goods item with id: " + fmt.Sprint(goodsItemData.ID))
+
+		user := r.Context().Value("userCtx").(*repos.UserContext)
+		updatedGoodsItemID, err := repo.UpdateGoodsItem(goodsItemData, user.SessionUUID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createUpdateGoodsItemHandler: updated goods item with id: " + fmt.Sprint(updatedGoodsItemID))
+
+		goodsItemJSON, err := json.Marshal(goodsItemData)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		utils.Respond(w, utils.MessageData(utils.Message(true, ""), goodsItemJSON), env.Logger)
+	}
+}

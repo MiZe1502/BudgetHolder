@@ -2,10 +2,7 @@
     1.1. add sequrity definer to all function and set owner to ro user
     1.2. add indexes
 2. architecture
-    2.1. implement opentracing logging 
-3. endpoints
-    3.1. goods
-        3.1.7. update single item
+    2.1. implement opentracing logging
 4. connections hub
     4.1. implement broadcast mechanism to send messages across single group
     4.2. the same for all users
