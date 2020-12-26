@@ -87,7 +87,7 @@ func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, err
 }
 
 //CreateNewGoodsItem creates new goods item and returns its id
-func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItemWithDetails, sessionUUID uuid.UUID) (int, error) {
+func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItem, sessionUUID uuid.UUID) (int, error) {
 	var addedGoodsItemID int
 
 	err := pgxscan.Get(context.Background(),

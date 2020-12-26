@@ -424,7 +424,12 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 
 		for _, item := range reqData.GoodsData {
 			if item.GoodsID == nil {
-				addedGoodsItemID, err := goodsRepo.CreateNewGoodsItem(item, user.SessionUUID)
+				goodsItem := repos.GoodsItem{Comment: item.Comment,
+					CategoryID: item.CategoryID,
+					BarCode:    item.BarCode,
+					Name:       item.Name}
+
+				addedGoodsItemID, err := goodsRepo.CreateNewGoodsItem(&goodsItem, user.SessionUUID)
 				if err != nil {
 					msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 					utils.RespondError(w, msg, env.Logger)
