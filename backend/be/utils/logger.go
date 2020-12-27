@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -45,6 +47,7 @@ type Logger struct {
 	instance  *logrus.Logger
 	config    Config
 	traceUUID string
+	curDay    int
 }
 
 // ParseLoggerConfig parses json config for logger
@@ -59,7 +62,7 @@ func ParseLoggerConfig(config []byte) (Config, error) {
 func formFileName(parsedConfig Config) string {
 	fileName := ""
 	if !parsedConfig.Output.UseDefaultFile {
-		fileName = time.Now().UTC().Format(parsedConfig.Output.FileDateFormat) + parsedConfig.Output.FileExt
+		fileName = time.Now().UTC().Format(parsedConfig.Output.FileDateFormat) + fmt.Sprint(rand.Int()) + parsedConfig.Output.FileExt
 	} else {
 		fileName = parsedConfig.Output.DefaultFileName + parsedConfig.Output.FileExt
 	}
@@ -84,6 +87,8 @@ func InitLogger(env conf.EnvironmentKey) (*Logger, error) {
 
 	logger.setInstance(log)
 	logger.setConfig(parsedConfig)
+	logger.updateCurLoggerDay()
+
 	err = logger.setLoggerOutput()
 	if err != nil {
 		return nil, err
@@ -92,6 +97,10 @@ func InitLogger(env conf.EnvironmentKey) (*Logger, error) {
 	err = logger.setLoggingSettings()
 
 	return &logger, err
+}
+
+func (l *Logger) updateCurLoggerDay() {
+	l.curDay = time.Now().Day()
 }
 
 func (l *Logger) setInstance(logger *logrus.Logger) {
@@ -123,6 +132,29 @@ func (l *Logger) setLoggerOutput() error {
 	}
 
 	return nil
+}
+
+func (l *Logger) isDayChanged() bool {
+	curTime := time.Now()
+	curDay := curTime.Day()
+
+	return curDay != l.curDay
+}
+
+func (l *Logger) updateLogFile() {
+	isNewDay := l.isDayChanged()
+
+	if isNewDay {
+		l.updateCurLoggerDay()
+		l.setLoggerOutput() // initialize new log file
+	}
+}
+
+// ProcessLogFileUpdate check current date and creates new log file for new day
+func (l *Logger) ProcessLogFileUpdate() {
+	for {
+		l.updateLogFile()
+	}
 }
 
 func (l *Logger) setLoggingSettings() error {

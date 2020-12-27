@@ -38,6 +38,7 @@ func main() {
 	context := &env.Env{Db: conn, Logger: log, Token: tokenGenerator}
 
 	go hub.RunHub(context)
+	go log.ProcessLogFileUpdate()
 
 	defer conn.Close()
 	defer hub.CloseAllConnections(context)
