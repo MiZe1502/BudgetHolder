@@ -35,7 +35,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	context := &env.Env{Db: conn, Logger: log, Token: tokenGenerator}
+	context := &env.Env{EnvironmentKey: "Dev",
+		Db:     conn,
+		Logger: log,
+		Token:  tokenGenerator}
 
 	go hub.RunHub(context)
 	go log.ProcessLogFileUpdate()

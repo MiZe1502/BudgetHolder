@@ -1,14 +1,24 @@
 package handlers
 
 import (
+	conf "../configuration"
 	env "../env"
 	wshub "../hub"
 	repos "../repositories"
+	"encoding/json"
 	"fmt"
 	"github.com/justinas/alice"
 	"io/ioutil"
 	"net/http"
 )
+
+// Config stores logger configuration
+type Config struct {
+	IsHTTPS  bool   `json:"https"`
+	CertPath string `json:"certPath"`
+	KeyPath  string `json:"keyPath"`
+	Port     int    `json:"port"`
+}
 
 func createTestMessageHandler(env *env.Env, hub *wshub.Hub) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -30,8 +40,31 @@ func serveStatic(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "test.html")
 }
 
+// parseLoggerConfig parses json config for logger
+func parseLoggerConfig(config []byte) (Config, error) {
+	var parsedConfig Config
+
+	err := json.Unmarshal(config, &parsedConfig)
+
+	return parsedConfig, err
+}
+
+func formStringPort(port int) string {
+	return ":" + fmt.Sprint(port)
+}
+
 // InitHandlers initialize all endpoints with middlewares and handlers
 func InitHandlers(env *env.Env, hub *wshub.Hub) {
+	config, err := conf.ReadServerConfig(conf.EnvironmentKey(env.EnvironmentKey))
+	if err != nil {
+		env.Logger.Fatal("Error reading server config: " + err.Error())
+	}
+
+	parsedConfig, err := parseLoggerConfig(config)
+	if err != nil {
+		env.Logger.Fatal("Error parsing server config: " + err.Error())
+	}
+
 	middlewareChain := alice.New(createMiddleware(env, Trace),
 		createMiddleware(env, Logger),
 		createMiddleware(env, CheckSession))
@@ -78,7 +111,9 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
-	http.ListenAndServeTLS(":8080", "./configuration/https/cert.pem", "./configuration/https/key.pem", nil)
-
-	//http.ListenAndServe(":8080", nil)
+	if parsedConfig.IsHTTPS {
+		http.ListenAndServeTLS(formStringPort(parsedConfig.Port), parsedConfig.CertPath, parsedConfig.KeyPath, nil)
+	} else {
+		http.ListenAndServe(formStringPort(parsedConfig.Port), nil)
+	}
 }

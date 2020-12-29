@@ -7,9 +7,10 @@ import (
 
 //Env stores current global app variables
 type Env struct {
-	Db     *pgxpool.Pool
-	Logger *utils.Logger
-	Token  *utils.TokenGenerator
+	Db             *pgxpool.Pool
+	Logger         *utils.Logger
+	Token          *utils.TokenGenerator
+	EnvironmentKey EnvironmentKey
 }
 
 // EnvironmentKey is a type for env keys enum

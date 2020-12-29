@@ -17,8 +17,24 @@ const (
 const (
 	dbConfigPath     = "./configuration/configs/db.json"
 	loggerConfigPath = "./configuration/configs/logger.json"
-	tokenConfigPath = "./configuration/configs/token.json"
+	tokenConfigPath  = "./configuration/configs/token.json"
+	serverConfigPath = "./configuration/configs/server.json"
 )
+
+// ReadServerConfig reads config for server as byte array
+func ReadServerConfig(env EnvironmentKey) ([]byte, error) {
+	config, err := os.Open(serverConfigPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer config.Close()
+
+	byteValue, err := ioutil.ReadAll(config)
+
+	return byteValue, err
+}
 
 // ReadDbConfig reads config for pg db as byte array
 func ReadDbConfig(env EnvironmentKey) ([]byte, error) {
