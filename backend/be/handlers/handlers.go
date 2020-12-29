@@ -1,14 +1,13 @@
 package handlers
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
-
 	env "../env"
 	wshub "../hub"
 	repos "../repositories"
+	"fmt"
 	"github.com/justinas/alice"
+	"io/ioutil"
+	"net/http"
 )
 
 func createTestMessageHandler(env *env.Env, hub *wshub.Hub) func(w http.ResponseWriter, r *http.Request) {
@@ -79,5 +78,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 
 	http.Handle("/message", middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub))))
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServeTLS(":8080", "./configuration/https/cert.pem", "./configuration/https/key.pem", nil)
+
+	//http.ListenAndServe(":8080", nil)
 }

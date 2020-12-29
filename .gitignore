@@ -3,6 +3,8 @@
 /frontend/test_coverage/
 
 /backend/be/configuration/configs
+/backend/be/configuration/https
+
 /backend/be/*.exe
 /backend/be/logs
 

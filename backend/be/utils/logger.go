@@ -3,8 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -62,7 +60,7 @@ func ParseLoggerConfig(config []byte) (Config, error) {
 func formFileName(parsedConfig Config) string {
 	fileName := ""
 	if !parsedConfig.Output.UseDefaultFile {
-		fileName = time.Now().UTC().Format(parsedConfig.Output.FileDateFormat) + fmt.Sprint(rand.Int()) + parsedConfig.Output.FileExt
+		fileName = time.Now().UTC().Format(parsedConfig.Output.FileDateFormat) + parsedConfig.Output.FileExt
 	} else {
 		fileName = parsedConfig.Output.DefaultFileName + parsedConfig.Output.FileExt
 	}
