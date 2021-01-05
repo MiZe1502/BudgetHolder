@@ -1,5 +1,0 @@
-2. indexes
-    users, user_data, user_group - often read
-    categories - often read
-    shops - often read
-    goods_categories - often read

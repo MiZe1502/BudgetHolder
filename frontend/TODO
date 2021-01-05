@@ -1,9 +1,0 @@
-3. functionality
-    3.3. websockets
-        3.3.1. common store integrated with websockets
-    3.4. auth
-        3.4.1. client cert
-    3.5. navigation
-        3.5.1. bottom navigation panel with action buttons
-    3.6. common
-        3.6.1. set todos labels across the codebase
