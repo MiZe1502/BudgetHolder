@@ -2,6 +2,7 @@ import { get, writable } from 'svelte/store'
 import { MockedUserData, mockedUsers } from '../pages/Auth/data'
 import { addDataToLocalStorage } from '../common/utils/localStorage'
 import { ValidationResult } from '../pages/Budget/types'
+import { authReq } from '../pages/Auth/api'
 
 export interface UserData {
     name?: string;
@@ -55,6 +56,12 @@ export const setCurrentSession = (userData: UserData) => {
     lastLogin: new Date(),
     userData: userData
   })
+}
+
+export const authorize = async (authData: AuthData) => {
+  const res = await authReq(authData)
+
+    console.log(res)
 }
 
 // TODO: mock method to emulate auth

@@ -11,6 +11,7 @@
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import {
+        authorize,
         clearAuthAndRegData,
         currentAuthData,
         currentRegData,
@@ -34,7 +35,7 @@
         }
     }
 
-    const onAuth = (event: Event<HTMLFormElement>) => {
+    const onAuth = async (event: Event<HTMLFormElement>) => {
         event.preventDefault();
 
         clearValidationResults();
@@ -45,7 +46,7 @@
             return;
         }
 
-        const error = mockAuthorize($currentAuthData);
+        const error = await authorize($currentAuthData);
 
         updateValidationResults(error);
 

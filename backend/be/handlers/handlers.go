@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/justinas/alice"
+	"github.com/rs/cors"
 	"io/ioutil"
 	"net/http"
 )
@@ -72,7 +73,9 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env, hub))))
 
-	http.Handle("/api/v1/user/auth", middlewareChain.Then(http.HandlerFunc(createAuthHandler(env))))
+	//TODO: configure cors
+
+	http.Handle("/api/v1/user/auth", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAuthHandler(env)))))
 	http.Handle("/api/v1/user/new", middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env))))
 	http.Handle("/api/v1/user/sync", middlewareChain.Then(http.HandlerFunc(createActualizeUserLastOnlineHandler(env))))
 	http.Handle("/api/v1/user/full", middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env))))
