@@ -2,7 +2,8 @@ import { get, writable } from 'svelte/store'
 import { MockedUserData, mockedUsers } from '../pages/Auth/data'
 import { addDataToLocalStorage } from '../common/utils/localStorage'
 import { ValidationResult } from '../pages/Budget/types'
-import { authReq } from '../pages/Auth/api'
+import { authReq, getUserReq } from '../pages/Auth/api'
+import { SuccessResponse } from '../common/utils/api'
 
 export interface UserData {
     name?: string;
@@ -61,26 +62,41 @@ export const setCurrentSession = (userData: UserData) => {
 export const authorize = async (authData: AuthData) => {
   const res = await authReq(authData)
 
-    console.log(res)
-}
-
-// TODO: mock method to emulate auth
-export const mockAuthorize = (authData: AuthData): string | undefined => {
-  const currentUser = get(users).find((item) => item.login === authData.login)
-
-  if (!currentUser) {
-    return `User with login ${authData.login} not found`
+  if (!res.status) {
+    return 'Authorization error'
   }
 
-  if (currentUser.password !== authData.password) {
-    return `Incorrect password for user ${authData.login}`
-  }
-
-  setCurrentSession(Object.assign({}, currentUser, { password: undefined }))
   setAuthStatus(true)
-  addDataToLocalStorage(sessionKey, Object.assign({}, currentUser, { password: undefined }))
-  addDataToLocalStorage(authStatusKey, get(authStatus))
+  addDataToLocalStorage(sessionKey, (res as SuccessResponse).message)
 }
+
+export const getUserData = async (login: string) => {
+  const res = await getUserReq({ login })
+
+  if (!res.status) {
+    return 'Error fetching user data'
+  }
+
+  console.log(res)
+}
+
+// // TODO: mock method to emulate auth
+// export const mockAuthorize = (authData: AuthData): string | undefined => {
+//   const currentUser = get(users).find((item) => item.login === authData.login)
+//
+//   if (!currentUser) {
+//     return `User with login ${authData.login} not found`
+//   }
+//
+//   if (currentUser.password !== authData.password) {
+//     return `Incorrect password for user ${authData.login}`
+//   }
+//
+//   setCurrentSession(Object.assign({}, currentUser, { password: undefined }))
+//   setAuthStatus(true)
+//   addDataToLocalStorage(sessionKey, Object.assign({}, currentUser, { password: undefined }))
+//   addDataToLocalStorage(authStatusKey, get(authStatus))
+// }
 
 export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefined => {
   const existedUser = get(users).find((item) => item.login === regData.login)

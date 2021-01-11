@@ -14,8 +14,7 @@
         authorize,
         clearAuthAndRegData,
         currentAuthData,
-        currentRegData,
-        mockAuthorize, mockSaveAndAuthorize
+        currentRegData, getUserData, mockSaveAndAuthorize
     } from "../../../stores/auth";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
@@ -47,6 +46,8 @@
         }
 
         const error = await authorize($currentAuthData);
+
+        const user = await getUserData($currentAuthData.login)
 
         updateValidationResults(error);
 
