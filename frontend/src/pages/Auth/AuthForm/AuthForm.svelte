@@ -13,9 +13,9 @@
     import {
         authorize,
         clearAuthAndRegData,
-            currentSession,
+        currentSession,
         currentAuthData,
-        currentRegData, getUserData, mockSaveAndAuthorize
+        currentRegData, getUserData, registerUser
     } from "../../../stores/auth";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
@@ -38,8 +38,6 @@
     const onAuth = async (event: Event<HTMLFormElement>) => {
         event.preventDefault();
 
-        console.log("here")
-
         clearValidationResults();
 
         validateForm($currentAuthData);
@@ -50,19 +48,18 @@
 
         const error = await authorize($currentAuthData);
 
-        const user = await getUserData($currentAuthData.login)
+        await getUserData($currentAuthData.login)
 
         updateValidationResults(error);
 
         if (!error) {
             clearValidationResults();
             clearAuthAndRegData();
-            console.log("session", $currentSession)
             navigate(routes.budget, {replace: true});
         }
     }
 
-    const saveAndAuth = (event: Event<HTMLFormElement>) => {
+    const saveAndAuth = async (event: Event<HTMLFormElement>) => {
         event.preventDefault();
 
         clearValidationResults();
@@ -73,7 +70,7 @@
             return;
         }
 
-        const error = mockSaveAndAuthorize($currentRegData);
+        const error = await registerUser($currentRegData);
 
         updateValidationResults(error);
 

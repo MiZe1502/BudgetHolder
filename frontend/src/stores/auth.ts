@@ -2,7 +2,7 @@ import { get, writable } from 'svelte/store'
 import { MockedUserData, mockedUsers } from '../pages/Auth/data'
 import { addDataToLocalStorage } from '../common/utils/localStorage'
 import { ValidationResult } from '../pages/Budget/types'
-import { authReq, getUserReq } from '../pages/Auth/api'
+import { authReq, getUserReq, registrationReq } from '../pages/Auth/api'
 import { SuccessResponse } from '../common/utils/api'
 
 export interface UserData {
@@ -84,38 +84,22 @@ export const getUserData = async (login: string) => {
   addDataToLocalStorage(authStatusKey, get(authStatus))
 }
 
-// // TODO: mock method to emulate auth
-// export const mockAuthorize = (authData: AuthData): string | undefined => {
-//   const currentUser = get(users).find((item) => item.login === authData.login)
-//
-//   if (!currentUser) {
-//     return `User with login ${authData.login} not found`
-//   }
-//
-//   if (currentUser.password !== authData.password) {
-//     return `Incorrect password for user ${authData.login}`
-//   }
-//
-//   setCurrentSession(Object.assign({}, currentUser, { password: undefined }))
-//   setAuthStatus(true)
-//   addDataToLocalStorage(sessionKey, Object.assign({}, currentUser, { password: undefined }))
-//   addDataToLocalStorage(authStatusKey, get(authStatus))
-// }
+export const registerUser = async (regData: RegistrationData) => {
+  const res = await registrationReq(Object.assign({ group_name: 'test_group' }, regData))
 
-export const mockSaveAndAuthorize = (regData: RegistrationData): string | undefined => {
-  const existedUser = get(users).find((item) => item.login === regData.login)
-
-  if (existedUser) {
-    return `User with login ${regData.login} already exists`
+  if (!res.status) {
+    return 'Error while new user registration'
   }
 
-  users.update(users => {
-    return [...users, regData]
-  })
+  const err = await authorize({ login: regData.login, password: regData.password })
+  if (err) {
+    return err
+  }
 
   setCurrentSession(Object.assign({}, regData, { password: undefined }))
+  addDataToLocalStorage(currentUser, Object.assign({}, regData, { password: undefined }))
+
   setAuthStatus(true)
-  addDataToLocalStorage(sessionKey, Object.assign({}, regData, { password: undefined }))
   addDataToLocalStorage(authStatusKey, get(authStatus))
 }
 
