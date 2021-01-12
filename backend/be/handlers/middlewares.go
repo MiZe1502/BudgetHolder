@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+	env "../env"
 	repos "../repositories"
 	utils "../utils"
-	env "../env"
 )
 
 // MiddlewareKey is a type for middlewares keys enum

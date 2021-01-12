@@ -13,6 +13,7 @@
     import {
         authorize,
         clearAuthAndRegData,
+            currentSession,
         currentAuthData,
         currentRegData, getUserData, mockSaveAndAuthorize
     } from "../../../stores/auth";
@@ -37,6 +38,8 @@
     const onAuth = async (event: Event<HTMLFormElement>) => {
         event.preventDefault();
 
+        console.log("here")
+
         clearValidationResults();
 
         validateForm($currentAuthData);
@@ -54,6 +57,7 @@
         if (!error) {
             clearValidationResults();
             clearAuthAndRegData();
+            console.log("session", $currentSession)
             navigate(routes.budget, {replace: true});
         }
     }

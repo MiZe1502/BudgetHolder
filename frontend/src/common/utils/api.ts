@@ -1,22 +1,37 @@
 import axios from 'axios'
+import { getDataFromLocalStorageByKey } from './localStorage'
+import { sessionKey } from '../../stores/auth'
 
 // TODO: get base url as param
 const axiosAPI = axios.create({
   baseURL: 'http://localhost:8080/api/v1/'
 })
 
-const apiRequest = (method, url, data): Promise<SuccessResponse | ErrorResponse> => {
+const apiRequest = (method, url, data = {}, params = {}): Promise<SuccessResponse | ErrorResponse> => {
   const headers = {
     authorization: ''
+  }
+
+  const token = getDataFromLocalStorageByKey(sessionKey)
+
+  if (token) {
+    headers.authorization = token
   }
 
   return axiosAPI({
     method,
     url,
-    data: data,
+    data,
+    params,
     headers
   }).then(res => {
-    return Promise.resolve(res.data)
+    const data: SuccessResponse = res.data
+
+    if (data.data) {
+      data.data = JSON.parse(data.data as string)
+    }
+
+    return Promise.resolve(data)
   })
     .catch(err => {
       console.log(err)
@@ -24,7 +39,7 @@ const apiRequest = (method, url, data): Promise<SuccessResponse | ErrorResponse>
     })
 }
 
-export const getReq = (url, data) => apiRequest('get', url, data)
+export const getReq = (url, params) => apiRequest('get', url, {}, params)
 export const postReq = (url, data) => apiRequest('post', url, data)
 export const deleteReq = (url, data) => apiRequest('delete', url, data)
 
@@ -33,7 +48,8 @@ export interface SimpleResponse {
 }
 
 export interface SuccessResponse extends SimpleResponse {
-  message: Record<string, any>
+  message: string
+  data: string | Record<string, any>
 }
 
 export interface ErrorResponse extends SimpleResponse {

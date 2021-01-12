@@ -170,7 +170,7 @@ func createAuthHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request
 			return
 		}
 
-		env.Logger.Info("processing user auth: login: " + userData.Login + " | pass: " + userData.Password)
+		env.Logger.Info("processing user auth: login: " + userData.Login + " | pass: " + *userData.Password)
 
 		var repo repos.UserRepository
 
@@ -178,7 +178,7 @@ func createAuthHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		token, err := repo.ProcessUserAuth(userData.Login, userData.Password, r.RemoteAddr)
+		token, err := repo.ProcessUserAuth(userData.Login, *userData.Password, r.RemoteAddr)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
@@ -241,22 +241,31 @@ func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *h
 		env.Logger.Info("createGetFullUserInfoHandler: check request method: " + r.Method)
 
 		if r.Method != "GET" {
-			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "Incorrect request method: " + r.Method), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
 		env.Logger.Info("createGetFullUserInfoHandler: getting user data from request")
 
-		userData := &repos.User{}
-		err := json.NewDecoder(r.Body).Decode(userData)
-		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+		//userData := &repos.User{}
+		//err := json.NewDecoder(r.Body).Decode(userData)
+		//if err != nil {
+		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+		//	utils.RespondError(w, msg, env.Logger)
+		//	return
+		//}
+
+		params, ok := r.URL.Query()["login"]
+		if !ok || len(params[0]) < 1 {
+			msg := utils.MessageError(utils.Message(false, "Invalid user params"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
-		env.Logger.Info("createGetFullUserInfoHandler: processing user with login: " + userData.Login)
+		login := params[0]
+
+		env.Logger.Info("createGetFullUserInfoHandler: processing user with login: " + login)
 
 		var repo repos.UserRepository
 
@@ -264,14 +273,14 @@ func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *h
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		user, err := repo.GetFullUserInfo(userData.Login)
+		user, err := repo.GetFullUserInfo(login)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
-		env.Logger.Info("createGetFullUserInfoHandler: marshalling user data: login: " + userData.Login + " | id: " + fmt.Sprint(userData.ID))
+		env.Logger.Info("createGetFullUserInfoHandler: marshalling user data: login: " + login + " | id: " + fmt.Sprint(user.ID))
 
 		userJSON, err := json.Marshal(user)
 		if err != nil {

@@ -2,7 +2,7 @@
     import {_} from 'svelte-i18n'
     import {style} from "./style";
 
-    import {authStatus} from "../../../../stores/auth";
+    import {currentSession} from "../../../../stores/auth";
     import SingleMenuBlock from '../SingleMenuBlock/SingleMenuBlock.svelte'
 
     import menuConfig from './menuConfig'
@@ -17,7 +17,7 @@
             {/each}
         </div>
 
-        {#if $authStatus}
+        {#if $currentSession.userData}
             <UserBlock/>
         {/if}
     </div>

@@ -22,7 +22,7 @@ type UserGroup struct {
 // User represents basic user data
 type User struct {
 	Login    string `json:"login"`
-	Password string `json:"password"`
+	Password *string `json:"password"`
 
 	Entity
 }
@@ -86,7 +86,7 @@ func (r *UserRepository) IsUserValid(user *FullUser, isPasswordChanged bool) (bo
 		return false, errors.New("Validation failed. User login contains more than 100 characters")
 	}
 
-	if isPasswordChanged && len(user.Password) < 8 {
+	if isPasswordChanged && len(*user.Password) < 8 {
 		return false, errors.New("Validation failed. User password is too short")
 	}
 
@@ -217,7 +217,7 @@ func (r *UserRepository) CreateNewUser(userData *FullUser) (int, error) {
 		return IncorrectID, err
 	}
 
-	pwd, err := utils.HashPasswordWithSalt(userData.Password)
+	pwd, err := utils.HashPasswordWithSalt(*userData.Password)
 	if err != nil {
 		return IncorrectID, err
 	}
@@ -277,7 +277,7 @@ func (r *UserRepository) ProcessUserAuth(login string, password string, ip strin
 		return "", err
 	}
 
-	isPasswordCorrect := utils.ComparePasswords(user.Password, password)
+	isPasswordCorrect := utils.ComparePasswords(*user.Password, password)
 	if !isPasswordCorrect {
 		err := errors.New("Incorrect password: " + password + " for user: " + login)
 		r.log.Error(err.Error())

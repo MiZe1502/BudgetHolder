@@ -37,6 +37,7 @@ export interface RegistrationData extends AuthData {
 
 export const sessionKey = 'SESSION_KEY'
 export const authStatusKey = 'AUTH_STATUS_KEY'
+export const currentUser = 'CURRENT_USER'
 
 export const authStatus = writable<boolean>(false)
 
@@ -66,7 +67,6 @@ export const authorize = async (authData: AuthData) => {
     return 'Authorization error'
   }
 
-  setAuthStatus(true)
   addDataToLocalStorage(sessionKey, (res as SuccessResponse).message)
 }
 
@@ -77,7 +77,11 @@ export const getUserData = async (login: string) => {
     return 'Error fetching user data'
   }
 
-  console.log(res)
+  setCurrentSession((res as SuccessResponse).data as UserData)
+  addDataToLocalStorage(currentUser, (res as SuccessResponse).data)
+
+  setAuthStatus(true)
+  addDataToLocalStorage(authStatusKey, get(authStatus))
 }
 
 // // TODO: mock method to emulate auth
