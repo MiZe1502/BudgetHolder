@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	env "../env"
 	repos "../repositories"
@@ -24,15 +25,29 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 
 		env.Logger.Info("createGetShopsSliceHandler: getting data from request")
 
-		sliceData := &utils.SliceData{}
-
-		err := json.NewDecoder(r.Body).Decode(sliceData)
-
+		from, err := strconv.Atoi(r.URL.Query().Get("from"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
+
+		count, err := strconv.Atoi(r.URL.Query().Get("count"))
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "Invalid parsing data from request"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		//sliceData := &utils.SliceData{}
+		//
+		//err := json.NewDecoder(r.Body).Decode(sliceData)
+		//
+		//if err != nil {
+		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+		//	utils.RespondError(w, msg, env.Logger)
+		//	return
+		//}
 
 		env.Logger.Info("createGetShopsSliceHandler: init shops repository")
 
@@ -42,9 +57,9 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createGetShopsSliceHandler: getting slice of shops, from:" + fmt.Sprint(sliceData.From) + ", count: " + fmt.Sprint(sliceData.Count))
+		env.Logger.Info("createGetShopsSliceHandler: getting slice of shops, from:" + fmt.Sprint(from) + ", count: " + fmt.Sprint(count))
 
-		shops, err := repo.GetSlice(sliceData.From, sliceData.Count)
+		shops, err := repo.GetSlice(from, count)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)

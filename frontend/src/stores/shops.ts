@@ -61,6 +61,7 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
   await getShopsSlice({ from, count })
     .then((res: SuccessResponse) => {
       shopsStatus.set(LoadingStatus.Finished)
+      console.log(res.data)
       shops.set(res.data as Shop[])
     })
     .catch((err: ErrorResponse) => {

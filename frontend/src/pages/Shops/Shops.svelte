@@ -102,22 +102,12 @@
     }
 
     onMount(async () => {
-        setTimeout(() => {
-            shopsStatus.set(LoadingStatus.Finished);
-            allShops.set(mockData);
+        shopsTotal.set(mockData.length);
 
-            onPageChange(1);
-
-            // shops.set(mockData);
-            shopsTotal.set(mockData.length);
-
-
-            tableData.status = get(shopsStatus);
-            // tableData.data = [];
-            // tableData.total = 0;
-            tableData.total = get(shopsTotal);
-            tableData.data = get(shops);
-        }, 5000)
+        await onPageChange(1);
+        tableData.status = get(shopsStatus);
+        tableData.total = get(shopsTotal);
+        tableData.data = get(shops);
     });
 </script>
 

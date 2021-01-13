@@ -248,14 +248,6 @@ func createGetFullUserInfoHandler(env *env.Env) func(w http.ResponseWriter, r *h
 
 		env.Logger.Info("createGetFullUserInfoHandler: getting user data from request")
 
-		//userData := &repos.User{}
-		//err := json.NewDecoder(r.Body).Decode(userData)
-		//if err != nil {
-		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
-		//	utils.RespondError(w, msg, env.Logger)
-		//	return
-		//}
-
 		params, ok := r.URL.Query()["login"]
 		if !ok || len(params[0]) < 1 {
 			msg := utils.MessageError(utils.Message(false, "Invalid user params"), http.StatusInternalServerError)
