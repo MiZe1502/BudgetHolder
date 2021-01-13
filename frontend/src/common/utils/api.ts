@@ -55,3 +55,8 @@ export interface SuccessResponse extends SimpleResponse {
 export interface ErrorResponse extends SimpleResponse {
   errorCode: number
 }
+
+export interface SliceData {
+  from: number;
+  count: number;
+}

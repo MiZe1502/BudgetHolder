@@ -42,8 +42,9 @@
     import EditShopActionElement
         from "./EditShopActionElement/EditShopActionElement.svelte";
 
-    const onPageChange = (currentPage: number) => {
-        updateCurrentShopsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
+    const onPageChange = async (currentPage: number) => {
+        // updateCurrentShopsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
+        await updateCurrentShopsSlice((currentPage - 1) * maxRecordsPerPage, maxRecordsPerPage)
     }
 
     const tableData: CommonTableInterface = {
