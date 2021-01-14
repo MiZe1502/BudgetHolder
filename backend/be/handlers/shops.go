@@ -341,15 +341,22 @@ func createGetShopByIDHandler(env *env.Env) func(w http.ResponseWriter, r *http.
 
 		env.Logger.Info("createGetShopByIDHandler: getting data from request")
 
-		shopData := &repos.SimpleShop{}
-
-		err := json.NewDecoder(r.Body).Decode(shopData)
-
+		id, err := strconv.Atoi(r.URL.Query().Get("id"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
+
+		//shopData := &repos.SimpleShop{}
+		//
+		//err := json.NewDecoder(r.Body).Decode(shopData)
+		//
+		//if err != nil {
+		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+		//	utils.RespondError(w, msg, env.Logger)
+		//	return
+		//}
 
 		env.Logger.Info("createGetShopByIDHandler: init shops repository")
 
@@ -359,9 +366,9 @@ func createGetShopByIDHandler(env *env.Env) func(w http.ResponseWriter, r *http.
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createRemoveShopHandler: getting shop with id: " + fmt.Sprint(shopData.ID))
+		env.Logger.Info("createRemoveShopHandler: getting shop with id: " + fmt.Sprint(id))
 
-		shop, err := repo.GetEntityByID(shopData.ID)
+		shop, err := repo.GetEntityByID(id)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)

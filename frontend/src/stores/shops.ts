@@ -1,8 +1,8 @@
-import { writable, get, derived } from 'svelte/store'
+import { derived, get, writable } from 'svelte/store'
 import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getShopsSlice } from '../pages/Shops/api'
+import { getShop, getShopsSlice } from '../pages/Shops/api'
 import {
   ErrorResponse,
   SuccessResponse,
@@ -66,7 +66,6 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
     .then((res: SuccessResponse) => {
       const data = res.data as TableDataResponse
       shopsStatus.set(LoadingStatus.Finished)
-      console.log(data)
       shops.set(data.data as Shop[])
       shopsTotal.set(data.total)
     })
@@ -75,6 +74,12 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
     })
 }
 
-export const getShopById = (id: number): Shop => {
-  return get(allShops).find((shop: Shop) => shop.id === id)
+export const getShopById = async (id: number) => {
+  return await getShop({ id })
+    .then((res: SuccessResponse) => {
+      return res.data as Shop
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }

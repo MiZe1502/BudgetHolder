@@ -65,3 +65,7 @@ export interface SliceData {
   from: number;
   count: number;
 }
+
+export interface EntityData {
+  id: number;
+}
