@@ -11,6 +11,11 @@ type SliceData struct {
 	Count int `json:"count"`
 }
 
+type TableData struct {
+	Total int         `json:"total"`
+	Data  interface{} `json:"data"`
+}
+
 // Message creates message for handlers
 func Message(status bool, message string) map[string]interface{} {
 	return map[string]interface{}{

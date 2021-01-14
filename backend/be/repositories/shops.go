@@ -28,6 +28,21 @@ type ShopsRepository struct {
 	EntityRepository
 }
 
+//GetTotal returns total shops count
+func (r *ShopsRepository) CountTotal() (int, error) {
+	var total int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&total,
+		`SELECT * from budget.count_shops()`)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return total, err
+}
+
 //UpdateShop updates existing shop and returns its id
 func (r *ShopsRepository) UpdateShop(shopData *Shop, sessionUUID uuid.UUID) (int, error) {
 	var updatedShopID int

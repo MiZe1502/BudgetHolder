@@ -39,16 +39,6 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
-		//sliceData := &utils.SliceData{}
-		//
-		//err := json.NewDecoder(r.Body).Decode(sliceData)
-		//
-		//if err != nil {
-		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
-		//	utils.RespondError(w, msg, env.Logger)
-		//	return
-		//}
-
 		env.Logger.Info("createGetShopsSliceHandler: init shops repository")
 
 		var repo repos.ShopsRepository
@@ -66,9 +56,22 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
+		env.Logger.Info("createGetShopsSliceHandler: getting total of shops")
+
+		total, err := repo.CountTotal()
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
 		env.Logger.Info("createGetShopsSliceHandler: marshalling slice of shops")
 
-		shopsJSON, err := json.Marshal(shops)
+		data := &utils.TableData{}
+		data.Total = total
+		data.Data = shops
+
+		shopsJSON, err := json.Marshal(data)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
