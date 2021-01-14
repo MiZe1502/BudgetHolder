@@ -47,6 +47,11 @@ export interface SimpleResponse {
   status: boolean;
 }
 
+export interface TableDataResponse {
+  total: number;
+  data: Record<string, any>
+}
+
 export interface SuccessResponse extends SimpleResponse {
   message: string
   data: string | Record<string, any>

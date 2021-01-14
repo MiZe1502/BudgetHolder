@@ -1,8 +1,8 @@
 package repos
 
 import (
-	"github.com/jackc/pgx/pgxpool"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/pgxpool"
 
 	utils "../utils"
 )

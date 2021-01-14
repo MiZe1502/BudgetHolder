@@ -102,8 +102,6 @@
     }
 
     onMount(async () => {
-        shopsTotal.set(mockData.length);
-
         await onPageChange(1);
         tableData.status = get(shopsStatus);
         tableData.total = get(shopsTotal);

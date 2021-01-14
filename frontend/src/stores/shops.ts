@@ -3,7 +3,11 @@ import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
 import { getShopsSlice } from '../pages/Shops/api'
-import { ErrorResponse, SuccessResponse } from '../common/utils/api'
+import {
+  ErrorResponse,
+  SuccessResponse,
+  TableDataResponse
+} from '../common/utils/api'
 
 export const shops = writable<Shop[]>([])
 export const allShops = writable<Shop[]>([])
@@ -60,18 +64,16 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
 
   await getShopsSlice({ from, count })
     .then((res: SuccessResponse) => {
+      const data = res.data as TableDataResponse
       shopsStatus.set(LoadingStatus.Finished)
-      console.log(res.data)
-      shops.set(res.data as Shop[])
+      console.log(data)
+      shops.set(data.data as Shop[])
+      shopsTotal.set(data.total)
     })
     .catch((err: ErrorResponse) => {
       console.log(err)
     })
 }
-
-// export const updateCurrentShopsSlice = (from: number, to: number) => {
-//   shops.set([...get(allShops).slice(from, to + 1)])
-// }
 
 export const getShopById = (id: number): Shop => {
   return get(allShops).find((shop: Shop) => shop.id === id)

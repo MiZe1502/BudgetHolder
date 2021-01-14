@@ -6,7 +6,8 @@ $BODY$
     DECLARE total INTEGER;
 BEGIN
     SELECT COUNT(*) INTO total
-    FROM shops;
+    FROM shops
+    WHERE is_removed = FALSE;
 
     RETURN total;
 END
