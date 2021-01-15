@@ -2,7 +2,12 @@ import { derived, get, writable } from 'svelte/store'
 import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getShop, getShopsSlice, removeShop } from '../pages/Shops/api'
+import {
+  getShop,
+  getShopsSlice,
+  removeShop,
+  updateShop
+} from '../pages/Shops/api'
 import {
   ErrorResponse,
   SuccessResponse,
@@ -43,7 +48,7 @@ export const removeShopFromStore = async (id: number) => {
     })
 }
 
-export const addShopToStore = (newShop: Shop) => {
+export const addShopToStore = async (newShop: Shop) => {
   const newId = generateNewArtificialId(allShops)
   newShop.id = newId
 
@@ -51,17 +56,18 @@ export const addShopToStore = (newShop: Shop) => {
   shopsTotal.update((total) => total + 1)
 }
 
-export const updateShopInStore = (updatedShop: Shop) => {
-  shops.update((shops) => {
-    let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
-    shopFromStore = updatedShop
-    return shops
-  })
-  allShops.update((shops) => {
-    let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
-    shopFromStore = updatedShop
-    return shops
-  })
+export const updateShopInStore = async (updatedShop: Shop) => {
+  await updateShop(updatedShop)
+    .then((res: SuccessResponse) => {
+      shops.update((shops) => {
+        let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
+        shopFromStore = updatedShop
+        return shops
+      })
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const updateCurrentShopsSlice = async (from: number, count: number) => {

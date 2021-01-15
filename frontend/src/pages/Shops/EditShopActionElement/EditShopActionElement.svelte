@@ -26,11 +26,11 @@
         data = {...initialData}
     }
 
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         if (data.id) {
-            updateShopInStore(data);
+            await updateShopInStore(data);
         } else {
-            addShopToStore(data);
+            await addShopToStore(data);
         }
     }
 
