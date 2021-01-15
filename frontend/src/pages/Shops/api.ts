@@ -16,3 +16,7 @@ export const removeShop = async (data: EntityData) => {
 export const updateShop = async (data: Shop) => {
   return await postReq('shops/update', data)
 }
+
+export const addShop = async (data: Shop) => {
+  return await postReq('shops/new', data)
+}

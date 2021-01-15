@@ -3,6 +3,7 @@ import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
 import {
+  addShop,
   getShop,
   getShopsSlice,
   removeShop,
@@ -49,11 +50,18 @@ export const removeShopFromStore = async (id: number) => {
 }
 
 export const addShopToStore = async (newShop: Shop) => {
-  const newId = generateNewArtificialId(allShops)
-  newShop.id = newId
+  shopsStatus.set(LoadingStatus.Loading)
 
-  allShops.update((shops) => [...shops, newShop])
-  shopsTotal.update((total) => total + 1)
+  await addShop(newShop)
+    .then((res: SuccessResponse) => {
+      const newId = Number(res.message)
+      newShop.id = newId
+      shops.update((shops) => {
+        return [newShop, ...shops.slice(0, shops.length)]
+      })
+      shopsTotal.update((total) => total + 1)
+      shopsStatus.set(LoadingStatus.Finished)
+    })
 }
 
 export const updateShopInStore = async (updatedShop: Shop) => {
