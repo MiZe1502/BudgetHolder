@@ -2,7 +2,7 @@ import { derived, get, writable } from 'svelte/store'
 import { Shop } from '../pages/Shops/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getShop, getShopsSlice } from '../pages/Shops/api'
+import { getShop, getShopsSlice, removeShop } from '../pages/Shops/api'
 import {
   ErrorResponse,
   SuccessResponse,
@@ -32,10 +32,15 @@ export const getSimpleShopsData = () => {
   })
 }
 
-export const removeShopFromStore = (id: number) => {
-  shops.update((shops) => shops.filter((shop: Shop) => shop.id !== id))
-  allShops.update((shops) => shops.filter((shop: Shop) => shop.id !== id))
-  shopsTotal.update((total) => total - 1)
+export const removeShopFromStore = async (id: number) => {
+  await removeShop({ id })
+    .then((res: SuccessResponse) => {
+      shops.update((shops) => shops.filter((shop: Shop) => shop.id !== Number(res.message)))
+      shopsTotal.update((total) => total - 1)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const addShopToStore = (newShop: Shop) => {

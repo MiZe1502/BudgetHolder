@@ -59,7 +59,7 @@ export default {
             new: "New shop"
         },
         messages: {
-            remove_part1: "Do You really want to remove",
+            remove_part1: "Do You really want to remove ",
             remove_part2: "?",
         }
     },

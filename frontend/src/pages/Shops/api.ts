@@ -7,3 +7,7 @@ export const getShopsSlice = async (data: SliceData) => {
 export const getShop = async (data: EntityData) => {
   return await getReq('shops/get', data)
 }
+
+export const removeShop = async (data: EntityData) => {
+  return await postReq('shops/remove', data)
+}

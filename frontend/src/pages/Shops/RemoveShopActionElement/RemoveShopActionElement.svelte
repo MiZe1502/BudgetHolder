@@ -13,8 +13,8 @@
 
     let isPopupOpened = false;
 
-    const onAcceptHandler = () => {
-        removeShopFromStore(data.id);
+    const onAcceptHandler = async () => {
+        await removeShopFromStore(data.id);
     }
 
     const onClickHandler = () => {

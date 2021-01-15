@@ -104,7 +104,7 @@
     onMount(async () => {
         await onPageChange(1);
         tableData.status = get(shopsStatus);
-        tableData.total = get(shopsTotal);
+        //tableData.total = get(shopsTotal);
         tableData.data = get(shops);
     });
 </script>
@@ -112,7 +112,7 @@
 <div>
     <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
-                 total={tableData.total} data={$shops}
+                 total={$shopsTotal} data={$shops}
                  config={tableData.columnsConfig} title={tableData.title}>
         <div slot="titleButton">
             <EditShopActionElement withButton={true}
