@@ -10,12 +10,16 @@
         simpleCategories,
         simpleCategoriesStatus,
         categoriesTotal,
-        findParentCategory, loadCategoriesTree
+        findParentCategory,
+        loadCategoriesTree,
+        loadCategoriesList,
+        loadSimpleCategoriesList
     } from "../../stores/categories";
     import {LoadingStatus} from "../../stores/utils";
 
     onMount(async () => {
         await loadCategoriesTree();
+        await loadSimpleCategoriesList();
     })
 
 </script>

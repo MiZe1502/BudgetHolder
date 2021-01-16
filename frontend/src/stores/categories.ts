@@ -1,9 +1,9 @@
-import {get, writable} from 'svelte/store'
-import {Category, SimpleCategory} from '../pages/Categorization/types'
-import {LoadingStatus} from './utils'
-import {generateNewArtificialId} from './common'
-import {getCategoriesTree} from '../pages/Categorization/api'
-import {ErrorResponse, SuccessResponse} from '../common/utils/api'
+import { get, writable } from 'svelte/store'
+import { Category, SimpleCategory } from '../pages/Categorization/types'
+import { LoadingStatus } from './utils'
+import { generateNewArtificialId } from './common'
+import { getCategoriesTree, getCategoriesList } from '../pages/Categorization/api'
+import { ErrorResponse, SuccessResponse } from '../common/utils/api'
 
 export const categories = writable<Category[]>([])
 export const categoriesTotal = writable<number>(0)
@@ -25,6 +25,20 @@ export const loadCategoriesTree = async () => {
     .catch((err: ErrorResponse) => {
       console.log(err)
       categoriesStatus.set(LoadingStatus.Error)
+    })
+}
+
+export const loadSimpleCategoriesList = async () => {
+  simpleCategoriesStatus.set(LoadingStatus.Loading)
+  getCategoriesList()
+    .then((res: SuccessResponse) => {
+      const data = res.data as SimpleCategory[]
+      simpleCategories.set(data)
+      simpleCategoriesStatus.set(LoadingStatus.Finished)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      simpleCategoriesStatus.set(LoadingStatus.Error)
     })
 }
 
@@ -53,7 +67,6 @@ export const buildCategoryList = (categoryId: number | null): string[] => {
     return []
   }
 
-  console.log('BUILD', categoryId)
   const path = findParentCategory(categoryId, get(categories))
 
   return path.split(categoryPathDelimeter)
