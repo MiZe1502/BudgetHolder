@@ -5,7 +5,7 @@ export interface Category {
     parentId: number | null;
 }
 
-export interface SimpleCategory {
+export interface SimpleDataItem {
     id: number;
     value: string;
 }

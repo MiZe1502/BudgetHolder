@@ -1,38 +1,38 @@
-import {Category, SimpleCategory} from "../Categorization/types";
-import {Shop} from "../Shops/types";
-import {v4 as uuidv4} from 'uuid';
+import { Category, SimpleDataItem } from '../Categorization/types'
+import { Shop } from '../Shops/types'
+import { v4 as uuidv4 } from 'uuid'
 
 export class Purchase implements Purchase {
-    constructor() {
-        this.shop = {} as Shop;
-        this.goods = [
+  constructor () {
+    this.shop = {} as Shop
+    this.goods = [
             {
-                tempId: uuidv4(),
-                category: {} as SimpleCategory
+              tempId: uuidv4(),
+              category: {} as SimpleDataItem
             } as GoodsDetails
-        ]
-    }
+    ]
+  }
 }
 
 export class GoodsItem implements Partial<GoodsData> {
-    name = "";
-    category = {} as SimpleCategory;
-    comment = "";
+    name = '';
+    category = {} as SimpleDataItem;
+    comment = '';
 
-    constructor(newGoodsItem: GoodsData) {
-        this.name = newGoodsItem.name;
-        this.category = newGoodsItem.category;
-        this.comment = newGoodsItem.comment;
+    constructor (newGoodsItem: GoodsData) {
+      this.name = newGoodsItem.name
+      this.category = newGoodsItem.category
+      this.comment = newGoodsItem.comment
     }
 
-    static fromGoodsDetails(item: GoodsDetails): GoodsItem {
-        const goodsData = {
-            name: item.name,
-            category: item.category,
-            comment: item.comment,
-            id: item.id,
-        }
-        return new GoodsItem(goodsData);
+    static fromGoodsDetails (item: GoodsDetails): GoodsItem {
+      const goodsData = {
+        name: item.name,
+        category: item.category,
+        comment: item.comment,
+        id: item.id
+      }
+      return new GoodsItem(goodsData)
     }
 }
 
@@ -52,7 +52,7 @@ export interface GoodsDetails extends GoodsData, GoodsItemDetails {
 export interface GoodsData {
     id: number;
     name: string;
-    category: SimpleCategory;
+    category: SimpleDataItem;
     comment?: string;
 }
 

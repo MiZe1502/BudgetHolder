@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { getDataFromLocalStorageByKey } from './localStorage'
 import { sessionKey } from '../../stores/auth'
+import { SimpleDataItem } from '../../pages/Categorization/types'
 
 // TODO: get base url as param
 const axiosAPI = axios.create({
@@ -42,6 +43,15 @@ const apiRequest = (method, url, data = {}, params = {}): Promise<SuccessRespons
 export const getReq = (url, params) => apiRequest('get', url, {}, params)
 export const postReq = (url, data) => apiRequest('post', url, data)
 export const deleteReq = (url, data) => apiRequest('delete', url, data)
+
+export interface SimpleReqDataItem {
+  id: number;
+  name: string;
+}
+
+export const convertSimpleData = (data: SimpleReqDataItem[]): SimpleDataItem[] => {
+  return data.map((item) => ({ id: item.id, value: item.name }))
+}
 
 export interface SimpleResponse {
   status: boolean;

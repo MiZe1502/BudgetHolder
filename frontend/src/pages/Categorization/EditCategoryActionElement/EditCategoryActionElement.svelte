@@ -29,11 +29,11 @@
         data = {...initialData}
     }
 
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         if (data.id) {
-            updateCategoryInStore(data)
+            await updateCategoryInStore(data)
         } else {
-            addCategoryToStore(data)
+            await addCategoryToStore(data)
         }
     }
 

@@ -1,15 +1,27 @@
 import { get, writable } from 'svelte/store'
-import { Category, SimpleCategory } from '../pages/Categorization/types'
+import {
+  Category,
+  SimpleDataItem
+} from '../pages/Categorization/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getCategoriesTree, getCategoriesList } from '../pages/Categorization/api'
-import { ErrorResponse, SuccessResponse } from '../common/utils/api'
+import {
+  getCategoriesTree,
+  getCategoriesList,
+  addNewCategory
+} from '../pages/Categorization/api'
+import {
+  ErrorResponse,
+  SuccessResponse,
+  convertSimpleData,
+  SimpleReqDataItem
+} from '../common/utils/api'
 
 export const categories = writable<Category[]>([])
 export const categoriesTotal = writable<number>(0)
 export const categoriesStatus = writable<LoadingStatus>(LoadingStatus.None)
 
-export const simpleCategories = writable<SimpleCategory[]>([])
+export const simpleCategories = writable<SimpleDataItem[]>([])
 export const simpleCategoriesStatus = writable<LoadingStatus>(LoadingStatus.None)
 
 const categoryPathDelimeter = ' | '
@@ -32,7 +44,7 @@ export const loadSimpleCategoriesList = async () => {
   simpleCategoriesStatus.set(LoadingStatus.Loading)
   getCategoriesList()
     .then((res: SuccessResponse) => {
-      const data = res.data as SimpleCategory[]
+      const data = convertSimpleData(res.data as SimpleReqDataItem[])
       simpleCategories.set(data)
       simpleCategoriesStatus.set(LoadingStatus.Finished)
     })
@@ -42,24 +54,35 @@ export const loadSimpleCategoriesList = async () => {
     })
 }
 
-export const addCategoryToStore = (newCategory: Category) => {
-  // TODO: remove when backend ready. artificial id generation
-  newCategory.id = generateNewArtificialId(categories)
+export const addCategoryToStore = async (newCategory: Category) => {
+  categoriesStatus.set(LoadingStatus.Loading)
+  await addNewCategory(newCategory)
+    .then((res: SuccessResponse) => {
+      newCategory.id = Number(res.message)
 
-  categories.update((categories) => {
-    if (!newCategory.parentId) {
-      return [...categories, newCategory]
-    }
-    const parentCategory = findCategoryById(newCategory.parentId, categories)
+      categories.update((categories) => {
+        if (!newCategory.parentId) {
+          return [...categories, newCategory]
+        }
+        const parentCategory = findCategoryById(newCategory.parentId, categories)
 
-    if (parentCategory) {
-      parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory]
-    } else {
-      categories = [...categories, newCategory]
-    }
+        if (parentCategory) {
+          parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory]
+        } else {
+          categories = [...categories, newCategory]
+        }
 
-    return categories
-  })
+        return categories
+      })
+
+      categoriesStatus.set(LoadingStatus.Finished)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      categoriesStatus.set(LoadingStatus.Error)
+    })
+
+  await loadSimpleCategoriesList()
 }
 
 export const buildCategoryList = (categoryId: number | null): string[] => {
