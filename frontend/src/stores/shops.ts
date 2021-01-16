@@ -62,6 +62,10 @@ export const addShopToStore = async (newShop: Shop) => {
       shopsTotal.update((total) => total + 1)
       shopsStatus.set(LoadingStatus.Finished)
     })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      shopsStatus.set(LoadingStatus.Error)
+    })
 }
 
 export const updateShopInStore = async (updatedShop: Shop) => {
@@ -90,6 +94,7 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
     })
     .catch((err: ErrorResponse) => {
       console.log(err)
+      shopsStatus.set(LoadingStatus.Error)
     })
 }
 

@@ -10,25 +10,12 @@
         simpleCategories,
         simpleCategoriesStatus,
         categoriesTotal,
-        findParentCategory
+        findParentCategory, loadCategoriesTree
     } from "../../stores/categories";
     import {LoadingStatus} from "../../stores/utils";
 
     onMount(async () => {
-        categoriesStatus.set(LoadingStatus.Loading)
-        simpleCategoriesStatus.set(LoadingStatus.Loading)
-
-        setTimeout(() => {
-            categoriesStatus.set(LoadingStatus.Finished)
-            simpleCategoriesStatus.set(LoadingStatus.Finished)
-
-            categories.set(mockData);
-            simpleCategories.set(mockCategories);
-
-            categoriesTotal.set(mockData.length);
-
-            console.log(findParentCategory(17, $categories))
-        }, 5000)
+        await loadCategoriesTree();
     })
 
 </script>
