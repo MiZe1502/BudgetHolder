@@ -11,8 +11,8 @@
 
     let isPopupOpened = false;
 
-    const onAcceptHandler = () => {
-        removeCategoryFromStore(data.id);
+    const onAcceptHandler = async () => {
+        await removeCategoryFromStore(data.id);
     }
 
     const onClickHandler = () => {

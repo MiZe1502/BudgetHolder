@@ -8,7 +8,7 @@ import { generateNewArtificialId } from './common'
 import {
   getCategoriesTree,
   getCategoriesList,
-  addNewCategory
+  addNewCategory, removeCategory
 } from '../pages/Categorization/api'
 import {
   ErrorResponse,
@@ -133,9 +133,15 @@ const findCategoryById = (id: number, categories: Category[]): Category => {
   return category
 }
 
-export const removeCategoryFromStore = (id: number): void => {
-  categories.update((categories) => categories.filter((category: Category) => category.id !== id))
-  categoriesTotal.update(total => total - 1)
+export const removeCategoryFromStore = async (id: number) => {
+  await removeCategory({ id })
+    .then((res: SuccessResponse) => {
+      categories.update((categories) => categories.filter((category: Category) => category.id !== Number(res.message)))
+      categoriesTotal.update(total => total - 1)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const updateCategoryInStore = (updatedCategory: Category) => {

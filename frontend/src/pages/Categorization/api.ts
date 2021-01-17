@@ -1,4 +1,4 @@
-import { getReq, SliceData, postReq } from '../../common/utils/api'
+import {getReq, SliceData, postReq, EntityData} from '../../common/utils/api'
 import { Category } from './types'
 
 export const getCategoriesTree = async () => {
@@ -11,4 +11,8 @@ export const getCategoriesList = async () => {
 
 export const addNewCategory = async (data: Category) => {
   return await postReq('categories/new', data)
+}
+
+export const removeCategory = async (data: EntityData) => {
+  return await postReq('categories/remove', data)
 }
