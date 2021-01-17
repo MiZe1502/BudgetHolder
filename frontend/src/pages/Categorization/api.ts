@@ -16,3 +16,7 @@ export const addNewCategory = async (data: Category) => {
 export const removeCategory = async (data: EntityData) => {
   return await postReq('categories/remove', data)
 }
+
+export const updateCategory = async (data: Category) => {
+  return await postReq('categories/update', data)
+}

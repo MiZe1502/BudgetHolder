@@ -8,7 +8,7 @@ import { generateNewArtificialId } from './common'
 import {
   getCategoriesTree,
   getCategoriesList,
-  addNewCategory, removeCategory
+  addNewCategory, removeCategory, updateCategory
 } from '../pages/Categorization/api'
 import {
   ErrorResponse,
@@ -57,32 +57,35 @@ export const loadSimpleCategoriesList = async () => {
 export const addCategoryToStore = async (newCategory: Category) => {
   categoriesStatus.set(LoadingStatus.Loading)
   await addNewCategory(newCategory)
-    .then((res: SuccessResponse) => {
-      newCategory.id = Number(res.message)
-
-      categories.update((categories) => {
-        if (!newCategory.parentId) {
-          return [...categories, newCategory]
-        }
-        const parentCategory = findCategoryById(newCategory.parentId, categories)
-
-        if (parentCategory) {
-          parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory]
-        } else {
-          categories = [...categories, newCategory]
-        }
-
-        return categories
-      })
-
-      categoriesStatus.set(LoadingStatus.Finished)
+    // .then((res: SuccessResponse) => {
+    //   newCategory.id = Number(res.message)
+    //
+    //   categories.update((categories) => {
+    //     if (!newCategory.parent_id) {
+    //       return [...categories, newCategory]
+    //     }
+    //     const parentCategory = findCategoryById(newCategory.parent_id, categories)
+    //
+    //     if (parentCategory) {
+    //       parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory]
+    //     } else {
+    //       categories = [...categories, newCategory]
+    //     }
+    //
+    //     return categories
+    //   })
+    //
+    //   categoriesStatus.set(LoadingStatus.Finished)
+    // })
+    .then(() => {
+      categories.set([])
     })
+    .then(() => loadCategoriesTree())
+    .then(() => loadSimpleCategoriesList())
     .catch((err: ErrorResponse) => {
       console.log(err)
       categoriesStatus.set(LoadingStatus.Error)
     })
-
-  await loadSimpleCategoriesList()
 }
 
 export const buildCategoryList = (categoryId: number | null): string[] => {
@@ -134,40 +137,52 @@ const findCategoryById = (id: number, categories: Category[]): Category => {
 }
 
 export const removeCategoryFromStore = async (id: number) => {
+  categoriesStatus.set(LoadingStatus.Loading)
   await removeCategory({ id })
-    .then((res: SuccessResponse) => {
-      categories.update((categories) => categories.filter((category: Category) => category.id !== Number(res.message)))
-      categoriesTotal.update(total => total - 1)
+    .then(() => {
+      categories.set([])
     })
+    .then(() => loadCategoriesTree())
+    .then(() => loadSimpleCategoriesList())
     .catch((err: ErrorResponse) => {
       console.log(err)
+      categoriesStatus.set(LoadingStatus.Error)
     })
 }
 
-export const updateCategoryInStore = (updatedCategory: Category) => {
-  categories.update((categories) => {
-    // let categoryFromStore: Category = categories.find((category: Category) => category.id === updatedCategory.id)
-    let categoryFromStore: Category = findCategoryById(updatedCategory.id, categories)
-
-    if (categoryFromStore.parentId === updatedCategory.parentId) {
-      categoryFromStore = updatedCategory
-      return categories
-    }
-
-    // const oldParentCategory = categories.find((category) => category.id === categoryFromStore.parentId);
-    const oldParentCategory = findCategoryById(categoryFromStore.parentId, categories)
-    // const newParentCategory = categories.find((category) => category.id === updatedCategory.parentId);
-    const newParentCategory = findCategoryById(updatedCategory.parentId, categories)
-
-    newParentCategory.categories = newParentCategory.categories ? [...newParentCategory.categories, updatedCategory] : [updatedCategory]
-    if (oldParentCategory) {
-      oldParentCategory.categories = oldParentCategory.categories.filter((category) => category.id !== updatedCategory.id)
-    } else {
-      categories = categories.filter((category) => category.id !== updatedCategory.id)
-    }
-
-    return categories
-  })
+export const updateCategoryInStore = async (updatedCategory: Category) => {
+  categoriesStatus.set(LoadingStatus.Loading)
+  await updateCategory(updatedCategory)
+    // .then((res: SuccessResponse) => {
+    //   categories.update((categories) => {
+    //     let categoryFromStore: Category = findCategoryById(updatedCategory.id, categories)
+    //
+    //     if (categoryFromStore.parent_id === updatedCategory.parent_id) {
+    //       categoryFromStore = updatedCategory
+    //       return categories
+    //     }
+    //
+    //     const oldParentCategory = findCategoryById(categoryFromStore.parent_id, categories)
+    //     const newParentCategory = findCategoryById(updatedCategory.parent_id, categories)
+    //
+    //     newParentCategory.categories = newParentCategory.categories ? [...newParentCategory.categories, updatedCategory] : [updatedCategory]
+    //     if (oldParentCategory) {
+    //       oldParentCategory.categories = oldParentCategory.categories.filter((category) => category.id !== updatedCategory.id)
+    //     } else {
+    //       categories = categories.filter((category) => category.id !== updatedCategory.id)
+    //     }
+    //
+    //     return categories
+    //   })
+    // })
+    .then(() => {
+      categories.set([])
+    })
+    .then(() => loadCategoriesTree())
+    .then(() => loadSimpleCategoriesList())
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const getSimpleCategoryById = (id: number) => {

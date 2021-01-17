@@ -2,7 +2,7 @@ export interface Category {
     id: number;
     name: string;
     categories?: Category[];
-    parentId: number | null;
+    parent_id: number | null;
 }
 
 export interface SimpleDataItem {

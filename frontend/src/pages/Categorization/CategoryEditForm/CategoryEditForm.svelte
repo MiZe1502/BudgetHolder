@@ -32,7 +32,7 @@
     })
 
     const onSelectParentIdHandler = (selectedId: number) => {
-        data.parentId = selectedId;
+        data.parent_id = selectedId;
         console.log("onSelectParentIdHandler", data)
     }
 
@@ -50,6 +50,6 @@
                     bind:value={data.name} required={true}/>
 
     <InputDropdown onSelectHandler={onSelectParentIdHandler}
-                   bind:value={data.parentId} name="category" label="Category"
+                   bind:value={data.parent_id} name="category" label="Category"
                    data={$simpleCategories}/>
 </form>
