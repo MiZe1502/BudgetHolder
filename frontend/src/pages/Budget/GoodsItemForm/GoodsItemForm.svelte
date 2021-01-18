@@ -13,8 +13,8 @@
     import {validationRules} from "./validationRules";
     import InputDropdown
         from "../../../common/components/Inputs/InputDropdown/InputDropdown.svelte";
-    import {getSimpleCategoryById} from "../../../stores/categories";
-    import {simpleCategories} from "../../../stores/categories";
+    import {getSimpleCategoryById} from "../../Categorization/categories";
+    import {simpleCategories} from "../../Categorization/categories";
     import TextAreaWithLabel
         from "../../../common/components/Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
 

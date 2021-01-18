@@ -1,5 +1,5 @@
 import {getReq, postReq} from '../../common/utils/api'
-import {AuthData, RegistrationData, UserData} from '../../stores/auth'
+import {AuthData, RegistrationData, UserData} from './auth'
 
 export const authReq = async (data: AuthData) => {
   return await postReq('user/auth', data)

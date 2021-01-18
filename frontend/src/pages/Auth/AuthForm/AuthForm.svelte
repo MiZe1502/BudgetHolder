@@ -16,7 +16,7 @@
         currentSession,
         currentAuthData,
         currentRegData, getUserData, registerUser
-    } from "../../../stores/auth";
+    } from "../auth";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
     import {navigate} from "svelte-routing";

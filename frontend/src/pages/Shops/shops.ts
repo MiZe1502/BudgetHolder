@@ -1,19 +1,19 @@
 import { derived, get, writable } from 'svelte/store'
-import { Shop } from '../pages/Shops/types'
-import { LoadingStatus } from './utils'
-import { generateNewArtificialId } from './common'
+import { Shop } from './types'
+import { LoadingStatus } from '../../stores/utils'
+import { generateNewArtificialId } from '../../stores/common'
 import {
   addShop,
   getShop,
   getShopsSlice,
   removeShop,
   updateShop
-} from '../pages/Shops/api'
+} from './api'
 import {
   ErrorResponse,
   SuccessResponse,
   TableDataResponse
-} from '../common/utils/api'
+} from '../../common/utils/api'
 
 export const shops = writable<Shop[]>([])
 export const allShops = writable<Shop[]>([])

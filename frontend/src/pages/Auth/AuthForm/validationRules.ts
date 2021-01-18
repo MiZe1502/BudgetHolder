@@ -2,7 +2,7 @@ import {
     notInvalidByDefault,
     ValidationRule
 } from "../../../common/utils/validation";
-import {AuthData, RegistrationData} from "../../../stores/auth";
+import {AuthData, RegistrationData} from "../auth";
 
 export const validationRules: ValidationRule[] = [
     {

@@ -1,4 +1,4 @@
-import {UserData} from "../../stores/auth";
+import {UserData} from "./auth";
 
 export type MockedUserData = UserData & {password: string}
 

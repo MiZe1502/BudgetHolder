@@ -2,7 +2,7 @@
     import {_} from 'svelte-i18n'
     import {onMount} from "svelte";
     import {Shop} from "../types";
-    import {updateShopInStore, addShopToStore} from "../../../stores/shops";
+    import {updateShopInStore, addShopToStore} from "../shops";
 
     import {style} from "./style";
     import {EntityType, ActionType} from "../../../stores/utils";

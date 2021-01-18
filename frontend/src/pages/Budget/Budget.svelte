@@ -33,14 +33,14 @@
         simpleCategoriesStatus,
         categoriesTotal,
         findParentCategory, buildCategoryList
-    } from "../../stores/categories";
+    } from "../Categorization/categories";
     import {
         goodsStatus,
         goods,
         goodsTotal,
         allGoods, updateCurrentGoodsSlice,
     } from "../../stores/goods";
-    import {allShops} from "../../stores/shops";
+    import {allShops} from "../Shops/shops";
     import {
         purchasesStatus,
         purchases,

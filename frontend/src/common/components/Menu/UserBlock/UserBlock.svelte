@@ -9,7 +9,7 @@
         authStatusKey,
         sessionKey,
         currentSession, setCurrentSession, setAuthStatus
-    } from "../../../../stores/auth";
+    } from "../../../../pages/Auth/auth";
     import DefaultUserImage from "../DefaultUserImage/DefaultUserImage.svelte";
     import {removeDataFromLocalStorageByKey} from "../../../utils/localStorage";
     import {navigate} from "svelte-routing";

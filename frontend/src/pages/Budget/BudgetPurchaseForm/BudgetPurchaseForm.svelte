@@ -5,14 +5,14 @@
     import {onMount} from "svelte";
     import {Purchase} from "../types";
     import {SuggestionItem} from "../../../common/components/Inputs/InputWithSuggestion/utils";
-    import {getShopById, getSimpleShopsData} from "../../../stores/shops";
+    import {getShopById, getSimpleShopsData} from "../../Shops/shops";
     import {style} from "./style";
 
     import {
         getSimpleCategoryById,
         simpleCategories
-    } from "../../../stores/categories";
-    import {simpleShops} from "../../../stores/shops";
+    } from "../../Categorization/categories";
+    import {simpleShops} from "../../Shops/shops";
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel

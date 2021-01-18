@@ -14,7 +14,7 @@
     import {
         addCategoryToStore,
         updateCategoryInStore
-    } from "../../../stores/categories";
+    } from "../categories";
     import ButtonWithLoader
         from "../../../common/components/Buttons/ButtonWithLoader/ButtonWithLoader.svelte";
 

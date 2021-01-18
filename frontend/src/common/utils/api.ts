@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getDataFromLocalStorageByKey } from './localStorage'
-import { sessionKey } from '../../stores/auth'
+import { sessionKey } from '../../pages/Auth/auth'
 import { SimpleDataItem } from '../../pages/Categorization/types'
 
 // TODO: get base url as param

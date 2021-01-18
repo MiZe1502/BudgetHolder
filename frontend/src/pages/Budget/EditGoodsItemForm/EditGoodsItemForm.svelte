@@ -12,10 +12,10 @@
     } from "../../../stores/popup";
     import {validationRulesGoods} from "../BudgetPurchaseForm/validationRules";
     import {goods, goodsForSuggestions} from "../../../stores/goods";
-    import {simpleCategories} from "../../../stores/categories";
+    import {simpleCategories} from "../../Categorization/categories";
     import InputDropdown
         from "../../../common/components/Inputs/InputDropdown/InputDropdown.svelte";
-    import {getSimpleCategoryById} from "../../../stores/categories";
+    import {getSimpleCategoryById} from "../../Categorization/categories";
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
     import TextAreaWithLabel

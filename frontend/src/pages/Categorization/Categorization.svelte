@@ -7,7 +7,7 @@
         categories,
         loadCategoriesTree,
         loadSimpleCategoriesList
-    } from "../../stores/categories";
+    } from "./categories";
 
     onMount(async () => {
         await loadCategoriesTree();

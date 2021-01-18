@@ -2,20 +2,20 @@ import { get, writable } from 'svelte/store'
 import {
   Category,
   SimpleDataItem
-} from '../pages/Categorization/types'
-import { LoadingStatus } from './utils'
-import { generateNewArtificialId } from './common'
+} from './types'
+import { LoadingStatus } from '../../stores/utils'
+import { generateNewArtificialId } from '../../stores/common'
 import {
   getCategoriesTree,
   getCategoriesList,
   addNewCategory, removeCategory, updateCategory
-} from '../pages/Categorization/api'
+} from './api'
 import {
   ErrorResponse,
   SuccessResponse,
   convertSimpleData,
   SimpleReqDataItem
-} from '../common/utils/api'
+} from '../../common/utils/api'
 
 export const categories = writable<Category[]>([])
 export const categoriesTotal = writable<number>(0)

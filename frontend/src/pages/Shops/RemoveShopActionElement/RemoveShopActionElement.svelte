@@ -1,7 +1,7 @@
 <script lang="typescript">
     import {_} from 'svelte-i18n'
     import {Shop} from "../types";
-    import {removeShopFromStore} from "../../../stores/shops";
+    import {removeShopFromStore} from "../shops";
     import {EntityType, ActionType} from "../../../stores/utils";
 
     import {style} from "./style";

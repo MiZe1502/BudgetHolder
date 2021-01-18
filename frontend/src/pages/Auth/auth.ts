@@ -1,9 +1,9 @@
 import { get, writable } from 'svelte/store'
-import { MockedUserData, mockedUsers } from '../pages/Auth/data'
-import { addDataToLocalStorage } from '../common/utils/localStorage'
-import { ValidationResult } from '../pages/Budget/types'
-import { authReq, getUserReq, registrationReq } from '../pages/Auth/api'
-import { SuccessResponse } from '../common/utils/api'
+import { MockedUserData, mockedUsers } from './data'
+import { addDataToLocalStorage } from '../../common/utils/localStorage'
+import { ValidationResult } from '../Budget/types'
+import { authReq, getUserReq, registrationReq } from './api'
+import { SuccessResponse } from '../../common/utils/api'
 
 export interface UserData {
     name?: string;

@@ -9,7 +9,7 @@
         from "../../../common/components/Inputs/TextAreaWithLabel/TextAreaWithLabel.svelte";
     import {Purchase} from "../types";
     import {dateToDMY} from "../../../common/components/ElementsAndBlocks/SimpleDateElement/utils";
-    import {getShopById, simpleShops} from "../../../stores/shops";
+    import {getShopById, simpleShops} from "../../Shops/shops";
     import {
         openedPopups,
         updatePopupInnerValidation

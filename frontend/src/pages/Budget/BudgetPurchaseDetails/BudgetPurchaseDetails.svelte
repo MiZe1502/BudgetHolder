@@ -2,7 +2,7 @@
     import {onMount} from 'svelte';
     import {style} from "./style";
     import {purchases} from "../../../stores/purchases";
-    import {buildCategoryList} from "../../../stores/categories";
+    import {buildCategoryList} from "../../Categorization/categories";
 
     import CategoriesListElement
         from '../../../common/components/ElementsAndBlocks/CategoriesListElement/CategoriesListElement.svelte'

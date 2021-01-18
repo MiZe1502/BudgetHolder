@@ -9,7 +9,7 @@
         openedPopups,
         updatePopupInnerValidation
     } from "../../../stores/popup";
-    import {simpleCategories} from "../../../stores/categories";
+    import {simpleCategories} from "../categories";
     import {onMount} from "svelte";
     import {validationRules} from "./validationRules";
     import InputDropdown

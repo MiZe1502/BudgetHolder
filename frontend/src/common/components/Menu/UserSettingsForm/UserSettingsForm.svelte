@@ -1,7 +1,7 @@
 <script lang="ts">
     import {_} from 'svelte-i18n'
     import {style} from "./style";
-    import {UserDataExtended} from "../../../../stores/auth";
+    import {UserDataExtended} from "../../../../pages/Auth/auth";
     import {
         openedPopups,
         updatePopupInnerValidation

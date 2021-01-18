@@ -5,7 +5,7 @@
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {Category} from "../types";
-    import {removeCategoryFromStore} from "../../../stores/categories";
+    import {removeCategoryFromStore} from "../categories";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {style} from "./style";
 

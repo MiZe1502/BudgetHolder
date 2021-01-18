@@ -2,7 +2,7 @@
     import {_} from 'svelte-i18n'
     import {style} from "./style";
 
-    import {currentSession} from "../../../../stores/auth";
+    import {currentSession} from "../../../../pages/Auth/auth";
     import SingleMenuBlock from '../SingleMenuBlock/SingleMenuBlock.svelte'
 
     import menuConfig from './menuConfig'

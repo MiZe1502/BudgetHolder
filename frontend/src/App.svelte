@@ -13,7 +13,7 @@
         setAuthStatus,
         setCurrentSession,
         authStatus, currentSession
-    } from "./stores/auth";
+    } from "./pages/Auth/auth";
 
     import Shops from "./pages/Shops/Shops.svelte";
     import Categorization from "./pages/Categorization/Categorization.svelte";

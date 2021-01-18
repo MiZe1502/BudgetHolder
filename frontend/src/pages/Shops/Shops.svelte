@@ -9,7 +9,7 @@
         shopsStatus,
         allShops,
         updateCurrentShopsSlice
-    } from '../../stores/shops';
+    } from './shops';
     import {EntityType, ActionType} from '../../stores/utils';
 
     import {style} from "./style";

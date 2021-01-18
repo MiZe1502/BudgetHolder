@@ -7,7 +7,7 @@
         setCurrentSession,
         updateUserDataInStore,
         UserDataExtended
-    } from "../../../../stores/auth";
+    } from "../../../../pages/Auth/auth";
     import {EntityType, ActionType} from "../../../../stores/utils";
     import UserSettingsForm from "../UserSettingsForm/UserSettingsForm.svelte";
 
