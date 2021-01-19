@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	env "../env"
 	repos "../repositories"
@@ -24,12 +25,16 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 
 		env.Logger.Info("createGetGoodsSliceHandler: getting data from request")
 
-		sliceData := &utils.SliceData{}
-
-		err := json.NewDecoder(r.Body).Decode(sliceData)
-
+		from, err := strconv.Atoi(r.URL.Query().Get("from"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "createGetGoodsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		count, err := strconv.Atoi(r.URL.Query().Get("count"))
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "createGetGoodsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
@@ -44,7 +49,16 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 
-		goods, err := repo.GetSlice(sliceData.From, sliceData.Count, user.UserID)
+		goods, err := repo.GetSlice(from, count, user.UserID)
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		env.Logger.Info("createGetGoodsSliceHandler: getting total of goods items")
+
+		total, err := repo.CountTotal()
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
@@ -52,6 +66,10 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 		}
 
 		env.Logger.Info("createGetGoodsSliceHandler: marshalling slice of goods items")
+
+		data := &utils.TableData{}
+		data.Total = total
+		data.Data = goods
 
 		goodsJSON, err := json.Marshal(goods)
 		if err != nil {

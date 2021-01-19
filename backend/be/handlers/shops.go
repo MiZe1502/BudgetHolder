@@ -27,14 +27,14 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 
 		from, err := strconv.Atoi(r.URL.Query().Get("from"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid parsing data from request"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "createGetShopsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
 		count, err := strconv.Atoi(r.URL.Query().Get("count"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid parsing data from request"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "createGetShopsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
@@ -347,16 +347,6 @@ func createGetShopByIDHandler(env *env.Env) func(w http.ResponseWriter, r *http.
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
-
-		//shopData := &repos.SimpleShop{}
-		//
-		//err := json.NewDecoder(r.Body).Decode(shopData)
-		//
-		//if err != nil {
-		//	msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
-		//	utils.RespondError(w, msg, env.Logger)
-		//	return
-		//}
 
 		env.Logger.Info("createGetShopByIDHandler: init shops repository")
 

@@ -86,6 +86,21 @@ func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, err
 	return goodsItems, err
 }
 
+//GetTotal returns total goods items count
+func (r *GoodsRepository) CountTotal() (int, error) {
+	var total int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&total,
+		`SELECT * from budget.count_goods_items()`)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return total, err
+}
+
 //CreateNewGoodsItem creates new goods item and returns its id
 func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItem, sessionUUID uuid.UUID) (int, error) {
 	var addedGoodsItemID int
