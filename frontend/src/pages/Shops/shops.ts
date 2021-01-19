@@ -88,9 +88,9 @@ export const updateCurrentShopsSlice = async (from: number, count: number) => {
   await getShopsSlice({ from, count })
     .then((res: SuccessResponse) => {
       const data = res.data as TableDataResponse
-      shopsStatus.set(LoadingStatus.Finished)
       shops.set(data.data as Shop[])
       shopsTotal.set(data.total)
+      shopsStatus.set(LoadingStatus.Finished)
     })
     .catch((err: ErrorResponse) => {
       console.log(err)

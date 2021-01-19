@@ -71,7 +71,7 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 		data.Total = total
 		data.Data = goods
 
-		goodsJSON, err := json.Marshal(goods)
+		goodsJSON, err := json.Marshal(data)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)

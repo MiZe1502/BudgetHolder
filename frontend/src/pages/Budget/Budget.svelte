@@ -157,13 +157,19 @@
         //TODO: implement change page
     }
 
-    const onGoodsPageChange = (currentPage: number) => {
-        updateCurrentGoodsSlice((currentPage - 1) * maxRecordsPerPage, currentPage * maxRecordsPerPage - 1)
+    const onGoodsPageChange = async (currentPage: number) => {
+        await updateCurrentGoodsSlice((currentPage - 1) * maxRecordsPerPage, maxRecordsPerPage)
     }
 
 
     onMount(async () => {
-        goodsStatus.set(LoadingStatus.Loading);
+        await onGoodsPageChange(1);
+
+        goodsTableData.status = get(goodsStatus);
+        // goodsTableData.total = get(goodsTotal);
+        goodsTableData.data = get(goods);
+
+
         purchasesStatus.set(LoadingStatus.Loading);
 
         setTimeout(() => {
@@ -180,24 +186,24 @@
             goodsStatus.set(LoadingStatus.Finished);
             purchasesStatus.set(LoadingStatus.Finished);
 
-            allGoods.set(mockGoods);
+            //allGoods.set(mockGoods);
 
-            onGoodsPageChange(1);
+            //onGoodsPageChange(1);
 
             //goods.set(mockGoods);
 
             purchases.set(mockPurchases);
 
-            goodsTotal.set(mockGoods.length);
+            //goodsTotal.set(mockGoods.length);
             purchasesTotal.set(mockPurchases.length);
 
             tableData.status = get(purchasesStatus);
             tableData.total = get(purchasesTotal);
             tableData.data = get(purchases);
 
-            goodsTableData.status = get(goodsStatus);
-            goodsTableData.total = get(goodsTotal);
-            goodsTableData.data = get(goods);
+            //goodsTableData.status = get(goodsStatus);
+           // goodsTableData.total = get(goodsTotal);
+            //goodsTableData.data = get(goods);
         }, 5000);
     })
 </script>
@@ -219,7 +225,7 @@
     <CommonTable onPageChange={onGoodsPageChange}
                  withButton={goodsTableData.withButton}
                  buttonTitle={goodsTableData.buttonTitle}
-                 status={goodsTableData.status} total={goodsTableData.total}
+                 status={goodsTableData.status} total={$goodsTotal}
                  data={$goods} config={goodsTableData.columnsConfig}
                  title={goodsTableData.title}>
         <div slot="titleButton">
