@@ -7,7 +7,7 @@ import {
 } from '../pages/Budget/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getGoodsItemsSlice } from '../pages/Budget/api'
+import { getGoodsItemsSlice, removeGoodsItem } from '../pages/Budget/api'
 import {
   ErrorResponse,
   SuccessResponse,
@@ -45,10 +45,15 @@ export const addGoodsToStore = (newGoods: GoodsDetails[]) => {
   })
 }
 
-export const removeGoodsFromStore = (id: number) => {
-  goods.update((goods) => goods.filter((goodsItem: GoodsData) => goodsItem.id !== id))
-  allGoods.update((goods) => goods.filter((goodsItem: GoodsData) => goodsItem.id !== id))
-  goodsTotal.update((total) => total - 1)
+export const removeGoodsFromStore = async (id: number) => {
+  await removeGoodsItem({ id })
+    .then((res: SuccessResponse) => {
+      goods.update((goods) => goods.filter((goodsItem: GoodsData) => goodsItem.id !== Number(res.message)))
+      goodsTotal.update((total) => total - 1)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const updateGoodsItemInStore = (updatedGoodsItem: GoodsData) => {
@@ -78,5 +83,4 @@ export const updateCurrentGoodsSlice = async (from: number, count: number) => {
       console.log(err)
       goodsStatus.set(LoadingStatus.Error)
     })
-    // goods.set([...get(allGoods).slice(from, to + 1)])
 }
