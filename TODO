@@ -6,10 +6,8 @@
             1.2.1.1. common store integrated with websockets
         1.2.2. axios
             1.2.2.4. goods items
-                1.2.2.4.1. get slice
                 1.2.2.4.2. create new
                 1.2.2.4.3. update
-                1.2.2.4.4. remove
             1.2.2.5. purchases
                 1.2.2.4.1. get slice
                 1.2.2.4.2. create new
