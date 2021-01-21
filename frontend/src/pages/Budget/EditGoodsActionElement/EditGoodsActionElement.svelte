@@ -31,7 +31,7 @@
         if (data.id) {
             await updateGoodsItemInStore(data);
         } else {
-            await addGoodsItemToStore(data);
+            await addGoodsItemToStore({...data, category_id: data.category.id});
         }
     }
 

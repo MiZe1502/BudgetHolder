@@ -54,6 +54,7 @@ export interface GoodsData {
     name: string;
     category: SimpleDataItem;
     comment?: string;
+    category_id?: number;
 }
 
 export interface GoodsItemDetails {

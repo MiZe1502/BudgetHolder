@@ -109,7 +109,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/goods/get", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsItemByIDHandler(env)))))
 	http.Handle("/api/v1/goods/top", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetTopGoodsItemByNameHandler(env)))))
 	http.Handle("/api/v1/goods/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsItemHandler(env)))))
-	http.Handle("/api/v1/goods/add", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env)))))
+	http.Handle("/api/v1/goods/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env)))))
 	http.Handle("/api/v1/goods/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsItemHandler(env)))))
 
 	http.Handle("/message", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub)))))
