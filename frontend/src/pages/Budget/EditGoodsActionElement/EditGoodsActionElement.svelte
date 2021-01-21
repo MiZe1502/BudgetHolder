@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {
         updateGoodsItemInStore,
-        addGoodsToStore
+        addGoodsToStore, addGoodsItemToStore
     } from "../../../stores/goods";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
@@ -27,11 +27,11 @@
         data = {...initialData}
     }
 
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         if (data.id) {
-            updateGoodsItemInStore(data);
+            await updateGoodsItemInStore(data);
         } else {
-            addGoodsToStore([data]);
+            await addGoodsItemToStore(data);
         }
     }
 

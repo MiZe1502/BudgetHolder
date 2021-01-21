@@ -7,7 +7,11 @@ import {
 } from '../pages/Budget/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { getGoodsItemsSlice, removeGoodsItem } from '../pages/Budget/api'
+import {
+  addGoodsItem,
+  getGoodsItemsSlice,
+  removeGoodsItem
+} from '../pages/Budget/api'
 import {
   ErrorResponse,
   SuccessResponse,
@@ -30,7 +34,25 @@ export const getGoodsItemById = (id: number): GoodsData => {
   return get(allGoods).find((item: GoodsData) => item.id === id)
 }
 
-export const addGoodsToStore = (newGoods: GoodsDetails[]) => {
+export const addGoodsItemToStore = async (newGoodsItem: GoodsData) => {
+  goodsStatus.set(LoadingStatus.Loading)
+  await addGoodsItem(newGoodsItem)
+    .then((res: SuccessResponse) => {
+      const newId = Number(res.message)
+      newGoodsItem.id = newId
+      goods.update((goods) => {
+        return [newGoodsItem, ...goods.slice(0, goods.length)]
+      })
+      goodsTotal.update((total) => total + 1)
+      goodsStatus.set(LoadingStatus.Finished)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      goodsStatus.set(LoadingStatus.Error)
+    })
+}
+
+export const addGoodsToStore = async (newGoods: GoodsDetails[]) => {
   newGoods.forEach((item) => {
     if (item.id) {
       return
