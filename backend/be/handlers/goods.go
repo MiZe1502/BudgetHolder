@@ -56,6 +56,31 @@ func createGetGoodsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 			return
 		}
 
+		env.Logger.Info("createGetGoodsSliceHandler: init categories repository")
+
+		var catRepo repos.CategoriesRepository
+
+		catRepo.SetDb(env.Db)
+		catRepo.SetLogger(env.Logger)
+		catRepo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetGoodsSliceHandler: getting categories for goods items")
+
+		categories, err := catRepo.GetSimpleCategoriesList()
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		for _, g := range goods {
+			for _, c := range categories {
+				if g.CategoryID == c.ID {
+					g.Category = &repos.SimpleEntity{ID: g.CategoryID, Name: c.Name}
+				}
+			}
+		}
+
 		env.Logger.Info("createGetGoodsSliceHandler: getting total of goods items")
 
 		total, err := repo.CountTotal()

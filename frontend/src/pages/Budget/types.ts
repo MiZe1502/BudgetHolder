@@ -1,6 +1,7 @@
 import { Category, SimpleDataItem } from '../Categorization/types'
 import { Shop } from '../Shops/types'
 import { v4 as uuidv4 } from 'uuid'
+import {SimpleReqDataItem} from "../../common/utils/api";
 
 export class Purchase implements Purchase {
   constructor () {
@@ -52,7 +53,7 @@ export interface GoodsDetails extends GoodsData, GoodsItemDetails {
 export interface GoodsData {
     id: number;
     name: string;
-    category: SimpleDataItem;
+    category: SimpleDataItem | SimpleReqDataItem;
     comment?: string;
     category_id?: number;
 }

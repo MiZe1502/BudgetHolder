@@ -46,11 +46,15 @@ export const deleteReq = (url, data) => apiRequest('delete', url, data)
 
 export interface SimpleReqDataItem {
   id: number;
-  name: string;
+  name?: string;
 }
 
 export const convertSimpleData = (data: SimpleReqDataItem[]): SimpleDataItem[] => {
   return data.map((item) => ({ id: item.id, value: item.name }))
+}
+
+export const convertSimpleDataIntoReq = (data: SimpleDataItem): SimpleReqDataItem => {
+  return { id: data.id, name: data.value }
 }
 
 export interface SimpleResponse {

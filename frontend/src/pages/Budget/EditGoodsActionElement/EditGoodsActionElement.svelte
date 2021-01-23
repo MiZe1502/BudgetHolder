@@ -15,6 +15,10 @@
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {EntityType, ActionType} from "../../../stores/utils";
     import GoodsItemForm from "../GoodsItemForm/GoodsItemForm.svelte";
+    import {
+        convertSimpleData,
+        convertSimpleDataIntoReq
+    } from "../../../common/utils/api";
 
     let isPopupOpened = false;
 
@@ -28,10 +32,11 @@
     }
 
     const onSaveHandler = async () => {
-        if (data.id) {
-            await updateGoodsItemInStore(data);
+        const convertedData = {...data, category: convertSimpleDataIntoReq(data.category)}
+        if (convertedData.id) {
+            await updateGoodsItemInStore(convertedData);
         } else {
-            await addGoodsItemToStore(data);
+            await addGoodsItemToStore(convertedData);
         }
     }
 

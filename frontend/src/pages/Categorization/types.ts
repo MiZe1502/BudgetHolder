@@ -7,5 +7,5 @@ export interface Category {
 
 export interface SimpleDataItem {
     id: number;
-    name: string;
+    value?: string;
 }

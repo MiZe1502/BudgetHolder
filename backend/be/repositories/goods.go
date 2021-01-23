@@ -13,6 +13,7 @@ import (
 type GoodsItem struct {
 	Name       string  			 `json:"name,omitempty"`
 	Category   *SimpleEntity     `json:"category,omitempty"`
+	CategoryID   int     `json:"category_id,omitempty"`
 	Comment    string  			 `json:"comment,omitempty"`
 	BarCode    *string 			 `json:"bar_code,omitempty"`
 
