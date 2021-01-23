@@ -167,7 +167,10 @@ func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 		goodsData := repos.GoodsItem{
 			Name:       goodsDetailsData.Name,
 			BarCode:    goodsDetailsData.BarCode,
-			CategoryID: goodsDetailsData.CategoryID,
+			Category:   &repos.SimpleEntity{
+				ID: goodsDetailsData.Category.ID,
+				Name: goodsDetailsData.Category.Name,
+			},
 			Comment:    goodsDetailsData.Comment,
 			Entity:     repos.Entity{ID: *goodsDetailsData.GoodsItemID},
 		}
@@ -425,7 +428,10 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 		for _, item := range reqData.GoodsData {
 			if item.GoodsID == nil {
 				goodsItem := repos.GoodsItem{Comment: item.Comment,
-					CategoryID: item.CategoryID,
+					Category:   &repos.SimpleEntity{
+						ID: item.Category.ID,
+						Name: item.Category.Name,
+					},
 					BarCode:    item.BarCode,
 					Name:       item.Name}
 

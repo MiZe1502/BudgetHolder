@@ -10,7 +10,7 @@ import { generateNewArtificialId } from './common'
 import {
   addGoodsItem,
   getGoodsItemsSlice,
-  removeGoodsItem
+  removeGoodsItem, updateGoodsItem
 } from '../pages/Budget/api'
 import {
   ErrorResponse,
@@ -78,17 +78,29 @@ export const removeGoodsFromStore = async (id: number) => {
     })
 }
 
-export const updateGoodsItemInStore = (updatedGoodsItem: GoodsData) => {
-  goods.update((goods) => {
-    let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
-    goodsitemFromStore = updatedGoodsItem
-    return goods
-  })
-  allGoods.update((goods) => {
-    let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
-    goodsitemFromStore = updatedGoodsItem
-    return goods
-  })
+export const updateGoodsItemInStore = async (updatedGoodsItem: GoodsData) => {
+  await updateGoodsItem(updatedGoodsItem)
+    .then((res: SuccessResponse) => {
+      goods.update((goods) => {
+        let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
+        goodsitemFromStore = updatedGoodsItem
+        return goods
+      })
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
+  //
+  // goods.update((goods) => {
+  //   let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
+  //   goodsitemFromStore = updatedGoodsItem
+  //   return goods
+  // })
+  // allGoods.update((goods) => {
+  //   let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
+  //   goodsitemFromStore = updatedGoodsItem
+  //   return goods
+  // })
 }
 
 export const updateCurrentGoodsSlice = async (from: number, count: number) => {

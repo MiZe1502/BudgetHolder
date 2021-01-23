@@ -11,10 +11,10 @@ import (
 
 //GoodsItem represents goods data item
 type GoodsItem struct {
-	Name       string  `json:"name,omitempty"`
-	CategoryID int     `json:"category_id,omitempty"`
-	Comment    string  `json:"comment,omitempty"`
-	BarCode    *string `json:"bar_code,omitempty"`
+	Name       string  			 `json:"name,omitempty"`
+	Category   *SimpleEntity     `json:"category,omitempty"`
+	Comment    string  			 `json:"comment,omitempty"`
+	BarCode    *string 			 `json:"bar_code,omitempty"`
 
 	Entity
 }
@@ -110,7 +110,7 @@ func (r *GoodsRepository) CreateNewGoodsItem(goodsItemData *GoodsItem, sessionUU
 		&addedGoodsItemID,
 		`SELECT * from budget.create_new_goods_item($1, $2, $3, $4, $5::uuid)`,
 		goodsItemData.Name,
-		goodsItemData.CategoryID,
+		goodsItemData.Category.ID,
 		goodsItemData.Comment,
 		goodsItemData.BarCode,
 		sessionUUID.String())
@@ -145,7 +145,7 @@ func (r *GoodsRepository) UpdateGoodsItem(goodsItemData *GoodsItem, sessionUUID 
 		`SELECT * from budget.update_single_goods_item($1, $2, $3, $4, $5, $6::uuid)`,
 		goodsItemData.ID,
 		goodsItemData.Name,
-		goodsItemData.CategoryID,
+		goodsItemData.Category.ID,
 		goodsItemData.Comment,
 		goodsItemData.BarCode,
 		sessionUUID.String())
