@@ -32,6 +32,7 @@
 
     const onCategorySelect = (selectedId: number) => {
         goodsItem.category = getSimpleCategoryById(selectedId);
+        goodsItem.category_id = selectedId;
     }
 
     onMount(() => {
