@@ -32,7 +32,10 @@
         simpleCategories,
         simpleCategoriesStatus,
         categoriesTotal,
-        findParentCategory, buildCategoryList
+        findParentCategory,
+        buildCategoryList,
+        loadSimpleCategoriesList,
+        loadCategoriesTree
     } from "../Categorization/categories";
     import {
         goodsStatus,
@@ -44,7 +47,7 @@
     import {
         purchasesStatus,
         purchases,
-        purchasesTotal,
+        purchasesTotal, updatePurchasesWithGoodsSlice,
     } from "../../stores/purchases";
     import BudgetFormContainer
         from "./BudgetFormContainer/BudgetFormContainer.svelte";
@@ -153,8 +156,8 @@
         ]
     }
 
-    const onPageChange = (currentPage: number) => {
-        //TODO: implement change page
+    const onPurchasesPageChange = async (currentPage: number) => {
+        await updatePurchasesWithGoodsSlice((currentPage - 1) * maxRecordsPerPage, maxRecordsPerPage)
     }
 
     const onGoodsPageChange = async (currentPage: number) => {
@@ -163,47 +166,31 @@
 
 
     onMount(async () => {
+        await loadCategoriesTree();
+        await loadSimpleCategoriesList();
         await onGoodsPageChange(1);
+        await onPurchasesPageChange(1);
 
-        goodsTableData.status = get(goodsStatus);
-        // goodsTableData.total = get(goodsTotal);
         goodsTableData.data = get(goods);
+        goodsTableData.status = get(goodsStatus);
 
-
-        purchasesStatus.set(LoadingStatus.Loading);
+        tableData.data = get(purchases);
+        tableData.status = get(purchasesStatus);
+        //
+        // purchasesStatus.set(LoadingStatus.Loading);
 
         setTimeout(() => {
-            categoriesStatus.set(LoadingStatus.Finished)
-            simpleCategoriesStatus.set(LoadingStatus.Finished)
-
-            categories.set(mockCategoriesData);
-            simpleCategories.set(mockCategories);
-
             allShops.set(mockShops);
 
-            categoriesTotal.set(mockCategories.length);
+            // goodsStatus.set(LoadingStatus.Finished);
+            // purchasesStatus.set(LoadingStatus.Finished);
+            //
+            // purchases.set(mockPurchases);
+            // purchasesTotal.set(mockPurchases.length);
 
-            goodsStatus.set(LoadingStatus.Finished);
-            purchasesStatus.set(LoadingStatus.Finished);
-
-            //allGoods.set(mockGoods);
-
-            //onGoodsPageChange(1);
-
-            //goods.set(mockGoods);
-
-            purchases.set(mockPurchases);
-
-            //goodsTotal.set(mockGoods.length);
-            purchasesTotal.set(mockPurchases.length);
-
-            tableData.status = get(purchasesStatus);
-            tableData.total = get(purchasesTotal);
-            tableData.data = get(purchases);
-
-            //goodsTableData.status = get(goodsStatus);
-           // goodsTableData.total = get(goodsTotal);
-            //goodsTableData.data = get(goods);
+            // tableData.status = get(purchasesStatus);
+            // tableData.total = get(purchasesTotal);
+            // tableData.data = get(purchases);
         }, 5000);
     })
 </script>
@@ -217,9 +204,9 @@
         {/if}
     </BudgetFormContainer>
 
-    <CommonTable onPageChange={onPageChange} withButton={tableData.withButton}
+    <CommonTable onPageChange={onPurchasesPageChange} withButton={tableData.withButton}
                  buttonTitle={tableData.buttonTitle} status={tableData.status}
-                 total={tableData.total} data={$purchases}
+                 total={$purchasesTotal} data={$purchases}
                  config={tableData.columnsConfig} title={tableData.title}/>
 
     <CommonTable onPageChange={onGoodsPageChange}

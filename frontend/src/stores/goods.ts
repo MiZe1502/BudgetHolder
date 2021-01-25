@@ -90,17 +90,6 @@ export const updateGoodsItemInStore = async (updatedGoodsItem: GoodsData) => {
     .catch((err: ErrorResponse) => {
       console.log(err)
     })
-  //
-  // goods.update((goods) => {
-  //   let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
-  //   goodsitemFromStore = updatedGoodsItem
-  //   return goods
-  // })
-  // allGoods.update((goods) => {
-  //   let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
-  //   goodsitemFromStore = updatedGoodsItem
-  //   return goods
-  // })
 }
 
 export const updateCurrentGoodsSlice = async (from: number, count: number) => {

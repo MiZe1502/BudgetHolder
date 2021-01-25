@@ -1,11 +1,14 @@
-import { get, writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 import { GoodsDetails, Purchase, ValidationResult } from '../pages/Budget/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
-import { v4 as uuidv4 } from 'uuid'
-import { Shop } from '../pages/Shops/types'
-import { SimpleDataItem } from '../pages/Categorization/types'
 import { removeDataFromLocalStorageByKey } from '../common/utils/localStorage'
+import {
+  ErrorResponse,
+  SuccessResponse,
+  TableDataResponse
+} from '../common/utils/api'
+import {getPurchaseWithGoodsSlice} from "../pages/Budget/api";
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -85,4 +88,20 @@ export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
 
     return purchases
   })
+}
+
+export const updatePurchasesWithGoodsSlice = async (from: number, count: number) => {
+  purchasesStatus.set(LoadingStatus.Loading)
+
+  await getPurchaseWithGoodsSlice({ from, count })
+    .then((res: SuccessResponse) => {
+      const data = res.data as TableDataResponse
+      purchases.set(data.data as Purchase[])
+      purchasesTotal.set(data.total)
+      purchasesStatus.set(LoadingStatus.Finished)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      purchasesStatus.set(LoadingStatus.Error)
+    })
 }
