@@ -87,7 +87,7 @@ func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, err
 	return goodsItems, err
 }
 
-//GetTotal returns total goods items count
+//CountTotal returns total goods items count
 func (r *GoodsRepository) CountTotal() (int, error) {
 	var total int
 

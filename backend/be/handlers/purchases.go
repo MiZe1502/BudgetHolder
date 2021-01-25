@@ -78,7 +78,20 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 			p.GoodsData = goodsData
 		}
 
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting total of purchases items")
+
+		total, err := purRepo.CountTotal()
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
 		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: marshalling slice of purchases with goods data")
+
+		data := &utils.TableData{}
+		data.Total = total
+		data.Data = purchases
 
 		purchasesJSON, err := json.Marshal(purchases)
 		if err != nil {

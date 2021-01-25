@@ -67,6 +67,21 @@ func (r *PurchasesRepository) RemoveEntityByID(id int, uuid uuid.UUID) (int, err
 	return removedPurchaseID, err
 }
 
+//CountTotal returns total purchases items count
+func (r *PurchasesRepository) CountTotal() (int, error) {
+	var total int
+
+	err := pgxscan.Get(context.Background(),
+		r.db,
+		&total,
+		`SELECT * from budget.count_purchases()`)
+	if err != nil {
+		return IncorrectID, err
+	}
+
+	return total, err
+}
+
 //CreateNewPurchase creates new purchase and returns its id
 func (r *PurchasesRepository) CreateNewPurchase(purchaseData *PurchaseWithGoods, sessionUUID uuid.UUID) (int, error) {
 	var addedPurchaseID int
