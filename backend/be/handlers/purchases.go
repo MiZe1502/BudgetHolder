@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	env "../env"
 	repos "../repositories"
@@ -24,12 +25,16 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 
 		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting data from request")
 
-		sliceData := &utils.SliceData{}
-
-		err := json.NewDecoder(r.Body).Decode(sliceData)
-
+		from, err := strconv.Atoi(r.URL.Query().Get("from"))
 		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
+			msg := utils.MessageError(utils.Message(false, "createGetGoodsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		count, err := strconv.Atoi(r.URL.Query().Get("count"))
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, "createGetGoodsSliceHandler: Invalid parsing data from request"), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
@@ -42,11 +47,11 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 		purRepo.SetLogger(env.Logger)
 		purRepo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting slice of purchases, from:" + fmt.Sprint(sliceData.From) + ", count: " + fmt.Sprint(sliceData.Count))
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting slice of purchases, from:" + fmt.Sprint(from) + ", count: " + fmt.Sprint(count))
 
 		user := r.Context().Value("userCtx").(*repos.UserContext)
 
-		purchases, err := purRepo.GetSlice(sliceData.From, sliceData.Count, user.UserID)
+		purchases, err := purRepo.GetSlice(from, count, user.UserID)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)

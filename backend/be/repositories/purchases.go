@@ -13,7 +13,7 @@ import (
 type Purchase struct {
 	TotalPrice float32 `json:"total_price,omitempty"`
 	ShopID     *int    `json:"shop_id,omitempty"`
-	Date       int64   `json:"date,omitempty"`
+	Date       *time.Time   `json:"date,omitempty"`
 	Comment    string  `json:"comment,omitempty"`
 
 	Entity
@@ -77,7 +77,7 @@ func (r *PurchasesRepository) CreateNewPurchase(purchaseData *PurchaseWithGoods,
 		`SELECT * from budget.create_new_purchase($1, $2, $3, $4, $5::uuid)`,
 		purchaseData.TotalPrice,
 		purchaseData.ShopID,
-		time.Unix(0, purchaseData.Date),
+		//time.Unix(0, purchaseData.Date.),
 		purchaseData.Comment,
 		sessionUUID.String())
 	if err != nil {
@@ -98,7 +98,7 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 		purchaseData.ID,
 		purchaseData.TotalPrice,
 		purchaseData.ShopID,
-		time.Unix(0, purchaseData.Date),
+		//time.Unix(0, purchaseData.Date),
 		purchaseData.Comment,
 		sessionUUID.String())
 	if err != nil {
