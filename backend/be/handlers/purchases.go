@@ -93,7 +93,7 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 		data.Total = total
 		data.Data = purchases
 
-		purchasesJSON, err := json.Marshal(purchases)
+		purchasesJSON, err := json.Marshal(data)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
