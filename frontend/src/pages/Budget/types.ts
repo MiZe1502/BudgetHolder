@@ -6,7 +6,7 @@ import {SimpleReqDataItem} from "../../common/utils/api";
 export class Purchase implements Purchase {
   constructor () {
     this.shop = {} as Shop
-    this.goods = [
+    this.goods_data = [
             {
               tempId: uuidv4(),
               category: {} as SimpleDataItem
@@ -39,11 +39,11 @@ export class GoodsItem implements Partial<GoodsData> {
 
 export interface Purchase {
     id: number;
-    totalPrice: number;
+    total_price: number;
     comment?: string;
     shop: Shop;
     date: Date | string;
-    goods: GoodsDetails[];
+    goods_data: GoodsDetails[];
 }
 
 export interface GoodsDetails extends GoodsData, GoodsItemDetails {

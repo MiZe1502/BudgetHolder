@@ -50,7 +50,7 @@
                     on:input={validateForm} on:change={validateForm}
                     label={$_("budget.labels.price")} autofocus={true}
                     type="text" name="name"
-                    bind:value={data.totalPrice} required={true}/>
+                    bind:value={data.total_price} required={true}/>
     <InputWithLabel
             label={$_("budget.labels.date")} autofocus={true}
             type="date" name="date"

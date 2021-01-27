@@ -150,8 +150,8 @@
         <div class="{style.FlexVert} {style.MainColumn} {style.NotLastColumn}">
             <InputWithLabel
                     label={$_("budget.labels.price")} autofocus={true}
-                    type="number" name="totalPrice"
-                    bind:value={$currentPurchase.totalPrice} required={true}/>
+                    type="number" name="total_price"
+                    bind:value={$currentPurchase.total_price} required={true}/>
             <InputWithLabel
                     label={$_("budget.labels.date")} autofocus={true}
                     type="date" name="date"
@@ -169,7 +169,7 @@
         </div>
     </div>
     <SimpleBar style="max-height: {style.maxHeight}px; width: 100%">
-        {#each $currentPurchase.goods as goodsItem, index (goodsItem.tempId)}
+        {#each $currentPurchase.goods_data as goodsItem, index (goodsItem.tempId)}
             <div class="{style.FlexVert} {style.MinorFieldsWrapper}">
                 <div class="{style.FlexHor}">
                     <div class="{style.FlexVert} {style.MinorColumn} {style.NotLastColumn}">
@@ -225,7 +225,7 @@
             </ul>
         {/if}
         <div class="{style.FlexHorCenter} {style.ButtonsBlock}">
-            <Button disabled={!$currentPurchase.totalPrice}
+            <Button disabled={!$currentPurchase.total_price}
                     buttonClass="{style.ButtonForm}"
                     title={$_("budget.buttons.save")} onClickHandler={onSave}/>
             <Button onClickHandler={onClearForm} buttonClass={style.ButtonForm}

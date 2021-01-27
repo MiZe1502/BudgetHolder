@@ -3,8 +3,8 @@ import {Shop} from "../../Shops/types";
 
 export interface BudgetActionsData {
     id: number;
-    goodsData: GoodsDetails[];
+    goods_data: GoodsDetails[];
     date: string;
-    totalPrice: number;
+    total_price: number;
     shop: Shop;
 }

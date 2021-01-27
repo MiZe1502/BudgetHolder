@@ -57,7 +57,7 @@
             {#if withScroll}
                 <SimpleBar
                         style="max-height: {maxHeightWithScroll}px; width: 100%">
-                    {#each data as dataItem (dataItem.id)}
+                    {#each data as dataItem (dataItem.id || dataItem.name)}
                         <CommonTableRow {inPopup} data={dataItem}
                                         config={config}/>
                     {/each}

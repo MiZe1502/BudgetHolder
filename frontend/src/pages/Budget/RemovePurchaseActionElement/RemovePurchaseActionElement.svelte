@@ -36,7 +36,7 @@
                         onAcceptHandler={onAcceptHandler}
                         onCancelHandler={onCloseHandler} withAcceptButton={true}
                         withCancelButton={true}
-                        title={`${$_("common.titles.remove")} ${dateToDMY(data.date)}, ${data.totalPrice}` || $_("commmon.titles.remove")}
+                        title={`${$_("common.titles.remove")} ${dateToDMY(data.date)}, ${data.total_price}` || $_("commmon.titles.remove")}
                         isPopupOpened={isPopupOpened}
                         onCloseHandler={onCloseHandler}
                         popupClass={style.Popup}>

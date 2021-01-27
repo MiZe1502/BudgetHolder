@@ -75,6 +75,6 @@
 <div class="{style.Wrapper}">
     <CommonTable maxHeightWithScroll={500} withScroll={true} inPopup={true} status={tableData.status}
                  total={tableData.total}
-                 data={$purchases.find((purchase) => purchase.id === purchaseId).goods}
+                 data={$purchases.find((purchase) => purchase.id === purchaseId).goods_data}
                  config={tableData.columnsConfig}/>
 </div>

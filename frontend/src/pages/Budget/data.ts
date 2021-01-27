@@ -4,7 +4,7 @@ import { SimpleDataItem } from '../Categorization/types'
 export const mockPurchases: Purchase[] = [
   {
     id: 1,
-    totalPrice: 300,
+    total_price: 300,
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     shop: {
       id: 1,
@@ -14,7 +14,7 @@ export const mockPurchases: Purchase[] = [
       comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
     },
     date: '22.08.2020',
-    goods: [
+    goods_data: [
       {
         id: 1,
         name: 'Burger - the most powerful burger in the entire universe with bacon and chips and chocolate',
@@ -175,7 +175,7 @@ export const mockPurchases: Purchase[] = [
   },
   {
     id: 2,
-    totalPrice: 100,
+    total_price: 100,
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     shop: {
       id: 3,
@@ -184,7 +184,7 @@ export const mockPurchases: Purchase[] = [
       address: 'Moscow, 2-ya Vladimirskaya, 30'
     },
     date: '22.08.2020',
-    goods: [
+    goods_data: [
       {
         id: 1,
         name: 'Burger',
@@ -201,7 +201,7 @@ export const mockPurchases: Purchase[] = [
   },
   {
     id: 3,
-    totalPrice: 15000,
+    total_price: 15000,
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     shop: {
       id: 3,
@@ -210,7 +210,7 @@ export const mockPurchases: Purchase[] = [
       address: 'Moscow, 2-ya Vladimirskaya, 30'
     },
     date: '22.08.2020',
-    goods: [
+    goods_data: [
       {
         id: 6,
         name: 'Without category',

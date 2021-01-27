@@ -29,7 +29,7 @@ export const removePurchaseFromStore = (id: number): void => {
 export const removeGoodsItemDetailsFromPurchase = (detailsId: number, purchaseId: number): void => {
   purchases.update((purchases) => {
     const currentPurchase = purchases.find((purchase) => purchase.id === purchaseId)
-    currentPurchase.goods = currentPurchase.goods.filter((goodsItem) => goodsItem.id !== detailsId)
+    currentPurchase.goods_data = currentPurchase.goods_data.filter((goodsItem) => goodsItem.id !== detailsId)
 
     console.log(currentPurchase)
     return purchases
@@ -69,7 +69,7 @@ export const updatePurchaseDataInStore = (newData: Purchase) => {
   purchases.update((purchases) => {
     const purchase = purchases.find((item) => item.id === newData.id)
     purchase.comment = newData.comment
-    purchase.totalPrice = newData.totalPrice
+    purchase.total_price = newData.total_price
     purchase.shop = newData.shop
     purchase.date = newData.date
 
@@ -80,7 +80,7 @@ export const updatePurchaseDataInStore = (newData: Purchase) => {
 export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
   purchases.update((purchases) => {
     const purchase = purchases.find((item) => item.id === newData.purchaseId)
-    const goodsItem = purchase.goods.find((item) => item.id === newData.id)
+    const goodsItem = purchase.goods_data.find((item) => item.id === newData.id)
     goodsItem.price = newData.price
     goodsItem.comment = newData.comment
     goodsItem.category = newData.category

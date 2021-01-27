@@ -118,20 +118,20 @@
                 component: SimpleTextElement,
                 overflowed: true,
                 style: 'flex: 1 0 10%',
-                mapping: (data: Purchase) => data.totalPrice,
+                mapping: (data: Purchase) => data.total_price,
             },
-            {
-                header: 'budget.labels.shop',
-                component: UrlElement,
-                overflowed: true,
-                style: 'flex: 1 0 10%',
-                mapping: (data: Purchase) => {
-                    return {
-                        name: data.shop.name,
-                        url: data.shop.url,
-                    }
-                }
-            },
+            // {
+            //     header: 'budget.labels.shop',
+            //     component: UrlElement,
+            //     overflowed: true,
+            //     style: 'flex: 1 0 10%',
+            //     mapping: (data: Purchase) => {
+            //         return {
+            //             name: data.shop.name,
+            //             url: data.shop.url,
+            //         }
+            //     }
+            // },
             {
                 header: 'common.labels.comment',
                 component: SimpleTextElement,
@@ -145,9 +145,9 @@
                 mapping: (data: Purchase): BudgetActionsData => {
                     return {
                         id: data.id,
-                        goodsData: data.goods,
+                        goodsData: data.goods_data,
                         date: data.date,
-                        totalPrice: data.totalPrice,
+                        total_price: data.total_price,
                         shop: data.shop,
                         comment: data.comment,
                     }
@@ -175,6 +175,8 @@
         goodsTableData.status = get(goodsStatus);
 
         tableData.data = get(purchases);
+
+        console.log("HERE", tableData.data)
         tableData.status = get(purchasesStatus);
         //
         // purchasesStatus.set(LoadingStatus.Loading);
