@@ -86,6 +86,24 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: init shops repository")
+
+		var shopsRepo repos.ShopsRepository
+
+		shopsRepo.SetDb(env.Db)
+		shopsRepo.SetLogger(env.Logger)
+		shopsRepo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: getting shops data for purchases")
+		for _, p := range purchases {
+			shop, err := shopsRepo.GetEntityByID(*p.ShopID)
+			if err != nil {
+				msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+				utils.RespondError(w, msg, env.Logger)
+				return
+			}
+			p.Shop = &shop
+		}
 
 		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: marshalling slice of purchases with goods data")
 

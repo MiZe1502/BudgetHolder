@@ -11,8 +11,9 @@ import (
 
 //Purchase represents purchase basic data
 type Purchase struct {
-	total_price float32 `json:"total_price,omitempty"`
+	TotalPrice float32 `json:"total_price,omitempty"`
 	ShopID     *int    `json:"shop_id,omitempty"`
+	Shop	   *Shop   `json:"shop,omitempty"`
 	Date       *time.Time   `json:"date,omitempty"`
 	Comment    string  `json:"comment,omitempty"`
 
@@ -90,7 +91,7 @@ func (r *PurchasesRepository) CreateNewPurchase(purchaseData *PurchaseWithGoods,
 		r.db,
 		&addedPurchaseID,
 		`SELECT * from budget.create_new_purchase($1, $2, $3, $4, $5::uuid)`,
-		purchaseData.total_price,
+		purchaseData.TotalPrice,
 		purchaseData.ShopID,
 		//time.Unix(0, purchaseData.Date.),
 		purchaseData.Comment,
@@ -111,7 +112,7 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 		&updatedPurchaseID,
 		`SELECT * from budget.update_purchase($1, $2, $3, $4, $5, $6::uuid)`,
 		purchaseData.ID,
-		purchaseData.total_price,
+		purchaseData.TotalPrice,
 		purchaseData.ShopID,
 		//time.Unix(0, purchaseData.Date),
 		purchaseData.Comment,
@@ -146,7 +147,7 @@ func (r *PurchasesRepository) IsPurchaseWithGoodsValid(data *PurchaseWithGoods) 
 		return false, errors.New("Validation failed. Purchase comment contains more than 3000 characters")
 	}
 
-	var total_price float32 = 0.0
+	var totalPrice float32 = 0.0
 
 	for _, item := range data.GoodsData {
 		if len(item.Name) > 300 {
@@ -165,10 +166,10 @@ func (r *PurchasesRepository) IsPurchaseWithGoodsValid(data *PurchaseWithGoods) 
 			return false, errors.New("Validation failed. Goods items price can not be <= 0")
 		}
 
-		total_price += item.Price
+		totalPrice += item.Price
 	}
 
-	if data.total_price != total_price {
+	if data.TotalPrice != totalPrice {
 		return false, errors.New("Validation failed. Wrong total price")
 	}
 

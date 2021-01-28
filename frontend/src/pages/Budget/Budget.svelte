@@ -120,18 +120,18 @@
                 style: 'flex: 1 0 10%',
                 mapping: (data: Purchase) => data.total_price,
             },
-            // {
-            //     header: 'budget.labels.shop',
-            //     component: UrlElement,
-            //     overflowed: true,
-            //     style: 'flex: 1 0 10%',
-            //     mapping: (data: Purchase) => {
-            //         return {
-            //             name: data.shop.name,
-            //             url: data.shop.url,
-            //         }
-            //     }
-            // },
+            {
+                header: 'budget.labels.shop',
+                component: UrlElement,
+                overflowed: true,
+                style: 'flex: 1 0 10%',
+                mapping: (data: Purchase) => {
+                    return {
+                        name: data.shop.name,
+                        url: data.shop.url,
+                    }
+                }
+            },
             {
                 header: 'common.labels.comment',
                 component: SimpleTextElement,
