@@ -105,6 +105,34 @@ func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.Respo
 			p.Shop = &shop
 		}
 
+		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: init categories repository")
+
+		var catRepo repos.CategoriesRepository
+
+		catRepo.SetDb(env.Db)
+		catRepo.SetLogger(env.Logger)
+		catRepo.SetTokenGenerator(env.Token)
+
+		env.Logger.Info("createGetGoodsSliceHandler: getting categories for goods items")
+
+		categories, err := catRepo.GetSimpleCategoriesList()
+		if err != nil {
+			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+			utils.RespondError(w, msg, env.Logger)
+			return
+		}
+
+		// TODO: Too dirty
+		for _, p := range purchases {
+			for _, g := range p.GoodsData {
+				for _, c := range categories {
+					if g.CategoryID == c.ID {
+						g.Category = &repos.SimpleEntity{ID: g.CategoryID, Name: c.Name}
+					}
+				}
+			}
+		}
+
 		env.Logger.Info("createGetPurchasesWithGoodsDataSliceHandler: marshalling slice of purchases with goods data")
 
 		data := &utils.TableData{}
@@ -201,14 +229,14 @@ func createUpdateGoodsDetailsItemHandler(env *env.Env) func(w http.ResponseWrite
 		env.Logger.Info("createUpdateGoodsDetailsItemHandler: create separated structs with goods data")
 
 		goodsData := repos.GoodsItem{
-			Name:       goodsDetailsData.Name,
-			BarCode:    goodsDetailsData.BarCode,
-			Category:   &repos.SimpleEntity{
-				ID: goodsDetailsData.Category.ID,
+			Name:    goodsDetailsData.Name,
+			BarCode: goodsDetailsData.BarCode,
+			Category: &repos.SimpleEntity{
+				ID:   goodsDetailsData.Category.ID,
 				Name: goodsDetailsData.Category.Name,
 			},
-			Comment:    goodsDetailsData.Comment,
-			Entity:     repos.Entity{ID: *goodsDetailsData.GoodsItemID},
+			Comment: goodsDetailsData.Comment,
+			Entity:  repos.Entity{ID: *goodsDetailsData.GoodsItemID},
 		}
 
 		goodsDetailsItemData := repos.GoodsDetailsItem{
@@ -464,12 +492,12 @@ func createAddNewPurchaseWithGoodsDataHandler(env *env.Env) func(w http.Response
 		for _, item := range reqData.GoodsData {
 			if item.GoodsID == nil {
 				goodsItem := repos.GoodsItem{Comment: item.Comment,
-					Category:   &repos.SimpleEntity{
-						ID: item.Category.ID,
+					Category: &repos.SimpleEntity{
+						ID:   item.Category.ID,
 						Name: item.Category.Name,
 					},
-					BarCode:    item.BarCode,
-					Name:       item.Name}
+					BarCode: item.BarCode,
+					Name:    item.Name}
 
 				addedGoodsItemID, err := goodsRepo.CreateNewGoodsItem(&goodsItem, user.SessionUUID)
 				if err != nil {
