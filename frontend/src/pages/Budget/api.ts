@@ -20,3 +20,7 @@ export const addGoodsItem = async (data: GoodsData) => {
 export const getPurchaseWithGoodsSlice = async (data: SliceData) => {
   return await getReq('purchases/slice', data)
 }
+
+export const removePurchase = async (data: EntityData) => {
+  return await postReq('purchases/remove', data)
+}

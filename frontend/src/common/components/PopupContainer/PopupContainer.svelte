@@ -112,10 +112,10 @@
         curPopupState = addPopupToState(uuid);
     });
 
-    const onPopupAcceptHandler = (event: MouseEvent) => {
+    const onPopupAcceptHandler = async (event: MouseEvent) => {
         event.preventDefault();
 
-        onAcceptHandler();
+        await onAcceptHandler();
         onCloseHandler();
         removePopupFromStore(curPopupState.uuid);
     }

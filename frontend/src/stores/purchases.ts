@@ -8,7 +8,7 @@ import {
   SuccessResponse,
   TableDataResponse
 } from '../common/utils/api'
-import {getPurchaseWithGoodsSlice} from "../pages/Budget/api";
+import { getPurchaseWithGoodsSlice, removePurchase } from '../pages/Budget/api'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -21,9 +21,15 @@ export const purchases = writable<Purchase[]>([])
 export const purchasesTotal = writable<number>(0)
 export const purchasesStatus = writable<LoadingStatus>(LoadingStatus.None)
 
-export const removePurchaseFromStore = (id: number): void => {
-  purchases.update((purchases) => purchases.filter((purchase) => purchase.id !== id))
-  purchasesTotal.update(total => total - 1)
+export const removePurchaseFromStore = async (id: number) => {
+  await removePurchase({ id })
+    .then((res: SuccessResponse) => {
+      purchases.update((purchases) => purchases.filter((purchase) => purchase.id !== Number(res.message)))
+      purchasesTotal.update(total => total - 1)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const removeGoodsItemDetailsFromPurchase = (detailsId: number, purchaseId: number): void => {
