@@ -8,7 +8,7 @@ import {
   SuccessResponse,
   TableDataResponse
 } from '../common/utils/api'
-import { getPurchaseWithGoodsSlice, removePurchase } from '../pages/Budget/api'
+import { getPurchaseWithGoodsSlice, removePurchase, removeGoodsDetailsFromPurchase } from '../pages/Budget/api'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -32,14 +32,18 @@ export const removePurchaseFromStore = async (id: number) => {
     })
 }
 
-export const removeGoodsItemDetailsFromPurchase = (detailsId: number, purchaseId: number): void => {
-  purchases.update((purchases) => {
-    const currentPurchase = purchases.find((purchase) => purchase.id === purchaseId)
-    currentPurchase.goods_data = currentPurchase.goods_data.filter((goodsItem) => goodsItem.id !== detailsId)
-
-    console.log(currentPurchase)
-    return purchases
-  })
+export const removeGoodsItemDetailsFromPurchase = async (detailsId: number, purchaseId: number) => {
+  await removeGoodsDetailsFromPurchase({ id: detailsId })
+    .then((res: SuccessResponse) => {
+      purchases.update((purchases) => {
+        const currentPurchase = purchases.find((purchase) => purchase.id === purchaseId)
+        currentPurchase.goods_data = currentPurchase.goods_data.filter((goodsItem) => goodsItem.id !== Number(res.message))
+        return purchases
+      })
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const addPurchaseToStore = (newPurchase: Purchase) => {
@@ -85,7 +89,7 @@ export const updatePurchaseDataInStore = (newData: Purchase) => {
 
 export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
   purchases.update((purchases) => {
-    const purchase = purchases.find((item) => item.id === newData.purchaseId)
+    const purchase = purchases.find((item) => item.id === newData.purchase_id)
     const goodsItem = purchase.goods_data.find((item) => item.id === newData.id)
     goodsItem.price = newData.price
     goodsItem.comment = newData.comment

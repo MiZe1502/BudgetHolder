@@ -5,7 +5,6 @@
     import {Purchase, GoodsData} from "./types";
     import {BudgetActionsData} from "./BudgetActionsElement/utils";
     import {LoadingStatus} from "../../stores/utils";
-    import {mockGoods, mockPurchases} from "./data";
     import CategoriesListElement
         from '../../common/components/ElementsAndBlocks/CategoriesListElement/CategoriesListElement.svelte';
     import {

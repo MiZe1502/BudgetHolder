@@ -60,8 +60,10 @@ export interface GoodsData {
 
 export interface GoodsItemDetails {
     amount?: number;
+    goods_id: number;
+    goods_details_id: number;
     price: number;
-    purchaseId: number;
+    purchase_id: number;
 }
 
 export interface GoodsSuggestion {

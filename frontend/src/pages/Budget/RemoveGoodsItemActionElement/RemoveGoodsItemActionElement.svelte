@@ -14,8 +14,8 @@
 
     let isPopupOpened = false;
 
-    const onAcceptHandler = () => {
-        removeGoodsItemDetailsFromPurchase(data.id, data.purchaseId);
+    const onAcceptHandler = async () => {
+        await removeGoodsItemDetailsFromPurchase(data.goods_details_id, data.purchase_id);
     }
 
     const onClickHandler = () => {
