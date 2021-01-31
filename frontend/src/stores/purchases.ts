@@ -8,7 +8,7 @@ import {
   SuccessResponse,
   TableDataResponse
 } from '../common/utils/api'
-import { getPurchaseWithGoodsSlice, removePurchase, removeGoodsDetailsFromPurchase } from '../pages/Budget/api'
+import { getPurchaseWithGoodsSlice, removePurchase, removeGoodsDetailsFromPurchase, updatePurchase } from '../pages/Budget/api'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -75,16 +75,19 @@ export const clearValidationResults = () => {
   validationResults.set([])
 }
 
-export const updatePurchaseDataInStore = (newData: Purchase) => {
-  purchases.update((purchases) => {
-    const purchase = purchases.find((item) => item.id === newData.id)
-    purchase.comment = newData.comment
-    purchase.total_price = newData.total_price
-    purchase.shop = newData.shop
-    purchase.date = newData.date
+export const updatePurchaseDataInStore = async (updatedPurchase: Purchase) => {
+  await updatePurchase(updatedPurchase)
+    .then((res: SuccessResponse) => {
+      purchases.update((purchases) => {
+        const purchaseIndex = purchases.findIndex((item) => item.id === updatedPurchase.id)
 
-    return purchases
-  })
+        purchases[purchaseIndex] = { ...res.data as Record<string, any>, goods_data: purchases[purchaseIndex].goods_data } as Purchase
+        return purchases
+      })
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
@@ -102,7 +105,6 @@ export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
 
 export const updatePurchasesWithGoodsSlice = async (from: number, count: number) => {
   purchasesStatus.set(LoadingStatus.Loading)
-
   await getPurchaseWithGoodsSlice({ from, count })
     .then((res: SuccessResponse) => {
       const data = res.data as TableDataResponse

@@ -7,4 +7,5 @@ export interface BudgetActionsData {
     date: string;
     total_price: number;
     shop: Shop;
+    shop_id: number;
 }

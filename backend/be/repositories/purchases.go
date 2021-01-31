@@ -114,7 +114,7 @@ func (r *PurchasesRepository) UpdatePurchase(purchaseData *Purchase, sessionUUID
 		purchaseData.ID,
 		purchaseData.TotalPrice,
 		purchaseData.ShopID,
-		//time.Unix(0, purchaseData.Date),
+		purchaseData.Date,
 		purchaseData.Comment,
 		sessionUUID.String())
 	if err != nil {

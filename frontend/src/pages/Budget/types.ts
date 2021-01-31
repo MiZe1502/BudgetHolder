@@ -42,6 +42,7 @@ export interface Purchase {
     total_price: number;
     comment?: string;
     shop: Shop;
+    shop_id: number;
     date: Date | string;
     goods_data: GoodsDetails[];
 }

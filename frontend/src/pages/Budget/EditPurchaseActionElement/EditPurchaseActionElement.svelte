@@ -24,8 +24,8 @@
         data = {...initialData}
     }
 
-    const onSaveHandler = () => {
-        updatePurchaseDataInStore(data);
+    const onSaveHandler = async () => {
+        await updatePurchaseDataInStore(data);
     }
 
     onMount(() => {

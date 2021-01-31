@@ -1,5 +1,5 @@
 import { EntityData, getReq, postReq, SliceData } from '../../common/utils/api'
-import { GoodsData } from './types'
+import { GoodsData, Purchase } from './types'
 
 export const getGoodsItemsSlice = async (data: SliceData) => {
   return await getReq('goods/slice', data)
@@ -27,4 +27,8 @@ export const removePurchase = async (data: EntityData) => {
 
 export const removeGoodsDetailsFromPurchase = async (data: EntityData) => {
   return await postReq('purchases/details/remove', data)
+}
+
+export const updatePurchase = async (data: Purchase) => {
+  return await postReq('purchases/update', data)
 }

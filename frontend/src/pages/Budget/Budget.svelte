@@ -148,6 +148,7 @@
                         date: data.date,
                         total_price: data.total_price,
                         shop: data.shop,
+                        shop_id: data.shop_id,
                         comment: data.comment,
                     }
                 },
