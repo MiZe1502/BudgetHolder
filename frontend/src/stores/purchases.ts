@@ -8,7 +8,13 @@ import {
   SuccessResponse,
   TableDataResponse
 } from '../common/utils/api'
-import { getPurchaseWithGoodsSlice, removePurchase, removeGoodsDetailsFromPurchase, updatePurchase } from '../pages/Budget/api'
+import {
+  getPurchaseWithGoodsSlice,
+  removePurchase,
+  removeGoodsDetailsFromPurchase,
+  updatePurchase,
+  updateGoodsItemInPurchase
+} from '../pages/Budget/api'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -90,17 +96,23 @@ export const updatePurchaseDataInStore = async (updatedPurchase: Purchase) => {
     })
 }
 
-export const updatePurchaseGoodsItemInStore = (newData: GoodsDetails) => {
-  purchases.update((purchases) => {
-    const purchase = purchases.find((item) => item.id === newData.purchase_id)
-    const goodsItem = purchase.goods_data.find((item) => item.id === newData.id)
-    goodsItem.price = newData.price
-    goodsItem.comment = newData.comment
-    goodsItem.category = newData.category
-    goodsItem.amount = newData.amount
+export const updatePurchaseGoodsItemInStore = async (newData: GoodsDetails) => {
+  await updateGoodsItemInPurchase(newData)
+    .then((res: SuccessResponse) => {
+      purchases.update((purchases) => {
+        const purchase = purchases.find((item) => item.id === newData.purchase_id)
+        const goodsItem = purchase.goods_data.find((item) => item.id === newData.id)
+        goodsItem.price = newData.price
+        goodsItem.comment = newData.comment
+        goodsItem.category = newData.category
+        goodsItem.amount = newData.amount
 
-    return purchases
-  })
+        return purchases
+      })
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const updatePurchasesWithGoodsSlice = async (from: number, count: number) => {
