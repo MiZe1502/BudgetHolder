@@ -9,11 +9,12 @@ import {
   TableDataResponse
 } from '../common/utils/api'
 import {
+  addPurchase,
   getPurchaseWithGoodsSlice,
-  removePurchase,
   removeGoodsDetailsFromPurchase,
-  updatePurchase,
-  updateGoodsItemInPurchase
+  removePurchase,
+  updateGoodsItemInPurchase,
+  updatePurchase
 } from '../pages/Budget/api'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
@@ -52,15 +53,25 @@ export const removeGoodsItemDetailsFromPurchase = async (detailsId: number, purc
     })
 }
 
-export const addPurchaseToStore = (newPurchase: Purchase) => {
-  newPurchase.id = generateNewArtificialId(purchases)
+export const addPurchaseToStore = async (newPurchase: Purchase) => {
+  purchasesStatus.set(LoadingStatus.Loading)
 
-  purchases.update((purchases) => {
-    return [...purchases, newPurchase]
-  })
-  purchasesTotal.update(total => total + 1)
+  await addPurchase(newPurchase)
+    .then((res: SuccessResponse) => {
+      const newId = Number(res.message)
+      newPurchase.id = newId
 
-  clearCurrentPurchaseData()
+      purchases.update((purchases) => {
+        return [newPurchase, ...purchases.slice(0, purchases.length)]
+      })
+      purchasesTotal.update(total => total + 1)
+      purchasesStatus.set(LoadingStatus.Finished)
+      clearCurrentPurchaseData()
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+      purchasesStatus.set(LoadingStatus.Error)
+    })
 }
 
 export const clearCurrentPurchaseData = () => {

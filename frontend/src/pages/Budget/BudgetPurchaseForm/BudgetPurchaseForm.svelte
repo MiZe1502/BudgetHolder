@@ -68,9 +68,9 @@
             }
         }
 
-        for (let i = 0; i < $currentPurchase.goods.length; i++) {
+        for (let i = 0; i < $currentPurchase.goods_data.length; i++) {
             for (let rule of validationRulesGoods) {
-                const isInvalid = rule.validator($currentPurchase.goods[i]);
+                const isInvalid = rule.validator($currentPurchase.goods_data[i]);
                 if (isInvalid) {
                     updateValidationResults(rule.message, i)
                 }
@@ -79,7 +79,7 @@
     }
 
     const onGoodsItemSelect = (selectedItem: SuggestionItem, goodsItemTempId: string) => {
-        let goodsItemDetails = $currentPurchase.goods.find((item) => item.tempId === goodsItemTempId);
+        let goodsItemDetails = $currentPurchase.goods_data.find((item) => item.tempId === goodsItemTempId);
         const goodsItemData = $goods.find((item) => item.id === selectedItem.id);
 
         if (goodsItemData && goodsItemDetails) {
@@ -87,25 +87,26 @@
         }
     }
 
-    const onShopSelect = (selectedId: number) => {
-        $currentPurchase.shop = {...getShopById(selectedId)};
+    const onShopSelect = async (selectedId: number) => {
+        const shop = await getShopById(selectedId)
+        $currentPurchase.shop = {...shop};
     }
 
     const onAddNewItemToPurchase = (event: MouseEvent) => {
         event.preventDefault();
 
-        $currentPurchase.goods = [...$currentPurchase.goods, {
+        $currentPurchase.goods = [...$currentPurchase.goods_data, {
             tempId: uuidv4(),
             category: {}
         }]
     }
 
     const onRemoveItemFromPurchase = (tempId: string) => {
-        $currentPurchase.goods = [...$currentPurchase.goods.filter((goodsItem) => goodsItem.tempId !== tempId)]
+        $currentPurchase.goods = [...$currentPurchase.goods_data.filter((goodsItem) => goodsItem.tempId !== tempId)]
     }
 
     const onCategorySelect = (goodsItemTempId: number, selectedId: number) => {
-        const updatedGoodsItem = purchase.goods.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
+        const updatedGoodsItem = purchase.goods_data.find((goodsItem) => goodsItem.tempId === goodsItemTempId);
         updatedGoodsItem.category = getSimpleCategoryById(selectedId);
     }
 
@@ -116,7 +117,7 @@
         clearValidationResults();
     }
 
-    const onSave = (event: MouseEvent) => {
+    const onSave = async (event: MouseEvent) => {
         event.preventDefault();
 
         validateForm();
@@ -125,8 +126,8 @@
             return;
         }
 
-        addPurchaseToStore(purchase);
-        addGoodsToStore(purchase.goods);
+        await addPurchaseToStore(purchase);
+        //addGoodsToStore(purchase.goods);
         clearValidationResults();
     }
 

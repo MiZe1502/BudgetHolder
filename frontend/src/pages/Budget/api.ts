@@ -21,6 +21,10 @@ export const getPurchaseWithGoodsSlice = async (data: SliceData) => {
   return await getReq('purchases/slice', data)
 }
 
+export const addPurchase = async (data: Purchase) => {
+  return await postReq('purchases/new', data)
+}
+
 export const removePurchase = async (data: EntityData) => {
   return await postReq('purchases/remove', data)
 }
