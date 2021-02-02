@@ -2,6 +2,7 @@ import { writable } from 'svelte/store'
 import { GoodsDetails, Purchase, ValidationResult } from '../pages/Budget/types'
 import { LoadingStatus } from './utils'
 import { generateNewArtificialId } from './common'
+import moment from 'moment'
 import { removeDataFromLocalStorageByKey } from '../common/utils/localStorage'
 import {
   ErrorResponse,
@@ -55,8 +56,9 @@ export const removeGoodsItemDetailsFromPurchase = async (detailsId: number, purc
 
 export const addPurchaseToStore = async (newPurchase: Purchase) => {
   purchasesStatus.set(LoadingStatus.Loading)
-
-  await addPurchase(newPurchase)
+  // @ts-ignore
+  // await addPurchase({ ...newPurchase, date: (new Date(newPurchase.date)).getTime() })
+  await addPurchase({ ...newPurchase, date: moment(new Date(newPurchase.date)).format('YYYY-MM-DDTHH:mm:ssZ') })
     .then((res: SuccessResponse) => {
       const newId = Number(res.message)
       newPurchase.id = newId

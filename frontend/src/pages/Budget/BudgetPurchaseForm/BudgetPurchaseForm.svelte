@@ -90,6 +90,7 @@
     const onShopSelect = async (selectedId: number) => {
         const shop = await getShopById(selectedId)
         $currentPurchase.shop = {...shop};
+        $currentPurchase.shop_id = shop.id;
     }
 
     const onAddNewItemToPurchase = (event: MouseEvent) => {
