@@ -22,8 +22,8 @@ type GoodsItem struct {
 
 //GoodsDetailsItem represents goods data details item
 type GoodsDetailsItem struct {
-	Amount      int     `json:"amount,omitempty"`
-	Price       float32 `json:"price,omitempty"`
+	Amount      int     `json:"amount,string,omitempty"`
+	Price       float32 `json:"price,string,omitempty"`
 	PurchaseID  int     `json:"purchase_id,omitempty"`
 	GoodsItemID *int    `json:"goods_item_id,omitempty"`
 

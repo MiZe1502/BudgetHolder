@@ -1,14 +1,13 @@
 package handlers
 
 import (
+	env "../env"
+	repos "../repositories"
+	utils "../utils"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
-
-	env "../env"
-	repos "../repositories"
-	utils "../utils"
 )
 
 func createGetPurchasesWithGoodsDataSliceHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {

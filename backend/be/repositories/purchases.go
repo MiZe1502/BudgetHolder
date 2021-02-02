@@ -11,7 +11,7 @@ import (
 
 //Purchase represents purchase basic data
 type Purchase struct {
-	TotalPrice float32 `json:"total_price,omitempty"`
+	TotalPrice float32 `json:"total_price,string,omitempty"`
 	ShopID     *int    `json:"shop_id,omitempty"`
 	Shop	   *Shop   `json:"shop,omitempty"`
 	Date       *time.Time   `json:"date,omitempty"`
@@ -93,7 +93,7 @@ func (r *PurchasesRepository) CreateNewPurchase(purchaseData *PurchaseWithGoods,
 		`SELECT * from budget.create_new_purchase($1, $2, $3, $4, $5::uuid)`,
 		purchaseData.TotalPrice,
 		purchaseData.ShopID,
-		//time.Unix(0, purchaseData.Date.),
+		purchaseData.Date,
 		purchaseData.Comment,
 		sessionUUID.String())
 	if err != nil {
