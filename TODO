@@ -6,8 +6,7 @@
             1.2.1.1. common store integrated with websockets
         1.2.2. axios
             1.2.2.5. purchases
-                1.2.2.4.2. create new
-                1.2.2.4.3. update
+                1.2.2.4.1. suggest goods names in dropdown
             1.2.2.5. users
                 1.2.2.5.1. logout
                 1.2.2.5.2. update token

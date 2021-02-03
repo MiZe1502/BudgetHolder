@@ -6,7 +6,6 @@ import {
   GoodsSuggestion
 } from './types'
 import { LoadingStatus } from '../../stores/utils'
-import { generateNewArtificialId } from '../../stores/common'
 import {
   addGoodsItem,
   getGoodsItemsSlice,
