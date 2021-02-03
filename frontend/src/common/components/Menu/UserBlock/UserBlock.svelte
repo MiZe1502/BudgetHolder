@@ -8,7 +8,7 @@
     import {
         authStatusKey,
         sessionKey,
-        currentSession, setCurrentSession, setAuthStatus
+        currentSession, setCurrentSession, setAuthStatus, logout
     } from "../../../../pages/Auth/auth";
     import DefaultUserImage from "../DefaultUserImage/DefaultUserImage.svelte";
     import {removeDataFromLocalStorageByKey} from "../../../utils/localStorage";
@@ -33,13 +33,8 @@
         isUserSettingsPopupOpened = true;
     }
 
-    const onLogout = () => {
-        setAuthStatus(false);
-        setCurrentSession({});
-
-        removeDataFromLocalStorageByKey(sessionKey);
-        removeDataFromLocalStorageByKey(authStatusKey);
-
+    const onLogout = async () => {
+        await logout()
         navigate(routes.auth, {replace: true})
     }
 

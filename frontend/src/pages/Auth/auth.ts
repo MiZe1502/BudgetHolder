@@ -1,9 +1,12 @@
 import { get, writable } from 'svelte/store'
 import { MockedUserData, mockedUsers } from './data'
-import { addDataToLocalStorage } from '../../common/utils/localStorage'
+import {
+  addDataToLocalStorage,
+  removeDataFromLocalStorageByKey
+} from '../../common/utils/localStorage'
 import { ValidationResult } from '../Budget/types'
-import { authReq, getUserReq, registrationReq } from './api'
-import { SuccessResponse } from '../../common/utils/api'
+import { authReq, getUserReq, logoutReq, registrationReq } from './api'
+import { ErrorResponse, SuccessResponse } from '../../common/utils/api'
 
 export interface UserData {
     name?: string;
@@ -68,6 +71,19 @@ export const authorize = async (authData: AuthData) => {
   }
 
   addDataToLocalStorage(sessionKey, (res as SuccessResponse).message)
+}
+
+export const logout = async () => {
+  await logoutReq()
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
+
+  setAuthStatus(false)
+  setCurrentSession({} as UserData)
+
+  removeDataFromLocalStorageByKey(sessionKey)
+  removeDataFromLocalStorageByKey(authStatusKey)
 }
 
 export const getUserData = async (login: string) => {

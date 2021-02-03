@@ -1,12 +1,12 @@
-import {getReq, postReq} from '../../common/utils/api'
-import {AuthData, RegistrationData, UserData} from './auth'
+import { getReq, postReq } from '../../common/utils/api'
+import { AuthData, RegistrationData, UserData } from './auth'
 
 export const authReq = async (data: AuthData) => {
   return await postReq('user/auth', data)
 }
 
-export const logoutReq = async (login: string, password: string) => {
-  return await postReq('user/logout', { login, password })
+export const logoutReq = async () => {
+  return await postReq('user/logout', {})
 }
 
 export const registrationReq = async (data: RegistrationData) => {
