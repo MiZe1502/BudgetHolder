@@ -6,7 +6,7 @@
     import {
         updateGoodsItemInStore,
         addGoodsToStore, addGoodsItemToStore
-    } from "../../../stores/goods";
+    } from "../goods";
     import Button
         from "../../../common/components/Buttons/Button/Button.svelte";
     import ButtonIconEdit

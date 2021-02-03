@@ -4,19 +4,19 @@ import {
   GoodsDetails,
   GoodsItem,
   GoodsSuggestion
-} from '../pages/Budget/types'
-import { LoadingStatus } from './utils'
-import { generateNewArtificialId } from './common'
+} from './types'
+import { LoadingStatus } from '../../stores/utils'
+import { generateNewArtificialId } from '../../stores/common'
 import {
   addGoodsItem,
   getGoodsItemsSlice,
   removeGoodsItem, updateGoodsItem
-} from '../pages/Budget/api'
+} from './api'
 import {
   ErrorResponse,
   SuccessResponse,
   TableDataResponse
-} from '../common/utils/api'
+} from '../../common/utils/api'
 
 export const goods = writable<GoodsData[]>([])
 export const allGoods = writable<GoodsData[]>([])
@@ -82,8 +82,8 @@ export const updateGoodsItemInStore = async (updatedGoodsItem: GoodsData) => {
   await updateGoodsItem(updatedGoodsItem)
     .then((res: SuccessResponse) => {
       goods.update((goods) => {
-        let goodsitemFromStore: GoodsData = goods.find((goodsItem) => goodsItem.id === updatedGoodsItem.id)
-        goodsitemFromStore = updatedGoodsItem
+        const goodsItemIndex = goods.findIndex((goodsItem) => goodsItem.id === updatedGoodsItem.id)
+        goods[goodsItemIndex] = res.data as GoodsData
         return goods
       })
     })
@@ -94,7 +94,6 @@ export const updateGoodsItemInStore = async (updatedGoodsItem: GoodsData) => {
 
 export const updateCurrentGoodsSlice = async (from: number, count: number) => {
   goodsStatus.set(LoadingStatus.Loading)
-
   await getGoodsItemsSlice({ from, count })
     .then((res: SuccessResponse) => {
       const data = res.data as TableDataResponse

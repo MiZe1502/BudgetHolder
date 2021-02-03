@@ -6,7 +6,7 @@
     import {
         clearValidationResults,
         validationResults
-    } from "../../../stores/purchases";
+    } from "../../Budget/purchases";
 
     import InputWithLabel
         from "../../../common/components/Inputs/InputWithLabel/InputWithLabel.svelte";
@@ -22,7 +22,7 @@
     import {navigate} from "svelte-routing";
     import routes from "../../../common/utils/routes"
     import {validationRules} from "./validationRules";
-    import {updateValidationResults} from "../../../stores/purchases";
+    import {updateValidationResults} from "../../Budget/purchases";
 
     let isRegistrationForm = false;
 

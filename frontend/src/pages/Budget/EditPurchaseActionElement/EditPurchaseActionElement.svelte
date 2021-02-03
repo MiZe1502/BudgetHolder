@@ -9,7 +9,7 @@
     import {Purchase} from "../types";
     import {LoadingStatus} from "../../../stores/utils";
     import {EntityType, ActionType} from "../../../stores/utils";
-    import {updatePurchaseDataInStore} from "../../../stores/purchases";
+    import {updatePurchaseDataInStore} from "../purchases";
     import {style} from "./style";
     import PurchaseEditForm from "../PurchaseEditForm/PurchaseEditForm.svelte";
 

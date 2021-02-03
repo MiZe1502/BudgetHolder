@@ -41,13 +41,13 @@
         goods,
         goodsTotal,
         allGoods, updateCurrentGoodsSlice,
-    } from "../../stores/goods";
+    } from "./goods";
     import {allShops} from "../Shops/shops";
     import {
         purchasesStatus,
         purchases,
         purchasesTotal, updatePurchasesWithGoodsSlice,
-    } from "../../stores/purchases";
+    } from "./purchases";
     import BudgetFormContainer
         from "./BudgetFormContainer/BudgetFormContainer.svelte";
     import BudgetPurchaseForm

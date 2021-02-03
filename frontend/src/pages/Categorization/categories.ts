@@ -4,7 +4,6 @@ import {
   SimpleDataItem
 } from './types'
 import { LoadingStatus } from '../../stores/utils'
-import { generateNewArtificialId } from '../../stores/common'
 import {
   getCategoriesTree,
   getCategoriesList,
@@ -57,26 +56,6 @@ export const loadSimpleCategoriesList = async () => {
 export const addCategoryToStore = async (newCategory: Category) => {
   categoriesStatus.set(LoadingStatus.Loading)
   await addNewCategory(newCategory)
-    // .then((res: SuccessResponse) => {
-    //   newCategory.id = Number(res.message)
-    //
-    //   categories.update((categories) => {
-    //     if (!newCategory.parent_id) {
-    //       return [...categories, newCategory]
-    //     }
-    //     const parentCategory = findCategoryById(newCategory.parent_id, categories)
-    //
-    //     if (parentCategory) {
-    //       parentCategory.categories = parentCategory.categories ? [...parentCategory.categories, newCategory] : [newCategory]
-    //     } else {
-    //       categories = [...categories, newCategory]
-    //     }
-    //
-    //     return categories
-    //   })
-    //
-    //   categoriesStatus.set(LoadingStatus.Finished)
-    // })
     .then(() => {
       categories.set([])
     })
@@ -153,28 +132,6 @@ export const removeCategoryFromStore = async (id: number) => {
 export const updateCategoryInStore = async (updatedCategory: Category) => {
   categoriesStatus.set(LoadingStatus.Loading)
   await updateCategory(updatedCategory)
-    // .then((res: SuccessResponse) => {
-    //   categories.update((categories) => {
-    //     let categoryFromStore: Category = findCategoryById(updatedCategory.id, categories)
-    //
-    //     if (categoryFromStore.parent_id === updatedCategory.parent_id) {
-    //       categoryFromStore = updatedCategory
-    //       return categories
-    //     }
-    //
-    //     const oldParentCategory = findCategoryById(categoryFromStore.parent_id, categories)
-    //     const newParentCategory = findCategoryById(updatedCategory.parent_id, categories)
-    //
-    //     newParentCategory.categories = newParentCategory.categories ? [...newParentCategory.categories, updatedCategory] : [updatedCategory]
-    //     if (oldParentCategory) {
-    //       oldParentCategory.categories = oldParentCategory.categories.filter((category) => category.id !== updatedCategory.id)
-    //     } else {
-    //       categories = categories.filter((category) => category.id !== updatedCategory.id)
-    //     }
-    //
-    //     return categories
-    //   })
-    // })
     .then(() => {
       categories.set([])
     })

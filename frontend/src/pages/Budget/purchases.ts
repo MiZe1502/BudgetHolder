@@ -1,14 +1,13 @@
 import { writable } from 'svelte/store'
-import { GoodsDetails, Purchase, ValidationResult } from '../pages/Budget/types'
-import { LoadingStatus } from './utils'
-import { generateNewArtificialId } from './common'
+import { GoodsDetails, Purchase, ValidationResult } from './types'
+import { LoadingStatus } from '../../stores/utils'
 import moment from 'moment'
-import { removeDataFromLocalStorageByKey } from '../common/utils/localStorage'
+import { removeDataFromLocalStorageByKey } from '../../common/utils/localStorage'
 import {
   ErrorResponse,
   SuccessResponse,
   TableDataResponse
-} from '../common/utils/api'
+} from '../../common/utils/api'
 import {
   addPurchase,
   getPurchaseWithGoodsSlice,
@@ -16,7 +15,9 @@ import {
   removePurchase,
   updateGoodsItemInPurchase,
   updatePurchase
-} from '../pages/Budget/api'
+} from './api'
+
+export const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ssZ'
 
 export const purchaseLocalStorageKey = 'CURRENT_PURCHASE_FORM_STATE'
 export const purchaseLocalStorageUpdateInterval = 20000
@@ -56,9 +57,7 @@ export const removeGoodsItemDetailsFromPurchase = async (detailsId: number, purc
 
 export const addPurchaseToStore = async (newPurchase: Purchase) => {
   purchasesStatus.set(LoadingStatus.Loading)
-  // @ts-ignore
-  // await addPurchase({ ...newPurchase, date: (new Date(newPurchase.date)).getTime() })
-  await addPurchase({ ...newPurchase, date: moment(new Date(newPurchase.date)).format('YYYY-MM-DDTHH:mm:ssZ') })
+  await addPurchase({ ...newPurchase, date: moment(new Date(newPurchase.date)).format(dateTimeFormat) })
     .then((res: SuccessResponse) => {
       const newId = Number(res.message)
       newPurchase.id = newId

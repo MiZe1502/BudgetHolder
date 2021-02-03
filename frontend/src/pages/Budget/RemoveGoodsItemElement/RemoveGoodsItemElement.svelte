@@ -4,7 +4,7 @@
     import ButtonIconRemove
         from "../../../common/components/Buttons/ButtonIconRemove/ButtonIconRemove.svelte";
     import {GoodsData} from "../types";
-    import {removeGoodsFromStore} from "../../../stores/goods";
+    import {removeGoodsFromStore} from "../goods";
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {EntityType, ActionType} from "../../../stores/utils";

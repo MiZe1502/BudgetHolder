@@ -34,12 +34,12 @@
         updateValidationResults,
         validationResults,
         clearValidationResults
-    } from "../../../stores/purchases";
+    } from "../purchases";
     import {
         goodsForSuggestions,
         goods,
         addGoodsToStore
-    } from "../../../stores/goods";
+    } from "../goods";
     import {
         addDataToLocalStorage,
         getDataFromLocalStorageByKey
@@ -128,7 +128,7 @@
         }
 
         await addPurchaseToStore(purchase);
-        //addGoodsToStore(purchase.goods);
+        await addGoodsToStore(purchase.goods_data);
         clearValidationResults();
     }
 

@@ -11,7 +11,7 @@
     import {style} from "./style";
     import EditGoodsItemForm
         from "../EditGoodsItemForm/EditGoodsItemForm.svelte";
-    import {updatePurchaseGoodsItemInStore} from "../../../stores/purchases";
+    import {updatePurchaseGoodsItemInStore} from "../purchases";
 
     let isPopupOpened = false;
 

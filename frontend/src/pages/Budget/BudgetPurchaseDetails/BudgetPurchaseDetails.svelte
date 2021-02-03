@@ -1,7 +1,7 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {style} from "./style";
-    import {purchases} from "../../../stores/purchases";
+    import {purchases} from "../purchases";
     import {buildCategoryList} from "../../Categorization/categories";
 
     import CategoriesListElement

@@ -11,7 +11,7 @@
         updatePopupInnerValidation
     } from "../../../stores/popup";
     import {validationRulesGoods} from "../BudgetPurchaseForm/validationRules";
-    import {goods, goodsForSuggestions} from "../../../stores/goods";
+    import {goods, goodsForSuggestions} from "../goods";
     import {simpleCategories} from "../../Categorization/categories";
     import InputDropdown
         from "../../../common/components/Inputs/InputDropdown/InputDropdown.svelte";

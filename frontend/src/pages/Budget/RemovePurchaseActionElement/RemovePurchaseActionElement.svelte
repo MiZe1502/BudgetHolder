@@ -6,7 +6,7 @@
     import PopupContainer
         from "../../../common/components/PopupContainer/PopupContainer.svelte";
     import {Purchase} from "../types";
-    import {removePurchaseFromStore} from "../../../stores/purchases";
+    import {removePurchaseFromStore} from "../purchases";
     import {EntityType, ActionType} from "../../../stores/utils";
     import {style} from "./style";
 

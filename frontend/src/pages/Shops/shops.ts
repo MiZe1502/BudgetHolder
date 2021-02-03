@@ -1,7 +1,6 @@
 import { derived, get, writable } from 'svelte/store'
 import { Shop } from './types'
 import { LoadingStatus } from '../../stores/utils'
-import { generateNewArtificialId } from '../../stores/common'
 import {
   addShop,
   getShop,
@@ -72,8 +71,8 @@ export const updateShopInStore = async (updatedShop: Shop) => {
   await updateShop(updatedShop)
     .then((res: SuccessResponse) => {
       shops.update((shops) => {
-        let shopFromStore: Shop = shops.find((shop: Shop) => shop.id === updatedShop.id)
-        shopFromStore = updatedShop
+        const shopIndex = shops.findIndex((shop: Shop) => shop.id === updatedShop.id)
+        shops[shopIndex] = res.data as Shop
         return shops
       })
     })
