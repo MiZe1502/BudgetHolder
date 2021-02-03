@@ -53,18 +53,13 @@ export const addGoodsItemToStore = async (newGoodsItem: GoodsData) => {
 }
 
 export const addGoodsToStore = async (newGoods: GoodsDetails[]) => {
-  newGoods.forEach((item) => {
+  for (const item of newGoods) {
     if (item.id) {
-      return
+      continue
     }
-
-    const newId = generateNewArtificialId(allGoods)
-    item.id = newId
     const goodsItem = GoodsItem.fromGoodsDetails(item)
-
-    allGoods.update((goods) => [...goods, goodsItem as GoodsData])
-    goodsTotal.update((total) => total + 1)
-  })
+    await addGoodsItemToStore(goodsItem as GoodsItem & {id: number})
+  }
 }
 
 export const removeGoodsFromStore = async (id: number) => {
