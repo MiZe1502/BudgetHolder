@@ -96,15 +96,7 @@ func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r 
 
 		env.Logger.Info("createGetTopShopsByNameHandler: getting data from request")
 
-		shopData := &repos.SimpleShop{}
-
-		err := json.NewDecoder(r.Body).Decode(shopData)
-
-		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.Logger)
-			return
-		}
+		name := r.URL.Query().Get("name")
 
 		env.Logger.Info("createGetTopShopsByNameHandler: init shops repository")
 
@@ -114,9 +106,9 @@ func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r 
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createGetTopShopsByNameHandler: getting list of top shops for name: " + shopData.Name)
+		env.Logger.Info("createGetTopShopsByNameHandler: getting list of top shops for name: " + name)
 
-		shops, err := repo.GetTopShopsByName(shopData.Name)
+		shops, err := repo.GetTopShopsByName(name)
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)

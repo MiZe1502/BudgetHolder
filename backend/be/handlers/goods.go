@@ -159,11 +159,11 @@ func createGetGoodsItemByIDHandler(env *env.Env) func(w http.ResponseWriter, r *
 	}
 }
 
-func createGetTopGoodsItemByNameHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+func createGetSimpleGoodsItemsListHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: start")
+		env.Logger.Info("createGetSimpleGoodsItemsListHandler: start")
 
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: check request method: " + r.Method)
+		env.Logger.Info("createGetSimpleGoodsItemsListHandler: check request method: " + r.Method)
 
 		if r.Method != "GET" {
 			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
@@ -171,19 +171,7 @@ func createGetTopGoodsItemByNameHandler(env *env.Env) func(w http.ResponseWriter
 			return
 		}
 
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: getting data from request")
-
-		goodsData := &repos.SimpleEntity{}
-
-		err := json.NewDecoder(r.Body).Decode(goodsData)
-
-		if err != nil {
-			msg := utils.MessageError(utils.Message(false, "Invalid request body"), http.StatusInternalServerError)
-			utils.RespondError(w, msg, env.Logger)
-			return
-		}
-
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: init goods repository")
+		env.Logger.Info("createGetSimpleGoodsItemsListHandler: init goods repository")
 
 		var repo repos.GoodsRepository
 
@@ -191,16 +179,16 @@ func createGetTopGoodsItemByNameHandler(env *env.Env) func(w http.ResponseWriter
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: getting list of top goods items for name: " + goodsData.Name)
+		env.Logger.Info("createGetSimpleGoodsItemsListHandler: getting list of simple goods items")
 
-		goodsItems, err := repo.GetTopGoodsItemsByName(goodsData.Name)
+		goodsItems, err := repo.GetSimpleGoodsItemsList()
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
-		env.Logger.Info("createGetTopGoodsItemByNameHandler: marshalling list of top goods items")
+		env.Logger.Info("createGetSimpleGoodsItemsListHandler: marshalling list of simple goods items")
 
 		goodsItemsJSON, err := json.Marshal(goodsItems)
 		if err != nil {

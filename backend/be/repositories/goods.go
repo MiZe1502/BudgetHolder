@@ -75,11 +75,11 @@ func (r *GoodsRepository) GetSlice(from int, count int, userID int) ([]*GoodsIte
 	return goodsItems, err
 }
 
-//GetTopGoodsItemsByName finds top goods items by name
-func (r *GoodsRepository) GetTopGoodsItemsByName(name string) ([]*GoodsItem, error) {
-	var goodsItems []*GoodsItem
+//GetSimpleGoodsItemsList returns list of simple goods items
+func (r *GoodsRepository) GetSimpleGoodsItemsList() ([]*SimpleGoodsItem, error) {
+	var goodsItems []*SimpleGoodsItem
 
-	err := pgxscan.Select(context.Background(), r.db, &goodsItems, `SELECT * from budget.get_top_goods_items_by_name($1, $2)`, name, TopCounter)
+	err := pgxscan.Select(context.Background(), r.db, &goodsItems, `SELECT * from budget.get_simple_goods_items()`)
 	if err != nil {
 		return nil, err
 	}
