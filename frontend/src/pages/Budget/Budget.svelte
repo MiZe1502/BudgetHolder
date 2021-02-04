@@ -40,7 +40,7 @@
         goodsStatus,
         goods,
         goodsTotal,
-        allGoods, updateCurrentGoodsSlice,
+        allGoods, updateCurrentGoodsSlice, getGoodsItemsForSuggestions,
     } from "./goods";
     import {allShops} from "../Shops/shops";
     import {
@@ -164,9 +164,9 @@
         await updateCurrentGoodsSlice((currentPage - 1) * maxRecordsPerPage, maxRecordsPerPage)
     }
 
-
     onMount(async () => {
         await loadCategoriesTree();
+        await getGoodsItemsForSuggestions();
         await loadSimpleCategoriesList();
         await onGoodsPageChange(1);
         await onPurchasesPageChange(1);
@@ -175,11 +175,7 @@
         goodsTableData.status = get(goodsStatus);
 
         tableData.data = get(purchases);
-
-        console.log("HERE", tableData.data)
         tableData.status = get(purchasesStatus);
-        //
-        // purchasesStatus.set(LoadingStatus.Loading);
 
         setTimeout(() => {
             allShops.set(mockShops);

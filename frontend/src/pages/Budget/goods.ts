@@ -8,29 +8,34 @@ import {
 import { LoadingStatus } from '../../stores/utils'
 import {
   addGoodsItem,
-  getGoodsItemsSlice,
+  getGoodsItemsSlice, getSimpleGoodsForSuggestions,
   removeGoodsItem, updateGoodsItem
 } from './api'
 import {
-  ErrorResponse,
+  convertSimpleData,
+  ErrorResponse, SimpleReqDataItem,
   SuccessResponse,
   TableDataResponse
 } from '../../common/utils/api'
+import { getTopShopsSuggestions } from '../Shops/api'
+import { simpleShops } from '../Shops/shops'
+import { SimpleDataItem } from '../Categorization/types'
 
 export const goods = writable<GoodsData[]>([])
+export const goodsForSuggestions = writable<SimpleDataItem[]>([])
 export const allGoods = writable<GoodsData[]>([])
 export const goodsTotal = writable<number>(0)
 export const goodsStatus = writable<LoadingStatus>(LoadingStatus.None)
 
-export const goodsForSuggestions = derived<Writable<GoodsData[]>, GoodsSuggestion[]>(allGoods, ($allGoods) => {
-  return $allGoods.map((item) => ({
-    id: item.id,
-    value: item.name
-  }))
-})
-
-export const getGoodsItemById = (id: number): GoodsData => {
-  return get(allGoods).find((item: GoodsData) => item.id === id)
+export const getGoodsItemsForSuggestions = async (name: string) => {
+  await getSimpleGoodsForSuggestions({ name })
+    .then((res: SuccessResponse) => {
+      const data = convertSimpleData(res.data as SimpleReqDataItem[])
+      goodsForSuggestions.set(data)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const addGoodsItemToStore = async (newGoodsItem: GoodsData) => {

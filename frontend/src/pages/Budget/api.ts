@@ -5,6 +5,10 @@ export const getGoodsItemsSlice = async (data: SliceData) => {
   return await getReq('goods/slice', data)
 }
 
+export const getSimpleGoodsForSuggestions = async (data: { name: string }) => {
+  return await getReq('goods/list', data)
+}
+
 export const removeGoodsItem = async (data: EntityData) => {
   return await postReq('goods/remove', data)
 }

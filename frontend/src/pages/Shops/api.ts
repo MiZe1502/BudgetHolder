@@ -20,3 +20,7 @@ export const updateShop = async (data: Shop) => {
 export const addShop = async (data: Shop) => {
   return await postReq('shops/new', data)
 }
+
+export const getTopShopsSuggestions = async (data: {name: string}) => {
+  return await getReq('shops/top', data)
+}
