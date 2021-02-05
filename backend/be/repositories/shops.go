@@ -64,11 +64,11 @@ func (r *ShopsRepository) UpdateShop(shopData *Shop, sessionUUID uuid.UUID) (int
 	return updatedShopID, err
 }
 
-//GetTopShopsByName finds top shop items by name
-func (r *ShopsRepository) GetTopShopsByName(name string) ([]*SimpleShop, error) {
+//GetSimpleShopsList returns list of simple shops
+func (r *ShopsRepository) GetSimpleShopsList() ([]*SimpleShop, error) {
 	var shops []*SimpleShop
 
-	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT * from budget.get_top_shops_by_name($1, $2)`, name, TopCounter)
+	err := pgxscan.Select(context.Background(), r.db, &shops, `SELECT * from budget.get_simple_shops()`)
 	if err != nil {
 		return nil, err
 	}

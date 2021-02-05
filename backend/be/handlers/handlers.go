@@ -84,7 +84,7 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/api/v1/user/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateUserHandler(env)))))
 
 	http.Handle("/api/v1/shops/slice", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env)))))
-	http.Handle("/api/v1/shops/top", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetTopShopsByNameHandler(env)))))
+	http.Handle("/api/v1/shops/list", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleShopsListHandler(env)))))
 	http.Handle("/api/v1/shops/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewShopHandler(env)))))
 	http.Handle("/api/v1/shops/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveShopHandler(env)))))
 	http.Handle("/api/v1/shops/get", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetShopByIDHandler(env)))))

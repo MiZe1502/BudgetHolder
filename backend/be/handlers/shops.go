@@ -82,11 +82,11 @@ func createGetShopsSliceHandler(env *env.Env) func(w http.ResponseWriter, r *htt
 	}
 }
 
-func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
+func createGetSimpleShopsListHandler(env *env.Env) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		env.Logger.Info("createGetTopShopsByNameHandler: start")
+		env.Logger.Info("createGetSimpleShopsListHandler: start")
 
-		env.Logger.Info("createGetTopShopsByNameHandler: check request method: " + r.Method)
+		env.Logger.Info("createGetSimpleShopsListHandler: check request method: " + r.Method)
 
 		if r.Method != "GET" {
 			msg := utils.MessageError(utils.Message(false, "Incorrect request method: "+r.Method), http.StatusInternalServerError)
@@ -94,11 +94,7 @@ func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r 
 			return
 		}
 
-		env.Logger.Info("createGetTopShopsByNameHandler: getting data from request")
-
-		name := r.URL.Query().Get("name")
-
-		env.Logger.Info("createGetTopShopsByNameHandler: init shops repository")
+		env.Logger.Info("createGetSimpleShopsListHandler: init shops repository")
 
 		var repo repos.ShopsRepository
 
@@ -106,16 +102,16 @@ func createGetTopShopsByNameHandler(env *env.Env) func(w http.ResponseWriter, r 
 		repo.SetLogger(env.Logger)
 		repo.SetTokenGenerator(env.Token)
 
-		env.Logger.Info("createGetTopShopsByNameHandler: getting list of top shops for name: " + name)
+		env.Logger.Info("createGetSimpleShopsListHandler: getting list of simple shops")
 
-		shops, err := repo.GetTopShopsByName(name)
+		shops, err := repo.GetSimpleShopsList()
 		if err != nil {
 			msg := utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 			utils.RespondError(w, msg, env.Logger)
 			return
 		}
 
-		env.Logger.Info("createGetTopShopsByNameHandler: marshalling list of top shops")
+		env.Logger.Info("createGetSimpleShopsListHandler: marshalling list of simple shops")
 
 		shopsJSON, err := json.Marshal(shops)
 		if err != nil {
