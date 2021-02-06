@@ -17,7 +17,6 @@ import {
   SuccessResponse,
   TableDataResponse
 } from '../../common/utils/api'
-import { getTopShopsSuggestions } from '../Shops/api'
 import { simpleShops } from '../Shops/shops'
 import { SimpleDataItem } from '../Categorization/types'
 

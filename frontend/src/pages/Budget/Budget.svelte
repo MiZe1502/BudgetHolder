@@ -42,7 +42,7 @@
         goodsTotal,
         allGoods, updateCurrentGoodsSlice, getGoodsItemsForSuggestions,
     } from "./goods";
-    import {allShops} from "../Shops/shops";
+    import {allShops, getSimpleShopsData} from "../Shops/shops";
     import {
         purchasesStatus,
         purchases,
@@ -167,6 +167,7 @@
     onMount(async () => {
         await loadCategoriesTree();
         await getGoodsItemsForSuggestions();
+        await getSimpleShopsData();
         await loadSimpleCategoriesList();
         await onGoodsPageChange(1);
         await onPurchasesPageChange(1);

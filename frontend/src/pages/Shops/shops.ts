@@ -4,9 +4,10 @@ import { LoadingStatus } from '../../stores/utils'
 import {
   addShop,
   getShop,
-  getShopsSlice, getTopShopsSuggestions,
+  getShopsSlice,
   removeShop,
-  updateShop
+  updateShop,
+  getSimpleShopsList
 } from './api'
 import {
   convertSimpleData,
@@ -17,36 +18,20 @@ import {
 import { SimpleDataItem } from '../Categorization/types'
 
 export const shops = writable<Shop[]>([])
-// export const simpleShops = writable<SimpleDataItem[]>([])
+export const simpleShops = writable<SimpleDataItem[]>([])
 export const allShops = writable<Shop[]>([])
 export const shopsTotal = writable<number>(0)
 export const shopsStatus = writable<LoadingStatus>(LoadingStatus.None)
 
-export const simpleShops = derived(allShops, ($allShops) => {
-  return $allShops.map((shop) => {
-    return {
-      id: shop.id,
-      value: shop.name
-    }
-  })
-})
-
-export const getSimpleShopsData = (name: string) => {
-  // await getTopShopsSuggestions({ name })
-  //   .then((res: SuccessResponse) => {
-  //     const data = convertSimpleData(res.data as SimpleReqDataItem[])
-  //     simpleShops.set(data)
-  //   })
-  //   .catch((err: ErrorResponse) => {
-  //     console.log(err)
-  //   })
-
-  return get(allShops).map((shop: Shop) => {
-    return {
-      id: shop.id,
-      value: shop.name
-    }
-  })
+export const getSimpleShopsData = async (name: string) => {
+  await getSimpleShopsList()
+    .then((res: SuccessResponse) => {
+      const data = convertSimpleData(res.data as SimpleReqDataItem[])
+      simpleShops.set(data)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }
 
 export const removeShopFromStore = async (id: number) => {
