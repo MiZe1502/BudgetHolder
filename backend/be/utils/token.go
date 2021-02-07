@@ -83,3 +83,13 @@ func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
 
 	return tk, nil
 }
+
+func (t *TokenGenerator) IsTokenExpired(tkn *Token) bool {
+	return tkn.ExpiresAt < time.Now().Unix()
+}
+
+func (t *TokenGenerator) RefreshToken(tkn *Token) (string, error) {
+	newToken, err := t.CreateNewToken(tkn.SessionID)
+
+	return newToken, err
+}

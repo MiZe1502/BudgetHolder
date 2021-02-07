@@ -81,6 +81,17 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 					return
 				}
 
+				err.
+
+				//update token
+				if env.Token.IsTokenExpired(token) {
+					//create new token
+					//save new token to db
+					//update token in response
+				} else {
+
+				}
+
 				env.Logger.Info("token: " + tokenHeader + " is valid for session: " + token.SessionID.String())
 
 				//get userID by sessionUUID from token
