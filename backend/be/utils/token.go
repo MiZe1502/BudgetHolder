@@ -26,6 +26,9 @@ type Token struct {
 //TokenExpirationPeriod contains max token expiration period in hours
 const TokenExpirationPeriod = 24
 
+//Max period of time before token becomes expired in seconds
+const RefreshBoundary = 3600
+
 //InitTokenGenerator is used to read and parse token config and initialize token generator
 func InitTokenGenerator(env conf.EnvironmentKey) (*TokenGenerator, error) {
 	config, err := conf.ReadTokenConfig(env)
@@ -84,12 +87,11 @@ func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
 	return tk, nil
 }
 
-func (t *TokenGenerator) IsTokenExpired(tkn *Token) bool {
-	return tkn.ExpiresAt < time.Now().Unix()
+func (t *TokenGenerator) IsTokenNearToExpire(tkn *Token) bool {
+	return tkn.ExpiresAt-time.Now().Unix() <= RefreshBoundary
 }
 
 func (t *TokenGenerator) RefreshToken(tkn *Token) (string, error) {
 	newToken, err := t.CreateNewToken(tkn.SessionID)
-
 	return newToken, err
 }

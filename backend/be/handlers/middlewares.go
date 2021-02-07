@@ -75,30 +75,31 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 				}
 
 				token, err := env.Token.ParseToken(tokenHeader)
+
+				env.Logger.Info("init user repository")
+				var repo repos.UserRepository
+
+				repo.SetDb(env.Db)
+				repo.SetLogger(env.Logger)
+
 				if err != nil {
 					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 					utils.RespondError(w, msg, env.Logger)
 					return
 				}
 
-				err.
-
-				//update token
-				if env.Token.IsTokenExpired(token) {
-					//create new token
-					//save new token to db
-					//update token in response
-				} else {
-
-				}
-
 				env.Logger.Info("token: " + tokenHeader + " is valid for session: " + token.SessionID.String())
 
-				//get userID by sessionUUID from token
-				var repo repos.UserRepository
-
-				repo.SetDb(env.Db)
-				repo.SetLogger(env.Logger)
+				if env.Token.IsTokenNearToExpire(token) {
+					env.Logger.Info("refresh token")
+					newToken, err := env.Token.RefreshToken(token)
+					if err != nil {
+						msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+						utils.RespondError(w, msg, env.Logger)
+						return
+					}
+					w.Header().Set("Authorization", newToken)
+				}
 
 				userID, err := repo.GetUserIDBySessionUUID(token.SessionID)
 				if err != nil {
@@ -116,6 +117,8 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 					utils.RespondError(w, msg, env.Logger)
 					return
 				}
+
+				//actualize user last online
 
 				//pass user data as context value
 				userCtx := &repos.UserContext{
