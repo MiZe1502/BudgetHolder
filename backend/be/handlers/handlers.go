@@ -77,7 +77,6 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 
 	http.Handle("/api/v1/user/auth", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAuthHandler(env)))))
 	http.Handle("/api/v1/user/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env)))))
-	http.Handle("/api/v1/user/sync", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createActualizeUserLastOnlineHandler(env)))))
 	http.Handle("/api/v1/user/full", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env)))))
 	http.Handle("/api/v1/user/group/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createNewUserGroupHandler(env)))))
 	http.Handle("/api/v1/user/logout", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createCloseUserSessionHandler(env)))))

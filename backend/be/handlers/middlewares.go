@@ -129,7 +129,13 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 					return
 				}
 
-				//actualize user last online
+				env.Logger.Info("actualize user session: " + token.SessionID.String() + " for token: " + tokenHeader)
+				_, err = repo.ActualizeUserLastOnlineByLogin(token.SessionID)
+				if err != nil {
+					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+					utils.RespondError(w, msg, env.Logger)
+					return
+				}
 
 				//pass user data as context value
 				userCtx := &repos.UserContext{

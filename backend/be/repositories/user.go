@@ -21,7 +21,7 @@ type UserGroup struct {
 
 // User represents basic user data
 type User struct {
-	Login    string `json:"login"`
+	Login    string  `json:"login"`
 	Password *string `json:"password"`
 
 	Entity
@@ -307,11 +307,11 @@ func (r *UserRepository) ProcessUserAuth(login string, password string, ip strin
 	return token, nil
 }
 
-// ActualizeUserLastOnlineByLogin updates last online time for user by its login
-func (r *UserRepository) ActualizeUserLastOnlineByLogin(userLogin string) (int, error) {
+// ActualizeUserLastOnlineByLogin updates last online time for user by its session uuid
+func (r *UserRepository) ActualizeUserLastOnlineByLogin(sessionUUID uuid.UUID) (int, error) {
 	var userID int
 
-	err := pgxscan.Get(context.Background(), r.db, &userID, `SELECT * from budget.actualize_user_online($1)`, userLogin)
+	err := pgxscan.Get(context.Background(), r.db, &userID, `SELECT * from budget.actualize_user_online_by_session_uuid($1::uuid)`, sessionUUID)
 	if err != nil {
 		return IncorrectID, err
 	}
