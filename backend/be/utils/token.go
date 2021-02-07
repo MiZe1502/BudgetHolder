@@ -77,7 +77,7 @@ func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
 	})
 
 	if err != nil {
-		return nil, errors.New("Error parsing token: " + tkn)
+		return tk, err
 	}
 
 	if !token.Valid {
@@ -85,6 +85,14 @@ func (t *TokenGenerator) ParseToken(tkn string) (*Token, error) {
 	}
 
 	return tk, nil
+}
+
+func (t *TokenGenerator) IsTokenExpired(err error) bool {
+	if err == nil {
+		return false
+	}
+	ve, _ := err.(*jwt.ValidationError)
+	return ve.Errors&(jwt.ValidationErrorExpired) != 0
 }
 
 func (t *TokenGenerator) IsTokenNearToExpire(tkn *Token) bool {

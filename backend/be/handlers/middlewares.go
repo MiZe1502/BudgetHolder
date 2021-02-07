@@ -74,6 +74,7 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 					return
 				}
 
+				env.Logger.Info("parsing token: " + tokenHeader)
 				token, err := env.Token.ParseToken(tokenHeader)
 
 				env.Logger.Info("init user repository")
@@ -83,6 +84,16 @@ func createMiddleware(env *env.Env, middleWareType MiddlewareKey) func(next http
 				repo.SetLogger(env.Logger)
 
 				if err != nil {
+					if env.Token.IsTokenExpired(err) {
+						env.Logger.Info("close user session: " + token.SessionID.String() + " for expired token: " + tokenHeader)
+						_, err := repo.CloseUserSession(token.SessionID)
+						if err != nil {
+							msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
+							utils.RespondError(w, msg, env.Logger)
+							return
+						}
+					}
+
 					msg = utils.MessageError(utils.Message(false, err.Error()), http.StatusInternalServerError)
 					utils.RespondError(w, msg, env.Logger)
 					return
