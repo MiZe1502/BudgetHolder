@@ -1,5 +1,8 @@
 import axios from 'axios'
-import { getDataFromLocalStorageByKey } from './localStorage'
+import {
+  addDataToLocalStorage,
+  getDataFromLocalStorageByKey
+} from './localStorage'
 import { sessionKey } from '../../pages/Auth/auth'
 import { SimpleDataItem } from '../../pages/Categorization/types'
 
@@ -26,6 +29,12 @@ const apiRequest = (method, url, data = {}, params = {}): Promise<SuccessRespons
     params,
     headers
   }).then(res => {
+    // update auth header if it changed
+    const headers = res.headers
+    if (headers.authorization !== token) {
+      addDataToLocalStorage(sessionKey, headers.authorization)
+    }
+
     const data: SuccessResponse = res.data
 
     if (data.data) {
