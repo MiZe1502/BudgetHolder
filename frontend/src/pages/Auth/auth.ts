@@ -7,6 +7,7 @@ import {
 import { ValidationResult } from '../Budget/types'
 import { authReq, getUserReq, logoutReq, registrationReq } from './api'
 import { ErrorResponse, SuccessResponse } from '../../common/utils/api'
+import { parseJwt } from '../../common/utils/utils'
 
 export interface UserData {
     name?: string;
@@ -48,6 +49,7 @@ export const currentAuthData = writable<AuthData>({} as AuthData)
 export const currentRegData = writable<RegistrationData>({} as RegistrationData)
 
 export const currentSession = writable<UserSession>({} as UserSession)
+const currentTokenExpirationTimeout = writable<number | null>(null)
 
 // TODO: mock store to save users
 export const users = writable<MockedUserData[]>(mockedUsers)
@@ -70,7 +72,33 @@ export const authorize = async (authData: AuthData) => {
     return 'Authorization error'
   }
 
-  addDataToLocalStorage(sessionKey, (res as SuccessResponse).message)
+  updateToken((res as SuccessResponse).message)
+}
+
+export const updateToken = (token: string) => {
+  if (!token) {
+    return
+  }
+
+  addDataToLocalStorage(sessionKey, token)
+
+  if (get(currentTokenExpirationTimeout)) {
+    clearTimeout(get(currentTokenExpirationTimeout))
+    return
+  }
+
+  const parsedToken: {SessionID: string, exp: number} | null = parseJwt(token)
+  if (!parsedToken) {
+    return
+  }
+  const expirationTimeout = countDiffToTokenExpiration(parsedToken.exp)
+  currentTokenExpirationTimeout.set(setTimeout(async () => {
+    await logout()
+  }, expirationTimeout))
+}
+
+const countDiffToTokenExpiration = (expirationDateTime: number) => {
+  return (new Date(expirationDateTime * 1000)).getTime() - Date.now()
 }
 
 export const logout = async () => {

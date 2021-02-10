@@ -3,7 +3,7 @@ import {
   addDataToLocalStorage,
   getDataFromLocalStorageByKey
 } from './localStorage'
-import { sessionKey } from '../../pages/Auth/auth'
+import {sessionKey, updateToken} from '../../pages/Auth/auth'
 import { SimpleDataItem } from '../../pages/Categorization/types'
 
 // TODO: get base url as param
@@ -32,7 +32,7 @@ const apiRequest = (method, url, data = {}, params = {}): Promise<SuccessRespons
     // update auth header if it changed
     const headers = res.headers
     if (headers.authorization !== token) {
-      addDataToLocalStorage(sessionKey, headers.authorization)
+      updateToken(headers.authorization)
     }
 
     const data: SuccessResponse = res.data
