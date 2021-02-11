@@ -6,7 +6,6 @@ v1.0
     1.3. functionality
         1.3.1. fix maps
         1.3.2. users
-            1.3.2.1. get user data for profile
             1.3.2.2. edit current user profile data
 2. backend
     2.1. cors wrapper

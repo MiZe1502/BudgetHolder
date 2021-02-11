@@ -12,7 +12,7 @@
         authStatusKey, sessionKey,
         setAuthStatus,
         setCurrentSession,
-        authStatus, currentSession
+        authStatus, currentSession, currentUser
     } from "./pages/Auth/auth";
 
     import Shops from "./pages/Shops/Shops.svelte";
@@ -36,7 +36,7 @@
         navigate(routes.auth, {replace: true})
     } else {
         setAuthStatus(getDataFromLocalStorageByKey(authStatusKey));
-        setCurrentSession(getDataFromLocalStorageByKey(sessionKey))
+        setCurrentSession(getDataFromLocalStorageByKey(currentUser))
         console.log("here", $authStatus)
     }
 

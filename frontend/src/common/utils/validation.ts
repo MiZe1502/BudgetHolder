@@ -1,4 +1,4 @@
-import {FormFieldErrors} from "../../stores/popup";
+import { FormFieldErrors } from '../../stores/popup'
 
 export interface ValidationRule {
     fieldName: string;
@@ -10,20 +10,20 @@ export interface ValidationRule {
     message: string;
 }
 
-export const notInvalidByDefault = false;
+export const notInvalidByDefault = false
 
 export const validURL = (str: string): boolean => {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+  const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
         '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    return !!pattern.test(str);
+        '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+  return !!pattern.test(str)
 }
 
 export const isFieldInvalid = (fieldName: string, formErrors: FormFieldErrors[]): boolean => {
-    console.log("isFieldInvalid", formErrors, Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName)))
+  console.log('isFieldInvalid', formErrors, Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName)))
 
-    return Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName));
+  return Boolean(formErrors && formErrors.find((error) => error.fieldName === fieldName))
 }
