@@ -1,11 +1,15 @@
 import { get, writable } from 'svelte/store'
-import { MockedUserData, mockedUsers } from './data'
 import {
   addDataToLocalStorage,
   removeDataFromLocalStorageByKey
 } from '../../common/utils/localStorage'
-import { ValidationResult } from '../Budget/types'
-import { authReq, getUserReq, logoutReq, registrationReq } from './api'
+import {
+  authReq,
+  editUserReq,
+  getUserReq,
+  logoutReq,
+  registrationReq
+} from './api'
 import { ErrorResponse, SuccessResponse } from '../../common/utils/api'
 import { parseJwt } from '../../common/utils/utils'
 
@@ -50,9 +54,6 @@ export const currentRegData = writable<RegistrationData>({} as RegistrationData)
 
 export const currentSession = writable<UserSession>({} as UserSession)
 const currentTokenExpirationTimeout = writable<number | null>(null)
-
-// TODO: mock store to save users
-export const users = writable<MockedUserData[]>(mockedUsers)
 
 export const setAuthStatus = (isAuthorized: boolean) => {
   authStatus.set(isAuthorized)
@@ -152,31 +153,12 @@ export const clearAuthAndRegData = () => {
   currentRegData.set({} as RegistrationData)
 }
 
-export const updateUserDataInStore = (newData: UserDataExtended, login: string): string => {
-  let error = ''
-
-  users.update((users) => {
-    const user = users.find((user) => login === user.login)
-
-    if (newData.password !== user.password) {
-      error = `Incorrect password for user ${user.login}`
-    }
-
-    if (newData.password === newData.newPassword) {
-      error = 'You are not allowed to use the same password'
-    }
-
-    if (error) {
-      return users
-    }
-
-    user.login = newData.login
-    user.password = newData.newPassword
-    user.name = newData.name
-    user.surname = newData.surname
-
-    return users
-  })
-
-  return error
+export const updateUserDataInStore = async (newData: UserDataExtended, login: string) => {
+  await editUserReq(newData)
+    .then((res: SuccessResponse) => {
+      addDataToLocalStorage(currentUser, newData)
+    })
+    .catch((err: ErrorResponse) => {
+      console.log(err)
+    })
 }

@@ -11,13 +11,8 @@
     import {EntityType, ActionType} from "../../../../stores/utils";
     import UserSettingsForm from "../UserSettingsForm/UserSettingsForm.svelte";
 
-    const onSaveHandler = () => {
-        const error = updateUserDataInStore(data, initialData.login);
-
-        if (error) {
-            //backend validation
-            return;
-        }
+    const onSaveHandler = async  () => {
+        await updateUserDataInStore(data, initialData.login);
 
         //TODO: update session by websocket from backend
         setCurrentSession(Object.assign({}, data, {

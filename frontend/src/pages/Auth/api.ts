@@ -16,3 +16,7 @@ export const registrationReq = async (data: RegistrationData) => {
 export const getUserReq = async (data: UserData) => {
   return await getReq('user/full', data)
 }
+
+export const editUserReq = async (data: UserData) => {
+  return await postReq('user/update', data)
+}
