@@ -2,6 +2,8 @@ import { PlacemarkBuilder } from './PlacemarkBuilder'
 import { MapsBuilder, Coordinates } from './MapsBuilder'
 import { MapItemData } from '../../ActionElements/MapActionElement/utils'
 import { Placemark } from 'yandex-maps'
+import { yandexMapsReady } from '../../../../stores/maps'
+import { get } from 'svelte/store'
 
 declare var ymaps
 
@@ -26,12 +28,13 @@ export class YandexMapsBuilder implements MapsBuilder {
 
     private processSingleAddressSearch (address: string): Promise<any> {
       console.log(address)
-
-      return ymaps && ymaps.geocode && ymaps.geocode(address, {})
+      // @ts-ignore
+      return window.ymaps && window.ymaps.geocode && window.ymaps.geocode(address, {})
     }
 
     private processSingleCoordsSearch (coords: Coordinates): Promise<any> {
-      return ymaps && ymaps.geocode && ymaps.geocode(coords)
+      // @ts-ignore
+      return window.ymaps && window.ymaps.geocode && window.ymaps.geocode(coords)
     }
 
     private getFoundedGeoObject (res: any, index: number) {
@@ -100,7 +103,11 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     findSingleAddressAndCreateMap (data: MapItemData, container: HTMLDivElement): void {
-      if (!ymaps) {
+      if (!window.ymaps) {
+        console.log(get(yandexMapsReady))
+        setTimeout(() => {
+          console.log(get(yandexMapsReady))
+        }, 3000)
         return
       }
 
@@ -164,7 +171,11 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     findMultipleAddressesAndCreateMap (data: MapItemData[], container: HTMLDivElement): void {
-      if (!ymaps) {
+      if (!window.ymaps) {
+        console.log(get(yandexMapsReady))
+        setTimeout(() => {
+          console.log(get(yandexMapsReady))
+        }, 3000)
         return
       }
 
@@ -178,7 +189,7 @@ export class YandexMapsBuilder implements MapsBuilder {
       })
 
       Promise.allSettled(promises).then((results) => {
-        const pointsCollection = new ymaps.GeoObjectCollection()
+        const pointsCollection = new window.ymaps.GeoObjectCollection()
         const points: Coordinates[] = []
 
         results.forEach((res: PromiseFulfilledResult<any>, index: number) => {
@@ -209,7 +220,7 @@ export class YandexMapsBuilder implements MapsBuilder {
     }
 
     private createMap (coords: Coordinates, container: HTMLDivElement, zoom: number) {
-      this.map = new ymaps.Map(container, {
+      this.map = new window.ymaps.Map(container, {
         center: coords,
         zoom: zoom,
         controls: ['zoomControl']
