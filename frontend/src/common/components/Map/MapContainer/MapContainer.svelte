@@ -1,5 +1,5 @@
 <script lang="typescript">
-
+    import { get } from 'svelte/store'
     import { MapItemData } from '../../ActionElements/MapActionElement/utils';
 
     import {style} from "./style";
@@ -13,17 +13,21 @@
     import { PlacemarkBuilder } from "./PlacemarkBuilder";
     import { YandexMapsPlacemarkBuilder } from "./YandexMapsPlacemarkBuilder";
 
-    const processMapData = (data, container) => {
-        if (!get(yandexMapsReady)) {
-            setTimeout(() => {
-                processMapData(data, container)
-            }, 500)
-            return;
-        }
+    const drawMap = (data, container) => {
         if (data.length > 1) {
             mapBuilder && mapBuilder.findMultipleAddressesAndCreateMap(data, container);
         } else {
             mapBuilder && mapBuilder.findSingleAddressAndCreateMap(data[0], container);
+        }
+    }
+
+    const processMapData = (data, container) => {
+        if (!get(yandexMapsReady)) {
+            setTimeout(() => {
+                drawMap(data, container)
+            }, 500)
+        } else {
+            drawMap(data, container)
         }
     }
 

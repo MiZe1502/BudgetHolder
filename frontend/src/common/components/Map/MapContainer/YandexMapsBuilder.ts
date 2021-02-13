@@ -104,10 +104,6 @@ export class YandexMapsBuilder implements MapsBuilder {
 
     findSingleAddressAndCreateMap (data: MapItemData, container: HTMLDivElement): void {
       if (!window.ymaps) {
-        console.log(get(yandexMapsReady))
-        setTimeout(() => {
-          console.log(get(yandexMapsReady))
-        }, 3000)
         return
       }
 
@@ -172,10 +168,6 @@ export class YandexMapsBuilder implements MapsBuilder {
 
     findMultipleAddressesAndCreateMap (data: MapItemData[], container: HTMLDivElement): void {
       if (!window.ymaps) {
-        console.log(get(yandexMapsReady))
-        setTimeout(() => {
-          console.log(get(yandexMapsReady))
-        }, 3000)
         return
       }
 
@@ -194,13 +186,14 @@ export class YandexMapsBuilder implements MapsBuilder {
 
         results.forEach((res: PromiseFulfilledResult<any>, index: number) => {
           const currentRes = res.value
+          if (currentRes) {
+            const geoObject = this.getFoundedGeoObject(currentRes, 0)
+            const coords = this.getFoundCoordinates(geoObject)
+            points.push(coords)
 
-          const geoObject = this.getFoundedGeoObject(currentRes, 0)
-          const coords = this.getFoundCoordinates(geoObject)
-          points.push(coords)
-
-          const placement = this.placementBuilder.createPlacemark(coords, data[index])
-          pointsCollection.add(placement)
+            const placement = this.placementBuilder.createPlacemark(coords, data[index])
+            pointsCollection.add(placement)
+          }
         })
 
         if (this.isMapExists()) {
