@@ -1,8 +1,5 @@
 v1.0
 
-1. frontend
-    1.1. security
-        1.1.1. https
 2. backend
     2.1. cors wrapper
 3. security
