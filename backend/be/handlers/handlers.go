@@ -64,6 +64,12 @@ func configureCors(config Config) *cors.Cors {
 	})
 }
 
+func createHandlerWrappper(mdc alice.Chain, c *cors.Cors) func(func(w http.ResponseWriter, r *http.Request)) http.Handler {
+	return func(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
+		return c.Handler(mdc.Then(http.HandlerFunc(handler)))
+	}
+}
+
 // InitHandlers initialize all endpoints with middlewares and handlers
 func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	config, err := conf.ReadServerConfig(conf.EnvironmentKey(env.EnvironmentKey))
@@ -76,52 +82,54 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 		env.Logger.Fatal("Error parsing server config: " + err.Error())
 	}
 
-	middlewareChain := alice.New(createMiddleware(env, Trace),
+	//middlewareChain
+	mdc := alice.New(createMiddleware(env, Trace),
 		createMiddleware(env, Logger),
 		createMiddleware(env, CheckSession))
 
-	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
-	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env, hub))))
+	http.Handle("/", mdc.Then(http.HandlerFunc(serveStatic)))
+	http.Handle("/ws", mdc.Then(http.HandlerFunc(createWsHandler(env, hub))))
 
 	c := configureCors(parsedConfig)
+	wrap := createHandlerWrappper(mdc, c)
 
-	http.Handle("/api/v1/user/auth", c.Handler(middlewareChain.Then(http.HandlerFunc(createAuthHandler(env)))))
-	http.Handle("/api/v1/user/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env)))))
-	http.Handle("/api/v1/user/full", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env)))))
-	http.Handle("/api/v1/user/group/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createNewUserGroupHandler(env)))))
-	http.Handle("/api/v1/user/logout", c.Handler(middlewareChain.Then(http.HandlerFunc(createCloseUserSessionHandler(env)))))
-	http.Handle("/api/v1/user/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateUserHandler(env)))))
+	http.Handle("/api/v1/user/auth", wrap(createAuthHandler(env)))
+	http.Handle("/api/v1/user/new", wrap(createNewUserHandler(env)))
+	http.Handle("/api/v1/user/full", wrap(createGetFullUserInfoHandler(env)))
+	http.Handle("/api/v1/user/group/new", wrap(createNewUserGroupHandler(env)))
+	http.Handle("/api/v1/user/logout", wrap(createCloseUserSessionHandler(env)))
+	http.Handle("/api/v1/user/update", wrap(createUpdateUserHandler(env)))
 
-	http.Handle("/api/v1/shops/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env)))))
-	http.Handle("/api/v1/shops/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleShopsListHandler(env)))))
-	http.Handle("/api/v1/shops/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewShopHandler(env)))))
-	http.Handle("/api/v1/shops/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveShopHandler(env)))))
-	http.Handle("/api/v1/shops/get", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetShopByIDHandler(env)))))
-	http.Handle("/api/v1/shops/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateShopHandler(env)))))
+	http.Handle("/api/v1/shops/slice", wrap(createGetShopsSliceHandler(env)))
+	http.Handle("/api/v1/shops/list", wrap(createGetSimpleShopsListHandler(env)))
+	http.Handle("/api/v1/shops/new", wrap(createAddNewShopHandler(env)))
+	http.Handle("/api/v1/shops/remove", wrap(createRemoveShopHandler(env)))
+	http.Handle("/api/v1/shops/get", wrap(createGetShopByIDHandler(env)))
+	http.Handle("/api/v1/shops/update", wrap(createUpdateShopHandler(env)))
 
-	http.Handle("/api/v1/categories/tree", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsCategoriesTreeHandler(env)))))
-	http.Handle("/api/v1/categories/chain", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetCategoryChainByParentIDHandler(env)))))
-	http.Handle("/api/v1/categories/category", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSingleCategoryByIDHandler(env)))))
-	http.Handle("/api/v1/categories/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleCategoriesListHandler(env)))))
-	http.Handle("/api/v1/categories/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveCategoryHandler(env)))))
-	http.Handle("/api/v1/categories/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewCategoryHandler(env)))))
-	http.Handle("/api/v1/categories/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateCategoryHandler(env)))))
+	http.Handle("/api/v1/categories/tree", wrap(createGetGoodsCategoriesTreeHandler(env)))
+	http.Handle("/api/v1/categories/chain", wrap(createGetCategoryChainByParentIDHandler(env)))
+	http.Handle("/api/v1/categories/category", wrap(createGetSingleCategoryByIDHandler(env)))
+	http.Handle("/api/v1/categories/list", wrap(createGetSimpleCategoriesListHandler(env)))
+	http.Handle("/api/v1/categories/remove", wrap(createRemoveCategoryHandler(env)))
+	http.Handle("/api/v1/categories/new", wrap(createAddNewCategoryHandler(env)))
+	http.Handle("/api/v1/categories/update", wrap(createUpdateCategoryHandler(env)))
 
-	http.Handle("/api/v1/purchases/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetPurchasesWithGoodsDataSliceHandler(env)))))
-	http.Handle("/api/v1/purchases/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemovePurchaseWithGoodsDetailsHandler(env)))))
-	http.Handle("/api/v1/purchases/details/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsDetailsItemHandler(env)))))
-	http.Handle("/api/v1/purchases/details/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsDetailsItemHandler(env)))))
-	http.Handle("/api/v1/purchases/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewPurchaseWithGoodsDataHandler(env)))))
-	http.Handle("/api/v1/purchases/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdatePurchaseHandler(env)))))
+	http.Handle("/api/v1/purchases/slice", wrap(createGetPurchasesWithGoodsDataSliceHandler(env)))
+	http.Handle("/api/v1/purchases/remove", wrap(createRemovePurchaseWithGoodsDetailsHandler(env)))
+	http.Handle("/api/v1/purchases/details/remove", wrap(createRemoveGoodsDetailsItemHandler(env)))
+	http.Handle("/api/v1/purchases/details/update", wrap(createUpdateGoodsDetailsItemHandler(env)))
+	http.Handle("/api/v1/purchases/new", wrap(createAddNewPurchaseWithGoodsDataHandler(env)))
+	http.Handle("/api/v1/purchases/update", wrap(createUpdatePurchaseHandler(env)))
 
-	http.Handle("/api/v1/goods/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsSliceHandler(env)))))
-	http.Handle("/api/v1/goods/get", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsItemByIDHandler(env)))))
-	http.Handle("/api/v1/goods/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleGoodsItemsListHandler(env)))))
-	http.Handle("/api/v1/goods/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsItemHandler(env)))))
-	http.Handle("/api/v1/goods/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env)))))
-	http.Handle("/api/v1/goods/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsItemHandler(env)))))
+	http.Handle("/api/v1/goods/slice", wrap(createGetGoodsSliceHandler(env)))
+	http.Handle("/api/v1/goods/get", wrap(createGetGoodsItemByIDHandler(env)))
+	http.Handle("/api/v1/goods/list", wrap(createGetSimpleGoodsItemsListHandler(env)))
+	http.Handle("/api/v1/goods/remove", wrap(createRemoveGoodsItemHandler(env)))
+	http.Handle("/api/v1/goods/new", wrap(createAddNewGoodsItemHandler(env)))
+	http.Handle("/api/v1/goods/update", wrap(createUpdateGoodsItemHandler(env)))
 
-	http.Handle("/message", c.Handler(middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub)))))
+	http.Handle("/message", wrap(createTestMessageHandler(env, hub)))
 
 	if parsedConfig.IsHTTPS {
 		http.ListenAndServeTLS(formStringPort(parsedConfig.Port), parsedConfig.CertPath, parsedConfig.KeyPath, nil)
