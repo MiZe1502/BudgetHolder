@@ -19,6 +19,7 @@ type Config struct {
 	CertPath string `json:"certPath"`
 	KeyPath  string `json:"keyPath"`
 	Port     int    `json:"port"`
+	FrontEnd string `json:"frontEnd"`
 }
 
 func createTestMessageHandler(env *env.Env, hub *wshub.Hub) func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,15 @@ func formStringPort(port int) string {
 	return ":" + fmt.Sprint(port)
 }
 
+func configureCors(config Config) *cors.Cors {
+	return cors.New(cors.Options{
+		AllowedOrigins:   []string{config.FrontEnd},
+		AllowCredentials: true,
+		Debug:            true,
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+	})
+}
+
 // InitHandlers initialize all endpoints with middlewares and handlers
 func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	config, err := conf.ReadServerConfig(conf.EnvironmentKey(env.EnvironmentKey))
@@ -73,45 +83,45 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/", middlewareChain.Then(http.HandlerFunc(serveStatic)))
 	http.Handle("/ws", middlewareChain.Then(http.HandlerFunc(createWsHandler(env, hub))))
 
-	//TODO: configure cors
+	c := configureCors(parsedConfig)
 
-	http.Handle("/api/v1/user/auth", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAuthHandler(env)))))
-	http.Handle("/api/v1/user/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env)))))
-	http.Handle("/api/v1/user/full", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env)))))
-	http.Handle("/api/v1/user/group/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createNewUserGroupHandler(env)))))
-	http.Handle("/api/v1/user/logout", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createCloseUserSessionHandler(env)))))
-	http.Handle("/api/v1/user/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateUserHandler(env)))))
+	http.Handle("/api/v1/user/auth", c.Handler(middlewareChain.Then(http.HandlerFunc(createAuthHandler(env)))))
+	http.Handle("/api/v1/user/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createNewUserHandler(env)))))
+	http.Handle("/api/v1/user/full", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetFullUserInfoHandler(env)))))
+	http.Handle("/api/v1/user/group/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createNewUserGroupHandler(env)))))
+	http.Handle("/api/v1/user/logout", c.Handler(middlewareChain.Then(http.HandlerFunc(createCloseUserSessionHandler(env)))))
+	http.Handle("/api/v1/user/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateUserHandler(env)))))
 
-	http.Handle("/api/v1/shops/slice", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env)))))
-	http.Handle("/api/v1/shops/list", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleShopsListHandler(env)))))
-	http.Handle("/api/v1/shops/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewShopHandler(env)))))
-	http.Handle("/api/v1/shops/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveShopHandler(env)))))
-	http.Handle("/api/v1/shops/get", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetShopByIDHandler(env)))))
-	http.Handle("/api/v1/shops/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateShopHandler(env)))))
+	http.Handle("/api/v1/shops/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetShopsSliceHandler(env)))))
+	http.Handle("/api/v1/shops/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleShopsListHandler(env)))))
+	http.Handle("/api/v1/shops/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewShopHandler(env)))))
+	http.Handle("/api/v1/shops/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveShopHandler(env)))))
+	http.Handle("/api/v1/shops/get", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetShopByIDHandler(env)))))
+	http.Handle("/api/v1/shops/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateShopHandler(env)))))
 
-	http.Handle("/api/v1/categories/tree", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsCategoriesTreeHandler(env)))))
-	http.Handle("/api/v1/categories/chain", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetCategoryChainByParentIDHandler(env)))))
-	http.Handle("/api/v1/categories/category", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetSingleCategoryByIDHandler(env)))))
-	http.Handle("/api/v1/categories/list", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleCategoriesListHandler(env)))))
-	http.Handle("/api/v1/categories/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveCategoryHandler(env)))))
-	http.Handle("/api/v1/categories/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewCategoryHandler(env)))))
-	http.Handle("/api/v1/categories/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateCategoryHandler(env)))))
+	http.Handle("/api/v1/categories/tree", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsCategoriesTreeHandler(env)))))
+	http.Handle("/api/v1/categories/chain", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetCategoryChainByParentIDHandler(env)))))
+	http.Handle("/api/v1/categories/category", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSingleCategoryByIDHandler(env)))))
+	http.Handle("/api/v1/categories/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleCategoriesListHandler(env)))))
+	http.Handle("/api/v1/categories/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveCategoryHandler(env)))))
+	http.Handle("/api/v1/categories/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewCategoryHandler(env)))))
+	http.Handle("/api/v1/categories/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateCategoryHandler(env)))))
 
-	http.Handle("/api/v1/purchases/slice", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetPurchasesWithGoodsDataSliceHandler(env)))))
-	http.Handle("/api/v1/purchases/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemovePurchaseWithGoodsDetailsHandler(env)))))
-	http.Handle("/api/v1/purchases/details/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsDetailsItemHandler(env)))))
-	http.Handle("/api/v1/purchases/details/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsDetailsItemHandler(env)))))
-	http.Handle("/api/v1/purchases/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewPurchaseWithGoodsDataHandler(env)))))
-	http.Handle("/api/v1/purchases/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdatePurchaseHandler(env)))))
+	http.Handle("/api/v1/purchases/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetPurchasesWithGoodsDataSliceHandler(env)))))
+	http.Handle("/api/v1/purchases/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemovePurchaseWithGoodsDetailsHandler(env)))))
+	http.Handle("/api/v1/purchases/details/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsDetailsItemHandler(env)))))
+	http.Handle("/api/v1/purchases/details/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsDetailsItemHandler(env)))))
+	http.Handle("/api/v1/purchases/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewPurchaseWithGoodsDataHandler(env)))))
+	http.Handle("/api/v1/purchases/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdatePurchaseHandler(env)))))
 
-	http.Handle("/api/v1/goods/slice", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsSliceHandler(env)))))
-	http.Handle("/api/v1/goods/get", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsItemByIDHandler(env)))))
-	http.Handle("/api/v1/goods/list", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleGoodsItemsListHandler(env)))))
-	http.Handle("/api/v1/goods/remove", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsItemHandler(env)))))
-	http.Handle("/api/v1/goods/new", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env)))))
-	http.Handle("/api/v1/goods/update", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsItemHandler(env)))))
+	http.Handle("/api/v1/goods/slice", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsSliceHandler(env)))))
+	http.Handle("/api/v1/goods/get", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetGoodsItemByIDHandler(env)))))
+	http.Handle("/api/v1/goods/list", c.Handler(middlewareChain.Then(http.HandlerFunc(createGetSimpleGoodsItemsListHandler(env)))))
+	http.Handle("/api/v1/goods/remove", c.Handler(middlewareChain.Then(http.HandlerFunc(createRemoveGoodsItemHandler(env)))))
+	http.Handle("/api/v1/goods/new", c.Handler(middlewareChain.Then(http.HandlerFunc(createAddNewGoodsItemHandler(env)))))
+	http.Handle("/api/v1/goods/update", c.Handler(middlewareChain.Then(http.HandlerFunc(createUpdateGoodsItemHandler(env)))))
 
-	http.Handle("/message", cors.AllowAll().Handler(middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub)))))
+	http.Handle("/message", c.Handler(middlewareChain.Then(http.HandlerFunc(createTestMessageHandler(env, hub)))))
 
 	if parsedConfig.IsHTTPS {
 		http.ListenAndServeTLS(formStringPort(parsedConfig.Port), parsedConfig.CertPath, parsedConfig.KeyPath, nil)
