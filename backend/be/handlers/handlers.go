@@ -64,9 +64,9 @@ func configureCors(config Config) *cors.Cors {
 	})
 }
 
-func createHandlerWrappper(mdc alice.Chain, c *cors.Cors) func(func(w http.ResponseWriter, r *http.Request)) http.Handler {
-	return func(handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
-		return c.Handler(mdc.Then(http.HandlerFunc(handler)))
+func createHandlerWrapper(mdc alice.Chain, c *cors.Cors, e *env.Env) func(func(env *env.Env) func(w http.ResponseWriter, r *http.Request)) http.Handler {
+	return func(handler func(env *env.Env) func(w http.ResponseWriter, r *http.Request)) http.Handler {
+		return c.Handler(mdc.Then(http.HandlerFunc(handler(e))))
 	}
 }
 
@@ -91,45 +91,45 @@ func InitHandlers(env *env.Env, hub *wshub.Hub) {
 	http.Handle("/ws", mdc.Then(http.HandlerFunc(createWsHandler(env, hub))))
 
 	c := configureCors(parsedConfig)
-	wrap := createHandlerWrappper(mdc, c)
+	wrap := createHandlerWrapper(mdc, c, env)
 
-	http.Handle("/api/v1/user/auth", wrap(createAuthHandler(env)))
-	http.Handle("/api/v1/user/new", wrap(createNewUserHandler(env)))
-	http.Handle("/api/v1/user/full", wrap(createGetFullUserInfoHandler(env)))
-	http.Handle("/api/v1/user/group/new", wrap(createNewUserGroupHandler(env)))
-	http.Handle("/api/v1/user/logout", wrap(createCloseUserSessionHandler(env)))
-	http.Handle("/api/v1/user/update", wrap(createUpdateUserHandler(env)))
+	http.Handle("/api/v1/user/auth", wrap(createAuthHandler))
+	http.Handle("/api/v1/user/new", wrap(createNewUserHandler))
+	http.Handle("/api/v1/user/full", wrap(createGetFullUserInfoHandler))
+	http.Handle("/api/v1/user/group/new", wrap(createNewUserGroupHandler))
+	http.Handle("/api/v1/user/logout", wrap(createCloseUserSessionHandler))
+	http.Handle("/api/v1/user/update", wrap(createUpdateUserHandler))
 
-	http.Handle("/api/v1/shops/slice", wrap(createGetShopsSliceHandler(env)))
-	http.Handle("/api/v1/shops/list", wrap(createGetSimpleShopsListHandler(env)))
-	http.Handle("/api/v1/shops/new", wrap(createAddNewShopHandler(env)))
-	http.Handle("/api/v1/shops/remove", wrap(createRemoveShopHandler(env)))
-	http.Handle("/api/v1/shops/get", wrap(createGetShopByIDHandler(env)))
-	http.Handle("/api/v1/shops/update", wrap(createUpdateShopHandler(env)))
+	http.Handle("/api/v1/shops/slice", wrap(createGetShopsSliceHandler))
+	http.Handle("/api/v1/shops/list", wrap(createGetSimpleShopsListHandler))
+	http.Handle("/api/v1/shops/new", wrap(createAddNewShopHandler))
+	http.Handle("/api/v1/shops/remove", wrap(createRemoveShopHandler))
+	http.Handle("/api/v1/shops/get", wrap(createGetShopByIDHandler))
+	http.Handle("/api/v1/shops/update", wrap(createUpdateShopHandler))
 
-	http.Handle("/api/v1/categories/tree", wrap(createGetGoodsCategoriesTreeHandler(env)))
-	http.Handle("/api/v1/categories/chain", wrap(createGetCategoryChainByParentIDHandler(env)))
-	http.Handle("/api/v1/categories/category", wrap(createGetSingleCategoryByIDHandler(env)))
-	http.Handle("/api/v1/categories/list", wrap(createGetSimpleCategoriesListHandler(env)))
-	http.Handle("/api/v1/categories/remove", wrap(createRemoveCategoryHandler(env)))
-	http.Handle("/api/v1/categories/new", wrap(createAddNewCategoryHandler(env)))
-	http.Handle("/api/v1/categories/update", wrap(createUpdateCategoryHandler(env)))
+	http.Handle("/api/v1/categories/tree", wrap(createGetGoodsCategoriesTreeHandler))
+	http.Handle("/api/v1/categories/chain", wrap(createGetCategoryChainByParentIDHandler))
+	http.Handle("/api/v1/categories/category", wrap(createGetSingleCategoryByIDHandler))
+	http.Handle("/api/v1/categories/list", wrap(createGetSimpleCategoriesListHandler))
+	http.Handle("/api/v1/categories/remove", wrap(createRemoveCategoryHandler))
+	http.Handle("/api/v1/categories/new", wrap(createAddNewCategoryHandler))
+	http.Handle("/api/v1/categories/update", wrap(createUpdateCategoryHandler))
 
-	http.Handle("/api/v1/purchases/slice", wrap(createGetPurchasesWithGoodsDataSliceHandler(env)))
-	http.Handle("/api/v1/purchases/remove", wrap(createRemovePurchaseWithGoodsDetailsHandler(env)))
-	http.Handle("/api/v1/purchases/details/remove", wrap(createRemoveGoodsDetailsItemHandler(env)))
-	http.Handle("/api/v1/purchases/details/update", wrap(createUpdateGoodsDetailsItemHandler(env)))
-	http.Handle("/api/v1/purchases/new", wrap(createAddNewPurchaseWithGoodsDataHandler(env)))
-	http.Handle("/api/v1/purchases/update", wrap(createUpdatePurchaseHandler(env)))
+	http.Handle("/api/v1/purchases/slice", wrap(createGetPurchasesWithGoodsDataSliceHandler))
+	http.Handle("/api/v1/purchases/remove", wrap(createRemovePurchaseWithGoodsDetailsHandler))
+	http.Handle("/api/v1/purchases/details/remove", wrap(createRemoveGoodsDetailsItemHandler))
+	http.Handle("/api/v1/purchases/details/update", wrap(createUpdateGoodsDetailsItemHandler))
+	http.Handle("/api/v1/purchases/new", wrap(createAddNewPurchaseWithGoodsDataHandler))
+	http.Handle("/api/v1/purchases/update", wrap(createUpdatePurchaseHandler))
 
-	http.Handle("/api/v1/goods/slice", wrap(createGetGoodsSliceHandler(env)))
-	http.Handle("/api/v1/goods/get", wrap(createGetGoodsItemByIDHandler(env)))
-	http.Handle("/api/v1/goods/list", wrap(createGetSimpleGoodsItemsListHandler(env)))
-	http.Handle("/api/v1/goods/remove", wrap(createRemoveGoodsItemHandler(env)))
-	http.Handle("/api/v1/goods/new", wrap(createAddNewGoodsItemHandler(env)))
-	http.Handle("/api/v1/goods/update", wrap(createUpdateGoodsItemHandler(env)))
+	http.Handle("/api/v1/goods/slice", wrap(createGetGoodsSliceHandler))
+	http.Handle("/api/v1/goods/get", wrap(createGetGoodsItemByIDHandler))
+	http.Handle("/api/v1/goods/list", wrap(createGetSimpleGoodsItemsListHandler))
+	http.Handle("/api/v1/goods/remove", wrap(createRemoveGoodsItemHandler))
+	http.Handle("/api/v1/goods/new", wrap(createAddNewGoodsItemHandler))
+	http.Handle("/api/v1/goods/update", wrap(createUpdateGoodsItemHandler))
 
-	http.Handle("/message", wrap(createTestMessageHandler(env, hub)))
+	// http.Handle("/message", wrap(createTestMessageHandler(env, hub)))
 
 	if parsedConfig.IsHTTPS {
 		http.ListenAndServeTLS(formStringPort(parsedConfig.Port), parsedConfig.CertPath, parsedConfig.KeyPath, nil)
